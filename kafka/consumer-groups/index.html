@@ -1,0 +1,2604 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/consumer-groups/">
+      
+      
+        <link rel="prev" href="../producers-consumers/">
+      
+      
+        <link rel="next" href="../kafka-scaling/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Consumer Groups Explained - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#consumer-groups-explained" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Consumer Groups Explained
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-consumer-groups-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Consumer Groups Exist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-consumer-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is a Consumer Group?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Is a Consumer Group?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-core-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Core Rules
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-group-coordinator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Group Coordinator
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Group Coordinator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-broker-is-the-coordinator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Which Broker Is the Coordinator?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-the-coordinator-is-chosen" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the Coordinator Is Chosen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-coordinator-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the Coordinator Does
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#walkthrough-every-possible-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Walkthrough: Every Possible Scenario
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Walkthrough: Every Possible Scenario">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-1-consumer-4-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: 1 Consumer, 4 Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-2-consumers-4-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: 2 Consumers, 4 Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-4-consumers-4-partitions-sweet-spot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: 4 Consumers, 4 Partitions (Sweet Spot)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-4-6-consumers-4-partitions-over-provisioned" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 4: 6 Consumers, 4 Partitions (Over-provisioned)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-5-consumer-3-crashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 5: Consumer 3 Crashes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-6-new-consumer-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 6: New Consumer Joins
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rebalancing-how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rebalancing: How It Works
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rebalancing: How It Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-during-a-rebalance" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens During a Rebalance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-long-does-rebalancing-take" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Long Does Rebalancing Take?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#causes-of-unnecessary-rebalancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Causes of Unnecessary Rebalancing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-consumer-groups-independent-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiple Consumer Groups: Independent Reading
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiple Consumer Groups: Independent Reading">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#real-world-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partition-assignment-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partition Assignment Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Partition Assignment Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#range-assignor-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      Range Assignor (Default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#round-robin-assignor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Round Robin Assignor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sticky-assignor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sticky Assignor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cooperative-sticky-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cooperative Sticky (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rebalancing-protocols-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rebalancing Protocols Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rebalancing Protocols Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eager-rebalancing-default-with-range-roundrobin-sticky" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eager Rebalancing (Default with Range, RoundRobin, Sticky)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cooperative-rebalancing-cooperativestickyassignor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cooperative Rebalancing (CooperativeStickyAssignor)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-during-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens During Each
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-group-membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      Static Group Membership
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-consumer-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Consumer Groups
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring Consumer Groups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kafka-consumer-groups-cli-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      kafka-consumer-groups CLI Commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking Lag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-groups-and-resetting-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listing Groups and Resetting Offsets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resetting-consumer-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resetting Consumer Offsets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resetting Consumer Offsets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-you-need-to-re-process-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      When You Need To Re-Process Messages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      How To Reset
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-consumer-group-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Consumer Group Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Consumer Group Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pattern-1-one-service-one-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: One Service = One Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-2-competing-consumers-load-sharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Competing Consumers (Load Sharing)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-3-broadcast-all-consumers-get-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Broadcast (All Consumers Get Everything)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-story-over-provisioned-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Production Story: Over-Provisioned Consumers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-consumer-groups-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Consumer Groups Exist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-consumer-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is a Consumer Group?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Is a Consumer Group?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-core-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Core Rules
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-group-coordinator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Group Coordinator
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Group Coordinator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-broker-is-the-coordinator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Which Broker Is the Coordinator?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-the-coordinator-is-chosen" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the Coordinator Is Chosen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-coordinator-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the Coordinator Does
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#walkthrough-every-possible-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Walkthrough: Every Possible Scenario
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Walkthrough: Every Possible Scenario">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-1-consumer-4-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: 1 Consumer, 4 Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-2-consumers-4-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: 2 Consumers, 4 Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-4-consumers-4-partitions-sweet-spot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: 4 Consumers, 4 Partitions (Sweet Spot)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-4-6-consumers-4-partitions-over-provisioned" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 4: 6 Consumers, 4 Partitions (Over-provisioned)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-5-consumer-3-crashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 5: Consumer 3 Crashes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-6-new-consumer-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 6: New Consumer Joins
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rebalancing-how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rebalancing: How It Works
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rebalancing: How It Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-during-a-rebalance" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens During a Rebalance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-long-does-rebalancing-take" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Long Does Rebalancing Take?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#causes-of-unnecessary-rebalancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Causes of Unnecessary Rebalancing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-consumer-groups-independent-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiple Consumer Groups: Independent Reading
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiple Consumer Groups: Independent Reading">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#real-world-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partition-assignment-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partition Assignment Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Partition Assignment Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#range-assignor-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      Range Assignor (Default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#round-robin-assignor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Round Robin Assignor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sticky-assignor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sticky Assignor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cooperative-sticky-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cooperative Sticky (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rebalancing-protocols-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rebalancing Protocols Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rebalancing Protocols Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eager-rebalancing-default-with-range-roundrobin-sticky" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eager Rebalancing (Default with Range, RoundRobin, Sticky)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cooperative-rebalancing-cooperativestickyassignor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cooperative Rebalancing (CooperativeStickyAssignor)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-during-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens During Each
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-group-membership" class="md-nav__link">
+    <span class="md-ellipsis">
+      Static Group Membership
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-consumer-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Consumer Groups
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring Consumer Groups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kafka-consumer-groups-cli-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      kafka-consumer-groups CLI Commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking Lag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listing-groups-and-resetting-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listing Groups and Resetting Offsets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resetting-consumer-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resetting Consumer Offsets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resetting Consumer Offsets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-you-need-to-re-process-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      When You Need To Re-Process Messages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      How To Reset
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-consumer-group-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Consumer Group Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Consumer Group Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pattern-1-one-service-one-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: One Service = One Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-2-competing-consumers-load-sharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Competing Consumers (Load Sharing)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-3-broadcast-all-consumers-get-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Broadcast (All Consumers Get Everything)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-story-over-provisioned-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Production Story: Over-Provisioned Consumers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="consumer-groups-explained">Consumer Groups Explained<a class="headerlink" href="#consumer-groups-explained" title="Permanent link">&para;</a></h1>
+<h2 id="why-consumer-groups-exist">Why Consumer Groups Exist<a class="headerlink" href="#why-consumer-groups-exist" title="Permanent link">&para;</a></h2>
+<p>Imagine a pizza restaurant with one delivery person. Orders pile up. Customers wait. One person can't deliver fast enough.</p>
+<p>Now hire 3 delivery people and divide the area: Person A delivers to Zone 1, Person B to Zone 2, Person C to Zone 3. Three times the throughput. No overlap. Each zone is covered by exactly one person.</p>
+<p>That's exactly what Kafka consumer groups do. Multiple consumers share the work of reading from a topic's partitions.</p>
+<hr />
+<h2 id="what-is-a-consumer-group">What Is a Consumer Group?<a class="headerlink" href="#what-is-a-consumer-group" title="Permanent link">&para;</a></h2>
+<p>A <strong>consumer group</strong> is a set of consumers that work together to read from a topic. They share the same <code>group.id</code>. Kafka divides the topic's partitions among the consumers in the group so that each partition is read by exactly one consumer.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Consumer 1 and Consumer 2 are in the same group</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;group.id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;order-processors&quot;</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="the-core-rules">The Core Rules<a class="headerlink" href="#the-core-rules" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Each partition is assigned to exactly ONE consumer in the group.</strong> No two consumers in the same group read the same partition.</li>
+<li><strong>One consumer can read from multiple partitions.</strong> If there are 6 partitions and 2 consumers, each consumer gets 3 partitions.</li>
+<li><strong>If consumers &gt; partitions, extra consumers sit idle.</strong> They're standby. If an active consumer dies, an idle one takes over.</li>
+</ol>
+<hr />
+<h2 id="consumer-group-coordinator">Consumer Group Coordinator<a class="headerlink" href="#consumer-group-coordinator" title="Permanent link">&para;</a></h2>
+<h3 id="which-broker-is-the-coordinator">Which Broker Is the Coordinator?<a class="headerlink" href="#which-broker-is-the-coordinator" title="Permanent link">&para;</a></h3>
+<p>Each consumer group has a <strong>coordinator</strong> — one broker responsible for that group. The coordinator manages membership, partition assignment, and offset commits.</p>
+<h3 id="how-the-coordinator-is-chosen">How the Coordinator Is Chosen<a class="headerlink" href="#how-the-coordinator-is-chosen" title="Permanent link">&para;</a></h3>
+<p>Kafka uses a deterministic formula: hash the <code>group.id</code>, modulo the number of partitions in <code>__consumer_offsets</code>. The partition leader for that partition is the coordinator.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>group.id = &quot;order-processors&quot;
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>__consumer_offsets has 50 partitions
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>hash(&quot;order-processors&quot;) % 50 = 23
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Partition 23 of __consumer_offsets → Leader broker is the coordinator for &quot;order-processors&quot;
+</code></pre></div>
+<p>When a consumer joins a group, it sends a "FindCoordinator" request to any broker. That broker tells it which broker is the coordinator. The consumer then talks directly to the coordinator for joins, heartbeats, and commits.</p>
+<h3 id="what-the-coordinator-does">What the Coordinator Does<a class="headerlink" href="#what-the-coordinator-does" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Tracks membership:</strong> Who is in the group? Who sent a heartbeat recently?</li>
+<li><strong>Triggers rebalances:</strong> When a consumer joins or leaves, the coordinator starts a rebalance.</li>
+<li><strong>Stores offsets:</strong> When a consumer commits, the coordinator writes to <code>__consumer_offsets</code>.</li>
+<li><strong>Assigns partitions:</strong> The coordinator (or the consumer, depending on protocol) assigns partitions to each member.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Coordinator failure</p>
+<p>If the coordinator broker dies, the group gets a new coordinator (the new leader of that partition). Consumers reconnect automatically. There may be a brief pause during the handover.</p>
+</div>
+<hr />
+<h2 id="walkthrough-every-possible-scenario">Walkthrough: Every Possible Scenario<a class="headerlink" href="#walkthrough-every-possible-scenario" title="Permanent link">&para;</a></h2>
+<p>Let's use a topic with <strong>4 partitions</strong> and see what happens as we add and remove consumers.</p>
+<h3 id="scenario-1-1-consumer-4-partitions">Scenario 1: 1 Consumer, 4 Partitions<a class="headerlink" href="#scenario-1-1-consumer-4-partitions" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Topic: &quot;orders&quot; (4 partitions)
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Group: &quot;order-processors&quot;
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Consumer 1 → Partition 0, Partition 1, Partition 2, Partition 3
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>One person doing all the work. It works, but slow.
+</code></pre></div>
+<h3 id="scenario-2-2-consumers-4-partitions">Scenario 2: 2 Consumers, 4 Partitions<a class="headerlink" href="#scenario-2-2-consumers-4-partitions" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Consumer 1 → Partition 0, Partition 1
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Consumer 2 → Partition 2, Partition 3
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Work is split. Twice the speed.
+</code></pre></div>
+<h3 id="scenario-3-4-consumers-4-partitions-sweet-spot">Scenario 3: 4 Consumers, 4 Partitions (Sweet Spot)<a class="headerlink" href="#scenario-3-4-consumers-4-partitions-sweet-spot" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Consumer 1 → Partition 0
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Consumer 2 → Partition 1
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Consumer 3 → Partition 2
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Consumer 4 → Partition 3
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Perfect distribution. Maximum parallelism.
+</code></pre></div>
+<h3 id="scenario-4-6-consumers-4-partitions-over-provisioned">Scenario 4: 6 Consumers, 4 Partitions (Over-provisioned)<a class="headerlink" href="#scenario-4-6-consumers-4-partitions-over-provisioned" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Consumer 1 → Partition 0
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Consumer 2 → Partition 1
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Consumer 3 → Partition 2
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Consumer 4 → Partition 3
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Consumer 5 → IDLE (no partition to read)
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Consumer 6 → IDLE (no partition to read)
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Two consumers have nothing to do. Wasted resources.
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Key Rule</p>
+<p>The maximum number of useful consumers in a group equals the number of partitions. Adding more consumers than partitions gives you standby capacity, not more throughput. If you need more consumers, add more partitions first.</p>
+</div>
+<h3 id="scenario-5-consumer-3-crashes">Scenario 5: Consumer 3 Crashes<a class="headerlink" href="#scenario-5-consumer-3-crashes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Before crash:
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  Consumer 1 → Partition 0
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  Consumer 2 → Partition 1
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  Consumer 3 → Partition 2  ← CRASHES
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  Consumer 4 → Partition 3
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>Kafka detects Consumer 3 is dead (no heartbeat).
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>Rebalance happens.
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>After rebalance:
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  Consumer 1 → Partition 0, Partition 2  ← Takes over P2
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>  Consumer 2 → Partition 1
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>  Consumer 4 → Partition 3
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>Messages in Partition 2 continue to be processed. No data lost.
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>Consumer 1 reads from P2&#39;s last committed offset.
+</code></pre></div>
+<h3 id="scenario-6-new-consumer-joins">Scenario 6: New Consumer Joins<a class="headerlink" href="#scenario-6-new-consumer-joins" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Before:
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  Consumer 1 → Partition 0, Partition 1, Partition 2
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  Consumer 2 → Partition 3
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Consumer 3 joins the group.
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Rebalance happens.
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>After:
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  Consumer 1 → Partition 0, Partition 1
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  Consumer 2 → Partition 3
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  Consumer 3 → Partition 2
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>Work is redistributed more evenly.
+</code></pre></div>
+<hr />
+<h2 id="rebalancing-how-it-works">Rebalancing: How It Works<a class="headerlink" href="#rebalancing-how-it-works" title="Permanent link">&para;</a></h2>
+<p><strong>Rebalancing</strong> is the process where Kafka reassigns partitions to consumers. It happens when:</p>
+<ul>
+<li>A new consumer joins the group</li>
+<li>A consumer leaves the group (crash or graceful shutdown)</li>
+<li>New partitions are added to the topic</li>
+<li>A consumer is considered "dead" (no heartbeat within <code>session.timeout.ms</code>)</li>
+</ul>
+<h3 id="what-happens-during-a-rebalance">What Happens During a Rebalance<a class="headerlink" href="#what-happens-during-a-rebalance" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Step 1: Kafka detects a change (consumer joined/left)
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Step 2: ALL consumers in the group pause reading
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Step 3: Kafka reassigns partitions (rebalance)
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Step 4: Each consumer gets its new partition assignment
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>Step 5: Consumers resume reading from committed offsets
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">The Pause</p>
+<p>During rebalancing, <strong>no messages are consumed</strong>. This is a brief pause (usually seconds), but in high-throughput systems, even a few seconds can cause lag. This is why you should avoid frequent rebalances.</p>
+</div>
+<h3 id="how-long-does-rebalancing-take">How Long Does Rebalancing Take?<a class="headerlink" href="#how-long-does-rebalancing-take" title="Permanent link">&para;</a></h3>
+<p>Typical rebalance: <strong>2-10 seconds</strong>. It depends on:</p>
+<ul>
+<li><strong>Group size:</strong> More consumers = more metadata to exchange. 100 consumers take longer than 5.</li>
+<li><strong>Protocol:</strong> Eager rebalancing (default with Range/RoundRobin) pauses everyone. Cooperative rebalancing can be faster for incremental changes.</li>
+<li><strong>Network latency:</strong> Consumers must talk to the coordinator. Slow networks add time.</li>
+<li><strong>Processing during join:</strong> If consumers are in the middle of a long <code>poll()</code> → <code>process()</code> cycle, they must finish or hit <code>max.poll.interval.ms</code> before they can participate. A slow consumer can delay the whole rebalance.</li>
+</ul>
+<p><strong>What affects it:</strong> Large groups, slow networks, and consumers that take a long time to respond to the "revoke partitions" request all increase rebalance duration. In production, aim for rebalances under 30 seconds. If they're longer, investigate: are consumers slow to respond? Is the group too large?</p>
+<h3 id="causes-of-unnecessary-rebalancing">Causes of Unnecessary Rebalancing<a class="headerlink" href="#causes-of-unnecessary-rebalancing" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Why It Happens</th>
+<th>How to Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consumer takes too long to process</td>
+<td>No heartbeat sent, Kafka thinks it's dead</td>
+<td>Increase <code>max.poll.interval.ms</code></td>
+</tr>
+<tr>
+<td>Slow startup</td>
+<td>Consumer joins, then immediately seems unresponsive</td>
+<td>Increase <code>session.timeout.ms</code></td>
+</tr>
+<tr>
+<td>Network glitch</td>
+<td>Brief disconnect, Kafka triggers rebalance</td>
+<td>Increase <code>session.timeout.ms</code></td>
+</tr>
+<tr>
+<td>Too many consumers starting at once</td>
+<td>Each one triggers a rebalance</td>
+<td>Use static group membership</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-configuration">Key Configuration<a class="headerlink" href="#key-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># How long before a consumer is considered dead (no heartbeat)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="na">session.timeout.ms</span><span class="o">=</span><span class="s">45000</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># How often the consumer sends heartbeats</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="na">heartbeat.interval.ms</span><span class="o">=</span><span class="s">3000</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># Max time between poll() calls before consumer is kicked out</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="na">max.poll.interval.ms</span><span class="o">=</span><span class="s">300000</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># Max messages returned per poll</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="na">max.poll.records</span><span class="o">=</span><span class="s">500</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Think about it this way</p>
+<p><code>session.timeout.ms</code> is like a check-in deadline. The consumer must send a heartbeat before this time runs out, or Kafka considers it dead. <code>heartbeat.interval.ms</code> is how often it sends the "I'm alive" signal. Set heartbeat to about 1/3 of the session timeout.</p>
+</div>
+<hr />
+<h2 id="multiple-consumer-groups-independent-reading">Multiple Consumer Groups: Independent Reading<a class="headerlink" href="#multiple-consumer-groups-independent-reading" title="Permanent link">&para;</a></h2>
+<p>Different consumer groups read the <strong>same messages independently</strong>. This is one of Kafka's most powerful features.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Topic: &quot;orders&quot; (3 partitions)
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Group A: &quot;payment-service&quot; (2 consumers)
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  Consumer A1 → Partition 0, Partition 1
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>  Consumer A2 → Partition 2
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>Group B: &quot;notification-service&quot; (1 consumer)
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>  Consumer B1 → Partition 0, Partition 1, Partition 2
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>Group C: &quot;analytics-service&quot; (3 consumers)
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>  Consumer C1 → Partition 0
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>  Consumer C2 → Partition 1
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>  Consumer C3 → Partition 2
+</code></pre></div>
+<p><strong>Key insight:</strong> Each group has its own offset tracking. Group A might be at offset 500, Group B at offset 480 (slower), Group C at offset 500. They don't interfere with each other.</p>
+<h3 id="real-world-example">Real-World Example<a class="headerlink" href="#real-world-example" title="Permanent link">&para;</a></h3>
+<p>When a user places an order on Swiggy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Order Service produces: &quot;ORDER_PLACED&quot; → Topic &quot;orders&quot;
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Payment Service (group: &quot;payments&quot;)    → Reads the event → Charges customer
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Kitchen Service (group: &quot;kitchens&quot;)    → Reads the event → Notifies restaurant
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Rider Service (group: &quot;riders&quot;)        → Reads the event → Assigns a delivery partner
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>Notification Service (group: &quot;notifs&quot;) → Reads the event → Sends confirmation SMS
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>Analytics Service (group: &quot;analytics&quot;) → Reads the event → Updates dashboards
+</code></pre></div>
+<p>One event. Five services. Each reads it independently. If the Analytics Service goes down for an hour, it catches up when it comes back — the messages are still in Kafka.</p>
+<hr />
+<h2 id="partition-assignment-strategies">Partition Assignment Strategies<a class="headerlink" href="#partition-assignment-strategies" title="Permanent link">&para;</a></h2>
+<p>Kafka has different strategies for how it assigns partitions to consumers within a group.</p>
+<h3 id="range-assignor-default">Range Assignor (Default)<a class="headerlink" href="#range-assignor-default" title="Permanent link">&para;</a></h3>
+<p>Assigns partitions in order, grouped per topic.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Topic A: P0, P1, P2
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Topic B: P0, P1, P2
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Consumers: C1, C2
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>C1 → Topic A: P0, P1  |  Topic B: P0, P1
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>C2 → Topic A: P2      |  Topic B: P2
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>C1 gets more load. Not perfectly even.
+</code></pre></div>
+<h3 id="round-robin-assignor">Round Robin Assignor<a class="headerlink" href="#round-robin-assignor" title="Permanent link">&para;</a></h3>
+<p>Distributes partitions one at a time across consumers.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Topic A: P0, P1, P2
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>Topic B: P0, P1, P2
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>Consumers: C1, C2
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>C1 → A-P0, A-P2, B-P1
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>C2 → A-P1, B-P0, B-P2
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>More even distribution.
+</code></pre></div>
+<h3 id="sticky-assignor">Sticky Assignor<a class="headerlink" href="#sticky-assignor" title="Permanent link">&para;</a></h3>
+<p>Tries to keep the same assignment as before. Minimizes partition movement during rebalancing. Less disruption.</p>
+<h3 id="cooperative-sticky-recommended">Cooperative Sticky (Recommended)<a class="headerlink" href="#cooperative-sticky-recommended" title="Permanent link">&para;</a></h3>
+<p>Like Sticky, but allows <strong>incremental rebalancing</strong>. Only the partitions that need to move are reassigned. Other consumers keep reading without pause.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="na">partition.assignment.strategy</span><span class="o">=</span><span class="s">org.apache.kafka.clients.consumer.CooperativeStickyAssignor</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"In production, I use the CooperativeStickyAssignor. It enables incremental rebalancing, which means consumers that aren't affected by the rebalance continue processing without pause. This reduces the impact of rebalances on throughput."</p>
+</div>
+<hr />
+<h2 id="rebalancing-protocols-deep-dive">Rebalancing Protocols Deep Dive<a class="headerlink" href="#rebalancing-protocols-deep-dive" title="Permanent link">&para;</a></h2>
+<h3 id="eager-rebalancing-default-with-range-roundrobin-sticky">Eager Rebalancing (Default with Range, RoundRobin, Sticky)<a class="headerlink" href="#eager-rebalancing-default-with-range-roundrobin-sticky" title="Permanent link">&para;</a></h3>
+<p><strong>How it works:</strong> When a rebalance is triggered, ALL consumers in the group stop reading. They revoke ALL their partitions. The coordinator reassigns partitions from scratch. Every consumer gets a new assignment. Then everyone resumes.</p>
+<p><strong>Problem:</strong> The entire group pauses. Even consumers that didn't lose any partitions must stop and wait. If you have 10 consumers and 1 dies, 9 healthy consumers pause for no good reason. Throughput drops to zero for the duration.</p>
+<p><strong>When it happens:</strong> Every time you use Range, RoundRobin, or the old Sticky assignor. Any membership change triggers a full stop.</p>
+<h3 id="cooperative-rebalancing-cooperativestickyassignor">Cooperative Rebalancing (CooperativeStickyAssignor)<a class="headerlink" href="#cooperative-rebalancing-cooperativestickyassignor" title="Permanent link">&para;</a></h3>
+<p><strong>How it works:</strong> Rebalancing happens in rounds. In round 1, only the consumer that needs to give up partitions (e.g., the one that's leaving) revokes them. Other consumers keep reading. The coordinator assigns the revoked partitions to the remaining consumers. In round 2, if a new consumer joined, it might get some partitions from existing consumers — but only those consumers revoke. Others keep going.</p>
+<p><strong>Benefit:</strong> Consumers that aren't affected never pause. If consumer 3 dies, consumers 1, 2, and 4 might keep processing their partitions while consumer 3's partitions are reassigned. Much less disruption.</p>
+<p><strong>Protocol:</strong> Set <code>partition.assignment.strategy=CooperativeStickyAssignor</code>. The consumer must support the "cooperative" rebalance protocol. Modern Kafka clients do.</p>
+<h3 id="what-happens-during-each">What Happens During Each<a class="headerlink" href="#what-happens-during-each" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Eager</th>
+<th>Cooperative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consumer leaves</td>
+<td>All pause, full reassign</td>
+<td>Only affected partitions move</td>
+</tr>
+<tr>
+<td>Consumer joins</td>
+<td>All pause, full reassign</td>
+<td>New consumer gets share, minimal revocation</td>
+</tr>
+<tr>
+<td>New partition added</td>
+<td>All pause, new partition assigned</td>
+<td>New partition assigned, others keep reading</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Upgrade path</p>
+<p>If you're on Range or RoundRobin, try CooperativeStickyAssignor. You'll see fewer "stop the world" rebalances. Especially helpful for large groups or high-throughput topics.</p>
+</div>
+<hr />
+<h2 id="static-group-membership">Static Group Membership<a class="headerlink" href="#static-group-membership" title="Permanent link">&para;</a></h2>
+<p>By default, every time a consumer restarts, Kafka treats it as a "new" consumer and triggers a rebalance. If your consumers restart frequently (e.g., during deployments), this causes constant rebalancing.</p>
+<p><strong>Static group membership</strong> assigns a fixed identity to each consumer. If a consumer restarts with the same ID, Kafka knows it's the same consumer and skips the rebalance (as long as it comes back within <code>session.timeout.ms</code>).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="na">group.instance.id</span><span class="o">=</span><span class="s">consumer-1</span>
+</code></pre></div>
+<p>This is very useful for Kubernetes deployments where pods restart often.</p>
+<hr />
+<h2 id="monitoring-consumer-groups">Monitoring Consumer Groups<a class="headerlink" href="#monitoring-consumer-groups" title="Permanent link">&para;</a></h2>
+<h3 id="kafka-consumer-groups-cli-commands">kafka-consumer-groups CLI Commands<a class="headerlink" href="#kafka-consumer-groups-cli-commands" title="Permanent link">&para;</a></h3>
+<p><strong>List all consumer groups:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span>--list
+</code></pre></div>
+<p><strong>Describe a specific group (see partitions, offsets, lag):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span>--describe<span class="w"> </span>--group<span class="w"> </span>order-processors
+</code></pre></div>
+<p>Output shows each partition, current offset, log end offset, and lag. Lag = how many messages behind.</p>
+<p><strong>Check lag for all groups:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span>--all-groups<span class="w"> </span>--describe
+</code></pre></div>
+<p><strong>Delete a consumer group (use with caution):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span>--delete<span class="w"> </span>--group<span class="w"> </span>old-test-group
+</code></pre></div>
+<p>This removes the group and its stored offsets. Consumers in that group will start fresh (or from <code>auto.offset.reset</code>).</p>
+<h3 id="checking-lag">Checking Lag<a class="headerlink" href="#checking-lag" title="Permanent link">&para;</a></h3>
+<p>Lag is the difference between the latest message in the partition (log end offset) and the consumer's current offset. High lag means the consumer is falling behind.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>TOPIC    PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>orders   0          50000          50100            100   ← 100 messages behind
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>orders   1          48000          48000            0     ← Caught up
+</code></pre></div>
+<p>Set up alerts: if lag &gt; threshold for N minutes, page the team. Common thresholds: 1,000 (warning), 10,000 (critical).</p>
+<h3 id="listing-groups-and-resetting-offsets">Listing Groups and Resetting Offsets<a class="headerlink" href="#listing-groups-and-resetting-offsets" title="Permanent link">&para;</a></h3>
+<p>See the "Resetting Consumer Offsets" section below for how to reset. To list groups and their state, use <code>--describe</code> with <code>--state</code> (in newer Kafka versions) to see if the group is stable, rebalancing, or dead.</p>
+<hr />
+<h2 id="resetting-consumer-offsets">Resetting Consumer Offsets<a class="headerlink" href="#resetting-consumer-offsets" title="Permanent link">&para;</a></h2>
+<h3 id="when-you-need-to-re-process-messages">When You Need To Re-Process Messages<a class="headerlink" href="#when-you-need-to-re-process-messages" title="Permanent link">&para;</a></h3>
+<p>Sometimes you need to re-read messages. A bug in your consumer corrupted data. You fixed the bug. Now you need to reprocess from the beginning. Or you want to skip ahead and ignore old messages.</p>
+<h3 id="how-to-reset">How To Reset<a class="headerlink" href="#how-to-reset" title="Permanent link">&para;</a></h3>
+<p><strong>Important:</strong> Stop all consumers in the group before resetting. Otherwise they'll overwrite your reset when they commit.</p>
+<p><strong>Reset to earliest (reprocess everything):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span>--group<span class="w"> </span>order-processors<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span>--reset-offsets<span class="w"> </span>--to-earliest<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">  </span>--execute
+</code></pre></div>
+<p><strong>Reset to latest (skip all current messages, start from new ones):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span>--group<span class="w"> </span>order-processors<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span>--reset-offsets<span class="w"> </span>--to-latest<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">  </span>--execute
+</code></pre></div>
+<p><strong>Reset to a specific offset:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span>--group<span class="w"> </span>order-processors<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span>--reset-offsets<span class="w"> </span>--to-offset<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span>--topic<span class="w"> </span>orders:0<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span>--execute
+</code></pre></div>
+<p>(Use <code>topic:partition</code> to target a specific partition.)</p>
+<p><strong>Reset to a specific timestamp:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span>--group<span class="w"> </span>order-processors<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span>--reset-offsets<span class="w"> </span>--to-datetime<span class="w"> </span><span class="m">2024</span>-01-15T00:00:00.000<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">  </span>--execute
+</code></pre></div>
+<p>The consumer will start from the first message at or after that timestamp.</p>
+<div class="admonition warning">
+<p class="admonition-title">Dry run first</p>
+<p>Use <code>--dry-run</code> instead of <code>--execute</code> to see what would happen without making changes. Verify the offsets look correct before running with <code>--execute</code>.</p>
+</div>
+<hr />
+<h2 id="common-consumer-group-patterns">Common Consumer Group Patterns<a class="headerlink" href="#common-consumer-group-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="pattern-1-one-service-one-group">Pattern 1: One Service = One Group<a class="headerlink" href="#pattern-1-one-service-one-group" title="Permanent link">&para;</a></h3>
+<p>Each microservice has its own consumer group. All services process all messages independently.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Topic: &quot;user-events&quot;
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>  → group: &quot;recommendation-service&quot;  (builds recommendations)
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>  → group: &quot;analytics-service&quot;       (tracks metrics)
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>  → group: &quot;search-indexer&quot;          (updates search index)
+</code></pre></div>
+<h3 id="pattern-2-competing-consumers-load-sharing">Pattern 2: Competing Consumers (Load Sharing)<a class="headerlink" href="#pattern-2-competing-consumers-load-sharing" title="Permanent link">&para;</a></h3>
+<p>Multiple instances of the same service share the load within one group.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>Topic: &quot;email-queue&quot; (6 partitions)
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>Group: &quot;email-sender&quot;
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>  → Instance 1 → P0, P1
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>  → Instance 2 → P2, P3
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>  → Instance 3 → P4, P5
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>Each instance sends different emails. Work is distributed.
+</code></pre></div>
+<h3 id="pattern-3-broadcast-all-consumers-get-everything">Pattern 3: Broadcast (All Consumers Get Everything)<a class="headerlink" href="#pattern-3-broadcast-all-consumers-get-everything" title="Permanent link">&para;</a></h3>
+<p>Each consumer has a UNIQUE group ID. Everyone gets all messages.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Consumer A: group.id = &quot;cache-invalidator-server-1&quot;  → All partitions
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>Consumer B: group.id = &quot;cache-invalidator-server-2&quot;  → All partitions
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>Consumer C: group.id = &quot;cache-invalidator-server-3&quot;  → All partitions
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>All three servers receive every cache invalidation event.
+</code></pre></div>
+<hr />
+<h2 id="real-production-story-over-provisioned-consumers">Real Production Story: Over-Provisioned Consumers<a class="headerlink" href="#real-production-story-over-provisioned-consumers" title="Permanent link">&para;</a></h2>
+<p>Here's a fictional but realistic scenario.</p>
+<p><strong>Setup:</strong> A team runs an order processing service. Topic "orders" has 3 partitions. They deploy 5 consumer instances for high availability. Each instance has the same <code>group.id</code>: "order-processors".</p>
+<p><strong>What they expected:</strong> 5 consumers sharing the load. More consumers = more throughput.</p>
+<p><strong>What actually happened:</strong> Kafka assigned 3 partitions to 3 consumers. The other 2 consumers got nothing. They sat idle. Every poll() returned empty. They were using CPU and memory but doing no work.</p>
+<p><strong>The waste:</strong> 2 idle pods. Double the cost for zero benefit. During peak traffic, they couldn't scale — they were already at the limit (3 consumers for 3 partitions). Adding more consumers would just add more idle ones.</p>
+<p><strong>The fix:</strong> They had two choices. (1) Add more partitions to the topic (e.g., 6 or 9) so more consumers could work. (2) Reduce to 3 consumers and accept that as the max parallelism. They chose to add partitions to 6, then scaled to 6 consumers. Throughput doubled. No more idle consumers.</p>
+<p><strong>Lesson:</strong> Maximum useful consumers = number of partitions. Plan your partition count when creating the topic. If you need to scale consumers later, add partitions first (you can add, never remove). Monitor: if you have more consumers than partitions, you're wasting resources.</p>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consumer Group</td>
+<td>Set of consumers with the same <code>group.id</code></td>
+</tr>
+<tr>
+<td>Coordinator</td>
+<td>One broker per group; manages membership, offsets, rebalances</td>
+</tr>
+<tr>
+<td>Partition Assignment</td>
+<td>Each partition → exactly 1 consumer per group</td>
+</tr>
+<tr>
+<td>Max useful consumers</td>
+<td>= Number of partitions</td>
+</tr>
+<tr>
+<td>Extra consumers</td>
+<td>Sit idle (standby)</td>
+</tr>
+<tr>
+<td>Rebalancing</td>
+<td>Partition reassignment when consumers join/leave; typically 2-10 seconds</td>
+</tr>
+<tr>
+<td>Eager vs Cooperative</td>
+<td>Eager: all pause. Cooperative: only affected consumers pause</td>
+</tr>
+<tr>
+<td>Multiple groups</td>
+<td>Each group reads all messages independently</td>
+</tr>
+<tr>
+<td>Offset tracking</td>
+<td>Per group, per partition; stored in <code>__consumer_offsets</code></td>
+</tr>
+<tr>
+<td>Static membership</td>
+<td>Fixed consumer ID, avoids unnecessary rebalances</td>
+</tr>
+<tr>
+<td>Best assignment strategy</td>
+<td>CooperativeStickyAssignor</td>
+</tr>
+<tr>
+<td>Lag</td>
+<td>Messages behind; monitor and alert</td>
+</tr>
+<tr>
+<td>Reset offsets</td>
+<td>Use <code>kafka-consumer-groups --reset-offsets</code> when reprocessing needed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Create a topic with 4 partitions. Start 1 consumer in group "test-group". Check which partitions it's assigned.</li>
+<li>Start a 2nd consumer in the same group. Watch partitions get redistributed.</li>
+<li>Stop one consumer. Watch rebalancing reassign its partitions to the remaining one.</li>
+<li>Start a consumer in a DIFFERENT group. Verify it reads all messages independently.</li>
+<li>Start 6 consumers in the same group (more than partitions). Verify 2 are idle.</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../kafka-scaling/">Scaling Kafka</a> — Handle millions of messages per second.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

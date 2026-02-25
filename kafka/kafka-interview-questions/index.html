@@ -1,0 +1,2574 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/kafka-interview-questions/">
+      
+      
+        <link rel="prev" href="../common-mistakes/">
+      
+      
+        <link rel="next" href="../../projects/redis-api-caching/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Interview Questions - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-interview-questions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Interview Questions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-questions-q1q8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Questions (Q1–Q8)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Questions (Q1–Q8)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-what-is-apache-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: What is Apache Kafka?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-what-are-the-main-components-of-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: What are the main components of Kafka?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-what-is-a-topic-what-is-a-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: What is a Topic? What is a Partition?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-what-is-an-offset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: What is an Offset?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-what-is-a-consumer-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: What is a Consumer Group?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-how-does-kafka-ensure-fault-tolerance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: How does Kafka ensure fault tolerance?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-what-is-the-role-of-zookeeper-what-is-kraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q7: What is the role of ZooKeeper? What is KRaft?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-how-does-kafka-handle-message-ordering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q8: How does Kafka handle message ordering?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intermediate-questions-q9q16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intermediate Questions (Q9–Q16)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intermediate Questions (Q9–Q16)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-is-the-difference-between-kafka-and-rabbitmq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q9: What is the difference between Kafka and RabbitMQ?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-what-is-isr-why-is-it-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q10: What is ISR? Why is it important?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q11-what-are-acks-in-kafka-which-should-i-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q11: What are acks in Kafka? Which should I use?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q12-what-is-an-idempotent-producer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q12: What is an Idempotent Producer?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q13-how-does-the-producer-decide-which-partition-to-send-to" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q13: How does the producer decide which partition to send to?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q14-what-is-autooffsetreset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q14: What is auto.offset.reset?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q15-what-is-consumer-rebalancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q15: What is consumer rebalancing?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q16-what-are-the-delivery-guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q16: What are the delivery guarantees?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-questions-q17q23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Questions (Q17–Q23)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Questions (Q17–Q23)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q17-what-is-kafka-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q17: What is Kafka Streams?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q18-what-is-kafka-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q18: What is Kafka Connect?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q19-what-is-schema-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q19: What is Schema Registry?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q20-how-do-you-monitor-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q20: How do you monitor Kafka?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q21-how-do-you-handle-duplicate-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q21: How do you handle duplicate messages?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q22-what-happens-when-a-kafka-broker-goes-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q22: What happens when a Kafka broker goes down?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q23-what-is-the-difference-between-kafka-and-traditional-message-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q23: What is the difference between Kafka and traditional message queues?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-and-design-questions-q24q28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario and Design Questions (Q24–Q28)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenario and Design Questions (Q24–Q28)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q24-design-an-order-processing-system-with-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q24: Design an order processing system with Kafka.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q25-how-would-you-design-a-real-time-analytics-pipeline-for-user-clicks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q25: How would you design a real-time analytics pipeline for user clicks?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q26-your-consumer-lag-is-growing-how-do-you-debug-and-fix-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q26: Your consumer lag is growing. How do you debug and fix it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q27-how-would-you-implement-exactly-once-processing-in-a-kafka-consumer-that-writes-to-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q27: How would you implement exactly-once processing in a Kafka consumer that writes to a database?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q28-design-a-notification-system-that-sends-email-sms-and-push-when-an-event-occurs-how-does-kafka-fit-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q28: Design a notification system that sends email, SMS, and push when an event occurs. How does Kafka fit in?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#top-5-mistakes-in-kafka-interviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      Top 5 Mistakes in Kafka Interviews
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Top 5 Mistakes in Kafka Interviews">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-confusing-ordering-guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Confusing ordering guarantees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ignoring-consumer-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Ignoring consumer lag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-over-promising-exactly-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Over-promising exactly-once
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-not-knowing-partition-consumer-relationship" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Not knowing partition-consumer relationship
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-treating-kafka-like-a-simple-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Treating Kafka like a simple queue
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-second-revision-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      30-Second Revision Cheat Sheet
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-questions-q1q8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Questions (Q1–Q8)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Questions (Q1–Q8)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-what-is-apache-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: What is Apache Kafka?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-what-are-the-main-components-of-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: What are the main components of Kafka?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-what-is-a-topic-what-is-a-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: What is a Topic? What is a Partition?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-what-is-an-offset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: What is an Offset?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-what-is-a-consumer-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: What is a Consumer Group?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-how-does-kafka-ensure-fault-tolerance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: How does Kafka ensure fault tolerance?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-what-is-the-role-of-zookeeper-what-is-kraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q7: What is the role of ZooKeeper? What is KRaft?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-how-does-kafka-handle-message-ordering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q8: How does Kafka handle message ordering?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intermediate-questions-q9q16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intermediate Questions (Q9–Q16)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intermediate Questions (Q9–Q16)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-is-the-difference-between-kafka-and-rabbitmq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q9: What is the difference between Kafka and RabbitMQ?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-what-is-isr-why-is-it-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q10: What is ISR? Why is it important?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q11-what-are-acks-in-kafka-which-should-i-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q11: What are acks in Kafka? Which should I use?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q12-what-is-an-idempotent-producer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q12: What is an Idempotent Producer?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q13-how-does-the-producer-decide-which-partition-to-send-to" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q13: How does the producer decide which partition to send to?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q14-what-is-autooffsetreset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q14: What is auto.offset.reset?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q15-what-is-consumer-rebalancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q15: What is consumer rebalancing?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q16-what-are-the-delivery-guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q16: What are the delivery guarantees?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-questions-q17q23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Questions (Q17–Q23)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Questions (Q17–Q23)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q17-what-is-kafka-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q17: What is Kafka Streams?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q18-what-is-kafka-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q18: What is Kafka Connect?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q19-what-is-schema-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q19: What is Schema Registry?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q20-how-do-you-monitor-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q20: How do you monitor Kafka?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q21-how-do-you-handle-duplicate-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q21: How do you handle duplicate messages?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q22-what-happens-when-a-kafka-broker-goes-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q22: What happens when a Kafka broker goes down?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q23-what-is-the-difference-between-kafka-and-traditional-message-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q23: What is the difference between Kafka and traditional message queues?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-and-design-questions-q24q28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario and Design Questions (Q24–Q28)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenario and Design Questions (Q24–Q28)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q24-design-an-order-processing-system-with-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q24: Design an order processing system with Kafka.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q25-how-would-you-design-a-real-time-analytics-pipeline-for-user-clicks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q25: How would you design a real-time analytics pipeline for user clicks?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q26-your-consumer-lag-is-growing-how-do-you-debug-and-fix-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q26: Your consumer lag is growing. How do you debug and fix it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q27-how-would-you-implement-exactly-once-processing-in-a-kafka-consumer-that-writes-to-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q27: How would you implement exactly-once processing in a Kafka consumer that writes to a database?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q28-design-a-notification-system-that-sends-email-sms-and-push-when-an-event-occurs-how-does-kafka-fit-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q28: Design a notification system that sends email, SMS, and push when an event occurs. How does Kafka fit in?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#top-5-mistakes-in-kafka-interviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      Top 5 Mistakes in Kafka Interviews
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Top 5 Mistakes in Kafka Interviews">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-confusing-ordering-guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Confusing ordering guarantees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ignoring-consumer-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Ignoring consumer lag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-over-promising-exactly-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Over-promising exactly-once
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-not-knowing-partition-consumer-relationship" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Not knowing partition-consumer relationship
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-treating-kafka-like-a-simple-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Treating Kafka like a simple queue
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-second-revision-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      30-Second Revision Cheat Sheet
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="kafka-interview-questions">Kafka Interview Questions<a class="headerlink" href="#kafka-interview-questions" title="Permanent link">&para;</a></h1>
+<div class="admonition tip">
+<p class="admonition-title">How to Use This Page</p>
+<p>Each answer has multiple layers. Start with the <strong>one-liner</strong> for quick revision. Read the <strong>full answer</strong> before your interview. Use <strong>"How to frame your answer"</strong> to structure your response. Watch out for <strong>red flags</strong>—things that make you sound inexperienced.</p>
+</div>
+<hr />
+<h2 id="basic-questions-q1q8">Basic Questions (Q1–Q8)<a class="headerlink" href="#basic-questions-q1q8" title="Permanent link">&para;</a></h2>
+<h3 id="q1-what-is-apache-kafka">Q1: What is Apache Kafka?<a class="headerlink" href="#q1-what-is-apache-kafka" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Kafka is a distributed event streaming platform for publishing, storing, and processing streams of events in real time.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand it's not just a message queue. It's a <em>streaming platform</em> with persistence, replay, and high throughput. You can distinguish it from traditional queues.</p>
+<p><strong>Detailed explanation:</strong> Kafka acts as a highly scalable message broker. Producers send messages (events) to topics. Consumers read from those topics. Unlike traditional queues like RabbitMQ, Kafka <strong>retains messages</strong> for a configurable duration (days or weeks). Multiple consumer groups can read the same stream independently. You can replay from the beginning. It's built for high throughput—millions of messages per second on modest hardware.</p>
+<p><strong>Example:</strong> A ride-sharing app publishes "trip started" events to a topic. The billing service, the analytics service, and the driver app all consume the same stream. Each reads at its own pace. If analytics is slow, billing isn't blocked. That's the power of decoupled consumers with log retention.</p>
+<p><strong>How to frame your answer:</strong> "Kafka is a distributed event streaming platform. Producers publish events to topics, and consumers subscribe. The key differentiator is that Kafka retains messages—it's a log, not a queue. So you can replay, have multiple independent consumers, and handle very high throughput."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<ul>
+<li>Calling it "just a message queue" (it's a log-based streaming platform)</li>
+<li>Saying "messages are deleted after consumption" (they're retained)</li>
+<li>Not mentioning distributed or scalability</li>
+</ul>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Bonus points if you mention...</p>
+<p>"It was originally built at LinkedIn for log aggregation and activity tracking, and it's now used by thousands of companies for event-driven architectures."</p>
+</div>
+<hr />
+<h3 id="q2-what-are-the-main-components-of-kafka">Q2: What are the main components of Kafka?<a class="headerlink" href="#q2-what-are-the-main-components-of-kafka" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Producer, Consumer, Broker, Topic, Partition, and ZooKeeper/KRaft for coordination.</p>
+<p><strong>What the interviewer wants to hear:</strong> You know the core building blocks and how they fit together.</p>
+<p><strong>Detailed explanation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Producer</strong></td>
+<td>Sends messages to topics. Doesn't know who consumes.</td>
+</tr>
+<tr>
+<td><strong>Consumer</strong></td>
+<td>Reads messages from topics. Belongs to a consumer group.</td>
+</tr>
+<tr>
+<td><strong>Broker</strong></td>
+<td>Kafka server. Stores partitions. A cluster has multiple brokers.</td>
+</tr>
+<tr>
+<td><strong>Topic</strong></td>
+<td>Named category/stream. Like a channel or log name.</td>
+</tr>
+<tr>
+<td><strong>Partition</strong></td>
+<td>Sub-division of a topic. Enables parallelism. Messages in a partition are ordered.</td>
+</tr>
+<tr>
+<td><strong>ZooKeeper/KRaft</strong></td>
+<td>Cluster coordination—broker registry, leader election, metadata. KRaft is the newer built-in alternative to ZooKeeper.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> Topic "orders" has 3 partitions on 3 brokers. Producer sends with key=orderId. Consumer group "payment-service" has 3 consumers—each reads one partition. That's the basic topology.</p>
+<p><strong>How to frame your answer:</strong> "The main components are producers that publish to topics, consumers that subscribe, brokers that store the data, and topics which are divided into partitions for parallelism. Coordination used to be ZooKeeper, but Kafka is moving to KRaft."</p>
+<hr />
+<h3 id="q3-what-is-a-topic-what-is-a-partition">Q3: What is a Topic? What is a Partition?<a class="headerlink" href="#q3-what-is-a-topic-what-is-a-partition" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> A topic is a named stream of messages. A partition is a sub-division of a topic that enables parallel processing and ordering within that sub-division.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand that ordering is <em>within</em> a partition, not across the whole topic. You know why partitions matter for scaling.</p>
+<p><strong>Detailed explanation:</strong> A topic is like a TV channel—a named stream. A partition is like a lane on a highway. One topic can have many partitions. Messages within a partition are <strong>ordered</strong> (FIFO). Across partitions, there is <strong>no ordering guarantee</strong>. Partitions enable parallelism: you can have one consumer per partition. More partitions = more parallelism, but also more overhead.</p>
+<p><strong>Example:</strong> Topic "orders" with 3 partitions. Order A (key=user1) goes to partition 0. Order B (key=user2) goes to partition 1. Order C (key=user1) goes to partition 0. So A and C are ordered (same partition). A and B have no ordering guarantee (different partitions).</p>
+<p><strong>How to frame your answer:</strong> "A topic is a named stream. Partitions are sub-divisions for parallelism. Ordering is guaranteed within a partition, not across. So if you need ordering for related messages—like all events for one order—you use the same key so they go to the same partition."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<ul>
+<li>Saying "messages are ordered across the whole topic" (only within partition)</li>
+<li>Not connecting partitions to parallelism/consumers</li>
+</ul>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Bonus points if you mention...</p>
+<p>"The number of partitions is a key design decision—you can't decrease it easily, and it limits max consumers in a group. So you plan for future scale."</p>
+</div>
+<hr />
+<h3 id="q4-what-is-an-offset">Q4: What is an Offset?<a class="headerlink" href="#q4-what-is-an-offset" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> An offset is the unique position (ID) of a message within a partition. It's how consumers track where they are.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand that offsets are per-partition, sequential, and used for consumer progress tracking.</p>
+<p><strong>Detailed explanation:</strong> Each message in a partition has an offset—a monotonically increasing integer. Partition 0: [0, 1, 2, 3, ...]. Partition 1: [0, 1, 2, ...]. Offsets are independent per partition. Consumers commit their offset ("I've processed up to offset 42"). When they restart, they resume from 43. Offsets are stored in Kafka (internal topic <code>__consumer_offsets</code>) or externally if you use manual commit.</p>
+<p><strong>Example:</strong> Consumer reads partition 0. Processes messages 0, 1, 2. Commits offset 3. Crashes. Restarts. Resumes from offset 3. No reprocessing of 0, 1, 2.</p>
+<p><strong>How to frame your answer:</strong> "An offset is the position of a message within a partition. It's like a page number. Consumers commit offsets to track progress. On restart, they resume from the last committed offset."</p>
+<hr />
+<h3 id="q5-what-is-a-consumer-group">Q5: What is a Consumer Group?<a class="headerlink" href="#q5-what-is-a-consumer-group" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> A set of consumers that share the work of reading from a topic's partitions. Each partition is read by exactly one consumer in the group.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand the load-sharing model and the relationship between partitions and consumers.</p>
+<p><strong>Detailed explanation:</strong> Rules:
+- Each partition → only ONE consumer in the group
+- One consumer → can read multiple partitions
+- Max useful consumers = number of partitions (extra consumers sit idle)
+- Different consumer groups read ALL messages independently (each group gets a full copy)</p>
+<p><strong>Example:</strong> Topic has 3 partitions. Consumer group "notifications" has 2 consumers. Consumer 1 gets partitions 0 and 1. Consumer 2 gets partition 2. Add a third consumer? Rebalance. Each gets one partition. Add a fourth? One sits idle.</p>
+<p><strong>How to frame your answer:</strong> "A consumer group shares the partitions. One partition, one consumer in that group. So with 3 partitions, you get at most 3 parallel consumers. Different groups—like 'notifications' and 'analytics'—each get all messages. Same topic, independent consumption."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<ul>
+<li>Saying "each consumer gets a copy of each message" (only true for <em>different</em> groups; within a group, they share)</li>
+<li>Not knowing that extra consumers beyond partition count are idle</li>
+</ul>
+</div>
+<hr />
+<h3 id="q6-how-does-kafka-ensure-fault-tolerance">Q6: How does Kafka ensure fault tolerance?<a class="headerlink" href="#q6-how-does-kafka-ensure-fault-tolerance" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Through <strong>replication</strong>—each partition has copies (replicas) on multiple brokers. If a broker dies, a replica becomes the new leader.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand replication, leaders, followers, and leader election. You know about ISR.</p>
+<p><strong>Detailed explanation:</strong> Each partition has a leader and N replicas (followers). The leader handles reads and writes. Followers replicate. If the leader dies, a follower in the ISR (In-Sync Replicas) is elected as the new leader. ISR = replicas that are caught up. Producer can use <code>acks=all</code> to wait for all ISR replicas before considering a write successful. That prevents data loss.</p>
+<p><strong>Example:</strong> Partition 0: Leader on Broker 1, Follower on Broker 2, Follower on Broker 3. Broker 1 dies. Broker 2 (in ISR) becomes leader. Producers and consumers reconnect to Broker 2. No data loss if replication factor &gt;= 2.</p>
+<p><strong>How to frame your answer:</strong> "Replication. Each partition has replicas on multiple brokers. The leader handles traffic; followers replicate. On leader failure, a follower from the ISR is elected. For critical data, we use acks=all so all in-sync replicas acknowledge before we consider the write done."</p>
+<div class="admonition tip">
+<p class="admonition-title">Bonus points if you mention...</p>
+<p>"min.insync.replicas=2 ensures we never accept a write unless at least 2 replicas have it. So we can lose one broker and still have a copy."</p>
+</div>
+<hr />
+<h3 id="q7-what-is-the-role-of-zookeeper-what-is-kraft">Q7: What is the role of ZooKeeper? What is KRaft?<a class="headerlink" href="#q7-what-is-the-role-of-zookeeper-what-is-kraft" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> ZooKeeper manages Kafka cluster metadata (brokers, topics, leader election). KRaft is Kafka's new built-in consensus that replaces ZooKeeper.</p>
+<p><strong>What the interviewer wants to hear:</strong> You know Kafka is moving away from ZooKeeper. You understand the operational simplification.</p>
+<p><strong>Detailed explanation:</strong> ZooKeeper is an external distributed coordination service. Kafka used it for: broker registration, topic configuration, partition assignment, leader election. The downside: you run two systems (Kafka + ZooKeeper). KRaft (Kafka Raft) is built into Kafka 3.3+. It uses the Raft consensus algorithm for metadata. No ZooKeeper. Simpler ops, better scalability. Kafka is deprecating ZooKeeper.</p>
+<p><strong>How to frame your answer:</strong> "ZooKeeper used to handle cluster metadata and leader election. Kafka is moving to KRaft mode, which builds that into Kafka itself. Simpler to operate, no external dependency."</p>
+<hr />
+<h3 id="q8-how-does-kafka-handle-message-ordering">Q8: How does Kafka handle message ordering?<a class="headerlink" href="#q8-how-does-kafka-handle-message-ordering" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Messages are ordered <strong>within a partition</strong>, not across partitions. Use the same key for related messages to guarantee ordering.</p>
+<p><strong>What the interviewer wants to hear:</strong> You know the ordering guarantee is partition-scoped. You know the key determines partition.</p>
+<p><strong>Detailed explanation:</strong> Kafka guarantees order within a partition. Partition assignment: <code>hash(key) % numPartitions</code>. Same key → same partition → ordered. Different keys → possibly different partitions → no ordering. So for "all events for order 123," use key="order-123." They all go to one partition. Processed in order.</p>
+<p><strong>Example:</strong> key="order-123" → Partition 2. key="order-123" again → Partition 2. Both processed in order by the same consumer.</p>
+<p><strong>How to frame your answer:</strong> "Ordering is within a partition. To order related messages, use the same key—they'll hash to the same partition. So for order processing, we use orderId as the key."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<ul>
+<li>Saying "Kafka guarantees global ordering" (only per partition)</li>
+<li>Not knowing that key determines partition</li>
+</ul>
+</div>
+<hr />
+<h2 id="intermediate-questions-q9q16">Intermediate Questions (Q9–Q16)<a class="headerlink" href="#intermediate-questions-q9q16" title="Permanent link">&para;</a></h2>
+<h3 id="q9-what-is-the-difference-between-kafka-and-rabbitmq">Q9: What is the difference between Kafka and RabbitMQ?<a class="headerlink" href="#q9-what-is-the-difference-between-kafka-and-rabbitmq" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Kafka is a log-based streaming platform with retention and replay. RabbitMQ is a traditional message queue with routing flexibility. Different use cases.</p>
+<p><strong>What the interviewer wants to hear:</strong> You can articulate when to use each. You don't say "Kafka is better"—you say "it depends."</p>
+<p><strong>Detailed explanation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Kafka</th>
+<th>RabbitMQ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model</td>
+<td>Pub/Sub with log retention</td>
+<td>Message queue with exchanges</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>Keeps messages (configurable)</td>
+<td>Deletes after consumption</td>
+</tr>
+<tr>
+<td>Throughput</td>
+<td>Very high (millions/sec)</td>
+<td>Moderate (thousands/sec)</td>
+</tr>
+<tr>
+<td>Replay</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Consumer model</td>
+<td>Pull-based</td>
+<td>Push-based</td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>Topic-based (partitions)</td>
+<td>Flexible (exchanges, routing keys)</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Event streaming, logs, analytics</td>
+<td>Task queues, RPC, complex routing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> Use Kafka for event streaming—order events, click streams, logs. Use RabbitMQ for task distribution—send this email, process this PDF. If you need to replay, use Kafka. If you need complex routing (route by header, etc.), RabbitMQ might be better.</p>
+<p><strong>How to frame your answer:</strong> "Kafka is for high-throughput event streaming with retention and replay. RabbitMQ is for task queues with flexible routing. Kafka when you need multiple consumers, replay, or huge scale. RabbitMQ when you need complex routing or request-reply patterns."</p>
+<div class="admonition tip">
+<p class="admonition-title">Bonus points if you mention...</p>
+<p>"You can use both in the same system—Kafka for event streaming, RabbitMQ for task distribution. They're complementary."</p>
+</div>
+<hr />
+<h3 id="q10-what-is-isr-why-is-it-important">Q10: What is ISR? Why is it important?<a class="headerlink" href="#q10-what-is-isr-why-is-it-important" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> ISR (In-Sync Replicas) is the set of replicas that are fully caught up with the leader. Leader election only happens from ISR.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand that only in-sync replicas can become leader. You know the data loss scenario.</p>
+<p><strong>Detailed explanation:</strong> Not all replicas are always caught up. A slow replica might lag. ISR = replicas that have replicated all committed messages. When the leader fails, only ISR members can be elected. If you have replication factor 3 but only the leader is in ISR (others are lagging), and the leader dies—you could lose data. <code>min.insync.replicas=2</code> means: don't accept a write unless at least 2 replicas (including leader) have it. So you always have a backup.</p>
+<p><strong>How to frame your answer:</strong> "ISR is the set of replicas that are caught up. Leader election only considers ISR. If acks=all, the producer waits for all ISR. min.insync.replicas ensures we never shrink to just the leader—so we always have a replica to promote."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<ul>
+<li>Not knowing that a lagging replica can be removed from ISR</li>
+<li>Not connecting ISR to data loss scenarios</li>
+</ul>
+</div>
+<hr />
+<h3 id="q11-what-are-acks-in-kafka-which-should-i-use">Q11: What are acks in Kafka? Which should I use?<a class="headerlink" href="#q11-what-are-acks-in-kafka-which-should-i-use" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> acks controls how many replicas must acknowledge a write before the producer considers it successful. 0 = none, 1 = leader, all = all ISR.</p>
+<p><strong>What the interviewer wants to hear:</strong> You know the trade-off between speed and durability. You can recommend based on use case.</p>
+<p><strong>Detailed explanation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>acks</th>
+<th>Behavior</th>
+<th>Speed</th>
+<th>Safety</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>No confirmation</td>
+<td>Fastest</td>
+<td>Data loss possible (network failure, broker crash)</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>Leader confirms</td>
+<td>Fast</td>
+<td>Loss if leader dies before replicating</td>
+</tr>
+<tr>
+<td><code>all</code></td>
+<td>All ISR confirm</td>
+<td>Slowest</td>
+<td>No data loss (with min.insync.replicas)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> Payments: acks=all. Logs/metrics: acks=1. Fire-and-forget metrics: acks=0 (rare).</p>
+<p><strong>How to frame your answer:</strong> "For critical data like payments, acks=all with min.insync.replicas=2. For logs or metrics where some loss is OK, acks=1. I'd avoid acks=0 unless it's truly best-effort."</p>
+<div class="admonition tip">
+<p class="admonition-title">Bonus points if you mention...</p>
+<p>"acks=all doesn't mean slow if your cluster is healthy. The latency is one round-trip to the replicas. The safety is worth it for critical data."</p>
+</div>
+<hr />
+<h3 id="q12-what-is-an-idempotent-producer">Q12: What is an Idempotent Producer?<a class="headerlink" href="#q12-what-is-an-idempotent-producer" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> A producer that guarantees each message is written exactly once, even with retries. No duplicates from network retries.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand the duplicate problem and how idempotence solves it.</p>
+<p><strong>Detailed explanation:</strong> Without idempotence: Producer sends message. Broker receives it but the ack is lost (network). Producer retries. Broker might receive the same message twice. Duplicate! With <code>enable.idempotence=true</code>, Kafka assigns a PID (Producer ID) and sequence number. On retry, Kafka deduplicates. Same PID + sequence = already written, ignore. Result: exactly-once from producer's perspective (at-least-once delivery with dedup).</p>
+<p><strong>Example:</strong> Producer sends "order-123 created." Network glitch. Producer retries. Broker: "I already have PID 5, seq 10. Ignore." No duplicate in the log.</p>
+<p><strong>How to frame your answer:</strong> "Idempotent producer uses sequence numbers. On retry, Kafka deduplicates. So we get exactly-once semantics from the producer side. I always enable it for production—there's no downside."</p>
+<hr />
+<h3 id="q13-how-does-the-producer-decide-which-partition-to-send-to">Q13: How does the producer decide which partition to send to?<a class="headerlink" href="#q13-how-does-the-producer-decide-which-partition-to-send-to" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> If key is null → round-robin. If key is present → hash(key) % numPartitions. Or use a custom partitioner.</p>
+<p><strong>What the interviewer wants to hear:</strong> You know the default behavior and when to use keys.</p>
+<p><strong>Detailed explanation:</strong>
+1. <strong>Key is null:</strong> Round-robin across partitions. Good for load balancing. No ordering.
+2. <strong>Key is present:</strong> <code>hash(key) % numPartitions</code>. Same key → same partition. Good for ordering.
+3. <strong>Custom partitioner:</strong> Implement <code>Partitioner</code> interface. Your logic (e.g., partition by region).</p>
+<p><strong>Example:</strong> key="user-123" with 3 partitions → always partition 1 (hypothetically). All events for user-123 go to partition 1. Ordered.</p>
+<p><strong>How to frame your answer:</strong> "Default: hash of key modulo partitions. Same key, same partition—that's how we get ordering. Null key means round-robin. We can also implement a custom partitioner for things like geographic routing."</p>
+<hr />
+<h3 id="q14-what-is-autooffsetreset">Q14: What is auto.offset.reset?<a class="headerlink" href="#q14-what-is-autooffsetreset" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Tells the consumer where to start when it has no committed offset (e.g., first run or offset was invalidated).</p>
+<p><strong>What the interviewer wants to hear:</strong> You know the three options and when to use each.</p>
+<p><strong>Detailed explanation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>earliest</code></td>
+<td>Read from the beginning of the partition</td>
+</tr>
+<tr>
+<td><code>latest</code></td>
+<td>Read only new messages (from now)</td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>Throw error if no offset exists</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> New consumer group, topic has 1M messages. earliest = process all 1M. latest = skip them, only new. none = fail (use when you want to catch misconfiguration).</p>
+<p><strong>How to frame your answer:</strong> "It's for when there's no valid offset. earliest for 'process everything'—like a new analytics consumer. latest for 'ignore old stuff'—like a real-time dashboard. none to fail fast if something's wrong."</p>
+<hr />
+<h3 id="q15-what-is-consumer-rebalancing">Q15: What is consumer rebalancing?<a class="headerlink" href="#q15-what-is-consumer-rebalancing" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> When consumers join or leave a group, Kafka reassigns partitions. Consumption pauses during the rebalance.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand the triggers and the impact. You know it causes a brief pause.</p>
+<p><strong>Detailed explanation:</strong> Triggers:
+- Consumer joins the group
+- Consumer leaves (crash or graceful shutdown)
+- New partitions added to the topic</p>
+<p>During rebalance, all consumers stop consuming. Partitions are reassigned. Then consumption resumes. For a few seconds, nothing is processed. Frequent rebalances (e.g., consumers crashing) = problem. Long processing times can also cause rebalances (session timeout).</p>
+<p><strong>How to frame your answer:</strong> "Rebalancing happens when the group membership changes. Partitions get reassigned. There's a brief pause—usually seconds. If rebalances are frequent, we'd look at consumer stability and session timeouts."</p>
+<div class="admonition tip">
+<p class="admonition-title">Bonus points if you mention...</p>
+<p>"Incremental cooperative rebalancing (Kafka 2.4+) reduces the pause—consumers don't give up all partitions at once."</p>
+</div>
+<hr />
+<h3 id="q16-what-are-the-delivery-guarantees">Q16: What are the delivery guarantees?<a class="headerlink" href="#q16-what-are-the-delivery-guarantees" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> At-most-once (may lose), at-least-once (may duplicate), exactly-once (complex). Most systems use at-least-once with idempotent consumers.</p>
+<p><strong>What the interviewer wants to hear:</strong> You know the trade-offs. You have a practical recommendation.</p>
+<p><strong>Detailed explanation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Guarantee</th>
+<th>How</th>
+<th>Trade-off</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>At-most-once</td>
+<td>Commit before processing</td>
+<td>Fast, but may lose messages</td>
+</tr>
+<tr>
+<td>At-least-once</td>
+<td>Commit after processing</td>
+<td>May get duplicates on crash</td>
+</tr>
+<tr>
+<td>Exactly-once</td>
+<td>Transactions + idempotence</td>
+<td>Complex, some overhead</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Practical approach:</strong> At-least-once + idempotent consumer. Consumer processes, then commits. If crash before commit, reprocess. So duplicate possible. Make consumer idempotent: check "already processed?" before doing work. E.g., <code>INSERT ... ON CONFLICT DO NOTHING</code> or check DB for orderId.</p>
+<p><strong>How to frame your answer:</strong> "We typically use at-least-once and make consumers idempotent. Commit after processing. If we crash, we reprocess—might get a duplicate. So we design for it: check if order already exists before processing. Exactly-once is possible with transactions but adds complexity."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<ul>
+<li>Claiming "Kafka guarantees exactly-once" without mentioning transactions and idempotence</li>
+<li>Not having a strategy for duplicates</li>
+</ul>
+</div>
+<hr />
+<h2 id="advanced-questions-q17q23">Advanced Questions (Q17–Q23)<a class="headerlink" href="#advanced-questions-q17q23" title="Permanent link">&para;</a></h2>
+<h3 id="q17-what-is-kafka-streams">Q17: What is Kafka Streams?<a class="headerlink" href="#q17-what-is-kafka-streams" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> A Java library for stream processing. Read from Kafka, transform, write back. No separate cluster. Runs in your app.</p>
+<p><strong>What the interviewer wants to hear:</strong> You know it's embedded, not a separate service. You can give a simple example.</p>
+<p><strong>Detailed explanation:</strong> Kafka Streams is a library. You write a Java app. It reads from Kafka topics, does transformations (map, filter, aggregate, join), and writes to output topics. State is stored in RocksDB (local) or Kafka. No Spark/Flink cluster. Just your JVM. Good for real-time aggregations, filtering, joins.</p>
+<p><strong>Example:</strong> Input topic "orders." Filter amount &gt; 1000. Write to "high-value-orders." Or: aggregate clicks by user per hour. Output "user-hourly-clicks."</p>
+<p><strong>How to frame your answer:</strong> "Kafka Streams is a Java library for stream processing. It runs in-process—no separate cluster. You read from topics, transform, write to topics. Great for real-time aggregations and simple stream processing."</p>
+<hr />
+<h3 id="q18-what-is-kafka-connect">Q18: What is Kafka Connect?<a class="headerlink" href="#q18-what-is-kafka-connect" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> A framework for moving data in and out of Kafka without writing application code. Source and sink connectors.</p>
+<p><strong>What the interviewer wants to hear:</strong> You know it's for data integration. You can name connectors.</p>
+<p><strong>Detailed explanation:</strong> Source connectors: pull from external systems into Kafka (e.g., MySQL, PostgreSQL, S3). Sink connectors: push from Kafka to external systems (Elasticsearch, Snowflake, S3). You configure connectors. No code. Popular: JDBC, Debezium (CDC), Elasticsearch, S3, MongoDB.</p>
+<p><strong>Example:</strong> Debezium MySQL source → Kafka. Every INSERT/UPDATE/DELETE becomes an event. Sink to Elasticsearch for search. Sink to data warehouse for analytics.</p>
+<p><strong>How to frame your answer:</strong> "Kafka Connect is for data integration. Source connectors ingest from DBs, files, etc. Sink connectors write to warehouses, search engines. We use it for CDC and data pipeline—no custom code."</p>
+<hr />
+<h3 id="q19-what-is-schema-registry">Q19: What is Schema Registry?<a class="headerlink" href="#q19-what-is-schema-registry" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> A service that stores and validates schemas (Avro, JSON Schema, Protobuf) for Kafka messages. Ensures compatibility between producers and consumers.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand the compatibility problem. You know it prevents breaking changes.</p>
+<p><strong>Detailed explanation:</strong> Producers and consumers need to agree on message format. Without a registry: Producer adds a field. Old consumer breaks (can't deserialize). Schema Registry stores schemas. Producer registers schema before send. Consumer fetches schema to deserialize. You can enforce compatibility: backward, forward, full. Prevents accidental breaking changes.</p>
+<p><strong>Example:</strong> Order schema v1: orderId, product. v2: orderId, product, quantity. Backward compatible: old consumer ignores quantity. Forward compatible: new consumer handles missing quantity. Registry enforces this.</p>
+<p><strong>How to frame your answer:</strong> "Schema Registry stores schemas for Kafka messages. Producers and consumers use it for serialization. It enforces compatibility—so we don't break consumers when we add fields. We use Avro with Schema Registry in production."</p>
+<hr />
+<h3 id="q20-how-do-you-monitor-kafka">Q20: How do you monitor Kafka?<a class="headerlink" href="#q20-how-do-you-monitor-kafka" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Key metrics: consumer lag, broker disk, under-replicated partitions, request latency. Tools: Prometheus, Grafana, Confluent Control Center.</p>
+<p><strong>What the interviewer wants to hear:</strong> You know the critical metrics. Consumer lag is #1.</p>
+<p><strong>Detailed explanation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What It Tells You</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Consumer lag</strong></td>
+<td>How far behind consumers are. High lag = consumers can't keep up</td>
+</tr>
+<tr>
+<td><strong>Broker disk usage</strong></td>
+<td>Running out of space? Retention will fail</td>
+</tr>
+<tr>
+<td><strong>Under-replicated partitions</strong></td>
+<td>Replicas falling behind. Risk of data loss on broker failure</td>
+</tr>
+<tr>
+<td><strong>Request latency</strong></td>
+<td>Producer/consumer performance. P99 matters</td>
+</tr>
+<tr>
+<td><strong>Active controller count</strong></td>
+<td>Should be exactly 1. Two = split brain</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to frame your answer:</strong> "Consumer lag is the top metric—if it grows, we have a problem. Under-replicated partitions mean we're at risk. We use Prometheus and Grafana, with alerts on lag and replication."</p>
+<div class="admonition tip">
+<p class="admonition-title">Bonus points if you mention...</p>
+<p>"We also monitor request rate per broker for capacity planning, and we track consumer group stability—frequent rebalances indicate issues."</p>
+</div>
+<hr />
+<h3 id="q21-how-do-you-handle-duplicate-messages">Q21: How do you handle duplicate messages?<a class="headerlink" href="#q21-how-do-you-handle-duplicate-messages" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Make consumers <strong>idempotent</strong>. Use unique IDs, upserts, or deduplication logic.</p>
+<p><strong>What the interviewer wants to hear:</strong> You have concrete strategies. You don't say "Kafka guarantees no duplicates" (it doesn't, with at-least-once).</p>
+<p><strong>Detailed explanation:</strong> Strategies:
+1. <strong>Unique ID check:</strong> Store processed message IDs. Skip if exists.
+2. <strong>Database upsert:</strong> <code>INSERT ... ON CONFLICT DO NOTHING</code> or <code>UPDATE</code> with idempotent key.
+3. <strong>Idempotency key:</strong> Use orderId. "If order already processed, return success." Same effect as processing.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">orderRepository</span><span class="p">.</span><span class="na">existsById</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">getOrderId</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Already processed, skipping&quot;</span><span class="p">);</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">orderRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">process</span><span class="p">(</span><span class="n">event</span><span class="p">));</span>
+</code></pre></div></p>
+<p><strong>How to frame your answer:</strong> "We design for at-least-once. Consumers are idempotent. We check if we've already processed—by orderId or a processed-ids table. Or we use database upserts. Duplicates become no-ops."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<ul>
+<li>"We don't get duplicates" (with at-least-once, you can)</li>
+<li>No concrete strategy</li>
+</ul>
+</div>
+<hr />
+<h3 id="q22-what-happens-when-a-kafka-broker-goes-down">Q22: What happens when a Kafka broker goes down?<a class="headerlink" href="#q22-what-happens-when-a-kafka-broker-goes-down" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Controller detects failure. Leader election from ISR. Producers/consumers reconnect to new leader. No data loss if replication is sufficient.</p>
+<p><strong>What the interviewer wants to hear:</strong> You can walk through the sequence. You know when data loss can occur.</p>
+<p><strong>Detailed explanation:</strong>
+1. Controller (or KRaft) detects broker down (heartbeat timeout).
+2. For each partition with leader on dead broker: elect new leader from ISR.
+3. Producers and consumers get metadata update. Reconnect to new leader.
+4. When broker comes back: rejoins as follower, catches up, reenters ISR.</p>
+<p>Data loss only if: the dead broker was the only ISR member, or replication factor was 1. With replication factor 2+ and min.insync.replicas=2, no loss.</p>
+<p><strong>How to frame your answer:</strong> "Controller detects the failure. New leader is elected from ISR. Clients get metadata refresh and reconnect. Brief unavailability—seconds. When the broker recovers, it catches up as a follower. No data loss with proper replication."</p>
+<hr />
+<h3 id="q23-what-is-the-difference-between-kafka-and-traditional-message-queues">Q23: What is the difference between Kafka and traditional message queues?<a class="headerlink" href="#q23-what-is-the-difference-between-kafka-and-traditional-message-queues" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Kafka is a log; traditional queues delete after consumption. Kafka retains, allows replay, supports multiple independent consumers. Queues are for task distribution.</p>
+<p><strong>What the interviewer wants to hear:</strong> You understand the fundamental model difference. Log vs. queue.</p>
+<p><strong>Detailed explanation:</strong> Traditional queue (e.g., RabbitMQ): Message is delivered to one consumer. Deleted after ack. No replay. Kafka: Message stays in the log. Multiple consumer groups each read independently. Replay from any offset. Different mental model: queue = "work to be done"; log = "events that happened."</p>
+<p><strong>How to frame your answer:</strong> "A queue is for distributing work—one consumer gets it, it's gone. Kafka is a log—events persist. Multiple consumers can read. You can replay. It's a different paradigm: event streaming vs. task queue."</p>
+<hr />
+<h2 id="scenario-and-design-questions-q24q28">Scenario and Design Questions (Q24–Q28)<a class="headerlink" href="#scenario-and-design-questions-q24q28" title="Permanent link">&para;</a></h2>
+<h3 id="q24-design-an-order-processing-system-with-kafka">Q24: Design an order processing system with Kafka.<a class="headerlink" href="#q24-design-an-order-processing-system-with-kafka" title="Permanent link">&para;</a></h3>
+<p><strong>What the interviewer wants to hear:</strong> You can design a realistic system. You make explicit decisions and justify them.</p>
+<p><strong>Step-by-step design:</strong></p>
+<p><strong>Step 1: Identify events and flows.</strong>
+- Order placed → validate → charge → inventory → ship → notify
+- Each step can be a consumer. Or: order placed → multiple parallel consumers (payment, inventory, notification).</p>
+<p><strong>Step 2: Topic design.</strong>
+- Topic "orders" for raw orders.
+- Optional: "validated-orders," "payment-results" for multi-stage pipeline.
+- Use orderId as key for ordering.</p>
+<p><strong>Step 3: Consumer groups.</strong>
+- payment-service, inventory-service, notification-service. Each gets all orders. Independent scaling.</p>
+<p><strong>Step 4: Critical decisions.</strong>
+- acks=all for order events (critical data).
+- orderId as key (ordering guarantee).
+- Dead Letter Topic for failed processing.
+- Idempotent consumers (check if order already processed).</p>
+<p><strong>Step 5: Draw the diagram.</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>User places order
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    ▼
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>REST API → Kafka Topic: &quot;orders&quot; (key=orderId)
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>                │
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                ├──▶ Payment Service (group: &quot;payments&quot;) → Topic: &quot;payment-results&quot;
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>                ├──▶ Inventory Service (group: &quot;inventory&quot;)
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>                └──▶ Notification Service (group: &quot;notifications&quot;)
+</code></pre></div>
+<p><strong>How to frame your answer:</strong> "I'd have an orders topic with orderId as key. Each downstream service is a consumer group. Payment, inventory, notifications—each gets all orders. We use acks=all, idempotent consumers, and a DLT for failures. I'd consider a separate validated-orders topic if validation is complex."</p>
+<div class="admonition tip">
+<p class="admonition-title">Bonus points if you mention...</p>
+<p>"We'd monitor consumer lag for each group. Payment is critical—we'd alert if lag grows. We might use a saga pattern if we need distributed transactions across payment and inventory."</p>
+</div>
+<hr />
+<h3 id="q25-how-would-you-design-a-real-time-analytics-pipeline-for-user-clicks">Q25: How would you design a real-time analytics pipeline for user clicks?<a class="headerlink" href="#q25-how-would-you-design-a-real-time-analytics-pipeline-for-user-clicks" title="Permanent link">&para;</a></h3>
+<p><strong>What the interviewer wants to hear:</strong> You think about volume, retention, consumers, and aggregation.</p>
+<p><strong>Step-by-step design:</strong></p>
+<p><strong>Step 1: Volume.</strong> Millions of clicks per minute. Kafka handles it. Topic "user-clicks" with many partitions (e.g., 20). Partition by userId for ordering per user if needed, or null key for load balance.</p>
+<p><strong>Step 2: Consumers.</strong>
+- Real-time dashboard: Kafka Streams or Flink. Aggregate clicks per minute, per page. Push to dashboard (WebSocket or polling).
+- Batch analytics: Consumer writes to data lake (S3) or warehouse. Runs hourly/daily jobs.
+- ML pipeline: Consumer feeds feature store or training pipeline.</p>
+<p><strong>Step 3: Retention.</strong> Analytics might need 30 days. Configure retention accordingly.</p>
+<p><strong>Step 4: Schema.</strong> Use Schema Registry. Clicks have: userId, pageId, timestamp, sessionId, etc.</p>
+<p><strong>How to frame your answer:</strong> "Topic user-clicks, partitioned for throughput. Kafka Streams for real-time aggregates—clicks per minute, top pages. Separate consumer for batch—S3 or warehouse. Schema Registry for schema evolution. Retention based on analytics needs."</p>
+<hr />
+<h3 id="q26-your-consumer-lag-is-growing-how-do-you-debug-and-fix-it">Q26: Your consumer lag is growing. How do you debug and fix it?<a class="headerlink" href="#q26-your-consumer-lag-is-growing-how-do-you-debug-and-fix-it" title="Permanent link">&para;</a></h3>
+<p><strong>What the interviewer wants to hear:</strong> You have a systematic approach. You don't just say "add more consumers."</p>
+<p><strong>Step-by-step approach:</strong></p>
+<p><strong>Step 1: Confirm the problem.</strong> Check consumer lag. Which partition? Which consumer group?</p>
+<p><strong>Step 2: Is the consumer slow or stuck?</strong>
+- Check consumer logs. Exceptions? Long processing time?
+- Check if consumer is doing heavy work (DB calls, external API). Optimize or async.</p>
+<p><strong>Step 3: Is the producer too fast?</strong> Sudden traffic spike? Maybe temporary. Scale consumers.</p>
+<p><strong>Step 4: Scaling options.</strong>
+- Add more consumers (up to partition count). More partitions = more parallelism (requires careful migration).
+- Increase consumer instances (if partitions allow).
+- Optimize consumer: batch processing, connection pooling, caching.</p>
+<p><strong>Step 5: Temporary measures.</strong> Increase retention so you don't lose data while fixing. Consider a separate "catch-up" consumer group that processes in batch.</p>
+<p><strong>How to frame your answer:</strong> "First I'd identify which partitions and which group. Check if consumers are erroring or slow. If processing is the bottleneck, optimize—maybe batch DB writes. If we need more throughput, add consumers—but we're limited by partitions. We might add partitions, but that's a bigger change. I'd also increase retention as a safety net."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<ul>
+<li>"Just add more consumers" without checking if you're partition-limited</li>
+<li>Not considering consumer-side optimization first</li>
+</ul>
+</div>
+<hr />
+<h3 id="q27-how-would-you-implement-exactly-once-processing-in-a-kafka-consumer-that-writes-to-a-database">Q27: How would you implement exactly-once processing in a Kafka consumer that writes to a database?<a class="headerlink" href="#q27-how-would-you-implement-exactly-once-processing-in-a-kafka-consumer-that-writes-to-a-database" title="Permanent link">&para;</a></h3>
+<p><strong>What the interviewer wants to hear:</strong> You know the options: transactional outbox, consumer transactions, or idempotent design.</p>
+<p><strong>Step-by-step approach:</strong></p>
+<p><strong>Option 1: Kafka consumer transactions (read-process-write).</strong>
+- Consumer reads from Kafka, processes, writes to DB.
+- Use Kafka's transactional API: consume offsets and DB writes in one transaction.
+- Complex. Supported in Kafka Streams and with some client libraries.</p>
+<p><strong>Option 2: Idempotent consumer (practical).</strong>
+- At-least-once delivery.
+- Consumer: check if record exists (by business key). If yes, skip. If no, process and insert.
+- Duplicates become no-ops. "Exactly-once" from business perspective.</p>
+<p><strong>Option 3: Transactional outbox (producer side).</strong>
+- Producer writes to DB (outbox table) and Kafka in one transaction. Or: CDC (Debezium) reads DB and publishes to Kafka. Consumer reads from Kafka. Single source of truth.</p>
+<p><strong>How to frame your answer:</strong> "For exactly-once, we'd make the consumer idempotent—use a unique key, check before insert, use upsert. That's the most practical. Kafka has transactional consume-process-produce for Streams, but for a DB sink, idempotency is simpler and robust."</p>
+<hr />
+<h3 id="q28-design-a-notification-system-that-sends-email-sms-and-push-when-an-event-occurs-how-does-kafka-fit-in">Q28: Design a notification system that sends email, SMS, and push when an event occurs. How does Kafka fit in?<a class="headerlink" href="#q28-design-a-notification-system-that-sends-email-sms-and-push-when-an-event-occurs-how-does-kafka-fit-in" title="Permanent link">&para;</a></h3>
+<p><strong>What the interviewer wants to hear:</strong> One topic, multiple consumers. Each channel is independent.</p>
+<p><strong>Step-by-step design:</strong></p>
+<p><strong>Step 1: Event flow.</strong> Event occurs (e.g., order placed). Publish to "notifications" topic. Payload: userId, type, data, preferences.</p>
+<p><strong>Step 2: Consumers.</strong> One consumer per channel:
+- Email consumer: if user prefers email, send email.
+- SMS consumer: if user prefers SMS or critical, send SMS.
+- Push consumer: if user has app, send push.</p>
+<p><strong>Step 3: Each consumer is a separate group.</strong> So each gets all events. They filter by user preferences. Or: one "router" consumer that publishes to channel-specific topics. Simpler: one topic, three consumers, each filters.</p>
+<p><strong>Step 4: Failure handling.</strong> One channel failing (e.g., SMS gateway down) doesn't affect others. Retry and DLT per consumer.</p>
+<p><strong>How to frame your answer:</strong> "Single topic 'notifications.' Three consumer groups—email, SMS, push. Each gets all events, filters by user preference. Independent. Add WhatsApp? New consumer group. No change to producer. Retry and DLT per consumer for resilience."</p>
+<hr />
+<h2 id="top-5-mistakes-in-kafka-interviews">Top 5 Mistakes in Kafka Interviews<a class="headerlink" href="#top-5-mistakes-in-kafka-interviews" title="Permanent link">&para;</a></h2>
+<h3 id="1-confusing-ordering-guarantees">1. Confusing ordering guarantees<a class="headerlink" href="#1-confusing-ordering-guarantees" title="Permanent link">&para;</a></h3>
+<p><strong>Mistake:</strong> Saying "Kafka guarantees ordering" without qualifying "within a partition."
+<strong>Fix:</strong> Always say "ordering within a partition" and "use same key for related messages."</p>
+<h3 id="2-ignoring-consumer-lag">2. Ignoring consumer lag<a class="headerlink" href="#2-ignoring-consumer-lag" title="Permanent link">&para;</a></h3>
+<p><strong>Mistake:</strong> Not mentioning monitoring or consumer lag when asked about production Kafka.
+<strong>Fix:</strong> "We monitor consumer lag. It's our top metric. High lag means we have a problem."</p>
+<h3 id="3-over-promising-exactly-once">3. Over-promising exactly-once<a class="headerlink" href="#3-over-promising-exactly-once" title="Permanent link">&para;</a></h3>
+<p><strong>Mistake:</strong> "Kafka guarantees exactly-once." It's possible but requires specific setup.
+<strong>Fix:</strong> "We use at-least-once with idempotent consumers. Exactly-once is possible with transactions but we find idempotency simpler."</p>
+<h3 id="4-not-knowing-partition-consumer-relationship">4. Not knowing partition-consumer relationship<a class="headerlink" href="#4-not-knowing-partition-consumer-relationship" title="Permanent link">&para;</a></h3>
+<p><strong>Mistake:</strong> "We'll add 10 consumers to scale." (With 3 partitions, 7 sit idle.)
+<strong>Fix:</strong> "Max parallel consumers = number of partitions. We'd add partitions if we need more parallelism."</p>
+<h3 id="5-treating-kafka-like-a-simple-queue">5. Treating Kafka like a simple queue<a class="headerlink" href="#5-treating-kafka-like-a-simple-queue" title="Permanent link">&para;</a></h3>
+<p><strong>Mistake:</strong> Describing it as "send message, consumer gets it, done."
+<strong>Fix:</strong> Emphasize log retention, replay, multiple consumer groups, and event streaming.</p>
+<hr />
+<h2 id="30-second-revision-cheat-sheet">30-Second Revision Cheat Sheet<a class="headerlink" href="#30-second-revision-cheat-sheet" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>One-Liner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Kafka</strong></td>
+<td>Distributed event streaming platform. Log retention. Replay. High throughput.</td>
+</tr>
+<tr>
+<td><strong>Topic</strong></td>
+<td>Named stream. Partition = sub-division. Order within partition.</td>
+</tr>
+<tr>
+<td><strong>Key</strong></td>
+<td>Same key → same partition → ordering.</td>
+</tr>
+<tr>
+<td><strong>Consumer group</strong></td>
+<td>Share partitions. One partition, one consumer per group.</td>
+</tr>
+<tr>
+<td><strong>Replication</strong></td>
+<td>Leader + followers. ISR. Leader election on failure.</td>
+</tr>
+<tr>
+<td><strong>acks</strong></td>
+<td>0=none, 1=leader, all=ISR. Use all for critical.</td>
+</tr>
+<tr>
+<td><strong>Idempotent producer</strong></td>
+<td>No duplicates on retry. Enable always.</td>
+</tr>
+<tr>
+<td><strong>Delivery</strong></td>
+<td>At-least-once + idempotent consumer (most common).</td>
+</tr>
+<tr>
+<td><strong>Consumer lag</strong></td>
+<td>#1 metric. High = problem.</td>
+</tr>
+<tr>
+<td><strong>Kafka vs RabbitMQ</strong></td>
+<td>Kafka = streaming, retention, replay. RabbitMQ = task queue, routing.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>Done with Kafka! Next:</strong> <a href="../../projects/redis-api-caching/">Projects</a> - Build real projects.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

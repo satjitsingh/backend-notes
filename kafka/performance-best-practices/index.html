@@ -1,0 +1,2845 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/performance-best-practices/">
+      
+      
+        <link rel="prev" href="../kafka-usecases/">
+      
+      
+        <link rel="next" href="../kafka-with-springboot/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Performance & Best Practices - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#performance-best-practices" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Performance & Best Practices
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-page-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Page Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Producer Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-always-set-acks-intentionally" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Always Set acks Intentionally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-enable-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Enable Idempotence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-use-batching-wisely" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Use Batching Wisely
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-use-compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Use Compression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-use-meaningful-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Use Meaningful Keys
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-handle-send-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Handle Send Failures
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-manual-offset-commits-for-critical-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Use Manual Offset Commits for Critical Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-make-consumers-idempotent" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Make Consumers Idempotent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-tune-poll-and-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Tune poll() and Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-use-the-cooperativestickyassignor" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Use the CooperativeStickyAssignor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-monitor-consumer-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Monitor Consumer Lag
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topic-partition-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic &amp; Partition Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topic & Partition Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-start-with-a-reasonable-partition-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Start with a Reasonable Partition Count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-you-can-add-partitions-but-never-remove-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. You Can Add Partitions, But Never Remove Them
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-use-replication-factor-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Use Replication Factor 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-set-appropriate-retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Set Appropriate Retention
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#broker-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Broker Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-dedicated-disks" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Use Dedicated Disks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-separate-kafka-log-dirs-from-os-disk" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Separate Kafka Log Dirs from OS Disk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-monitor-key-broker-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Monitor Key Broker Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-set-mininsyncreplicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Set min.insync.replicas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naming Conventions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dead-letter-topic-dlt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dead Letter Topic (DLT)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Circuit Breaker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retry-strategies-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retry Strategies in Detail
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-connect-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Connect Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Connect Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-kafka-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is Kafka Connect?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-instead-of-custom-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use Instead of Custom Consumers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-vs-sink-connectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source vs Sink Connectors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Schema Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-schemas-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Schemas Matter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avro-vs-json-vs-protobuf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avro vs JSON vs Protobuf
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema-registry-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Registry Basics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backward-and-forward-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backward and Forward Compatibility
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring &amp; Alerting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring & Alerting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics-to-watch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Metrics to Watch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tools
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-kafka-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Kafka Applications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Kafka Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#embedded-kafka-for-unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embedded Kafka for Unit Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testcontainers-for-integration-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testcontainers for Integration Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-kafka-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      spring-kafka-test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operational-runbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operational Runbook
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operational Runbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues-and-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues and Fixes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumer-lag-growing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Lag Growing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broker-disk-full" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker Disk Full
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rebalancing-storms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rebalancing Storms
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Checklist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-page-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Page Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Producer Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-always-set-acks-intentionally" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Always Set acks Intentionally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-enable-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Enable Idempotence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-use-batching-wisely" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Use Batching Wisely
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-use-compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Use Compression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-use-meaningful-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Use Meaningful Keys
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-handle-send-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Handle Send Failures
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-manual-offset-commits-for-critical-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Use Manual Offset Commits for Critical Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-make-consumers-idempotent" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Make Consumers Idempotent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-tune-poll-and-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Tune poll() and Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-use-the-cooperativestickyassignor" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Use the CooperativeStickyAssignor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-monitor-consumer-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Monitor Consumer Lag
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topic-partition-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic &amp; Partition Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topic & Partition Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-start-with-a-reasonable-partition-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Start with a Reasonable Partition Count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-you-can-add-partitions-but-never-remove-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. You Can Add Partitions, But Never Remove Them
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-use-replication-factor-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Use Replication Factor 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-set-appropriate-retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Set Appropriate Retention
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#broker-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Broker Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-dedicated-disks" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Use Dedicated Disks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-separate-kafka-log-dirs-from-os-disk" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Separate Kafka Log Dirs from OS Disk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-monitor-key-broker-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Monitor Key Broker Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-set-mininsyncreplicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Set min.insync.replicas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naming Conventions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dead-letter-topic-dlt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dead Letter Topic (DLT)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Circuit Breaker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retry-strategies-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retry Strategies in Detail
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-connect-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Connect Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Connect Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-kafka-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is Kafka Connect?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-instead-of-custom-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use Instead of Custom Consumers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-vs-sink-connectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source vs Sink Connectors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Schema Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-schemas-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Schemas Matter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avro-vs-json-vs-protobuf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avro vs JSON vs Protobuf
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema-registry-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Registry Basics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backward-and-forward-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backward and Forward Compatibility
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring &amp; Alerting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring & Alerting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics-to-watch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Metrics to Watch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tools
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-kafka-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Kafka Applications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Kafka Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#embedded-kafka-for-unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embedded Kafka for Unit Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testcontainers-for-integration-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testcontainers for Integration Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-kafka-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      spring-kafka-test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operational-runbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operational Runbook
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operational Runbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues-and-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues and Fixes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumer-lag-growing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Lag Growing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broker-disk-full" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker Disk Full
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rebalancing-storms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rebalancing Storms
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Checklist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="performance-best-practices">Performance &amp; Best Practices<a class="headerlink" href="#performance-best-practices" title="Permanent link">&para;</a></h1>
+<h2 id="why-this-page-matters">Why This Page Matters<a class="headerlink" href="#why-this-page-matters" title="Permanent link">&para;</a></h2>
+<p>Knowing Kafka's concepts is one thing. Running Kafka well in production is another. This page covers the practices that keep Kafka fast, reliable, and manageable at scale. These are the things that separate a junior developer from a senior one in interviews and on the job.</p>
+<hr />
+<h2 id="producer-best-practices">Producer Best Practices<a class="headerlink" href="#producer-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="1-always-set-acks-intentionally">1. Always Set acks Intentionally<a class="headerlink" href="#1-always-set-acks-intentionally" title="Permanent link">&para;</a></h3>
+<p>Don't rely on the default. Choose based on your needs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># For critical data (orders, payments):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="na">acks</span><span class="o">=</span><span class="s">all</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># For non-critical data (logs, metrics):</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="na">acks</span><span class="o">=</span><span class="s">1</span>
+</code></pre></div>
+<h3 id="2-enable-idempotence">2. Enable Idempotence<a class="headerlink" href="#2-enable-idempotence" title="Permanent link">&para;</a></h3>
+<p>Prevents duplicate messages on retries. No downside. Always enable it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="na">enable.idempotence</span><span class="o">=</span><span class="s">true</span>
+</code></pre></div>
+<h3 id="3-use-batching-wisely">3. Use Batching Wisely<a class="headerlink" href="#3-use-batching-wisely" title="Permanent link">&para;</a></h3>
+<p>Kafka producers batch messages before sending. Larger batches = fewer network calls = higher throughput. But larger batches also mean higher latency for individual messages.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="na">batch.size</span><span class="o">=</span><span class="s">32768          # 32 KB per batch (default: 16 KB)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="na">linger.ms</span><span class="o">=</span><span class="s">10              # Wait up to 10ms to fill a batch</span>
+</code></pre></div>
+<p>Think of it like a bus. You can send one passenger per bus (low latency, wasteful) or wait a few minutes to fill the bus (higher latency per passenger, but more efficient).</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Low Latency</th>
+<th>High Throughput</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>linger.ms</code></td>
+<td>0-1 ms</td>
+<td>10-100 ms</td>
+</tr>
+<tr>
+<td><code>batch.size</code></td>
+<td>16384</td>
+<td>65536-131072</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-use-compression">4. Use Compression<a class="headerlink" href="#4-use-compression" title="Permanent link">&para;</a></h3>
+<p>Compress messages before sending. Less data over the network. Less disk on brokers.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="na">compression.type</span><span class="o">=</span><span class="s">lz4</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Speed</th>
+<th>Compression Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>none</code></td>
+<td>N/A</td>
+<td>1x (no compression)</td>
+</tr>
+<tr>
+<td><code>lz4</code></td>
+<td>Fastest</td>
+<td>Good</td>
+</tr>
+<tr>
+<td><code>snappy</code></td>
+<td>Fast</td>
+<td>Good</td>
+</tr>
+<tr>
+<td><code>zstd</code></td>
+<td>Medium</td>
+<td>Best</td>
+</tr>
+<tr>
+<td><code>gzip</code></td>
+<td>Slow</td>
+<td>Great</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommendation:</strong> <code>lz4</code> for most workloads. Best balance of speed and compression.</p>
+<h3 id="5-use-meaningful-keys">5. Use Meaningful Keys<a class="headerlink" href="#5-use-meaningful-keys" title="Permanent link">&para;</a></h3>
+<p>Messages with the same key go to the same partition. This guarantees ordering for related events.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// Good: orderId as key — all events for same order are ordered</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ProducerRecord</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="s">&quot;orders&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">orderId</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">));</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1">// Bad: no key — events for same order might go to different partitions</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ProducerRecord</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="s">&quot;orders&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">));</span>
+</code></pre></div>
+<h3 id="6-handle-send-failures">6. Handle Send Failures<a class="headerlink" href="#6-handle-send-failures" title="Permanent link">&para;</a></h3>
+<p>Always use callbacks or check the future. Don't fire-and-forget critical messages.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">record</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exception</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Failed to send: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">        </span><span class="c1">// Retry, save to dead letter queue, or alert</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">});</span>
+</code></pre></div>
+<hr />
+<h2 id="consumer-best-practices">Consumer Best Practices<a class="headerlink" href="#consumer-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="1-use-manual-offset-commits-for-critical-data">1. Use Manual Offset Commits for Critical Data<a class="headerlink" href="#1-use-manual-offset-commits-for-critical-data" title="Permanent link">&para;</a></h3>
+<p>Auto-commit is simple but can cause data loss or duplicates.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="na">enable.auto.commit</span><span class="o">=</span><span class="s">false</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="n">process</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">}</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">consumer</span><span class="p">.</span><span class="na">commitSync</span><span class="p">();</span>
+</code></pre></div>
+<h3 id="2-make-consumers-idempotent">2. Make Consumers Idempotent<a class="headerlink" href="#2-make-consumers-idempotent" title="Permanent link">&para;</a></h3>
+<p>Since at-least-once delivery is the norm, your consumer might process the same message twice. Design for it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">repository</span><span class="p">.</span><span class="na">existsById</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">getId</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="c1">// Already processed, skip</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="p">}</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">repository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="3-tune-poll-and-processing">3. Tune poll() and Processing<a class="headerlink" href="#3-tune-poll-and-processing" title="Permanent link">&para;</a></h3>
+<p>If your processing takes too long, the consumer might be kicked from the group (exceeds <code>max.poll.interval.ms</code>).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="na">max.poll.records</span><span class="o">=</span><span class="s">100              # Fewer records per poll = faster processing per batch</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="na">max.poll.interval.ms</span><span class="o">=</span><span class="s">600000       # 10 minutes max between polls</span>
+</code></pre></div>
+<h3 id="4-use-the-cooperativestickyassignor">4. Use the CooperativeStickyAssignor<a class="headerlink" href="#4-use-the-cooperativestickyassignor" title="Permanent link">&para;</a></h3>
+<p>Reduces rebalancing disruption. Only the affected partitions are reassigned — others keep reading.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="na">partition.assignment.strategy</span><span class="o">=</span><span class="s">org.apache.kafka.clients.consumer.CooperativeStickyAssignor</span>
+</code></pre></div>
+<h3 id="5-monitor-consumer-lag">5. Monitor Consumer Lag<a class="headerlink" href="#5-monitor-consumer-lag" title="Permanent link">&para;</a></h3>
+<p>Consumer lag tells you how far behind your consumer is. If it keeps growing, you're not processing fast enough.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kafka-consumer-groups<span class="w"> </span>--describe<span class="w"> </span>--group<span class="w"> </span>my-group<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<p>If lag grows: add more consumers (up to partition count) or optimize processing logic.</p>
+<hr />
+<h2 id="topic-partition-best-practices">Topic &amp; Partition Best Practices<a class="headerlink" href="#topic-partition-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="1-start-with-a-reasonable-partition-count">1. Start with a Reasonable Partition Count<a class="headerlink" href="#1-start-with-a-reasonable-partition-count" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Rule of thumb:
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  Partitions = max(expected consumer count, target throughput / throughput per partition)
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>  A single partition can handle ~10 MB/sec writes.
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>  If you need 50 MB/sec, start with at least 6 partitions.
+</code></pre></div>
+<h3 id="2-you-can-add-partitions-but-never-remove-them">2. You Can Add Partitions, But Never Remove Them<a class="headerlink" href="#2-you-can-add-partitions-but-never-remove-them" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># This works:</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>kafka-topics<span class="w"> </span>--alter<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span>--partitions<span class="w"> </span><span class="m">12</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># This does NOT work:</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>kafka-topics<span class="w"> </span>--alter<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span>--partitions<span class="w"> </span><span class="m">3</span><span class="w">  </span><span class="c1"># ERROR!</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Adding partitions breaks key-based ordering</p>
+<p>If you add partitions, <code>hash(key) % numPartitions</code> changes. A key that used to go to Partition 2 might now go to Partition 5. Existing consumers won't see this key's new messages. Plan your partition count upfront.</p>
+</div>
+<h3 id="3-use-replication-factor-3">3. Use Replication Factor 3<a class="headerlink" href="#3-use-replication-factor-3" title="Permanent link">&para;</a></h3>
+<p>The industry standard. Tolerates 2 broker failures.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span>--partitions<span class="w"> </span><span class="m">6</span><span class="w"> </span>--replication-factor<span class="w"> </span><span class="m">3</span>
+</code></pre></div>
+<h3 id="4-set-appropriate-retention">4. Set Appropriate Retention<a class="headerlink" href="#4-set-appropriate-retention" title="Permanent link">&para;</a></h3>
+<p>Don't keep messages forever unless you need to. Storage costs money.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Keep for 7 days (default):</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="na">retention.ms</span><span class="o">=</span><span class="s">604800000</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># Keep for 3 days (if consumers catch up quickly):</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="na">retention.ms</span><span class="o">=</span><span class="s">259200000</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1"># Compacted topics (keep latest value per key forever):</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="na">cleanup.policy</span><span class="o">=</span><span class="s">compact</span>
+</code></pre></div>
+<hr />
+<h2 id="broker-best-practices">Broker Best Practices<a class="headerlink" href="#broker-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="1-use-dedicated-disks">1. Use Dedicated Disks<a class="headerlink" href="#1-use-dedicated-disks" title="Permanent link">&para;</a></h3>
+<p>Kafka is disk-heavy. Don't share disks with other applications. Use SSDs for better performance.</p>
+<h3 id="2-separate-kafka-log-dirs-from-os-disk">2. Separate Kafka Log Dirs from OS Disk<a class="headerlink" href="#2-separate-kafka-log-dirs-from-os-disk" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="na">log.dirs</span><span class="o">=</span><span class="s">/data/kafka-logs</span>
+</code></pre></div>
+<p>Don't put Kafka data on the OS partition. If Kafka fills the disk, it won't crash the OS.</p>
+<h3 id="3-monitor-key-broker-metrics">3. Monitor Key Broker Metrics<a class="headerlink" href="#3-monitor-key-broker-metrics" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What It Means</th>
+<th>Alert If</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Under-replicated partitions</td>
+<td>Replicas falling behind</td>
+<td>&gt; 0 for extended time</td>
+</tr>
+<tr>
+<td>Active controller count</td>
+<td>Exactly 1 broker should be controller</td>
+<td>!= 1</td>
+</tr>
+<tr>
+<td>Request handler idle %</td>
+<td>How busy the broker is</td>
+<td>&lt; 20%</td>
+</tr>
+<tr>
+<td>Log flush latency</td>
+<td>Disk write performance</td>
+<td>Spikes consistently</td>
+</tr>
+<tr>
+<td>Network throughput</td>
+<td>Bytes in/out per second</td>
+<td>Approaching NIC limit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-set-mininsyncreplicas">4. Set min.insync.replicas<a class="headerlink" href="#4-set-mininsyncreplicas" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="na">min.insync.replicas</span><span class="o">=</span><span class="s">2</span>
+</code></pre></div>
+<p>With <code>acks=all</code>, this ensures at least 2 replicas confirm each write. Prevents data loss if one broker fails.</p>
+<hr />
+<h2 id="naming-conventions">Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permanent link">&para;</a></h2>
+<p>Consistent topic naming makes your Kafka cluster manageable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a># Good naming:
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>orders.created
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>orders.payment-completed
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>users.profile-updated
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>notifications.email
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>notifications.sms
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a># Bad naming:
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>topic1
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>myTopic
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>ORDER_EVENTS
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>user-updates-v2-final-FINAL
+</code></pre></div>
+<p><strong>Pattern:</strong> <code>&lt;domain&gt;.&lt;event-type&gt;</code> using lowercase and hyphens.</p>
+<hr />
+<h2 id="error-handling-patterns">Error Handling Patterns<a class="headerlink" href="#error-handling-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="dead-letter-topic-dlt">Dead Letter Topic (DLT)<a class="headerlink" href="#dead-letter-topic-dlt" title="Permanent link">&para;</a></h3>
+<p>Messages that fail after all retries go to a special topic for manual review.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Normal flow:   orders → Consumer → Process ✅
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>Retry flow:    orders → Consumer → Fail → Retry 1 → Retry 2 → Fail
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>                                                                 ↓
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>                                                          orders-dlt (Dead Letter Topic)
+</code></pre></div>
+<p>In Spring Boot:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nd">@RetryableTopic</span><span class="p">(</span><span class="n">attempts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">backoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@Backoff</span><span class="p">(</span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">))</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nd">@KafkaListener</span><span class="p">(</span><span class="n">topics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;orders&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">groupId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;order-service&quot;</span><span class="p">)</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">OrderEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">    </span><span class="c1">// If this throws, retried 3 times. Then goes to DLT.</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="p">}</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="nd">@DltHandler</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">handleDlt</span><span class="p">(</span><span class="n">OrderEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">    </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Failed after 3 retries: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">);</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">    </span><span class="n">failedEventRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="circuit-breaker">Circuit Breaker<a class="headerlink" href="#circuit-breaker" title="Permanent link">&para;</a></h3>
+<p>If a downstream service (database, API) is down, stop processing messages and wait instead of failing every message.</p>
+<p>Use Resilience4j or similar library to wrap your processing logic.</p>
+<h3 id="retry-strategies-in-detail">Retry Strategies in Detail<a class="headerlink" href="#retry-strategies-in-detail" title="Permanent link">&para;</a></h3>
+<p><strong>Exponential backoff:</strong> Wait longer between each retry. First retry: 1 second. Second: 2 seconds. Third: 4 seconds. Prevents hammering a failing service.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nd">@RetryableTopic</span><span class="p">(</span><span class="n">attempts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;4&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">backoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@Backoff</span><span class="p">(</span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">multiplier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nd">@KafkaListener</span><span class="p">(</span><span class="n">topics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;orders&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">groupId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;order-service&quot;</span><span class="p">)</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">OrderEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">    </span><span class="c1">// Retries at 1s, 2s, 4s, 8s</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Max retries:</strong> Decide how many times to retry before giving up. Too few: transient failures cause DLT overload. Too many: slow consumers block the partition. 3–5 retries is common.</p>
+<p><strong>DLT routing:</strong> After max retries, send to Dead Letter Topic. A separate consumer or manual process handles DLT messages. Alert on DLT growth.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nd">@DltHandler</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">handleDlt</span><span class="p">(</span><span class="n">OrderEvent</span><span class="w"> </span><span class="n">event</span><span class="p">,</span><span class="w"> </span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">OrderEvent</span><span class="o">&gt;</span><span class="w"> </span><span class="n">record</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span><span class="n">failedEventRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="n">alertingService</span><span class="p">.</span><span class="na">notify</span><span class="p">(</span><span class="s">&quot;Message failed after retries&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">record</span><span class="p">);</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="p">}</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Retry best practice</p>
+<p>Use exponential backoff with a cap (e.g., max 30 seconds). Always route to DLT after max retries. Monitor DLT size.</p>
+</div>
+<hr />
+<h2 id="kafka-connect-best-practices">Kafka Connect Best Practices<a class="headerlink" href="#kafka-connect-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-kafka-connect">What Is Kafka Connect?<a class="headerlink" href="#what-is-kafka-connect" title="Permanent link">&para;</a></h3>
+<p>Kafka Connect is a framework for moving data in and out of Kafka. You configure connectors. No custom consumer code. Connectors handle the plumbing.</p>
+<h3 id="when-to-use-instead-of-custom-consumers">When to Use Instead of Custom Consumers<a class="headerlink" href="#when-to-use-instead-of-custom-consumers" title="Permanent link">&para;</a></h3>
+<p>Use Kafka Connect when:</p>
+<ul>
+<li>You need to sync a database table to Kafka (or vice versa).</li>
+<li>You need to move data to Elasticsearch, S3, or a data warehouse.</li>
+<li>The integration is standard (JDBC, file, HTTP). Don't reinvent the wheel.</li>
+</ul>
+<p>Use custom consumers when:</p>
+<ul>
+<li>You need complex transformation logic.</li>
+<li>You need to call external APIs or services.</li>
+<li>The connector doesn't exist or doesn't fit.</li>
+</ul>
+<h3 id="source-vs-sink-connectors">Source vs Sink Connectors<a class="headerlink" href="#source-vs-sink-connectors" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Direction</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Source</strong></td>
+<td>External system → Kafka</td>
+<td>JDBC Source (MySQL table → topic), File Source</td>
+</tr>
+<tr>
+<td><strong>Sink</strong></td>
+<td>Kafka → External system</td>
+<td>Elasticsearch Sink, JDBC Sink, S3 Sink</td>
+</tr>
+</tbody>
+</table>
+<p>Source connectors pull data from a system and produce to Kafka. Sink connectors consume from Kafka and write to a system.</p>
+<div class="admonition info">
+<p class="admonition-title">Connector ecosystem</p>
+<p>Confluent Hub and the Kafka ecosystem offer hundreds of connectors. Check before building your own.</p>
+</div>
+<hr />
+<h2 id="schema-management">Schema Management<a class="headerlink" href="#schema-management" title="Permanent link">&para;</a></h2>
+<h3 id="why-schemas-matter">Why Schemas Matter<a class="headerlink" href="#why-schemas-matter" title="Permanent link">&para;</a></h3>
+<p>Without schemas, producers and consumers can drift. Producer sends <code>{"price": 99.99}</code>. Consumer expects <code>{"amount": 99.99}</code>. Breaks. Schemas enforce a contract.</p>
+<h3 id="avro-vs-json-vs-protobuf">Avro vs JSON vs Protobuf<a class="headerlink" href="#avro-vs-json-vs-protobuf" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Avro</strong></td>
+<td>Compact, Schema Registry support, good for Kafka</td>
+<td>Requires schema files, learning curve</td>
+</tr>
+<tr>
+<td><strong>JSON</strong></td>
+<td>Human-readable, no schema needed</td>
+<td>Larger payload, no built-in validation</td>
+</tr>
+<tr>
+<td><strong>Protobuf</strong></td>
+<td>Fast, compact, strong typing</td>
+<td>Binary, less Kafka-native tooling</td>
+</tr>
+</tbody>
+</table>
+<p>For production Kafka, Avro with Schema Registry is common. It gives you evolution (add fields, remove fields) with compatibility checks.</p>
+<h3 id="schema-registry-basics">Schema Registry Basics<a class="headerlink" href="#schema-registry-basics" title="Permanent link">&para;</a></h3>
+<p>Schema Registry stores schemas. Producers and consumers fetch schemas by ID. When you produce a message, you send schema ID + payload. Consumer fetches schema and deserializes.</p>
+<h3 id="backward-and-forward-compatibility">Backward and Forward Compatibility<a class="headerlink" href="#backward-and-forward-compatibility" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Backward compatible:</strong> New consumer can read old producer data. Add optional fields. Don't remove required fields.</li>
+<li><strong>Forward compatible:</strong> Old consumer can read new producer data. Add optional fields. Don't change types.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Breaking changes</p>
+<p>Changing a field type or removing a required field breaks compatibility. Plan schema evolution carefully.</p>
+</div>
+<hr />
+<h2 id="monitoring-alerting">Monitoring &amp; Alerting<a class="headerlink" href="#monitoring-alerting" title="Permanent link">&para;</a></h2>
+<h3 id="key-metrics-to-watch">Key Metrics to Watch<a class="headerlink" href="#key-metrics-to-watch" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What It Means</th>
+<th>Alert If</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Under-replicated partitions</td>
+<td>Replicas falling behind leader</td>
+<td>&gt; 0 for more than 5 minutes</td>
+</tr>
+<tr>
+<td>Active controller count</td>
+<td>Exactly 1 broker should be controller</td>
+<td>!= 1</td>
+</tr>
+<tr>
+<td>Request latency (p99)</td>
+<td>How long brokers take to respond</td>
+<td>Spikes above baseline</td>
+</tr>
+<tr>
+<td>Consumer lag</td>
+<td>How far behind consumers are</td>
+<td>Growing over time, or &gt; threshold</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tools">Tools<a class="headerlink" href="#tools" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Prometheus + Grafana:</strong> Scrape Kafka metrics. Build dashboards. Set alerts.</li>
+<li><strong>Confluent Control Center:</strong> Commercial UI for Kafka. Topic management, consumer lag, broker health.</li>
+<li><strong>Kafka built-in:</strong> <code>kafka-consumer-groups --describe</code> for lag. JMX for broker metrics.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Start simple</p>
+<p>At minimum, monitor consumer lag and under-replicated partitions. Add more as you scale.</p>
+</div>
+<hr />
+<h2 id="testing-kafka-applications">Testing Kafka Applications<a class="headerlink" href="#testing-kafka-applications" title="Permanent link">&para;</a></h2>
+<h3 id="embedded-kafka-for-unit-tests">Embedded Kafka for Unit Tests<a class="headerlink" href="#embedded-kafka-for-unit-tests" title="Permanent link">&para;</a></h3>
+<p>Use <code>@EmbeddedKafka</code> (spring-kafka-test) to run a real Kafka broker in-process. Fast. No Docker needed.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nd">@EmbeddedKafka</span><span class="p">(</span><span class="n">partitions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">topics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;orders&quot;</span><span class="p">})</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="nd">@SpringBootTest</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="kd">class</span> <span class="nc">OrderConsumerTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="nd">@Autowired</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">KafkaTemplate</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">template</span><span class="p">;</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">    </span><span class="nd">@Test</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">shouldProcessOrder</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">        </span><span class="n">template</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="s">&quot;orders&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;order-1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;{\&quot;id\&quot;:\&quot;order-1\&quot;}&quot;</span><span class="p">);</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">        </span><span class="c1">// Assert consumer processed it</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="testcontainers-for-integration-tests">Testcontainers for Integration Tests<a class="headerlink" href="#testcontainers-for-integration-tests" title="Permanent link">&para;</a></h3>
+<p>For full integration (Kafka + DB + app), use Testcontainers. Spins up real Kafka in Docker. Slower but more realistic.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nd">@Testcontainers</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nd">@SpringBootTest</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="kd">class</span> <span class="nc">OrderServiceIntegrationTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">    </span><span class="nd">@Container</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="n">KafkaContainer</span><span class="w"> </span><span class="n">kafka</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">KafkaContainer</span><span class="p">(</span><span class="n">DockerImageName</span><span class="p">.</span><span class="na">parse</span><span class="p">(</span><span class="s">&quot;confluentinc/cp-kafka:7.4.0&quot;</span><span class="p">));</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">    </span><span class="c1">// ...</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="spring-kafka-test">spring-kafka-test<a class="headerlink" href="#spring-kafka-test" title="Permanent link">&para;</a></h3>
+<p>Provides <code>@EmbeddedKafka</code>, <code>KafkaTestUtils</code>, and mock producers/consumers. Add dependency: <code>spring-kafka-test</code>.</p>
+<hr />
+<h2 id="operational-runbook">Operational Runbook<a class="headerlink" href="#operational-runbook" title="Permanent link">&para;</a></h2>
+<h3 id="common-issues-and-fixes">Common Issues and Fixes<a class="headerlink" href="#common-issues-and-fixes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Consumer lag growing</strong></td>
+<td>Lag increases, never catches up</td>
+<td>Add consumers (up to partition count), optimize processing, scale horizontally</td>
+</tr>
+<tr>
+<td><strong>Broker disk full</strong></td>
+<td>Brokers fail, "No space left"</td>
+<td>Reduce retention, add disks, delete old topics</td>
+</tr>
+<tr>
+<td><strong>Rebalancing storms</strong></td>
+<td>Constant consumer group rebalances</td>
+<td>Increase <code>max.poll.interval.ms</code>, reduce <code>max.poll.records</code>, use CooperativeStickyAssignor</td>
+</tr>
+<tr>
+<td><strong>Producer timeouts</strong></td>
+<td><code>TimeoutException</code> on send</td>
+<td>Increase <code>request.timeout.ms</code>, check broker health, reduce batch size</td>
+</tr>
+</tbody>
+</table>
+<h3 id="consumer-lag-growing">Consumer Lag Growing<a class="headerlink" href="#consumer-lag-growing" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Check <code>kafka-consumer-groups --describe</code>. Identify which partitions have lag.</li>
+<li>Add more consumer instances (up to number of partitions).</li>
+<li>Profile your consumer. Is it slow? Optimize DB queries, add caching.</li>
+<li>Consider increasing partitions (plan for key ordering impact).</li>
+</ol>
+<h3 id="broker-disk-full">Broker Disk Full<a class="headerlink" href="#broker-disk-full" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Reduce <code>retention.ms</code> on topics. Delete old data.</li>
+<li>Add more disk or expand volumes.</li>
+<li>Move low-priority topics to separate clusters.</li>
+</ol>
+<h3 id="rebalancing-storms">Rebalancing Storms<a class="headerlink" href="#rebalancing-storms" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Increase <code>max.poll.interval.ms</code> so slow processors don't get kicked.</li>
+<li>Reduce <code>max.poll.records</code> so each poll is faster.</li>
+<li>Use <code>CooperativeStickyAssignor</code> to minimize partition churn during rebalance.</li>
+</ol>
+<hr />
+<h2 id="production-checklist">Production Checklist<a class="headerlink" href="#production-checklist" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>✅ Producers
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>   ✅ acks=all for critical data
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>   ✅ enable.idempotence=true
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>   ✅ Compression enabled (lz4 or snappy)
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>   ✅ Send failures handled (callbacks or futures)
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>   ✅ Meaningful message keys for ordering
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>✅ Consumers
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>   ✅ Manual offset commit for critical data
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>   ✅ Idempotent processing logic
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>   ✅ max.poll.records tuned
+<a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>   ✅ CooperativeStickyAssignor
+<a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a>   ✅ Consumer lag monitored
+<a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a>
+<a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>✅ Topics
+<a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a>   ✅ Partition count planned (start with 6+)
+<a id="__codelineno-25-17" name="__codelineno-25-17" href="#__codelineno-25-17"></a>   ✅ Replication factor = 3
+<a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a>   ✅ Retention configured
+<a id="__codelineno-25-19" name="__codelineno-25-19" href="#__codelineno-25-19"></a>   ✅ Consistent naming convention
+<a id="__codelineno-25-20" name="__codelineno-25-20" href="#__codelineno-25-20"></a>
+<a id="__codelineno-25-21" name="__codelineno-25-21" href="#__codelineno-25-21"></a>✅ Brokers
+<a id="__codelineno-25-22" name="__codelineno-25-22" href="#__codelineno-25-22"></a>   ✅ Dedicated disks (SSDs preferred)
+<a id="__codelineno-25-23" name="__codelineno-25-23" href="#__codelineno-25-23"></a>   ✅ min.insync.replicas = 2
+<a id="__codelineno-25-24" name="__codelineno-25-24" href="#__codelineno-25-24"></a>   ✅ Monitoring in place (Prometheus + Grafana)
+<a id="__codelineno-25-25" name="__codelineno-25-25" href="#__codelineno-25-25"></a>   ✅ Alerting on under-replicated partitions
+</code></pre></div>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Best Practice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Producer acks</td>
+<td><code>all</code> for critical, <code>1</code> for logs</td>
+</tr>
+<tr>
+<td>Idempotence</td>
+<td>Always enable</td>
+</tr>
+<tr>
+<td>Compression</td>
+<td><code>lz4</code> for most workloads</td>
+</tr>
+<tr>
+<td>Consumer commits</td>
+<td>Manual for critical data</td>
+</tr>
+<tr>
+<td>Consumer idempotency</td>
+<td>Always implement</td>
+</tr>
+<tr>
+<td>Partitions</td>
+<td>Start with 6+, can't reduce later</td>
+</tr>
+<tr>
+<td>Replication</td>
+<td>Factor of 3 is standard</td>
+</tr>
+<tr>
+<td>Monitoring</td>
+<td>Consumer lag is metric #1</td>
+</tr>
+<tr>
+<td>Error handling</td>
+<td>Dead Letter Topics for failed messages</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Configure a producer with <code>lz4</code> compression and <code>acks=all</code>. Send 1000 messages. Check broker disk usage vs no compression.</li>
+<li>Set <code>max.poll.records=5</code> on a consumer. Observe how it processes smaller batches.</li>
+<li>Check consumer lag for your consumer group. Is it growing or stable?</li>
+<li>Create a Dead Letter Topic handler. Make your consumer throw an exception and watch the message go to DLT.</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../kafka-with-springboot/">Kafka with Spring Boot</a> — Build real applications with Kafka.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

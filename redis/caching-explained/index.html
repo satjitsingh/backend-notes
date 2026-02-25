@@ -1,0 +1,2639 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/redis/caching-explained/">
+      
+      
+        <link rel="prev" href="../memory-eviction/">
+      
+      
+        <link rel="next" href="../caching-patterns/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Caching Explained - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#caching-explained" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Caching Explained
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Caching?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-restaurant-kitchen-analogy-a-full-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Restaurant Kitchen Analogy: A Full Story
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-speed-difference-a-human-relatable-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Speed Difference: A Human-Relatable Analogy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#life-of-a-request-with-and-without-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Life of a Request: With and Without Cache
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Life of a Request: With and Without Cache">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#without-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Without Cache
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      With Cache
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-do-we-need-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Do We Need Caching?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Do We Need Caching?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-speed-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Speed Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-load-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Load Problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-hit-vs-cache-miss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Hit vs Cache Miss
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      What to Cache?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What to Cache?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#good-candidates-for-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Good Candidates for Caching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bad-candidates-for-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bad Candidates for Caching
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-invalidation-the-hardest-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Invalidation: The Hardest Problem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Invalidation: The Hardest Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-it-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why is it hard?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-1-time-based-expiry-ttl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 1: Time-Based Expiry (TTL)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-2-event-based-invalidation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 2: Event-Based Invalidation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-3-combination-best-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 3: Combination (Best Practice)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-invalidation-3-detailed-real-world-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Invalidation: 3 Detailed Real-World Scenarios
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Invalidation: 3 Detailed Real-World Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-e-commerce-product-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: E-commerce Product Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-user-updates-their-email" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: User Updates Their Email
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-config-change-across-multiple-servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: Config Change Across Multiple Servers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ttl-time-to-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      TTL - Time To Live
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TTL - Time To Live">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#choosing-ttl-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing TTL Values
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching-in-the-real-world-how-big-companies-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching in the Real World: How Big Companies Use It
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-stampede-a-detailed-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Stampede: A Detailed Story
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Stampede: A Detailed Story">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-black-friday-sale-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Black Friday Sale Scenario
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solutions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-penetration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Penetration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Penetration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solutions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solutions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-avalanche" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Avalanche
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Avalanche">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solutions_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solutions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cold-cache-vs-warm-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cold Cache vs Warm Cache
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cold Cache vs Warm Cache">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-cold-cache-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Cold Cache Matters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-scenario-e-commerce-sale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: E-commerce Sale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Caching?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-restaurant-kitchen-analogy-a-full-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Restaurant Kitchen Analogy: A Full Story
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-speed-difference-a-human-relatable-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Speed Difference: A Human-Relatable Analogy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#life-of-a-request-with-and-without-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Life of a Request: With and Without Cache
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Life of a Request: With and Without Cache">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#without-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Without Cache
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      With Cache
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-do-we-need-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Do We Need Caching?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Do We Need Caching?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-speed-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Speed Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-load-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Load Problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-hit-vs-cache-miss" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Hit vs Cache Miss
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      What to Cache?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What to Cache?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#good-candidates-for-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Good Candidates for Caching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bad-candidates-for-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bad Candidates for Caching
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-invalidation-the-hardest-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Invalidation: The Hardest Problem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Invalidation: The Hardest Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-it-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why is it hard?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-1-time-based-expiry-ttl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 1: Time-Based Expiry (TTL)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-2-event-based-invalidation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 2: Event-Based Invalidation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-3-combination-best-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy 3: Combination (Best Practice)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-invalidation-3-detailed-real-world-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Invalidation: 3 Detailed Real-World Scenarios
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Invalidation: 3 Detailed Real-World Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-e-commerce-product-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: E-commerce Product Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-user-updates-their-email" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: User Updates Their Email
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-config-change-across-multiple-servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: Config Change Across Multiple Servers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ttl-time-to-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      TTL - Time To Live
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TTL - Time To Live">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#choosing-ttl-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing TTL Values
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching-in-the-real-world-how-big-companies-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching in the Real World: How Big Companies Use It
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-stampede-a-detailed-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Stampede: A Detailed Story
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Stampede: A Detailed Story">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-black-friday-sale-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Black Friday Sale Scenario
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solutions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-penetration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Penetration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Penetration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solutions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solutions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-avalanche" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache Avalanche
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache Avalanche">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solutions_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solutions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cold-cache-vs-warm-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cold Cache vs Warm Cache
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cold Cache vs Warm Cache">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-cold-cache-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Cold Cache Matters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-scenario-e-commerce-sale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: E-commerce Sale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="caching-explained">Caching Explained<a class="headerlink" href="#caching-explained" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-caching">What is Caching?<a class="headerlink" href="#what-is-caching" title="Permanent link">&para;</a></h2>
+<p><strong>Caching</strong> means keeping a copy of data in a <strong>fast place</strong> so you don't have to fetch it from a <strong>slow place</strong> every time. It's one of the oldest tricks in computing—and one of the most powerful.</p>
+<p>When you cache something, you're saying: "This data was expensive to get. I'll keep a copy somewhere quick. Next time someone asks for it, I'll check the quick place first. If it's there, I'll use it. If not, I'll go to the slow place and then save a copy for next time."</p>
+<p>That's it. Caching is that simple in concept. The complexity comes from <em>when</em> to cache, <em>what</em> to cache, and <em>when</em> to throw away (invalidate) cached data.</p>
+<hr />
+<h2 id="the-restaurant-kitchen-analogy-a-full-story">The Restaurant Kitchen Analogy: A Full Story<a class="headerlink" href="#the-restaurant-kitchen-analogy-a-full-story" title="Permanent link">&para;</a></h2>
+<p>Let me walk you through a story that will make caching feel intuitive. Imagine you run a busy restaurant.</p>
+<p><strong>The setup:</strong> Your kitchen has two storage areas. <strong>Cold storage</strong> (the walk-in freezer and fridge in the basement) holds all your ingredients. It's the source of truth. Everything is there. But going down to cold storage takes time—maybe 2–3 minutes per trip. You have to walk down the stairs, find the right shelf, bring the ingredients back.</p>
+<p><strong>The problem:</strong> Your most popular dish is Butter Chicken. You make it 50 times a night. If the chef went to cold storage every single time to get chicken, butter, cream, and spices, they'd spend half the night walking up and down stairs. Orders would pile up. Customers would leave.</p>
+<p><strong>The solution:</strong> You have a <strong>prep counter</strong> right next to the stove. At the start of the shift, the chef brings up a batch of chicken, butter, cream, and spices from cold storage and puts them on the prep counter. For the next 20 orders of Butter Chicken, the chef grabs from the counter. Fast. No trips downstairs. Only when the counter runs low does the chef go back to cold storage to restock.</p>
+<p><strong>The mapping:</strong>
+- <strong>Cold storage</strong> = your database (MySQL, PostgreSQL). The source of truth. Slow to access.
+- <strong>Prep counter</strong> = Redis (your cache). Fast to access. Holds a copy of what you need often.
+- <strong>Butter Chicken ingredients</strong> = frequently accessed data (e.g., product catalog, user profile).
+- <strong>Restocking</strong> = cache miss. You go to the database, get the data, put it in the cache.</p>
+<p><strong>Cache Hit:</strong> Customer orders Butter Chicken. Chef checks the counter. Ingredients are there. Chef cooks. Done in 2 minutes.</p>
+<p><strong>Cache Miss:</strong> Customer orders Butter Chicken. Counter is empty (maybe the cache expired or was cleared). Chef goes to cold storage, gets ingredients, brings them back, puts some on the counter for next time, cooks. Takes 5 minutes this time—but the next 19 orders will be fast.</p>
+<p><strong>Stale data:</strong> What if the butter in cold storage went bad, but the butter on the counter is still the old batch? The counter has <em>stale</em> data. You need a strategy: either restock the counter regularly (TTL—time to live) or restock when you know something changed (event-based invalidation). We'll cover this in detail.</p>
+<hr />
+<h2 id="the-speed-difference-a-human-relatable-analogy">The Speed Difference: A Human-Relatable Analogy<a class="headerlink" href="#the-speed-difference-a-human-relatable-analogy" title="Permanent link">&para;</a></h2>
+<p>How much faster is Redis than a database? Let me put it in human terms.</p>
+<p><strong>Reading from Redis</strong> is like checking your pocket for your keys. You reach in. You feel them. You're done. A fraction of a second.</p>
+<p><strong>Reading from a database on the same server</strong> is like walking to the next room to get your keys. A few seconds. Still fast, but noticeably slower.</p>
+<p><strong>Reading from a database on another server</strong> is like driving to the next city to get your keys. Tens of seconds to a minute. You feel the delay.</p>
+<p><strong>Calling an external API</strong> is like flying to another country. Minutes. You might as well make coffee while you wait.</p>
+<p>When you cache, you're moving the "keys" from the next city (or the next country) into your pocket. The next time you need them, you just reach in. That's why caching matters—it turns slow operations into instant ones.</p>
+<hr />
+<h2 id="life-of-a-request-with-and-without-cache">Life of a Request: With and Without Cache<a class="headerlink" href="#life-of-a-request-with-and-without-cache" title="Permanent link">&para;</a></h2>
+<p>Let's trace the full journey of a request. Imagine a user visits your product page: <code>GET /api/products/101</code>.</p>
+<h3 id="without-cache">Without Cache<a class="headerlink" href="#without-cache" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>1. User&#39;s browser sends request to your server
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>2. Your server receives the request
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>3. Server opens a connection to the database
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>4. Server sends SQL: SELECT * FROM products WHERE id = 101
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>5. Database reads from disk (or SSD), finds the row
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>6. Database sends the result back over the network
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>7. Server receives the result
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>8. Server formats the response (JSON)
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>9. Server sends response back to the user
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>Total time: ~20–50 ms (typical)
+</code></pre></div>
+<p>Every single request does this. 1000 users viewing the same product = 1000 database queries. All for the same data.</p>
+<h3 id="with-cache">With Cache<a class="headerlink" href="#with-cache" title="Permanent link">&para;</a></h3>
+<p><strong>First request (cache miss):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>1. User sends request
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>2. Server checks Redis: GET product:101
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>3. Redis returns (nil) — not in cache
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>4. Server queries database (same as before)
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>5. Database returns the product
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>6. Server stores in Redis: SET product:101 &lt;json&gt; EX 3600
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>7. Server sends response to user
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Total time: ~25–55 ms (slightly slower than no cache, because we also wrote to Redis)
+</code></pre></div></p>
+<p><strong>Second request (cache hit):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>1. User sends request
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>2. Server checks Redis: GET product:101
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>3. Redis returns the cached product (from RAM)
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>4. Server sends response to user
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Total time: ~2–5 ms
+</code></pre></div></p>
+<p>No database. No disk. No network hop to the database. Just Redis and your app. That's a 10x improvement in latency. And for the database, 999 fewer queries. That's the power of caching.</p>
+<hr />
+<h2 id="why-do-we-need-caching">Why Do We Need Caching?<a class="headerlink" href="#why-do-we-need-caching" title="Permanent link">&para;</a></h2>
+<h3 id="the-speed-problem">The Speed Problem<a class="headerlink" href="#the-speed-problem" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>What It Feels Like</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read from RAM (Redis)</td>
+<td>~0.1 ms</td>
+<td>Instant</td>
+</tr>
+<tr>
+<td>Read from SSD (Database)</td>
+<td>~1–10 ms</td>
+<td>Quick</td>
+</tr>
+<tr>
+<td>Network call to another service</td>
+<td>~50–200 ms</td>
+<td>Noticeable delay</td>
+</tr>
+<tr>
+<td>API call to external service</td>
+<td>~200–1000 ms</td>
+<td>Slow</td>
+</tr>
+</tbody>
+</table>
+<p>Redis is <strong>100x to 1000x faster</strong> than a typical database query. When you're serving thousands of requests per second, that difference is the difference between a snappy app and a sluggish one.</p>
+<h3 id="the-load-problem">The Load Problem<a class="headerlink" href="#the-load-problem" title="Permanent link">&para;</a></h3>
+<p><strong>Without caching:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>1000 users request &quot;/api/products&quot;
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>= 1000 database queries (same data!)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>= Database CPU spikes
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>= Connection pool exhausted
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>= Timeouts, errors, unhappy users 😩
+</code></pre></div></p>
+<p><strong>With caching:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>1st request  → Cache Miss → Query DB → Store in Redis → Return
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>2nd request  → Cache Hit  → Return from Redis
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>3rd request  → Cache Hit  → Return from Redis
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>...
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>1000th request → Cache Hit → Return from Redis
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>= Only 1 database query! 🎉
+</code></pre></div></p>
+<p>The database breathes. Your app can handle 10x more traffic with the same hardware.</p>
+<hr />
+<h2 id="cache-hit-vs-cache-miss">Cache Hit vs Cache Miss<a class="headerlink" href="#cache-hit-vs-cache-miss" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+<th>Restaurant Analogy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cache Hit</strong></td>
+<td>Data found in cache</td>
+<td>Ingredients on the prep counter</td>
+</tr>
+<tr>
+<td><strong>Cache Miss</strong></td>
+<td>Data NOT in cache, must fetch from DB</td>
+<td>Counter empty, trip to cold storage</td>
+</tr>
+<tr>
+<td><strong>Hit Ratio</strong></td>
+<td>% of requests served from cache</td>
+<td>Higher is better. Aim for 80%+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Hit Ratio = Cache Hits / (Cache Hits + Cache Misses) × 100
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Example: 800 hits, 200 misses
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Hit Ratio = 800 / 1000 × 100 = 80% ✅
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>A good cache hit ratio is <strong>80–95%</strong>. If it's below 50%, your caching strategy needs improvement. You might be caching the wrong things, or your TTL might be too short.</p>
+</div>
+<hr />
+<h2 id="what-to-cache">What to Cache?<a class="headerlink" href="#what-to-cache" title="Permanent link">&para;</a></h2>
+<h3 id="good-candidates-for-caching">Good Candidates for Caching<a class="headerlink" href="#good-candidates-for-caching" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Data Type</th>
+<th>Why Cache It?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Product catalog</td>
+<td>Rarely changes, read very often</td>
+</tr>
+<tr>
+<td>User profile</td>
+<td>Read on every page load</td>
+</tr>
+<tr>
+<td>API responses</td>
+<td>Same response for many users</td>
+</tr>
+<tr>
+<td>Session data</td>
+<td>Accessed on every request</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td>Rarely changes</td>
+</tr>
+<tr>
+<td>Search results</td>
+<td>Common searches repeat often</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bad-candidates-for-caching">Bad Candidates for Caching<a class="headerlink" href="#bad-candidates-for-caching" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Data Type</th>
+<th>Why NOT Cache?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Constantly changing data</td>
+<td>Cache becomes stale instantly</td>
+</tr>
+<tr>
+<td>One-time queries</td>
+<td>No reuse benefit</td>
+</tr>
+<tr>
+<td>Sensitive data (credit cards)</td>
+<td>Security risk</td>
+</tr>
+<tr>
+<td>Very large datasets</td>
+<td>Wastes expensive RAM</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cache-invalidation-the-hardest-problem">Cache Invalidation: The Hardest Problem<a class="headerlink" href="#cache-invalidation-the-hardest-problem" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>"There are only two hard things in Computer Science: cache invalidation and naming things."<br />
+— Phil Karlton</p>
+</blockquote>
+<h3 id="what-is-it">What is it?<a class="headerlink" href="#what-is-it" title="Permanent link">&para;</a></h3>
+<p>When the original data changes, the cached copy becomes <strong>stale</strong> (outdated). You need to remove or update it. That's cache invalidation.</p>
+<h3 id="why-is-it-hard">Why is it hard?<a class="headerlink" href="#why-is-it-hard" title="Permanent link">&para;</a></h3>
+<p><strong>1. You need to know <em>when</em> data changed.</strong> Did the database get updated by your app? By a background job? By another service? By a direct SQL run by a DBA? You need triggers or application logic to know when to invalidate.</p>
+<p><strong>2. You need to know <em>which</em> cache keys to invalidate.</strong> A product update might invalidate <code>product:101</code>, but also <code>product_list:category_electronics</code> (if that list includes product 101). Cache keys can be complex. You might have many keys that depend on one piece of data.</p>
+<p><strong>3. In distributed systems, </strong>multiple servers<strong> might have different cache states.</strong> Server A invalidates a key. Server B and C might still have the old value in their local cache (if they use one). Or Redis is shared, but there's a race: Server A deletes the key, Server B (with a stale in-memory copy) writes it back before Server C fetches fresh data. Consistency is tricky.</p>
+<h3 id="strategy-1-time-based-expiry-ttl">Strategy 1: Time-Based Expiry (TTL)<a class="headerlink" href="#strategy-1-time-based-expiry-ttl" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>SETEX<span class="w"> </span><span class="s2">&quot;product:101&quot;</span><span class="w"> </span><span class="m">3600</span><span class="w"> </span><span class="s2">&quot;{name: Laptop, price: 50000}&quot;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># Expires in 1 hour automatically</span>
+</code></pre></div>
+<p><strong>How it works:</strong> You set a TTL when you cache. After that time, Redis automatically deletes the key. The next request will be a cache miss and will fetch fresh data from the database.</p>
+<p><strong>Pros:</strong> Simple. No application logic needed. Eventually consistent.</p>
+<p><strong>Cons:</strong> Data might be stale for up to TTL duration. If you set TTL to 1 hour, a price change could take up to 1 hour to appear.</p>
+<p><strong>Real-world scenario:</strong> Product catalog. A product's price rarely changes. If it does, waiting 5–15 minutes is acceptable. Set TTL to 600–900 seconds.</p>
+<h3 id="strategy-2-event-based-invalidation">Strategy 2: Event-Based Invalidation<a class="headerlink" href="#strategy-2-event-based-invalidation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>User updates profile → App deletes cache → Next request fetches fresh data
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># When user updates their profile:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>DEL<span class="w"> </span><span class="s2">&quot;user:profile:42&quot;</span>
+</code></pre></div>
+<p><strong>How it works:</strong> When you <em>know</em> the data changed (e.g., user clicked "Save"), you explicitly delete the cache key. The next request will be a cache miss and will load fresh data from the database.</p>
+<p><strong>Pros:</strong> Accurate. Cache is always fresh after a known change.</p>
+<p><strong>Cons:</strong> You must remember to invalidate everywhere the data is written. Easy to miss a code path.</p>
+<p><strong>Real-world scenario:</strong> User profile. When the user updates their name or email, you must invalidate immediately. Users expect to see their changes right away.</p>
+<h3 id="strategy-3-combination-best-practice">Strategy 3: Combination (Best Practice)<a class="headerlink" href="#strategy-3-combination-best-practice" title="Permanent link">&para;</a></h3>
+<p>Use <strong>TTL as a safety net</strong> + <strong>Event-based</strong> for known changes.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">// On read: cache with TTL</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">redis</span><span class="p">.</span><span class="na">setex</span><span class="p">(</span><span class="s">&quot;user:42&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span><span class="w"> </span><span class="n">userJson</span><span class="p">);</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1">// On update: invalidate immediately</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">userRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">user</span><span class="p">);</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">redis</span><span class="p">.</span><span class="na">del</span><span class="p">(</span><span class="s">&quot;user:42&quot;</span><span class="p">);</span>
+</code></pre></div>
+<p>TTL ensures that even if you forget to invalidate somewhere, the cache will eventually refresh. Event-based invalidation ensures that known changes are reflected immediately.</p>
+<hr />
+<h2 id="cache-invalidation-3-detailed-real-world-scenarios">Cache Invalidation: 3 Detailed Real-World Scenarios<a class="headerlink" href="#cache-invalidation-3-detailed-real-world-scenarios" title="Permanent link">&para;</a></h2>
+<h3 id="scenario-1-e-commerce-product-update">Scenario 1: E-commerce Product Update<a class="headerlink" href="#scenario-1-e-commerce-product-update" title="Permanent link">&para;</a></h3>
+<p><strong>Context:</strong> A product's price is updated by an admin. The product is cached under <code>product:101</code> and also appears in <code>category:electronics:page_1</code> (a list of products).</p>
+<p><strong>What to invalidate:</strong> 
+- <code>product:101</code> — the product itself
+- <code>category:electronics:page_1</code> — the listing that includes this product (or all category pages if you cache them)</p>
+<p><strong>How:</strong> When the admin saves the product, your backend runs:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">productRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">product</span><span class="p">);</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">redis</span><span class="p">.</span><span class="na">del</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">product</span><span class="p">.</span><span class="na">getId</span><span class="p">());</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">redis</span><span class="p">.</span><span class="na">del</span><span class="p">(</span><span class="s">&quot;category:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">product</span><span class="p">.</span><span class="na">getCategoryId</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;:page_*&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// or use a pattern delete</span>
+</code></pre></div></p>
+<p><strong>Mistake to avoid:</strong> Only invalidating <code>product:101</code> but not the category listing. Users browsing the category would still see the old price until the category cache expires.</p>
+<h3 id="scenario-2-user-updates-their-email">Scenario 2: User Updates Their Email<a class="headerlink" href="#scenario-2-user-updates-their-email" title="Permanent link">&para;</a></h3>
+<p><strong>Context:</strong> User changes their email in the settings page. The email is stored in the user profile, which is cached for session and display purposes.</p>
+<p><strong>What to invalidate:</strong> 
+- <code>user:profile:42</code> — the full profile cache
+- Any session or token that might include the email (e.g., JWT payloads are usually not cached, but session objects might be)</p>
+<p><strong>How:</strong> 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">userRepository</span><span class="p">.</span><span class="na">updateEmail</span><span class="p">(</span><span class="n">userId</span><span class="p">,</span><span class="w"> </span><span class="n">newEmail</span><span class="p">);</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">redis</span><span class="p">.</span><span class="na">del</span><span class="p">(</span><span class="s">&quot;user:profile:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">userId</span><span class="p">);</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="c1">// If you cache sessions with user data: find and invalidate those too</span>
+</code></pre></div></p>
+<p><strong>Mistake to avoid:</strong> Only updating the database and forgetting to invalidate the cache. The user might see their old email on the next page load until the cache expires.</p>
+<h3 id="scenario-3-config-change-across-multiple-servers">Scenario 3: Config Change Across Multiple Servers<a class="headerlink" href="#scenario-3-config-change-across-multiple-servers" title="Permanent link">&para;</a></h3>
+<p><strong>Context:</strong> You change a feature flag. The flag is cached on 10 app servers. Each server has its own in-memory cache (or a shared Redis).</p>
+<p><strong>What to invalidate:</strong> 
+- If using shared Redis: <code>config:feature_dark_mode</code>
+- If using local cache per server: you need a broadcast mechanism (e.g., Redis Pub/Sub) to tell all servers to invalidate their local cache</p>
+<p><strong>How (shared Redis):</strong> 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">configRepository</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="s">&quot;feature_dark_mode&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">redis</span><span class="p">.</span><span class="na">del</span><span class="p">(</span><span class="s">&quot;config:feature_dark_mode&quot;</span><span class="p">);</span>
+</code></pre></div></p>
+<p><strong>How (local cache + Redis Pub/Sub):</strong> 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">configRepository</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="s">&quot;feature_dark_mode&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">redis</span><span class="p">.</span><span class="na">publish</span><span class="p">(</span><span class="s">&quot;config:invalidate&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;feature_dark_mode&quot;</span><span class="p">);</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">// Each server subscribes and invalidates its local cache when it receives the message</span>
+</code></pre></div></p>
+<hr />
+<h2 id="ttl-time-to-live">TTL - Time To Live<a class="headerlink" href="#ttl-time-to-live" title="Permanent link">&para;</a></h2>
+<p>TTL is like setting a <strong>timer on food</strong>. After the timer runs out, the food (data) is thrown away.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>SET<span class="w"> </span>weather<span class="w"> </span><span class="s2">&quot;sunny&quot;</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>EXPIRE<span class="w"> </span>weather<span class="w"> </span><span class="m">300</span><span class="w">              </span><span class="c1"># Expires in 5 minutes</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>TTL<span class="w"> </span>weather<span class="w">                     </span><span class="c1"># Seconds remaining</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># (integer) 297</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1"># After 5 minutes:</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>GET<span class="w"> </span>weather
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1"># (nil)  ← Automatically deleted</span>
+</code></pre></div>
+<h3 id="choosing-ttl-values">Choosing TTL Values<a class="headerlink" href="#choosing-ttl-values" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Data Type</th>
+<th>Suggested TTL</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Product listing</td>
+<td>5–15 minutes</td>
+<td>Changes occasionally</td>
+</tr>
+<tr>
+<td>User session</td>
+<td>30 minutes</td>
+<td>Standard session timeout</td>
+</tr>
+<tr>
+<td>OTP</td>
+<td>5 minutes</td>
+<td>Security requirement</td>
+</tr>
+<tr>
+<td>API rate limit</td>
+<td>1 minute</td>
+<td>Reset every minute</td>
+</tr>
+<tr>
+<td>Static config</td>
+<td>1–24 hours</td>
+<td>Rarely changes</td>
+</tr>
+<tr>
+<td>Real-time stock price</td>
+<td>5–10 seconds</td>
+<td>Changes frequently</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="caching-in-the-real-world-how-big-companies-use-it">Caching in the Real World: How Big Companies Use It<a class="headerlink" href="#caching-in-the-real-world-how-big-companies-use-it" title="Permanent link">&para;</a></h2>
+<p><strong>Netflix:</strong> Caches movie metadata, thumbnails, and recommendations. When you browse, most of what you see comes from cache. They use a multi-tier cache: CDN for static assets, Redis (or similar) for dynamic data. They also cache "what's popular in your region" so that computation is done once and served many times.</p>
+<p><strong>Amazon:</strong> Product pages are heavily cached. The product title, price, description, and reviews are cached. When you change a product, they invalidate the cache for that product. They use a combination of TTL and event-based invalidation. Their "customers who bought this also bought" section is pre-computed and cached.</p>
+<p><strong>Flipkart:</strong> During Big Billion Days, they rely heavily on caching. Product listings, prices, and availability are cached. They use cache warming—before the sale starts, they pre-load popular products into the cache. They also use aggressive TTL for prices (short, to handle flash deals) and longer TTL for static product info.</p>
+<p><strong>Common pattern:</strong> Cache the read path. Invalidate on the write path. Use TTL as a safety net. Pre-warm the cache for known traffic spikes.</p>
+<hr />
+<h2 id="cache-stampede-a-detailed-story">Cache Stampede: A Detailed Story<a class="headerlink" href="#cache-stampede-a-detailed-story" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_1">What is it?<a class="headerlink" href="#what-is-it_1" title="Permanent link">&para;</a></h3>
+<p>When a popular cache key expires, <strong>thousands of requests</strong> hit the database at the same time. The database gets overwhelmed. It might crash. Or slow down so much that everyone times out.</p>
+<h3 id="the-black-friday-sale-scenario">The Black Friday Sale Scenario<a class="headerlink" href="#the-black-friday-sale-scenario" title="Permanent link">&para;</a></h3>
+<p>Imagine you're running an e-commerce site. Product "iPhone 15" is cached with a 1-hour TTL. At 10:00 AM, 10,000 users have the product page open. The cache was populated at 9:00 AM. At 10:00 AM, the key expires.</p>
+<p><strong>10:00:00.001</strong> — Cache key <code>product:iphone15</code> expires. Redis deletes it.</p>
+<p><strong>10:00:00.002</strong> — User 1 clicks "Refresh". Cache miss. App starts a database query.</p>
+<p><strong>10:00:00.003</strong> — User 2 clicks. Cache miss. App starts a database query.</p>
+<p><strong>10:00:00.003</strong> — User 3 to User 10,000 click or their pages auto-refresh. All cache miss. All 10,000 requests trigger a database query for the same product.</p>
+<p><strong>10:00:00.500</strong> — Database has 10,000 concurrent queries for the same row. Connection pool exhausted. CPU at 100%. Database starts timing out.</p>
+<p><strong>10:00:00.501</strong> — App servers can't get a response. They time out. Users see errors. "Site is down."</p>
+<p>That's a cache stampede. One expired key. One product. Thousands of requests. Database dies.</p>
+<h3 id="solutions">Solutions<a class="headerlink" href="#solutions" title="Permanent link">&para;</a></h3>
+<p><strong>1. Lock (Mutex)</strong></p>
+<p>Only ONE request fetches from the database. Others wait.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Request 1: Cache miss → Acquires lock → Fetches from DB → Updates cache → Releases lock
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>Request 2: Cache miss → Lock taken → Waits → Eventually gets data from cache (after Request 1 fills it)
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Request 3: Cache miss → Lock taken → Waits → Gets data from cache
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>...
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>Request 10000: Waits → Gets data from cache
+</code></pre></div>
+<p><strong>2. Early Refresh</strong></p>
+<p>Refresh the cache <strong>before</strong> it expires. So it never actually expires.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>TTL = 300 seconds
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>At 240 seconds (80% of TTL), a background job or the first request refreshes the cache
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>Cache never expires. No stampede.
+</code></pre></div>
+<p><strong>3. Stale-While-Revalidate</strong></p>
+<p>Serve the old (stale) data immediately while refreshing in the background.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Request hits expired key. Instead of going to DB:
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>1. Return the stale value from cache (if you kept it) — or serve from DB
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>2. Trigger an async refresh in the background
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>3. Next request gets fresh data
+</code></pre></div>
+<hr />
+<h2 id="cache-penetration">Cache Penetration<a class="headerlink" href="#cache-penetration" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_2">What is it?<a class="headerlink" href="#what-is-it_2" title="Permanent link">&para;</a></h3>
+<p>Requests for data that <strong>doesn't exist</strong> in the cache or the database. Every request is a cache miss. Every request hits the database. The cache never helps.</p>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<p>An attacker (or a bug) sends repeated requests: <code>GET /user/999999999</code>. User ID 999999999 doesn't exist. Your app does:</p>
+<ol>
+<li>Check cache: <code>GET user:999999999</code> → (nil)</li>
+<li>Query database: <code>SELECT * FROM users WHERE id = 999999999</code> → No rows</li>
+<li>Return 404</li>
+</ol>
+<p>The attacker sends 10,000 requests per second. Every single one hits the database. Cache is useless. Database is overloaded.</p>
+<h3 id="solutions_1">Solutions<a class="headerlink" href="#solutions_1" title="Permanent link">&para;</a></h3>
+<p><strong>1. Cache null values</strong></p>
+<p>When the database returns "not found", cache that result with a short TTL.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">user</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="n">redis</span><span class="p">.</span><span class="na">setex</span><span class="p">(</span><span class="s">&quot;user:null:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;null&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// Cache &quot;not found&quot; for 1 minute</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>Now the next 10,000 requests for the same non-existent ID will hit the cache instead of the database.</p>
+<p><strong>2. Bloom filter</strong></p>
+<p>A Bloom filter is a probabilistic structure that can tell you "this key definitely doesn't exist" or "this key might exist." Before querying the database, check the Bloom filter. If it says "definitely doesn't exist," return 404 without hitting the database. If it says "might exist," then proceed to cache/database.</p>
+<hr />
+<h2 id="cache-avalanche">Cache Avalanche<a class="headerlink" href="#cache-avalanche" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_3">What is it?<a class="headerlink" href="#what-is-it_3" title="Permanent link">&para;</a></h3>
+<p>Many cache keys expire at the <strong>same time</strong>, causing a flood of database queries. Unlike a stampede (one key), an avalanche is many keys expiring together.</p>
+<h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
+<p>Your app starts at 9:00 AM. You cache 1000 products with TTL of 1 hour. All keys expire at 10:00 AM. At 10:00 AM, users request products. All 1000 keys are cache miss. The database gets 1000 different queries at once. Load spikes.</p>
+<h3 id="solutions_2">Solutions<a class="headerlink" href="#solutions_2" title="Permanent link">&para;</a></h3>
+<p><strong>1. Add random jitter to TTL</strong></p>
+<p>Instead of <code>TTL = 3600</code> for everyone, use <code>TTL = 3600 + random(0, 300)</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">ttl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3600</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="n">Math</span><span class="p">.</span><span class="na">random</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">300</span><span class="p">);</span><span class="w">  </span><span class="c1">// 3600 to 3900 seconds</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">redis</span><span class="p">.</span><span class="na">setex</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">ttl</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+</code></pre></div>
+<p>Now keys expire at different times. The load is spread over 5 minutes instead of 1 second.</p>
+<p><strong>2. Stagger expiry times</strong></p>
+<p>Cache different data at different times. Don't cache everything at startup with the same TTL.</p>
+<p><strong>3. Use cache warming</strong></p>
+<p>After a restart, pre-load the cache gradually. Don't load 1000 keys at once. Load in batches with small delays.</p>
+<hr />
+<h2 id="cold-cache-vs-warm-cache">Cold Cache vs Warm Cache<a class="headerlink" href="#cold-cache-vs-warm-cache" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+<th>When It Happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cold Cache</strong></td>
+<td>Cache is empty</td>
+<td>App just started, Redis restarted</td>
+</tr>
+<tr>
+<td><strong>Warm Cache</strong></td>
+<td>Cache has data</td>
+<td>App running normally</td>
+</tr>
+<tr>
+<td><strong>Cache Warming</strong></td>
+<td>Pre-loading data into cache on startup</td>
+<td>Prevents cold start problems</td>
+</tr>
+</tbody>
+</table>
+<h3 id="when-cold-cache-matters">When Cold Cache Matters<a class="headerlink" href="#when-cold-cache-matters" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> Your app restarts at 2 AM for a deployment. Redis restarts too (or it's a new instance). Cache is empty. At 9 AM, users start arriving. Every request is a cache miss. The database gets hammered. Response times spike from 5 ms to 50 ms. Users complain about slowness.</p>
+<p><strong>Solution: Cache warming.</strong> When the app starts, load the most frequently accessed data into the cache before users arrive.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nd">@PostConstruct</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">warmCache</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span><span class="w"> </span><span class="n">topProducts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">database</span><span class="p">.</span><span class="na">getTopProducts</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Product</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">topProducts</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">        </span><span class="n">redis</span><span class="p">.</span><span class="na">setex</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="na">getId</span><span class="p">(),</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span><span class="w"> </span><span class="n">serialize</span><span class="p">(</span><span class="n">p</span><span class="p">));</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">    </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Cache warmed with {} products&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">topProducts</span><span class="p">.</span><span class="na">size</span><span class="p">());</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="p">}</span>
+</code></pre></div>
+<p>Now when users arrive, the top 100 products are already in the cache. The first requests are cache hits instead of misses.</p>
+<h3 id="real-scenario-e-commerce-sale">Real Scenario: E-commerce Sale<a class="headerlink" href="#real-scenario-e-commerce-sale" title="Permanent link">&para;</a></h3>
+<p><strong>Without warming:</strong> Sale starts at 10 AM. Cache is cold. First 10,000 users all get cache miss. Database gets 10,000 queries in the first second. Database struggles. Some requests time out.</p>
+<p><strong>With warming:</strong> At 9:30 AM, a job runs. It loads the top 500 sale products into the cache. At 10 AM, the first 10,000 users mostly hit the cache. Database is fine. Sale goes smoothly.</p>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cache</td>
+<td>Fast copy of slow data</td>
+</tr>
+<tr>
+<td>Cache Hit</td>
+<td>Data found in cache</td>
+</tr>
+<tr>
+<td>Cache Miss</td>
+<td>Data not in cache, fetch from DB</td>
+</tr>
+<tr>
+<td>TTL</td>
+<td>Auto-expire cached data</td>
+</tr>
+<tr>
+<td>Invalidation</td>
+<td>Removing/updating stale cache</td>
+</tr>
+<tr>
+<td>Stampede</td>
+<td>Many requests hit DB when one key expires</td>
+</tr>
+<tr>
+<td>Penetration</td>
+<td>Requests for non-existent data hit DB every time</td>
+</tr>
+<tr>
+<td>Avalanche</td>
+<td>Many keys expire at once, flood of DB queries</td>
+</tr>
+<tr>
+<td>Cold Cache</td>
+<td>Empty cache (app just started)</td>
+</tr>
+<tr>
+<td>Warm Cache</td>
+<td>Cache has data (app running normally)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>You have an API <code>/api/products</code> that gets 10,000 requests/minute. The product list updates once per hour. What TTL would you set? Why?</p>
+</li>
+<li>
+<p>A user updates their email. Which invalidation strategy would you use? Why?</p>
+</li>
+<li>
+<p>Your app just restarted. How would you handle the cold cache problem? Write a simple cache warming function in pseudocode.</p>
+</li>
+<li>
+<p>Calculate the hit ratio: 4500 hits, 500 misses. Is that good?</p>
+</li>
+<li>
+<p><strong>Scenario:</strong> An attacker is sending 1000 requests/second for <code>GET /user/999999</code> (user doesn't exist). How would you protect your database? Describe the solution.</p>
+</li>
+<li>
+<p><strong>Scenario:</strong> You cache 500 products with TTL = 1 hour. All keys were set at the same time. What problem might occur at the 1-hour mark? How would you prevent it?</p>
+</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../caching-patterns/">Caching Patterns</a> - Learn the standard caching strategies used in production.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

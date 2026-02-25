@@ -1,0 +1,2636 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/redis/memory-eviction/">
+      
+      
+        <link rel="prev" href="../ttl-expiration/">
+      
+      
+        <link rel="next" href="../caching-explained/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Memory & Eviction Policies - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#memory-eviction-policies" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Memory & Eviction Policies
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-fundamental-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Fundamental Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-much-memory-does-redis-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Much Memory Does Redis Use?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Much Memory Does Redis Use?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-per-data-type-approximate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory per data type (approximate)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-memory-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking memory usage
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-a-memory-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting a Memory Limit
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting a Memory Limit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-a-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set a limit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-much-should-you-allocate" class="md-nav__link">
+    <span class="md-ellipsis">
+      How much should you allocate?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-when-redis-hits-the-memory-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens When Redis Hits the Memory Limit?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eviction-policies-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eviction Policies Explained
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Eviction Policies Explained">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-noeviction-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. noeviction (Default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-allkeys-lru" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. allkeys-lru
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-allkeys-lfu-least-frequently-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. allkeys-lfu (Least Frequently Used)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-volatile-lru" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. volatile-lru
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-volatile-lfu" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. volatile-lfu
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-volatile-ttl" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. volatile-ttl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-allkeys-random" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. allkeys-random
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-volatile-random" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. volatile-random
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-choose-your-eviction-policy-decision-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Choose Your Eviction Policy: Decision Flowchart
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy Comparison Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-the-eviction-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting the Eviction Policy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-lru-actually-works-in-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      How LRU Actually Works in Redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How LRU Actually Works in Redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it works:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-approximation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why approximation?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-the-sample-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tuning the sample size:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-optimization-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Optimization Tips
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Optimization Tips">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-the-right-data-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Use the right data structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-use-short-key-names-in-high-volume-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Use short key names in high-volume scenarios
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-set-ttl-on-everything-thats-temporary" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Set TTL on everything that's temporary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-use-compression-for-large-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Use compression for large values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-monitor-regularly" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Monitor regularly
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-fragmentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Fragmentation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Fragmentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to check
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do-about-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What to do about it
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-memory-optimization-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Memory Optimization Techniques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis Memory Optimization Techniques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ziplist-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ziplist encoding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intset-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intset encoding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-and-sorted-set-ziplist" class="md-nav__link">
+    <span class="md-ellipsis">
+      List and Sorted Set ziplist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-vs-dedicated-redis-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shared vs dedicated Redis instances
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-scenario-debugging-memory-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: Debugging Memory Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real Scenario: Debugging Memory Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-check-overall-stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Check overall stats
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-find-the-biggest-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Find the biggest keys
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-check-fragmentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Check fragmentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-fix-the-culprits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Fix the culprits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Verify
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-scenario-e-commerce-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Scenario: E-Commerce Cache
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-fundamental-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Fundamental Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-much-memory-does-redis-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Much Memory Does Redis Use?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Much Memory Does Redis Use?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-per-data-type-approximate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory per data type (approximate)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-memory-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking memory usage
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-a-memory-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting a Memory Limit
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting a Memory Limit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set-a-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set a limit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-much-should-you-allocate" class="md-nav__link">
+    <span class="md-ellipsis">
+      How much should you allocate?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-when-redis-hits-the-memory-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens When Redis Hits the Memory Limit?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eviction-policies-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eviction Policies Explained
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Eviction Policies Explained">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-noeviction-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. noeviction (Default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-allkeys-lru" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. allkeys-lru
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-allkeys-lfu-least-frequently-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. allkeys-lfu (Least Frequently Used)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-volatile-lru" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. volatile-lru
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-volatile-lfu" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. volatile-lfu
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-volatile-ttl" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. volatile-ttl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-allkeys-random" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. allkeys-random
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-volatile-random" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. volatile-random
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-choose-your-eviction-policy-decision-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Choose Your Eviction Policy: Decision Flowchart
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy Comparison Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-the-eviction-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting the Eviction Policy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-lru-actually-works-in-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      How LRU Actually Works in Redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How LRU Actually Works in Redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it works:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-approximation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why approximation?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-the-sample-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tuning the sample size:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-optimization-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Optimization Tips
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Optimization Tips">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-the-right-data-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Use the right data structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-use-short-key-names-in-high-volume-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Use short key names in high-volume scenarios
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-set-ttl-on-everything-thats-temporary" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Set TTL on everything that's temporary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-use-compression-for-large-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Use compression for large values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-monitor-regularly" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Monitor regularly
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-fragmentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Fragmentation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Fragmentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to check
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do-about-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What to do about it
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-memory-optimization-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Memory Optimization Techniques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis Memory Optimization Techniques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ziplist-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ziplist encoding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intset-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intset encoding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-and-sorted-set-ziplist" class="md-nav__link">
+    <span class="md-ellipsis">
+      List and Sorted Set ziplist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-vs-dedicated-redis-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shared vs dedicated Redis instances
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-scenario-debugging-memory-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: Debugging Memory Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real Scenario: Debugging Memory Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-check-overall-stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Check overall stats
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-find-the-biggest-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Find the biggest keys
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-check-fragmentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Check fragmentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-fix-the-culprits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Fix the culprits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Verify
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-scenario-e-commerce-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Scenario: E-Commerce Cache
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="memory-eviction-policies">Memory &amp; Eviction Policies<a class="headerlink" href="#memory-eviction-policies" title="Permanent link">&para;</a></h1>
+<h2 id="the-fundamental-problem">The Fundamental Problem<a class="headerlink" href="#the-fundamental-problem" title="Permanent link">&para;</a></h2>
+<p>Redis stores everything in RAM. RAM is fast, but it's also <strong>limited and expensive</strong>. A typical server might have 16 GB, 32 GB, or 64 GB of RAM. What happens when Redis tries to store more data than your RAM can hold?</p>
+<p>If you don't plan for this, Redis will either crash your server (by consuming all available memory) or start rejecting writes. Neither is good.</p>
+<p>This page teaches you how Redis manages memory and what happens when it runs out.</p>
+<hr />
+<h2 id="how-much-memory-does-redis-use">How Much Memory Does Redis Use?<a class="headerlink" href="#how-much-memory-does-redis-use" title="Permanent link">&para;</a></h2>
+<p>Let's get a feel for the numbers.</p>
+<h3 id="memory-per-data-type-approximate">Memory per data type (approximate)<a class="headerlink" href="#memory-per-data-type-approximate" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>What you store</th>
+<th>Rough memory usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 simple string key-value (10-byte key, 10-byte value)</td>
+<td>~90 bytes</td>
+</tr>
+<tr>
+<td>1 million simple string key-values</td>
+<td>~90 MB</td>
+</tr>
+<tr>
+<td>1 Hash with 10 fields</td>
+<td>~200-500 bytes</td>
+</tr>
+<tr>
+<td>1 million Hashes with 10 fields each</td>
+<td>~400 MB</td>
+</tr>
+<tr>
+<td>1 Sorted Set with 100 members</td>
+<td>~5 KB</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">The overhead</p>
+<p>Redis has overhead per key — internal data structures, pointers, metadata. A 10-byte value doesn't take 10 bytes in Redis. It takes about 50-90 bytes total. This is why Redis can fill memory faster than you'd expect.</p>
+</div>
+<h3 id="checking-memory-usage">Checking memory usage<a class="headerlink" href="#checking-memory-usage" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>INFO<span class="w"> </span>memory
+</code></pre></div>
+<p>Key fields in the output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>used_memory: 1048576              # Bytes used by Redis (1 MB here)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>used_memory_human: 1.00M          # Human-readable
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>used_memory_peak: 2097152         # Peak memory usage
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>maxmemory: 0                      # 0 = no limit (dangerous!)
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>maxmemory_policy: noeviction      # What happens when full
+</code></pre></div>
+<p>To check a specific key's memory:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>MEMORY<span class="w"> </span>USAGE<span class="w"> </span>user:profile:42
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># (integer) 180    ← 180 bytes</span>
+</code></pre></div>
+<hr />
+<h2 id="setting-a-memory-limit">Setting a Memory Limit<a class="headerlink" href="#setting-a-memory-limit" title="Permanent link">&para;</a></h2>
+<p>By default, Redis has <strong>no memory limit</strong> (<code>maxmemory = 0</code>). It will use as much RAM as available. This is dangerous in production because Redis can consume all your server's RAM, causing the OS to kill it (OOM killer) or making other processes crash.</p>
+<h3 id="set-a-limit">Set a limit<a class="headerlink" href="#set-a-limit" title="Permanent link">&para;</a></h3>
+<p>In <code>redis.conf</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>maxmemory 2gb
+</code></pre></div>
+<p>Or at runtime:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>CONFIG<span class="w"> </span>SET<span class="w"> </span>maxmemory<span class="w"> </span>2gb
+</code></pre></div>
+<p>This tells Redis: "You can use up to 2 GB of RAM. Don't go beyond."</p>
+<h3 id="how-much-should-you-allocate">How much should you allocate?<a class="headerlink" href="#how-much-should-you-allocate" title="Permanent link">&para;</a></h3>
+<p>A good rule of thumb:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Redis memory = Total server RAM - OS needs - Other processes
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Example:
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  Server has 16 GB RAM
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  OS and other processes need ~4 GB
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  Redis gets: 12 GB max
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  But keep a buffer: set maxmemory to 10 GB
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Always set maxmemory in production</p>
+<p>Running Redis without <code>maxmemory</code> in production is like driving without brakes. Everything is fine until it isn't — and then it's a catastrophe.</p>
+</div>
+<hr />
+<h2 id="what-happens-when-redis-hits-the-memory-limit">What Happens When Redis Hits the Memory Limit?<a class="headerlink" href="#what-happens-when-redis-hits-the-memory-limit" title="Permanent link">&para;</a></h2>
+<p>This is where <strong>eviction policies</strong> come in. When Redis can't allocate memory for a new write because <code>maxmemory</code> has been reached, it checks the eviction policy to decide what to do.</p>
+<p>Think of it like a <strong>bookshelf that's full</strong>. You want to put a new book on it. What do you do?</p>
+<ul>
+<li><strong>Option 1:</strong> Refuse to add the new book. ("Sorry, shelf is full.")</li>
+<li><strong>Option 2:</strong> Remove the oldest book. ("This one hasn't been read in years.")</li>
+<li><strong>Option 3:</strong> Remove the least popular book. ("Nobody reads this one.")</li>
+<li><strong>Option 4:</strong> Remove a random book. ("Just grab any one.")</li>
+<li><strong>Option 5:</strong> Remove the book with the soonest "return by" date. ("This one's leaving soon anyway.")</li>
+</ul>
+<p>Redis has policies for each of these strategies.</p>
+<hr />
+<h2 id="eviction-policies-explained">Eviction Policies Explained<a class="headerlink" href="#eviction-policies-explained" title="Permanent link">&para;</a></h2>
+<h3 id="1-noeviction-default">1. <code>noeviction</code> (Default)<a class="headerlink" href="#1-noeviction-default" title="Permanent link">&para;</a></h3>
+<p><strong>What it does:</strong> When memory is full, Redis returns an error for any write command. Reads still work.</p>
+<p><strong>Analogy:</strong> The bookshelf is full. You say "Sorry, no more books." The library refuses to accept new books but lets people read existing ones.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Client: SET new:key &quot;value&quot;
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Redis: (error) OOM command not allowed when used memory &gt; &#39;maxmemory&#39;
+</code></pre></div>
+<p><strong>When to use:</strong> When you cannot afford to lose ANY data. You'd rather fail loudly than silently delete something important. Good for data stores, bad for caches.</p>
+<p><strong>When NOT to use:</strong> For caching. If your cache is full and can't accept new entries, what's the point? You want old stuff evicted to make room for new stuff.</p>
+<hr />
+<h3 id="2-allkeys-lru">2. <code>allkeys-lru</code><a class="headerlink" href="#2-allkeys-lru" title="Permanent link">&para;</a></h3>
+<p><strong>What it does:</strong> When memory is full, Redis evicts the <strong>Least Recently Used</strong> key across ALL keys. The key that hasn't been accessed for the longest time gets deleted.</p>
+<p><strong>Analogy:</strong> The bookshelf is full. You look at all the books and ask: "Which one hasn't been read in the longest time?" You remove that one and put the new book in its place.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Keys in Redis:
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  user:1   (last accessed 2 seconds ago)
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  user:2   (last accessed 5 minutes ago)
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  user:3   (last accessed 3 hours ago)     ← This one gets evicted
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  user:4   (last accessed 10 seconds ago)
+</code></pre></div>
+<p><strong>When to use:</strong> This is the <strong>best choice for caching</strong>. Most popular data stays. Rarely accessed data gets evicted. This is what the majority of Redis caching deployments use.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>If an interviewer asks "What eviction policy would you use for Redis caching?", answer: "I'd use <code>allkeys-lru</code>. It evicts the least recently used key, which naturally keeps the most popular data in cache. It's the standard choice for caching workloads."</p>
+</div>
+<hr />
+<h3 id="3-allkeys-lfu-least-frequently-used">3. <code>allkeys-lfu</code> (Least Frequently Used)<a class="headerlink" href="#3-allkeys-lfu-least-frequently-used" title="Permanent link">&para;</a></h3>
+<p><strong>What it does:</strong> Evicts the key that has been accessed the <strong>fewest total times</strong>. Not the oldest access, but the rarest access.</p>
+<p><strong>Analogy:</strong> The bookshelf is full. You look at how many times each book has been checked out in total. The book with the fewest checkouts gets removed.</p>
+<p><strong>LRU vs LFU — what's the difference?</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Scenario: Key A was accessed 1000 times but the last access was 1 hour ago.
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>          Key B was accessed 2 times but the last access was 1 second ago.
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>LRU evicts: Key A (because it was accessed less recently)
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>LFU evicts: Key B (because it was accessed less frequently)
+</code></pre></div>
+<p><strong>Concrete scenario:</strong> Imagine a news site. The homepage is accessed 10,000 times per hour. At 3 AM, traffic drops. Nobody visits for 30 minutes. With LRU, the homepage cache might get evicted (it wasn't accessed recently). When the morning rush hits at 8 AM, the first 1000 users get a cache miss—slow! With LFU, the homepage stays (it was accessed 10,000 times—high frequency). LFU protects your "hot" data even during quiet periods.</p>
+<p><strong>When to use:</strong> When some keys are consistently popular and you want to protect them. LFU is better than LRU when you have "hot" data that's always needed. LRU might accidentally evict a popular key during a brief quiet period.</p>
+<hr />
+<h3 id="4-volatile-lru">4. <code>volatile-lru</code><a class="headerlink" href="#4-volatile-lru" title="Permanent link">&para;</a></h3>
+<p><strong>What it does:</strong> Same as <code>allkeys-lru</code>, but ONLY considers keys that have a TTL (expiry) set. Keys without TTL are never evicted.</p>
+<p><strong>Analogy:</strong> The bookshelf is full. You only consider removing books that have a "return by" sticker. Books without stickers are permanent residents — they never get removed.</p>
+<p><strong>When to use:</strong> When you have a mix of permanent data and temporary/cache data in the same Redis instance. Permanent data (no TTL) stays safe. Cache data (with TTL) can be evicted if memory runs low.</p>
+<hr />
+<h3 id="5-volatile-lfu">5. <code>volatile-lfu</code><a class="headerlink" href="#5-volatile-lfu" title="Permanent link">&para;</a></h3>
+<p>Same as <code>volatile-lru</code>, but uses frequency instead of recency. Only evicts keys with TTL set, and chooses the one accessed least frequently.</p>
+<hr />
+<h3 id="6-volatile-ttl">6. <code>volatile-ttl</code><a class="headerlink" href="#6-volatile-ttl" title="Permanent link">&para;</a></h3>
+<p><strong>What it does:</strong> Evicts keys with the <strong>shortest remaining TTL</strong> first. The key closest to expiring gets deleted early.</p>
+<p><strong>Analogy:</strong> The bookshelf is full. You look at the "return by" dates and remove the book that's due back soonest. "You were leaving in 5 minutes anyway."</p>
+<p><strong>When to use:</strong> When you want to prioritize keeping data that was meant to last longer. Short-TTL data is considered less important.</p>
+<hr />
+<h3 id="7-allkeys-random">7. <code>allkeys-random</code><a class="headerlink" href="#7-allkeys-random" title="Permanent link">&para;</a></h3>
+<p><strong>What it does:</strong> Picks a random key and deletes it. No logic. No preference.</p>
+<p><strong>When to use:</strong> When all keys are equally important (or unimportant). Rarely used in practice.</p>
+<hr />
+<h3 id="8-volatile-random">8. <code>volatile-random</code><a class="headerlink" href="#8-volatile-random" title="Permanent link">&para;</a></h3>
+<p>Same as <code>allkeys-random</code>, but only considers keys with TTL set.</p>
+<hr />
+<h2 id="how-to-choose-your-eviction-policy-decision-flowchart">How to Choose Your Eviction Policy: Decision Flowchart<a class="headerlink" href="#how-to-choose-your-eviction-policy-decision-flowchart" title="Permanent link">&para;</a></h2>
+<p>Not sure which policy to use? Follow this logic:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Do you need to NEVER lose any data?
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  YES → noeviction (and ensure you have enough RAM!)
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>Is Redis used purely as a cache (data can be re-fetched)?
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  YES → allkeys-lru (most common) or allkeys-lfu (if you have &quot;hot&quot; data)
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>Do you have BOTH permanent data AND cache data in the same Redis?
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>  YES → volatile-lru or volatile-lfu (only evict keys with TTL)
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>Are all keys equally important (or unimportant)?
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  YES → allkeys-random (rare)
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>Do you want to evict short-TTL data first?
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>  YES → volatile-ttl
+</code></pre></div>
+<p><strong>Quick rule of thumb:</strong> For 90% of caching workloads, use <code>allkeys-lru</code>. It's the industry standard. Only deviate if you have a specific reason.</p>
+<hr />
+<h2 id="policy-comparison-table">Policy Comparison Table<a class="headerlink" href="#policy-comparison-table" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Considers</th>
+<th>Eviction Logic</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>noeviction</code></td>
+<td>None</td>
+<td>Rejects writes</td>
+<td>Data that must not be lost</td>
+</tr>
+<tr>
+<td><code>allkeys-lru</code></td>
+<td>All keys</td>
+<td>Least recently used</td>
+<td><strong>Caching (most common)</strong></td>
+</tr>
+<tr>
+<td><code>allkeys-lfu</code></td>
+<td>All keys</td>
+<td>Least frequently used</td>
+<td>Caching with hot data</td>
+</tr>
+<tr>
+<td><code>volatile-lru</code></td>
+<td>Keys with TTL</td>
+<td>Least recently used</td>
+<td>Mixed data + cache</td>
+</tr>
+<tr>
+<td><code>volatile-lfu</code></td>
+<td>Keys with TTL</td>
+<td>Least frequently used</td>
+<td>Mixed data, protect hot keys</td>
+</tr>
+<tr>
+<td><code>volatile-ttl</code></td>
+<td>Keys with TTL</td>
+<td>Shortest TTL first</td>
+<td>Prioritize long-lived data</td>
+</tr>
+<tr>
+<td><code>allkeys-random</code></td>
+<td>All keys</td>
+<td>Random</td>
+<td>All keys equally important</td>
+</tr>
+<tr>
+<td><code>volatile-random</code></td>
+<td>Keys with TTL</td>
+<td>Random</td>
+<td>Rarely used</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="setting-the-eviction-policy">Setting the Eviction Policy<a class="headerlink" href="#setting-the-eviction-policy" title="Permanent link">&para;</a></h2>
+<p>In <code>redis.conf</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>maxmemory-policy allkeys-lru
+</code></pre></div>
+<p>At runtime:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>CONFIG<span class="w"> </span>SET<span class="w"> </span>maxmemory-policy<span class="w"> </span>allkeys-lru
+</code></pre></div>
+<p>Check the current policy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>CONFIG<span class="w"> </span>GET<span class="w"> </span>maxmemory-policy
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># 1) &quot;maxmemory-policy&quot;</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1"># 2) &quot;allkeys-lru&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="how-lru-actually-works-in-redis">How LRU Actually Works in Redis<a class="headerlink" href="#how-lru-actually-works-in-redis" title="Permanent link">&para;</a></h2>
+<p>Here's something that surprises people: Redis does <strong>not</strong> implement a true LRU. A true LRU would require tracking access time for every key, which uses a lot of memory. Instead, Redis uses an <strong>approximated LRU</strong>.</p>
+<h3 id="how-it-works">How it works:<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<ol>
+<li>When Redis needs to evict, it picks <strong>N random keys</strong> (default: 5).</li>
+<li>Among those N keys, it evicts the one with the oldest access time.</li>
+<li>That's it. Not the globally oldest key — just the oldest among a random sample.</li>
+</ol>
+<h3 id="why-approximation">Why approximation?<a class="headerlink" href="#why-approximation" title="Permanent link">&para;</a></h3>
+<p>True LRU requires maintaining a linked list of all keys sorted by access time. For millions of keys, this is expensive (in memory and CPU). The approximation is close enough to real LRU for most use cases and uses almost no extra memory.</p>
+<h3 id="tuning-the-sample-size">Tuning the sample size:<a class="headerlink" href="#tuning-the-sample-size" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>maxmemory-samples 10
+</code></pre></div>
+<p>Higher = more accurate (closer to true LRU) but slightly slower. Default of 5 is good for most workloads.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"Redis doesn't implement exact LRU — it uses an approximated LRU that samples a configurable number of keys and evicts the least recently used among the sample. This keeps memory overhead low while being accurate enough for caching."</p>
+</div>
+<hr />
+<h2 id="memory-optimization-tips">Memory Optimization Tips<a class="headerlink" href="#memory-optimization-tips" title="Permanent link">&para;</a></h2>
+<h3 id="1-use-the-right-data-structure">1. Use the right data structure<a class="headerlink" href="#1-use-the-right-data-structure" title="Permanent link">&para;</a></h3>
+<p>Hashes with small fields are more memory-efficient than many individual string keys.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Wasteful: 3 keys</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>SET<span class="w"> </span>user:42:name<span class="w"> </span><span class="s2">&quot;Satjit&quot;</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>SET<span class="w"> </span>user:42:age<span class="w"> </span><span class="s2">&quot;25&quot;</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>SET<span class="w"> </span>user:42:city<span class="w"> </span><span class="s2">&quot;Delhi&quot;</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># = ~270 bytes (3 keys × 90 bytes overhead each)</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1"># Better: 1 Hash</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>HSET<span class="w"> </span>user:42<span class="w"> </span>name<span class="w"> </span><span class="s2">&quot;Satjit&quot;</span><span class="w"> </span>age<span class="w"> </span><span class="s2">&quot;25&quot;</span><span class="w"> </span>city<span class="w"> </span><span class="s2">&quot;Delhi&quot;</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1"># = ~200 bytes (1 key overhead + compact field storage)</span>
+</code></pre></div>
+<h3 id="2-use-short-key-names-in-high-volume-scenarios">2. Use short key names in high-volume scenarios<a class="headerlink" href="#2-use-short-key-names-in-high-volume-scenarios" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Readable but long:</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>SET<span class="w"> </span>user:profile:session:token:abc123<span class="w"> </span><span class="s2">&quot;data&quot;</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># Shorter (saves bytes × millions of keys):</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>SET<span class="w"> </span>u:s:abc123<span class="w"> </span><span class="s2">&quot;data&quot;</span>
+</code></pre></div>
+<p>In most cases, readability matters more. But if you have 100 million keys, those extra bytes add up.</p>
+<h3 id="3-set-ttl-on-everything-thats-temporary">3. Set TTL on everything that's temporary<a class="headerlink" href="#3-set-ttl-on-everything-thats-temporary" title="Permanent link">&para;</a></h3>
+<p>Data without TTL stays forever. If you're using Redis as a cache, every key should have a TTL. Otherwise, your cache fills up and never makes room for new data.</p>
+<h3 id="4-use-compression-for-large-values">4. Use compression for large values<a class="headerlink" href="#4-use-compression-for-large-values" title="Permanent link">&para;</a></h3>
+<p>If you're storing large JSON blobs, compress them before storing:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">compressed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compress</span><span class="p">(</span><span class="n">jsonString</span><span class="p">);</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">redis</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="s">&quot;data:large&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">compressed</span><span class="p">,</span><span class="w"> </span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMinutes</span><span class="p">(</span><span class="mi">30</span><span class="p">));</span>
+</code></pre></div>
+<h3 id="5-monitor-regularly">5. Monitor regularly<a class="headerlink" href="#5-monitor-regularly" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>INFO<span class="w"> </span>memory<span class="w">              </span><span class="c1"># Overall memory stats</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>DBSIZE<span class="w">                   </span><span class="c1"># Number of keys</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>MEMORY<span class="w"> </span>USAGE<span class="w"> </span>&lt;key&gt;<span class="w">       </span><span class="c1"># Size of a specific key</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>MEMORY<span class="w"> </span>DOCTOR<span class="w">            </span><span class="c1"># Redis memory health check</span>
+</code></pre></div>
+<hr />
+<h2 id="memory-fragmentation">Memory Fragmentation<a class="headerlink" href="#memory-fragmentation" title="Permanent link">&para;</a></h2>
+<p>Sometimes Redis uses more RAM than the actual data size. That's <strong>memory fragmentation</strong>.</p>
+<h3 id="what-is-it">What is it?<a class="headerlink" href="#what-is-it" title="Permanent link">&para;</a></h3>
+<p>When you add and delete keys over time, Redis allocates and frees memory. The memory allocator (jemalloc or libc) can leave "gaps"—small chunks of free memory that aren't big enough to reuse. Redis thinks it's using 4 GB, but only 3 GB of that is actual data. The rest is wasted.</p>
+<p><strong>Analogy:</strong> Imagine a parking lot. Cars leave and new cars arrive. Over time, you might have small gaps—one car space here, two there—but no space for a bus. The lot is "fragmented." You have free space, but it's not usable for large allocations.</p>
+<h3 id="how-to-check">How to check<a class="headerlink" href="#how-to-check" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>INFO<span class="w"> </span>memory
+</code></pre></div>
+<p>Look at these fields:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>used_memory: 1048576000              # What Redis thinks it&#39;s using
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>used_memory_rss: 1572864000          # What the OS reports (actual RAM)
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>mem_fragmentation_ratio: 1.5         # used_memory_rss / used_memory
+</code></pre></div>
+<p><strong>mem_fragmentation_ratio</strong> tells the story:</p>
+<ul>
+<li><strong>1.0</strong> = Perfect. No fragmentation.</li>
+<li><strong>1.0–1.5</strong> = Normal. Slight fragmentation acceptable.</li>
+<li><strong>&gt; 1.5</strong> = High fragmentation. Redis is using more RAM than needed.</li>
+<li><strong>&lt; 1.0</strong> = Redis is using swap (disk). Very bad for performance.</li>
+</ul>
+<h3 id="what-to-do-about-it">What to do about it<a class="headerlink" href="#what-to-do-about-it" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Restart Redis</strong> (careful in production). A fresh start clears fragmentation.</li>
+<li><strong>Set <code>activedefrag yes</code></strong> (Redis 4+). Redis will periodically defragment in the background.</li>
+<li><strong>Avoid frequent small key churn.</strong> If you're constantly creating and deleting tiny keys, fragmentation grows. Use Hashes to group small data instead.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Fragmentation ratio &gt; 2</p>
+<p>If you see mem_fragmentation_ratio above 2, Redis is wasting a lot of RAM. Consider restarting during a low-traffic window or enabling activedefrag.</p>
+</div>
+<hr />
+<h2 id="redis-memory-optimization-techniques">Redis Memory Optimization Techniques<a class="headerlink" href="#redis-memory-optimization-techniques" title="Permanent link">&para;</a></h2>
+<p>Beyond the basics, here are more ways to squeeze more data into less RAM.</p>
+<h3 id="ziplist-encoding">Ziplist encoding<a class="headerlink" href="#ziplist-encoding" title="Permanent link">&para;</a></h3>
+<p>Redis internally uses "ziplists" for small data structures. A ziplist is a compact, serialized format. Less overhead than full data structures.</p>
+<p>For <strong>Hashes</strong>, Redis uses ziplist when:
+- The hash has few fields (default: ≤ 512)
+- Each field value is small (default: ≤ 64 bytes)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># redis.conf</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>hash-max-ziplist-entries<span class="w"> </span><span class="m">512</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>hash-max-ziplist-value<span class="w"> </span><span class="m">64</span>
+</code></pre></div>
+<p>If you have many small hashes (e.g., user profiles with 5–10 fields), they'll use ziplist and save memory. If you increase these limits, Redis might switch to a full hash table—more memory per key.</p>
+<h3 id="intset-encoding">Intset encoding<a class="headerlink" href="#intset-encoding" title="Permanent link">&para;</a></h3>
+<p>For <strong>Sets</strong> with only integers, Redis uses a special "intset" format. Much smaller than a hash table.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># redis.conf</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>set-max-intset-entries<span class="w"> </span><span class="m">512</span>
+</code></pre></div>
+<p>If your set has ≤ 512 integers, Redis uses intset. Above that, it switches to a hash table. For "user IDs who liked this post" (integer IDs), this saves a lot.</p>
+<h3 id="list-and-sorted-set-ziplist">List and Sorted Set ziplist<a class="headerlink" href="#list-and-sorted-set-ziplist" title="Permanent link">&para;</a></h3>
+<p>Similar for Lists and Sorted Sets:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>list-max-ziplist-entries<span class="w"> </span><span class="m">512</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>list-max-ziplist-value<span class="w"> </span><span class="m">64</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>zset-max-ziplist-entries<span class="w"> </span><span class="m">128</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>zset-max-ziplist-value<span class="w"> </span><span class="m">64</span>
+</code></pre></div>
+<h3 id="shared-vs-dedicated-redis-instances">Shared vs dedicated Redis instances<a class="headerlink" href="#shared-vs-dedicated-redis-instances" title="Permanent link">&para;</a></h3>
+<p><strong>Option A:</strong> One Redis instance for cache, sessions, queues, and more.<br />
+<strong>Option B:</strong> Separate Redis instances per use case.</p>
+<p><strong>Shared:</strong> Simpler. Fewer connections. But one noisy app can evict another app's cache. And you can't tune memory per workload.</p>
+<p><strong>Dedicated:</strong> More control. Cache gets its own eviction policy. Sessions get their own. But more connections, more instances to manage.</p>
+<div class="admonition tip">
+<p class="admonition-title">When to split</p>
+<p>If you have distinct workloads (e.g., cache vs session vs real-time), consider separate instances. If you're small, one instance is fine.</p>
+</div>
+<hr />
+<h2 id="real-scenario-debugging-memory-issues">Real Scenario: Debugging Memory Issues<a class="headerlink" href="#real-scenario-debugging-memory-issues" title="Permanent link">&para;</a></h2>
+<p>Your Redis is using 80% of maxmemory. Alerts are firing. How do you debug?</p>
+<h3 id="step-1-check-overall-stats">Step 1: Check overall stats<a class="headerlink" href="#step-1-check-overall-stats" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>INFO<span class="w"> </span>memory
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>DBSIZE
+</code></pre></div>
+<p>Note <code>used_memory</code>, <code>maxmemory</code>, <code>mem_fragmentation_ratio</code>, and total key count.</p>
+<h3 id="step-2-find-the-biggest-keys">Step 2: Find the biggest keys<a class="headerlink" href="#step-2-find-the-biggest-keys" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>redis-cli<span class="w"> </span>--bigkeys
+</code></pre></div>
+<p>This scans the database and reports the largest keys by type. Example output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>-------- summary -------
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>Sampled 100000 keys in the keyspace!
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>Total key length in bytes is 1000000 (avg len 10.00)
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>Biggest string found &#39;cache:product:12345&#39; has 524288 bytes
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>Biggest hash found &#39;user:42&#39; has 50 fields
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>Biggest list found &#39;task_queue&#39; has 10000 items
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>Biggest set found &#39;online_users&#39; has 5000 members
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>Biggest zset found &#39;leaderboard&#39; has 100000 members
+</code></pre></div>
+<p>Now you know what's eating memory. Maybe one cache key is huge. Maybe a list is unbounded.</p>
+<h3 id="step-3-check-fragmentation">Step 3: Check fragmentation<a class="headerlink" href="#step-3-check-fragmentation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>INFO<span class="w"> </span>memory
+</code></pre></div>
+<p>If <code>mem_fragmentation_ratio</code> &gt; 1.5, fragmentation is part of the problem. Consider <code>activedefrag yes</code> or a restart.</p>
+<h3 id="step-4-fix-the-culprits">Step 4: Fix the culprits<a class="headerlink" href="#step-4-fix-the-culprits" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Big string:</strong> Maybe you're caching a huge JSON. Compress it or split it.</li>
+<li><strong>Big list:</strong> Add <code>LTRIM</code> to cap size. Or use a TTL.</li>
+<li><strong>Big set:</strong> Consider HyperLogLog if you only need approximate count.</li>
+<li><strong>Big hash:</strong> Check if you're storing too many fields. Consider splitting.</li>
+</ul>
+<h3 id="step-5-verify">Step 5: Verify<a class="headerlink" href="#step-5-verify" title="Permanent link">&para;</a></h3>
+<p>After fixes, run <code>INFO memory</code> and <code>--bigkeys</code> again. Memory should drop.</p>
+<div class="admonition info">
+<p class="admonition-title">MEMORY DOCTOR</p>
+<p>Run <code>MEMORY DOCTOR</code> for Redis's built-in health check. It suggests fixes based on your current state.</p>
+</div>
+<hr />
+<h2 id="real-world-scenario-e-commerce-cache">Real-World Scenario: E-Commerce Cache<a class="headerlink" href="#real-world-scenario-e-commerce-cache" title="Permanent link">&para;</a></h2>
+<p>You're running an e-commerce site. Redis is your cache. Here's how you'd configure it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>maxmemory 4gb
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>maxmemory-policy allkeys-lru
+</code></pre></div>
+<p><strong>What happens during a normal day:</strong></p>
+<ul>
+<li>50,000 product pages are cached. Redis uses 2 GB. Plenty of room.</li>
+<li>Popular products (top 500) are accessed thousands of times. They stay in cache.</li>
+<li>Unpopular products (long tail) are accessed rarely. They naturally sit at the bottom of the LRU list.</li>
+</ul>
+<p><strong>What happens during a flash sale:</strong></p>
+<ul>
+<li>200,000 products get cached as traffic spikes. Redis fills up to 4 GB.</li>
+<li><code>allkeys-lru</code> kicks in. It evicts old, rarely-accessed product pages.</li>
+<li>The flash sale products (currently popular) stay in cache.</li>
+<li>After the sale, traffic normalizes. New data fills the cache. Old sale data gets evicted.</li>
+</ul>
+<p>The system self-regulates. No manual intervention needed.</p>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>maxmemory</code></td>
+<td>Maximum RAM Redis can use</td>
+</tr>
+<tr>
+<td>Eviction</td>
+<td>Deleting old data to make room for new data</td>
+</tr>
+<tr>
+<td><code>noeviction</code></td>
+<td>Reject writes when full (default)</td>
+</tr>
+<tr>
+<td><code>allkeys-lru</code></td>
+<td>Evict least recently used. <strong>Best for caching</strong></td>
+</tr>
+<tr>
+<td><code>allkeys-lfu</code></td>
+<td>Evict least frequently used</td>
+</tr>
+<tr>
+<td><code>volatile-*</code></td>
+<td>Only evicts keys that have TTL set</td>
+</tr>
+<tr>
+<td>Approximate LRU</td>
+<td>Redis samples N random keys, evicts oldest among them</td>
+</tr>
+<tr>
+<td><code>maxmemory-samples</code></td>
+<td>How many keys to sample (default: 5)</td>
+</tr>
+<tr>
+<td>Best practice</td>
+<td>Set <code>maxmemory</code> + <code>allkeys-lru</code> for caching workloads</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Set <code>maxmemory</code> to <code>10mb</code> on your local Redis. Fill it with data. What error do you get?</li>
+<li>Change policy to <code>allkeys-lru</code>. Fill Redis again. What happens now?</li>
+<li>Store 5 keys. Access only 2 of them repeatedly. Fill Redis to the limit. Which keys survive?</li>
+<li>Check <code>INFO memory</code> and note <code>used_memory</code> vs <code>maxmemory</code>.</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../caching-explained/">Caching Explained</a> — The #1 reason Redis exists in most backends.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

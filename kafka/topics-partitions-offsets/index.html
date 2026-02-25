@@ -1,0 +1,2741 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/topics-partitions-offsets/">
+      
+      
+        <link rel="prev" href="../kafka-architecture/">
+      
+      
+        <link rel="next" href="../producers-consumers/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Topics, Partitions & Offsets - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#topics-partitions-offsets" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Topics, Partitions & Offsets
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-page-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Page Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics-where-messages-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics: Where Messages Live
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topics: Where Messages Live">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is a Topic?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-topics-work-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Topics Work in Practice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic Properties
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partitions-the-secret-to-kafkas-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partitions: The Secret to Kafka's Speed
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Partitions: The Secret to Kafka's Speed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is a Partition?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-do-partitions-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Do Partitions Exist?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-messages-get-assigned-to-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Messages Get Assigned to Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-keys-matter-the-ordering-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Keys Matter: The Ordering Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-many-partitions-should-i-create" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Many Partitions Should I Create?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#throughput-calculation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Throughput Calculation Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offsets-your-bookmark-in-the-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offsets: Your Bookmark in the Stream
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offsets: Your Bookmark in the Stream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-offset" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is an Offset?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-bookmark-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Bookmark Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-consumers-use-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Consumers Use Offsets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-during-a-consumer-crash" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens During a Consumer Crash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offset-reset-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offset Reset Policies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-all-together-the-full-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Putting It All Together: The Full Picture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewing-topics-partitions-and-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Viewing Topics, Partitions, and Offsets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Viewing Topics, Partitions, and Offsets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-all-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      List all topics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#describe-a-topic-shows-partitions-replicas-leaders" class="md-nav__link">
+    <span class="md-ellipsis">
+      Describe a topic (shows partitions, replicas, leaders)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-consumer-offsets-how-far-along-consumers-are" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check consumer offsets (how far along consumers are)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-compaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Compaction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log Compaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-log-compaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is Log Compaction?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partition-reassignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partition Reassignment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Partition Reassignment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-you-add-brokers" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens When You Add Brokers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-reassign-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Reassign Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-during-reassignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens During Reassignment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topic-configuration-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic Configuration Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topic Configuration Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#retention-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retention Settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#segment-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Segment Settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-creating-a-production-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Creating a Production Topic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-questions-mini-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Questions (Mini-FAQ)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Questions (Mini-FAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#can-i-delete-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I Delete a Topic?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-reduce-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I Reduce Partitions?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-to-offsets-when-i-add-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens to Offsets When I Add Partitions?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-change-the-key-of-a-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I Change the Key of a Message?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-if-a-consumer-reads-from-a-partition-that-gets-reassigned" class="md-nav__link">
+    <span class="md-ellipsis">
+      What If a Consumer Reads from a Partition That Gets Reassigned?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-know-what-offset-to-start-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Do I Know What Offset to Start From?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-page-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Page Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics-where-messages-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics: Where Messages Live
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topics: Where Messages Live">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is a Topic?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-topics-work-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Topics Work in Practice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic Properties
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partitions-the-secret-to-kafkas-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partitions: The Secret to Kafka's Speed
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Partitions: The Secret to Kafka's Speed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is a Partition?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-do-partitions-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Do Partitions Exist?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-messages-get-assigned-to-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Messages Get Assigned to Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-keys-matter-the-ordering-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Keys Matter: The Ordering Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-many-partitions-should-i-create" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Many Partitions Should I Create?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#throughput-calculation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Throughput Calculation Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offsets-your-bookmark-in-the-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offsets: Your Bookmark in the Stream
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offsets: Your Bookmark in the Stream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-offset" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is an Offset?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-bookmark-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Bookmark Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-consumers-use-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Consumers Use Offsets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-during-a-consumer-crash" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens During a Consumer Crash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offset-reset-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offset Reset Policies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-all-together-the-full-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Putting It All Together: The Full Picture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewing-topics-partitions-and-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Viewing Topics, Partitions, and Offsets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Viewing Topics, Partitions, and Offsets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-all-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      List all topics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#describe-a-topic-shows-partitions-replicas-leaders" class="md-nav__link">
+    <span class="md-ellipsis">
+      Describe a topic (shows partitions, replicas, leaders)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-consumer-offsets-how-far-along-consumers-are" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check consumer offsets (how far along consumers are)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#log-compaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Compaction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log Compaction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-log-compaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is Log Compaction?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partition-reassignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partition Reassignment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Partition Reassignment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-you-add-brokers" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens When You Add Brokers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-reassign-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Reassign Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-during-reassignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens During Reassignment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topic-configuration-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic Configuration Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topic Configuration Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#retention-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retention Settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#segment-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Segment Settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-creating-a-production-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Creating a Production Topic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-questions-mini-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Questions (Mini-FAQ)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Questions (Mini-FAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#can-i-delete-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I Delete a Topic?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-reduce-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I Reduce Partitions?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-to-offsets-when-i-add-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens to Offsets When I Add Partitions?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-change-the-key-of-a-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I Change the Key of a Message?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-if-a-consumer-reads-from-a-partition-that-gets-reassigned" class="md-nav__link">
+    <span class="md-ellipsis">
+      What If a Consumer Reads from a Partition That Gets Reassigned?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-know-what-offset-to-start-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Do I Know What Offset to Start From?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="topics-partitions-offsets">Topics, Partitions &amp; Offsets<a class="headerlink" href="#topics-partitions-offsets" title="Permanent link">&para;</a></h1>
+<h2 id="why-this-page-matters">Why This Page Matters<a class="headerlink" href="#why-this-page-matters" title="Permanent link">&para;</a></h2>
+<p>These three concepts — Topics, Partitions, and Offsets — are the foundation of Kafka. If you don't understand them deeply, everything else (producers, consumers, scaling, replication) will feel confusing. This page takes it slow and makes each concept crystal clear.</p>
+<hr />
+<h2 id="topics-where-messages-live">Topics: Where Messages Live<a class="headerlink" href="#topics-where-messages-live" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-a-topic">What Is a Topic?<a class="headerlink" href="#what-is-a-topic" title="Permanent link">&para;</a></h3>
+<p>A <strong>topic</strong> is a named category for messages. Think of it as a <strong>TV channel</strong> or a <strong>folder</strong> in your email.</p>
+<ul>
+<li>The "Sports" channel only shows sports news.</li>
+<li>The "orders" topic only holds order events.</li>
+<li>The "payments" topic only holds payment events.</li>
+</ul>
+<p>You decide what topics to create based on what kinds of events your system produces.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>payments<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>notifications<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<h3 id="how-topics-work-in-practice">How Topics Work in Practice<a class="headerlink" href="#how-topics-work-in-practice" title="Permanent link">&para;</a></h3>
+<p>Imagine you're building Swiggy. When different things happen in your system, events go to different topics:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Topic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User places an order</td>
+<td><code>orders</code></td>
+</tr>
+<tr>
+<td>Payment is processed</td>
+<td><code>payments</code></td>
+</tr>
+<tr>
+<td>Driver gets assigned</td>
+<td><code>driver-assignments</code></td>
+</tr>
+<tr>
+<td>User gets a notification</td>
+<td><code>notifications</code></td>
+</tr>
+<tr>
+<td>User clicks on a restaurant</td>
+<td><code>user-activity</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each topic is <strong>independent</strong>. Producing to the <code>orders</code> topic doesn't affect the <code>payments</code> topic. Consumers subscribe to the topics they care about.</p>
+<h3 id="topic-properties">Topic Properties<a class="headerlink" href="#topic-properties" title="Permanent link">&para;</a></h3>
+<p>When you create a topic, you configure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--partitions<span class="w"> </span><span class="m">6</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>--replication-factor<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>--config<span class="w"> </span>retention.ms<span class="o">=</span><span class="m">604800000</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>What It Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>partitions</code></td>
+<td>How many pieces to split the topic into (parallelism)</td>
+</tr>
+<tr>
+<td><code>replication-factor</code></td>
+<td>How many copies of each partition (durability)</td>
+</tr>
+<tr>
+<td><code>retention.ms</code></td>
+<td>How long to keep messages (604800000 ms = 7 days)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Key Insight</p>
+<p>Topics are logical. You don't create them on a specific server. Kafka distributes the topic's partitions across all brokers in the cluster automatically.</p>
+</div>
+<hr />
+<h2 id="partitions-the-secret-to-kafkas-speed">Partitions: The Secret to Kafka's Speed<a class="headerlink" href="#partitions-the-secret-to-kafkas-speed" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-a-partition">What Is a Partition?<a class="headerlink" href="#what-is-a-partition" title="Permanent link">&para;</a></h3>
+<p>A partition is a <strong>sub-division</strong> of a topic. When you create a topic with 3 partitions, Kafka splits the topic into 3 independent logs.</p>
+<h3 id="why-do-partitions-exist">Why Do Partitions Exist?<a class="headerlink" href="#why-do-partitions-exist" title="Permanent link">&para;</a></h3>
+<p>Think about a <strong>highway</strong>. If a highway has 1 lane, only 1 car can pass at a time. Traffic jam.</p>
+<p>Now add 6 lanes. 6 cars can pass in parallel. Much faster.</p>
+<p>Partitions are Kafka's lanes. More partitions = more messages processed in parallel = higher throughput.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Topic &quot;orders&quot; with 1 partition:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>┌──────────────────────────────────────────┐
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│ Partition 0: [msg1][msg2][msg3][msg4]... │  ← Everything in one lane. Bottleneck.
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>└──────────────────────────────────────────┘
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Topic &quot;orders&quot; with 3 partitions:
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>┌──────────────────────────┐
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│ Partition 0: [msg1][msg4][msg7]...  │  ← 3 lanes.
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>├──────────────────────────┤
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│ Partition 1: [msg2][msg5][msg8]...  │  ← 3 consumers can read
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>├──────────────────────────┤             in parallel!
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>│ Partition 2: [msg3][msg6][msg9]...  │
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>└──────────────────────────┘
+</code></pre></div>
+<h3 id="how-messages-get-assigned-to-partitions">How Messages Get Assigned to Partitions<a class="headerlink" href="#how-messages-get-assigned-to-partitions" title="Permanent link">&para;</a></h3>
+<p>When a producer sends a message, Kafka must decide which partition to put it in. There are two scenarios:</p>
+<p><strong>Scenario 1: No key provided</strong> → Round-robin</p>
+<p>Messages are distributed evenly across partitions. Message 1 goes to Partition 0, Message 2 to Partition 1, Message 3 to Partition 2, Message 4 back to Partition 0, and so on.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Producer sends: msg1, msg2, msg3, msg4, msg5, msg6
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Partition 0: [msg1] [msg4]
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Partition 1: [msg2] [msg5]
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Partition 2: [msg3] [msg6]
+</code></pre></div>
+<p><strong>Scenario 2: Key provided</strong> → Hash-based</p>
+<p>Kafka hashes the key and maps it to a partition: <code>hash(key) % numPartitions</code>. The same key ALWAYS goes to the same partition.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Producer sends messages with keys:
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>key=&quot;order-100&quot; → hash(&quot;order-100&quot;) % 3 = 1 → Partition 1
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>key=&quot;order-200&quot; → hash(&quot;order-200&quot;) % 3 = 0 → Partition 0
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>key=&quot;order-100&quot; → hash(&quot;order-100&quot;) % 3 = 1 → Partition 1  (same as before!)
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>key=&quot;order-300&quot; → hash(&quot;order-300&quot;) % 3 = 2 → Partition 2
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>key=&quot;order-100&quot; → hash(&quot;order-100&quot;) % 3 = 1 → Partition 1  (always Partition 1!)
+</code></pre></div>
+<h3 id="why-keys-matter-the-ordering-problem">Why Keys Matter: The Ordering Problem<a class="headerlink" href="#why-keys-matter-the-ordering-problem" title="Permanent link">&para;</a></h3>
+<p>This is critical. Within a single partition, messages are <strong>strictly ordered</strong>. Across partitions, there is <strong>no ordering guarantee</strong>.</p>
+<p><strong>Without keys (round-robin):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Events for order #100:
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  1. ORDER_CREATED   → Partition 0
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  2. PAYMENT_SUCCESS → Partition 2
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  3. ORDER_SHIPPED   → Partition 1
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Consumer might process: PAYMENT_SUCCESS → ORDER_SHIPPED → ORDER_CREATED
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>That&#39;s out of order! Payment before creation? 😱
+</code></pre></div>
+<p><strong>With keys (key = orderId):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Events for order #100 (key = &quot;order-100&quot;):
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  1. ORDER_CREATED   → Partition 1
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  2. PAYMENT_SUCCESS → Partition 1
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  3. ORDER_SHIPPED   → Partition 1
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>All in the same partition → Processed in order ✅
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"Kafka guarantees ordering within a partition, not across partitions. To maintain order for related events, use a message key. For example, using orderId as the key ensures all events for the same order go to the same partition and are processed in sequence."</p>
+</div>
+<h3 id="how-many-partitions-should-i-create">How Many Partitions Should I Create?<a class="headerlink" href="#how-many-partitions-should-i-create" title="Permanent link">&para;</a></h3>
+<p>This is a common question. Here's a practical framework:</p>
+<table>
+<thead>
+<tr>
+<th>Throughput Needed</th>
+<th>Partitions</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low (&lt; 1,000 msg/sec)</td>
+<td>3-6</td>
+<td>Enough for basic workloads</td>
+</tr>
+<tr>
+<td>Medium (1,000-10,000 msg/sec)</td>
+<td>6-12</td>
+<td>Room to add consumers</td>
+</tr>
+<tr>
+<td>High (10,000-100,000 msg/sec)</td>
+<td>12-30</td>
+<td>Parallel processing power</td>
+</tr>
+<tr>
+<td>Very High (&gt; 100,000 msg/sec)</td>
+<td>30-100+</td>
+<td>Enterprise scale</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb:</strong> Start with <code>max(number of consumers you expect, 6)</code>. You can always add more partitions later, but you <strong>cannot reduce</strong> them.</p>
+<div class="admonition warning">
+<p class="admonition-title">Caution</p>
+<p>More partitions = more resources (file handles, memory, replication traffic). Don't set 100 partitions for a topic that gets 10 messages a day. Start small, scale as needed.</p>
+</div>
+<h3 id="throughput-calculation-example">Throughput Calculation Example<a class="headerlink" href="#throughput-calculation-example" title="Permanent link">&para;</a></h3>
+<p>Let's say you need to process 50,000 messages per second. Each message is 1 KB. Your consumer can process 500 messages per second per partition.</p>
+<p><strong>Throughput:</strong> 50,000 msg/sec<br />
+<strong>Consumer capacity:</strong> 500 msg/sec per partition<br />
+<strong>Partitions needed:</strong> 50,000 / 500 = <strong>100 partitions</strong></p>
+<p>If you have 10 consumers, each can handle 10 partitions. 10 × 500 × 10 = 50,000. You're good.</p>
+<p>If you only have 20 partitions: 20 × 500 = 10,000 msg/sec max. You're short. Add more partitions. Or optimize your consumer to process faster.</p>
+<p><strong>Reverse calculation:</strong> You have 100 partitions. Each consumer handles 1,000 msg/sec. 100 × 1,000 = 100,000 msg/sec theoretical max. Your producer can't exceed that without creating backpressure.</p>
+<hr />
+<h2 id="offsets-your-bookmark-in-the-stream">Offsets: Your Bookmark in the Stream<a class="headerlink" href="#offsets-your-bookmark-in-the-stream" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-an-offset">What Is an Offset?<a class="headerlink" href="#what-is-an-offset" title="Permanent link">&para;</a></h3>
+<p>An <strong>offset</strong> is a unique number assigned to each message within a partition. It's like a <strong>page number</strong> in a book. Offset 0 is the first message. Offset 1 is the second. And so on.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Partition 0:
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>┌─────────┬─────────┬─────────┬─────────┬─────────┐
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>│Offset 0 │Offset 1 │Offset 2 │Offset 3 │Offset 4 │
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>│ &quot;Order  │ &quot;Order  │ &quot;Order  │ &quot;Order  │ &quot;Order  │
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>│  placed&quot;│  paid&quot;  │  shipped│  placed&quot;│  paid&quot;  │
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>└─────────┴─────────┴─────────┴─────────┴─────────┘
+</code></pre></div>
+<p>Key facts about offsets:</p>
+<ul>
+<li>Offsets are <strong>unique per partition</strong>. Partition 0 has its own offset 0, and Partition 1 has its own offset 0. They're independent.</li>
+<li>Offsets are <strong>sequential and immutable</strong>. They only go up. You can't insert a message at offset 2 after offset 4 already exists.</li>
+<li>Offsets are <strong>never reused</strong>. Even if old messages are deleted (retention), the numbering continues. If offset 0-99 are deleted, the next message is still offset 100, not offset 0.</li>
+</ul>
+<h3 id="the-bookmark-analogy">The Bookmark Analogy<a class="headerlink" href="#the-bookmark-analogy" title="Permanent link">&para;</a></h3>
+<p>Think of reading a long book over several days.</p>
+<p><strong>Day 1:</strong> You read pages 1-50. You put a bookmark at page 50.</p>
+<p><strong>Day 2:</strong> You pick up the book, see the bookmark, and start at page 51. You read to page 120. Move the bookmark.</p>
+<p><strong>Day 3:</strong> You start at page 121.</p>
+<p>That bookmark is the <strong>consumer offset</strong>. It tracks "where did I stop reading?" If you close the book (consumer crashes) and open it later (consumer restarts), you find the bookmark and continue from there. You don't re-read the whole book.</p>
+<h3 id="how-consumers-use-offsets">How Consumers Use Offsets<a class="headerlink" href="#how-consumers-use-offsets" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Partition 0: [Off 0] [Off 1] [Off 2] [Off 3] [Off 4] [Off 5] ...
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>                                        ↑
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>                              Consumer&#39;s committed offset = 3
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>                              &quot;I&#39;ve processed messages 0, 1, 2, 3&quot;
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>                              Next poll returns messages 4, 5, ...
+</code></pre></div>
+<p>When a consumer starts up:</p>
+<ol>
+<li><strong>First time ever?</strong> → Start from <code>auto.offset.reset</code> setting (<code>earliest</code> = beginning, <code>latest</code> = now)</li>
+<li><strong>Has a committed offset?</strong> → Resume from where it left off</li>
+</ol>
+<h3 id="what-happens-during-a-consumer-crash">What Happens During a Consumer Crash<a class="headerlink" href="#what-happens-during-a-consumer-crash" title="Permanent link">&para;</a></h3>
+<p>Let's trace through a scenario:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Step 1: Consumer starts, reads offset 0, 1, 2
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Step 2: Consumer commits offset 2 to Kafka (&quot;I&#39;m done up to offset 2&quot;)
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Step 3: Consumer reads offset 3, 4
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>Step 4: Consumer CRASHES before committing
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Step 5: Consumer restarts
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>Step 6: Kafka says &quot;Your last committed offset was 2&quot;
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>Step 7: Consumer re-reads offset 3, 4 (messages processed again!)
+</code></pre></div>
+<p>This is why offset management matters. If you commit too early, you might skip messages. If you commit too late (or crash before committing), you might process messages twice.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"If a consumer crashes before committing its offset, it will re-read messages from the last committed offset when it restarts. This is the at-least-once delivery guarantee. To handle this, I make my consumers idempotent — they check if a message was already processed before processing it again."</p>
+</div>
+<h3 id="offset-reset-policies">Offset Reset Policies<a class="headerlink" href="#offset-reset-policies" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>When</th>
+<th>What Happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>earliest</code></td>
+<td>New consumer group, no prior offset</td>
+<td>Reads ALL messages from the very beginning</td>
+</tr>
+<tr>
+<td><code>latest</code></td>
+<td>New consumer group, no prior offset</td>
+<td>Reads only NEW messages (from now onward)</td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>No prior offset</td>
+<td>Throws an error (forces explicit handling)</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># In application.yml or consumer config:</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="na">auto.offset.reset</span><span class="o">=</span><span class="s">earliest</span>
+</code></pre></div>
+<p>Choose <code>earliest</code> when you can't afford to miss any messages (order processing). Choose <code>latest</code> when you only care about new events (live dashboard).</p>
+<hr />
+<h2 id="putting-it-all-together-the-full-picture">Putting It All Together: The Full Picture<a class="headerlink" href="#putting-it-all-together-the-full-picture" title="Permanent link">&para;</a></h2>
+<p>Let's trace one complete scenario to see Topics, Partitions, and Offsets working together.</p>
+<p><strong>Setup:</strong> Topic <code>orders</code> with 3 partitions.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Step 1: Producer sends order event
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>        key = &quot;order-100&quot;, value = &#39;{&quot;action&quot;:&quot;CREATED&quot;,&quot;amount&quot;:5000}&#39;
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Step 2: Kafka computes partition
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>        hash(&quot;order-100&quot;) % 3 = Partition 1
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>Step 3: Message appended to Partition 1
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>        Partition 1: [...existing messages...] [Offset 47: ORDER_CREATED]
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>Step 4: Consumer (in group &quot;order-processors&quot;) assigned to Partition 1
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>        Consumer polls → gets message at Offset 47
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>Step 5: Consumer processes the message
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>        &quot;Order 100 created. Save to database.&quot;
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>Step 6: Consumer commits offset 47
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>        Kafka records: &quot;Group &#39;order-processors&#39;, Partition 1, offset = 47&quot;
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>Step 7: Producer sends another event for the same order
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>        key = &quot;order-100&quot; → Partition 1 again → Offset 48: PAYMENT_SUCCESS
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>Step 8: Same consumer reads Offset 48 (same partition!)
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>        &quot;Order 100 paid. Update status.&quot;
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>        Ordering guaranteed because both events are in Partition 1 ✅
+</code></pre></div>
+<hr />
+<h2 id="viewing-topics-partitions-and-offsets">Viewing Topics, Partitions, and Offsets<a class="headerlink" href="#viewing-topics-partitions-and-offsets" title="Permanent link">&para;</a></h2>
+<h3 id="list-all-topics">List all topics<a class="headerlink" href="#list-all-topics" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kafka-topics<span class="w"> </span>--list<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<h3 id="describe-a-topic-shows-partitions-replicas-leaders">Describe a topic (shows partitions, replicas, leaders)<a class="headerlink" href="#describe-a-topic-shows-partitions-replicas-leaders" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kafka-topics<span class="w"> </span>--describe<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Topic: orders   PartitionCount: 3   ReplicationFactor: 2
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  Topic: orders   Partition: 0   Leader: 1   Replicas: 1,2   ISR: 1,2
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  Topic: orders   Partition: 1   Leader: 2   Replicas: 2,3   ISR: 2,3
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>  Topic: orders   Partition: 2   Leader: 3   Replicas: 3,1   ISR: 3,1
+</code></pre></div>
+<h3 id="check-consumer-offsets-how-far-along-consumers-are">Check consumer offsets (how far along consumers are)<a class="headerlink" href="#check-consumer-offsets-how-far-along-consumers-are" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kafka-consumer-groups<span class="w"> </span>--describe<span class="w"> </span>--group<span class="w"> </span>order-processors<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>GROUP             TOPIC   PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>order-processors  orders  0          450             450             0
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>order-processors  orders  1          380             385             5
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>order-processors  orders  2          420             420             0
+</code></pre></div>
+<p><code>LAG</code> = how many unread messages. Partition 1 has 5 messages the consumer hasn't processed yet.</p>
+<hr />
+<h2 id="log-compaction">Log Compaction<a class="headerlink" href="#log-compaction" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-log-compaction">What Is Log Compaction?<a class="headerlink" href="#what-is-log-compaction" title="Permanent link">&para;</a></h3>
+<p>By default, Kafka keeps messages for a time period (retention) or until the log reaches a size limit. Then it deletes old messages. <strong>Log compaction</strong> is different. It keeps the <strong>latest value per key</strong>. Old values for the same key are deleted. The log becomes a compacted "changelog" — one message per key, with the most recent value.</p>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<p>Imagine a topic with user profile updates:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Offset 0: key=&quot;user-42&quot;, value={&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:25}
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>Offset 1: key=&quot;user-99&quot;, value={&quot;name&quot;:&quot;Bob&quot;,&quot;age&quot;:30}
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Offset 2: key=&quot;user-42&quot;, value={&quot;name&quot;:&quot;Alice Smith&quot;,&quot;age&quot;:26}  ← Updated
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>Offset 3: key=&quot;user-42&quot;, value={&quot;name&quot;:&quot;Alice Smith&quot;,&quot;age&quot;:27}  ← Updated again
+</code></pre></div>
+<p>With <strong>delete</strong> retention (default): All four messages stay until retention expires.</p>
+<p>With <strong>compact</strong> retention: Kafka keeps only the latest value per key. After compaction, you might have:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>key=&quot;user-42&quot; → {&quot;name&quot;:&quot;Alice Smith&quot;,&quot;age&quot;:27}  (latest)
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>key=&quot;user-99&quot; → {&quot;name&quot;:&quot;Bob&quot;,&quot;age&quot;:30}
+</code></pre></div>
+<p>Old values for user-42 are gone. The log is compacted. You still have the full history until compaction runs. Compaction runs periodically in the background.</p>
+<h3 id="when-to-use">When to Use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Changelog topics:</strong> User profiles, product catalog, configuration. You want the current state per key.</p>
+</li>
+<li>
+<p><strong>State management:</strong> Kafka Streams uses compacted topics for state stores. You need "latest value per key" to rebuild state.</p>
+</li>
+<li>
+<p><strong>Deduplication:</strong> If you have multiple updates for the same entity, compaction keeps only the latest.</p>
+</li>
+</ul>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Create a compacted topic</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>user-profiles<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span>--config<span class="w"> </span>cleanup.policy<span class="o">=</span>compact<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span>--config<span class="w"> </span>min.cleanable.dirty.ratio<span class="o">=</span><span class="m">0</span>.5<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Config</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cleanup.policy=compact</code></td>
+<td>Use compaction instead of delete</td>
+</tr>
+<tr>
+<td><code>min.cleanable.dirty.ratio</code></td>
+<td>When 50% of the log is "dirty" (has old values), run compaction</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Keys Are Required</p>
+<p>Log compaction only works when messages have keys. Without a key, Kafka can't determine "latest per key." Always use keys for compacted topics.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Not for Event Streams</p>
+<p>Don't use compaction for order events, payment events, or click streams. You need the full history. Compaction is for "current state" topics.</p>
+</div>
+<hr />
+<h2 id="partition-reassignment">Partition Reassignment<a class="headerlink" href="#partition-reassignment" title="Permanent link">&para;</a></h2>
+<h3 id="what-happens-when-you-add-brokers">What Happens When You Add Brokers<a class="headerlink" href="#what-happens-when-you-add-brokers" title="Permanent link">&para;</a></h3>
+<p>You start with 3 brokers. Your topic has 6 partitions. Each broker leads 2 partitions. You add 2 more brokers. Now you have 5 brokers. Kafka does <strong>not</strong> automatically move partitions to the new brokers. The new brokers sit idle. The old brokers still have all the load.</p>
+<p>To balance the load, you must <strong>reassign</strong> partitions. Move some partitions from the old brokers to the new ones.</p>
+<h3 id="how-to-reassign-partitions">How to Reassign Partitions<a class="headerlink" href="#how-to-reassign-partitions" title="Permanent link">&para;</a></h3>
+<p>Use the <code>kafka-reassign-partitions</code> tool. You need a reassignment plan (JSON file) that specifies which partition goes to which broker.</p>
+<p><strong>Step 1:</strong> Create a reassignment plan. You can generate one automatically:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Generate a plan to move all partitions of topic &quot;orders&quot; across brokers 1,2,3,4,5</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>kafka-reassign-partitions<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span>--generate<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span>--broker-list<span class="w"> </span><span class="m">1</span>,2,3,4,5<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span>--topics-to-move-json-file<span class="w"> </span>topics-to-move.json
+</code></pre></div>
+<p>The <code>topics-to-move.json</code> file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span><span class="nt">&quot;topics&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;topic&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orders&quot;</span><span class="p">}],</span><span class="w"> </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span>
+</code></pre></div>
+<p>This outputs a proposed reassignment. Save it to <code>reassignment.json</code>.</p>
+<p><strong>Step 2:</strong> Execute the reassignment:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kafka-reassign-partitions<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span>--execute<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span>--reassignment-json-file<span class="w"> </span>reassignment.json
+</code></pre></div>
+<p><strong>Step 3:</strong> Verify progress:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kafka-reassign-partitions<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span>--verify<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span>--reassignment-json-file<span class="w"> </span>reassignment.json
+</code></pre></div>
+<p>When it says "Reassignment of partition orders-0 is complete," you're done.</p>
+<h3 id="what-happens-during-reassignment">What Happens During Reassignment<a class="headerlink" href="#what-happens-during-reassignment" title="Permanent link">&para;</a></h3>
+<ol>
+<li>The new broker (leader) starts replicating the partition from the old leader.</li>
+<li>Data is copied. This can take a while for large topics.</li>
+<li>Once the new replica is in sync, the leader changes. The old broker stops serving that partition.</li>
+<li>Consumer groups continue reading. They might see a brief pause during the leader switch.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Plan for Downtime</p>
+<p>Reassignment can take hours for large topics. Monitor progress. Ensure you have enough disk and network capacity on the new brokers.</p>
+</div>
+<hr />
+<h2 id="topic-configuration-deep-dive">Topic Configuration Deep Dive<a class="headerlink" href="#topic-configuration-deep-dive" title="Permanent link">&para;</a></h2>
+<p>When you create a topic, you configure how it behaves. Here are the most important settings.</p>
+<h3 id="retention-settings">Retention Settings<a class="headerlink" href="#retention-settings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Config</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>retention.ms</code></td>
+<td>168 (7 days)</td>
+<td>How long to keep messages before deleting</td>
+</tr>
+<tr>
+<td><code>retention.bytes</code></td>
+<td>-1 (unlimited)</td>
+<td>Max total size of the log before deleting old segments</td>
+</tr>
+</tbody>
+</table>
+<p>Use one or the other. Kafka deletes when either limit is hit. For a 7-day retention: <code>retention.ms=604800000</code>.</p>
+<h3 id="segment-settings">Segment Settings<a class="headerlink" href="#segment-settings" title="Permanent link">&para;</a></h3>
+<p>Kafka splits the log into segments (files). Each segment is a file on disk.</p>
+<table>
+<thead>
+<tr>
+<th>Config</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>segment.ms</code></td>
+<td>604800000 (7 days)</td>
+<td>Rotate to a new segment after this many ms</td>
+</tr>
+<tr>
+<td><code>segment.bytes</code></td>
+<td>1 GB</td>
+<td>Rotate when segment reaches this size</td>
+</tr>
+</tbody>
+</table>
+<p>Smaller segments = compaction and deletion can run more often. Larger segments = fewer files, but slower cleanup.</p>
+<h3 id="message-size">Message Size<a class="headerlink" href="#message-size" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Config</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max.message.bytes</code></td>
+<td>1048588 (~1 MB)</td>
+<td>Max size of a single message</td>
+</tr>
+</tbody>
+</table>
+<p>If your producer sends a 2 MB message, the broker rejects it. Increase this if you need larger messages. But large messages hurt throughput. Prefer smaller messages when possible.</p>
+<h3 id="compression">Compression<a class="headerlink" href="#compression" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Config</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>compression.type</code></td>
+<td>producer</td>
+<td>Use producer's compression. Or set <code>gzip</code>, <code>snappy</code>, <code>lz4</code>, <code>zstd</code></td>
+</tr>
+</tbody>
+</table>
+<p>Compression saves disk and network. <code>lz4</code> and <code>zstd</code> are fast and efficient. <code>gzip</code> is slower but compresses more.</p>
+<h3 id="example-creating-a-production-topic">Example: Creating a Production Topic<a class="headerlink" href="#example-creating-a-production-topic" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span>--partitions<span class="w"> </span><span class="m">12</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span>--replication-factor<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span>--config<span class="w"> </span>retention.ms<span class="o">=</span><span class="m">604800000</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">  </span>--config<span class="w"> </span>segment.bytes<span class="o">=</span><span class="m">1073741824</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">  </span>--config<span class="w"> </span>max.message.bytes<span class="o">=</span><span class="m">2097152</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">  </span>--config<span class="w"> </span>compression.type<span class="o">=</span>lz4<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<hr />
+<h2 id="common-questions-mini-faq">Common Questions (Mini-FAQ)<a class="headerlink" href="#common-questions-mini-faq" title="Permanent link">&para;</a></h2>
+<h3 id="can-i-delete-a-topic">Can I Delete a Topic?<a class="headerlink" href="#can-i-delete-a-topic" title="Permanent link">&para;</a></h3>
+<p>Yes. But it's not immediate. Kafka marks the topic for deletion. The actual deletion happens in the background. You can also set <code>delete.topic.enable=true</code> on the broker (it's true by default in recent versions).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kafka-topics<span class="w"> </span>--delete<span class="w"> </span>--topic<span class="w"> </span>old-topic<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Permanent</p>
+<p>Deleting a topic removes all data. There is no undo. Make sure you really want to delete it.</p>
+</div>
+<h3 id="can-i-reduce-partitions">Can I Reduce Partitions?<a class="headerlink" href="#can-i-reduce-partitions" title="Permanent link">&para;</a></h3>
+<p><strong>No.</strong> Kafka does not support reducing the number of partitions. Once you create a topic with 10 partitions, it stays at 10. You can only add more. Plan ahead.</p>
+<h3 id="what-happens-to-offsets-when-i-add-partitions">What Happens to Offsets When I Add Partitions?<a class="headerlink" href="#what-happens-to-offsets-when-i-add-partitions" title="Permanent link">&para;</a></h3>
+<p>When you add partitions, existing offsets are unchanged. New partitions start at offset 0. Consumer groups get reassigned. Some consumers might get new partitions. They'll start from <code>auto.offset.reset</code> (earliest or latest) for those new partitions. Existing partitions keep their committed offsets.</p>
+<h3 id="can-i-change-the-key-of-a-message">Can I Change the Key of a Message?<a class="headerlink" href="#can-i-change-the-key-of-a-message" title="Permanent link">&para;</a></h3>
+<p>No. Once a message is in the log, it's immutable. You can't change the key, value, or partition. The only way to "fix" data is to produce a new message (e.g., a correction event) and have consumers handle both.</p>
+<h3 id="what-if-a-consumer-reads-from-a-partition-that-gets-reassigned">What If a Consumer Reads from a Partition That Gets Reassigned?<a class="headerlink" href="#what-if-a-consumer-reads-from-a-partition-that-gets-reassigned" title="Permanent link">&para;</a></h3>
+<p>During reassignment, the consumer might be told to stop reading from partition X. It fetches from the new partition. It uses the committed offset. Kafka handles this. The consumer might see a brief pause during the rebalance.</p>
+<h3 id="how-do-i-know-what-offset-to-start-from">How Do I Know What Offset to Start From?<a class="headerlink" href="#how-do-i-know-what-offset-to-start-from" title="Permanent link">&para;</a></h3>
+<p>For a new consumer group: Use <code>auto.offset.reset=earliest</code> to read from the beginning. Use <code>latest</code> to read only new messages. For an existing group: Kafka uses the committed offset. The consumer resumes from where it left off.</p>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>What It Is</th>
+<th>Analogy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Topic</td>
+<td>Named category for messages</td>
+<td>TV channel</td>
+</tr>
+<tr>
+<td>Partition</td>
+<td>Sub-division of a topic</td>
+<td>Lane on a highway</td>
+</tr>
+<tr>
+<td>Offset</td>
+<td>Position number of a message in a partition</td>
+<td>Page number in a book</td>
+</tr>
+<tr>
+<td>Message Key</td>
+<td>Determines which partition a message goes to</td>
+<td>Last name determining which queue at the DMV</td>
+</tr>
+<tr>
+<td>No key</td>
+<td>Round-robin distribution</td>
+<td>Taking turns</td>
+</tr>
+<tr>
+<td>With key</td>
+<td>Hash-based, same key = same partition</td>
+<td>Same key = same lane, always</td>
+</tr>
+<tr>
+<td>Ordering</td>
+<td>Guaranteed within a partition only</td>
+<td>Pages in a book are ordered. Books on different shelves are not.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Create a topic <code>test-events</code> with 4 partitions.</li>
+<li>Send 10 messages without keys. Use <code>kafka-console-consumer</code> to see which partition each goes to.</li>
+<li>Send 10 messages with key <code>"user-1"</code>. Verify they all go to the same partition.</li>
+<li>Use <code>kafka-consumer-groups --describe</code> to see your consumer's current offset and lag.</li>
+<li>Stop the consumer, send 5 more messages, restart. Verify it picks up from where it left off.</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../producers-consumers/">Producers &amp; Consumers</a> — How to send and receive messages.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

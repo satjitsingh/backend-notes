@@ -1,0 +1,2963 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/redis/data-structures/">
+      
+      
+        <link rel="prev" href="../redis-basics/">
+      
+      
+        <link rel="next" href="../ttl-expiration/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Data Structures - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#redis-data-structures" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Data Structures
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Strings
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Strings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-strings-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Strings Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-building-a-page-view-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Building a Page View Counter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-string-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More String Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Strings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Lists
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-lists-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Lists Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-looks" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Looks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-building-a-task-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Building a Task Queue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-list-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More List Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Lists
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Sets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Sets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-sets-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Sets Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-building-an-online-users-tracker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Building an "Online Users" Tracker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-set-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More Set Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Sets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-hashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Hashes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Hashes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-hashes-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Hashes Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-looks_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Looks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-storing-a-user-profile-and-why-its-better-than-json-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Storing a User Profile (and Why It's Better Than JSON String)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-hash-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More Hash Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-hashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Hashes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-sorted-sets-zsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Sorted Sets (ZSets)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Sorted Sets (ZSets)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-sorted-sets-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Sorted Sets Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-building-a-gaming-leaderboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Building a Gaming Leaderboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-sorted-set-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More Sorted Set Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-sorted-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Sorted Sets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-bitmaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Bitmaps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Bitmaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-bitmaps-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Bitmaps Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-daily-active-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Daily Active Users
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-hyperloglog" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. HyperLogLog
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. HyperLogLog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-hyperloglog-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why HyperLogLog Exists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-unique-visitors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Unique Visitors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-redis-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Redis Streams
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Redis Streams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-streams-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Streams Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-streams-vs-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use Streams vs Lists
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-the-right-data-structure-decision-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing the Right Data Structure: Decision Flowchart
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing the Right Data Structure: Decision Flowchart">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#detailed-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detailed Scenarios
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-when-to-use-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison: When to Use What
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Strings
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Strings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-strings-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Strings Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-building-a-page-view-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Building a Page View Counter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-string-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More String Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Strings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Lists
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-lists-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Lists Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-looks" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Looks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-building-a-task-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Building a Task Queue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-list-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More List Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Lists
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Sets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Sets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-sets-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Sets Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-building-an-online-users-tracker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Building an "Online Users" Tracker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-set-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More Set Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Sets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-hashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Hashes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Hashes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-hashes-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Hashes Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-looks_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Looks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-storing-a-user-profile-and-why-its-better-than-json-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Storing a User Profile (and Why It's Better Than JSON String)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-hash-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More Hash Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-hashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Hashes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-sorted-sets-zsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Sorted Sets (ZSets)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Sorted Sets (ZSets)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-sorted-sets-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Sorted Sets Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-building-a-gaming-leaderboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Building a Gaming Leaderboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-sorted-set-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      More Sorted Set Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-sorted-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to use Sorted Sets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-bitmaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Bitmaps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Bitmaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-bitmaps-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Bitmaps Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-daily-active-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Daily Active Users
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-hyperloglog" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. HyperLogLog
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. HyperLogLog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-hyperloglog-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why HyperLogLog Exists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands-explained_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-walkthrough-unique-visitors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Walkthrough: Unique Visitors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-redis-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Redis Streams
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Redis Streams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-streams-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Streams Exist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-streams-vs-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use Streams vs Lists
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-the-right-data-structure-decision-flowchart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing the Right Data Structure: Decision Flowchart
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing the Right Data Structure: Decision Flowchart">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#detailed-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detailed Scenarios
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-when-to-use-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison: When to Use What
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="redis-data-structures">Redis Data Structures<a class="headerlink" href="#redis-data-structures" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Redis is not just a simple key-value store. It supports <strong>rich data structures</strong>. This is what makes Redis powerful—you're not limited to storing flat strings. You can store lists, sets, hashes, and sorted sets, each optimized for different problems.</p>
+<p>Think of it like this:</p>
+<ul>
+<li><strong>String</strong> = a single sticky note</li>
+<li><strong>List</strong> = a stack of papers (ordered, can have duplicates)</li>
+<li><strong>Set</strong> = a bag of unique marbles (no duplicates, unordered)</li>
+<li><strong>Hash</strong> = a mini dictionary (key-value pairs inside one key)</li>
+<li><strong>Sorted Set</strong> = a scoreboard (unique items, sorted by score)</li>
+<li><strong>Bitmap</strong> = a row of light switches (each position is 0 or 1)</li>
+<li><strong>HyperLogLog</strong> = a smart counter (estimates unique count in tiny space)</li>
+<li><strong>Stream</strong> = a log or message queue (append-only, consumer groups)</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌──────────────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│              Redis Data Types                │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│                                              │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  String    &quot;hello&quot;                           │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  List      [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]                  │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  Set       {&quot;x&quot;, &quot;y&quot;, &quot;z&quot;}  (unique)        │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  Hash      {name: &quot;Raj&quot;, age: &quot;25&quot;}         │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  Sorted    {(&quot;Raj&quot;,100), (&quot;Anu&quot;,200)}       │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  Set       (unique + sorted by score)        │
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  Bitmap    [0,1,0,1,1,...]  (bits)          │
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  HyperLogLog  ~5.2M unique (approx)         │
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  Stream    msg1 → msg2 → msg3 (log)         │
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>└──────────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>Why should you care?</strong> Picking the right data structure makes your code simpler and faster. Use a List when you need order. Use a Set when you need uniqueness. Use a Sorted Set when you need both uniqueness and ranking. Let's walk through each one with real stories.</p>
+<hr />
+<h2 id="1-strings">1. Strings<a class="headerlink" href="#1-strings" title="Permanent link">&para;</a></h2>
+<p>The <strong>simplest</strong> type. A key holds a single value—a string, a number, or even JSON. When you need to store one thing under one name, use a String.</p>
+<h3 id="why-strings-exist">Why Strings Exist<a class="headerlink" href="#why-strings-exist" title="Permanent link">&para;</a></h3>
+<p>Strings are the foundation. Every other type is built on top of this idea: a key maps to a value. Use Strings when you're caching a single API response, storing an OTP, or counting something.</p>
+<p><strong>Time complexity:</strong> <code>SET</code>, <code>GET</code>, <code>INCR</code>, <code>DECR</code> are all <strong>O(1)</strong>—constant time. <code>APPEND</code> and <code>STRLEN</code> are also O(1).</p>
+<h3 id="commands-explained">Commands Explained<a class="headerlink" href="#commands-explained" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SET<span class="w"> </span>greeting<span class="w"> </span><span class="s2">&quot;Hello World&quot;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>GET<span class="w"> </span>greeting<span class="w">                    </span><span class="c1"># &quot;Hello World&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Numbers work too (Redis stores them as strings but treats them as numbers for INCR)</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>SET<span class="w"> </span>counter<span class="w"> </span><span class="m">10</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>INCR<span class="w"> </span>counter<span class="w">                    </span><span class="c1"># 11</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>DECR<span class="w"> </span>counter<span class="w">                    </span><span class="c1"># 10</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>INCRBY<span class="w"> </span>counter<span class="w"> </span><span class="m">5</span><span class="w">                </span><span class="c1"># 15</span>
+</code></pre></div>
+<p><strong>SET</strong> stores a value. <strong>GET</strong> retrieves it. <strong>INCR</strong> increments a numeric value by 1—and here's the magic: it's <strong>atomic</strong>. Even if 1000 users hit <code>INCR page:views</code> at the same time, the count will be correct. No race conditions. No locks. Redis handles it.</p>
+<h3 id="real-world-walkthrough-building-a-page-view-counter">Real-World Walkthrough: Building a Page View Counter<a class="headerlink" href="#real-world-walkthrough-building-a-page-view-counter" title="Permanent link">&para;</a></h3>
+<p>Let's build a page view counter step by step. You have a blog, and you want to know how many people viewed the homepage.</p>
+<p><strong>Step 1:</strong> When the page loads, your app runs <code>INCR page:home:views</code>.</p>
+<p><strong>What happens behind the scenes?</strong> Redis looks up the key <code>page:home:views</code>. If it doesn't exist, Redis treats it as 0, increments it to 1, and stores it. If it exists, Redis adds 1 to the current value.</p>
+<p><strong>Step 2:</strong> User 2 visits. <code>INCR page:home:views</code> → 2. User 3 visits. → 3. And so on.</p>
+<p><strong>Step 3:</strong> To display the count, you run <code>GET page:home:views</code>. You get <code>"12345"</code> (or whatever the count is).</p>
+<p><strong>Why use a String with INCR instead of storing a JSON object?</strong> Because INCR is atomic. If you stored <code>{"views": 12345}</code> and tried to increment it in your application code, two requests could read 12345 at the same time, both add 1, and both write 12346. You'd lose a count. With INCR, Redis does it in one atomic operation.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p><code>INCR</code> is <strong>atomic</strong>. Even if 1000 users hit it at the same time, the count will be correct. No race condition.</p>
+</div>
+<h3 id="more-string-use-cases">More String Use Cases<a class="headerlink" href="#more-string-use-cases" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Cache an API response</strong>: <code>SET "api:/users/1" "{name: Raj}" EX 3600</code></li>
+<li><strong>OTP storage</strong>: <code>SETEX "otp:9876543210" 300 "481923"</code></li>
+<li><strong>Feature flags</strong>: <code>SET "feature:dark_mode" "true"</code> — check this before rendering the UI</li>
+</ul>
+<h3 id="when-not-to-use-strings">When NOT to use Strings<a class="headerlink" href="#when-not-to-use-strings" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Don't use Strings for objects with many fields.</strong> Use a Hash instead. Updating one field in a JSON string requires GET + parse + modify + SET. With a Hash, you just HSET one field.</li>
+<li><strong>Don't store large blobs.</strong> Images, videos, or huge JSON (&gt;100 KB) waste RAM. Use object storage and store only a reference in Redis.</li>
+<li><strong>Don't use Strings when you need uniqueness.</strong> For "unique visitors," a Set or HyperLogLog is better. A String can't enforce uniqueness.</li>
+</ul>
+<hr />
+<h2 id="2-lists">2. Lists<a class="headerlink" href="#2-lists" title="Permanent link">&para;</a></h2>
+<p>A <strong>List</strong> is an ordered collection of strings. You can push items to the left or right, and pop from the left or right. Think of it as a queue (FIFO—first in, first out) or a stack (LIFO—last in, first out).</p>
+<h3 id="why-lists-exist">Why Lists Exist<a class="headerlink" href="#why-lists-exist" title="Permanent link">&para;</a></h3>
+<p>Sometimes you need order. A task queue: the first task added should be processed first. A chat history: messages should appear in the order they were sent. An activity feed: newest first. Lists give you that.</p>
+<p><strong>Time complexity:</strong> <code>LPUSH</code>, <code>RPUSH</code>, <code>LPOP</code>, <code>RPOP</code> are <strong>O(1)</strong>. <code>LRANGE start end</code> is <strong>O(S+N)</strong> where S is the start offset and N is the number of elements returned. So <code>LRANGE mylist 0 99</code> is fine. <code>LRANGE mylist 0 999999</code> on a million-item list is slow—avoid it.</p>
+<h3 id="commands-explained_1">Commands Explained<a class="headerlink" href="#commands-explained_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Push to the left (front)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>LPUSH<span class="w"> </span>tasks<span class="w"> </span><span class="s2">&quot;send email&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>LPUSH<span class="w"> </span>tasks<span class="w"> </span><span class="s2">&quot;process payment&quot;</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Push to the right (back)</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>RPUSH<span class="w"> </span>tasks<span class="w"> </span><span class="s2">&quot;generate report&quot;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1"># See all items</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>LRANGE<span class="w"> </span>tasks<span class="w"> </span><span class="m">0</span><span class="w"> </span>-1
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># 1) &quot;process payment&quot;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="c1"># 2) &quot;send email&quot;</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="c1"># 3) &quot;generate report&quot;</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1"># Pop from left</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>LPOP<span class="w"> </span>tasks<span class="w">                      </span><span class="c1"># &quot;process payment&quot;</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="c1"># Pop from right</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>RPOP<span class="w"> </span>tasks<span class="w">                      </span><span class="c1"># &quot;generate report&quot;</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="c1"># Length</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>LLEN<span class="w"> </span>tasks<span class="w">                      </span><span class="c1"># 1</span>
+</code></pre></div>
+<p><strong>LPUSH</strong> adds to the front. <strong>RPUSH</strong> adds to the back. <strong>LRANGE 0 -1</strong> means "give me items from index 0 to the last" (i.e., everything). <strong>LPOP</strong> removes and returns the first item. <strong>RPOP</strong> removes and returns the last item.</p>
+<h3 id="how-it-looks">How It Looks<a class="headerlink" href="#how-it-looks" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>LPUSH ──▶ [ &quot;process payment&quot;, &quot;send email&quot;, &quot;generate report&quot; ] ◀── RPUSH
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>LPOP  ◀──                                                        ──▶ RPOP
+</code></pre></div>
+<h3 id="real-world-walkthrough-building-a-task-queue">Real-World Walkthrough: Building a Task Queue<a class="headerlink" href="#real-world-walkthrough-building-a-task-queue" title="Permanent link">&para;</a></h3>
+<p>Imagine you're building a background job system. You have workers that process tasks. Tasks are added by users (e.g., "send this email", "generate this report"). Workers pick tasks one by one.</p>
+<p><strong>Step 1:</strong> A user submits "send email". Your app runs <code>LPUSH task_queue "send_email:user_42"</code>. The task goes to the front of the list.</p>
+<p><strong>Step 2:</strong> Another user submits "process payment". <code>LPUSH task_queue "process_payment:order_101"</code>. Now the list has two items: <code>["process_payment:order_101", "send_email:user_42"]</code>.</p>
+<p><strong>Step 3:</strong> A worker wakes up. It runs <code>RPOP task_queue</code>. It gets <code>"send_email:user_42"</code> (the oldest task, since we're popping from the right). The worker processes it.</p>
+<p><strong>Step 4:</strong> Another worker runs <code>RPOP task_queue</code>. It gets <code>"process_payment:order_101"</code>. Now the queue is empty.</p>
+<p><strong>What happens behind the scenes?</strong> Redis maintains a doubly-linked list. LPUSH and RPUSH are O(1)—constant time. LPOP and RPOP are also O(1). You can process millions of tasks efficiently.</p>
+<p><strong>Why use a List and not a database table?</strong> Speed. Popping from a Redis List is microseconds. Querying a database, locking a row, and updating it is milliseconds. For high-throughput queues, Redis Lists are the go-to choice.</p>
+<h3 id="more-list-use-cases">More List Use Cases<a class="headerlink" href="#more-list-use-cases" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Activity feed</strong>: <code>LPUSH user:42:activity "Liked post 101"</code> — newest first</li>
+<li><strong>Chat messages</strong>: <code>RPUSH chat:room_5 "message_json"</code> — store last N messages with <code>LRANGE chat:room_5 0 99</code></li>
+<li><strong>Recent searches</strong>: <code>LPUSH user:42:searches "laptop"</code> — trim to last 10 with <code>LTRIM</code></li>
+</ul>
+<h3 id="when-not-to-use-lists">When NOT to use Lists<a class="headerlink" href="#when-not-to-use-lists" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Don't use Lists when you need uniqueness.</strong> Lists allow duplicates. If you need "unique online users," use a Set. If you add the same user twice to a List, you get two entries.</li>
+<li><strong>Don't use Lists for large unbounded data.</strong> Always use <code>LTRIM</code> to cap size. A list that grows forever will eventually cause memory issues and slow <code>LRANGE</code> operations.</li>
+<li><strong>Don't use Lists for complex message queues.</strong> For reliable queues with consumer groups, use Redis Streams instead. Lists are simple but lack features like acknowledgment and replay.</li>
+</ul>
+<hr />
+<h2 id="3-sets">3. Sets<a class="headerlink" href="#3-sets" title="Permanent link">&para;</a></h2>
+<p>A <strong>Set</strong> is a collection of <strong>unique</strong> items. No duplicates allowed. And it's <strong>unordered</strong>—Redis doesn't guarantee order when you retrieve members.</p>
+<h3 id="why-sets-exist">Why Sets Exist<a class="headerlink" href="#why-sets-exist" title="Permanent link">&para;</a></h3>
+<p>Sometimes you need uniqueness. Tags on a blog post: "java", "redis", "tutorial"—each tag once. Online users: user IDs, no duplicates. Who liked a post: a set of user IDs. Set operations (union, intersection, difference) are also powerful—e.g., "find mutual friends."</p>
+<p><strong>Time complexity:</strong> <code>SADD</code>, <code>SREM</code>, <code>SISMEMBER</code> are <strong>O(1)</strong>. <code>SMEMBERS</code> is <strong>O(N)</strong>—it returns every member. For a set with 1 million members, SMEMBERS blocks Redis and sends 1 million items. Use <code>SSCAN</code> for iteration, or <code>SRANDMEMBER</code> for a sample.</p>
+<h3 id="commands-explained_2">Commands Explained<a class="headerlink" href="#commands-explained_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Add members</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>SADD<span class="w"> </span>skills<span class="w"> </span><span class="s2">&quot;Java&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>SADD<span class="w"> </span>skills<span class="w"> </span><span class="s2">&quot;Python&quot;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>SADD<span class="w"> </span>skills<span class="w"> </span><span class="s2">&quot;Java&quot;</span><span class="w">              </span><span class="c1"># Ignored! Already exists</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># Get all members</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>SMEMBERS<span class="w"> </span>skills
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># 1) &quot;Java&quot;</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1"># 2) &quot;Python&quot;</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># Check if member exists</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>SISMEMBER<span class="w"> </span>skills<span class="w"> </span><span class="s2">&quot;Java&quot;</span><span class="w">         </span><span class="c1"># 1 (yes)</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>SISMEMBER<span class="w"> </span>skills<span class="w"> </span><span class="s2">&quot;Go&quot;</span><span class="w">           </span><span class="c1"># 0 (no)</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="c1"># Remove</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>SREM<span class="w"> </span>skills<span class="w"> </span><span class="s2">&quot;Python&quot;</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="c1"># Count</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>SCARD<span class="w"> </span>skills<span class="w">                    </span><span class="c1"># 1</span>
+</code></pre></div>
+<p><strong>SADD</strong> adds members. If you add a duplicate, Redis silently ignores it. <strong>SMEMBERS</strong> returns all members (order not guaranteed). <strong>SISMEMBER</strong> checks membership—returns 1 if yes, 0 if no. <strong>SREM</strong> removes. <strong>SCARD</strong> gives the count.</p>
+<h3 id="set-operations">Set Operations<a class="headerlink" href="#set-operations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>SADD<span class="w"> </span>team1<span class="w"> </span><span class="s2">&quot;Alice&quot;</span><span class="w"> </span><span class="s2">&quot;Bob&quot;</span><span class="w"> </span><span class="s2">&quot;Charlie&quot;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>SADD<span class="w"> </span>team2<span class="w"> </span><span class="s2">&quot;Bob&quot;</span><span class="w"> </span><span class="s2">&quot;Diana&quot;</span><span class="w"> </span><span class="s2">&quot;Eve&quot;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Union (all people)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>SUNION<span class="w"> </span>team1<span class="w"> </span>team2
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># Alice, Bob, Charlie, Diana, Eve</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1"># Intersection (common people)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>SINTER<span class="w"> </span>team1<span class="w"> </span>team2
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># Bob</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="c1"># Difference (in team1 but not team2)</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>SDIFF<span class="w"> </span>team1<span class="w"> </span>team2
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="c1"># Alice, Charlie</span>
+</code></pre></div>
+<h3 id="real-world-walkthrough-building-an-online-users-tracker">Real-World Walkthrough: Building an "Online Users" Tracker<a class="headerlink" href="#real-world-walkthrough-building-an-online-users-tracker" title="Permanent link">&para;</a></h3>
+<p>Imagine you're building a chat app. You want to show "Who's online right now?" in the sidebar.</p>
+<p><strong>Step 1:</strong> When user Alice logs in or sends a message, you run <code>SADD online_users "alice_42"</code>. When user Bob comes online, <code>SADD online_users "bob_17"</code>.</p>
+<p><strong>Step 2:</strong> To get the list of online users, you run <code>SMEMBERS online_users</code>. You get <code>["alice_42", "bob_17"]</code>. You display these in the UI.</p>
+<p><strong>Step 3:</strong> When Alice logs out or goes idle (e.g., after 5 minutes of no activity), you run <code>SREM online_users "alice_42"</code>. She's gone from the set.</p>
+<p><strong>Step 4:</strong> To check if a specific user is online: <code>SISMEMBER online_users "alice_42"</code>. Returns 1 if yes, 0 if no. Useful for showing a green dot next to their name.</p>
+<p><strong>What happens behind the scenes?</strong> Redis uses a hash table internally. SADD, SREM, SISMEMBER are O(1). SMEMBERS is O(N) where N is the set size—so for millions of online users, you might want to use a different approach (e.g., only store user IDs for the current "room" or "channel").</p>
+<p><strong>Why use a Set and not a List?</strong> Uniqueness. If Alice logs in from two devices, you don't want her listed twice. Sets handle that automatically.</p>
+<h3 id="more-set-use-cases">More Set Use Cases<a class="headerlink" href="#more-set-use-cases" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Tags</strong>: <code>SADD post:101:tags "java" "redis" "tutorial"</code></li>
+<li><strong>Mutual friends</strong>: <code>SINTER user:42:friends user:17:friends</code> — find friends shared by user 42 and user 17</li>
+<li><strong>Unique visitors</strong>: <code>SADD page:home:visitors "ip_1.2.3.4"</code> — count unique IPs with <code>SCARD</code></li>
+</ul>
+<h3 id="when-not-to-use-sets">When NOT to use Sets<a class="headerlink" href="#when-not-to-use-sets" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Don't use Sets for large unique counts.</strong> If you need "how many unique visitors today?" and you have millions, a Set stores every ID—gigabytes of RAM. Use HyperLogLog instead—12 KB for millions of items, with ~0.81% error.</li>
+<li><strong>Don't use SMEMBERS on large sets.</strong> It's O(N) and blocks. Use SSCAN to iterate, or SRANDMEMBER for a sample.</li>
+<li><strong>Don't use Sets when you need order.</strong> Sets are unordered. For ranking or "top N," use a Sorted Set.</li>
+</ul>
+<hr />
+<h2 id="4-hashes">4. Hashes<a class="headerlink" href="#4-hashes" title="Permanent link">&para;</a></h2>
+<p>A <strong>Hash</strong> is a mini dictionary inside a single key. Instead of storing one value, you store multiple field-value pairs. Perfect for objects like a user profile or a product.</p>
+<h3 id="why-hashes-exist">Why Hashes Exist<a class="headerlink" href="#why-hashes-exist" title="Permanent link">&para;</a></h3>
+<p>Imagine storing a user object. You could do <code>SET user:1 '{"name":"Satjit","age":25,"city":"Delhi"}'</code>. But what if you only want to update the city? You'd have to GET the whole thing, parse JSON, modify, serialize, and SET again. With a Hash, you can update one field: <code>HSET user:1 city "Mumbai"</code>. No need to touch the whole object.</p>
+<p><strong>Time complexity:</strong> <code>HSET</code>, <code>HGET</code>, <code>HDEL</code> are <strong>O(1)</strong>. <code>HGETALL</code> is <strong>O(N)</strong> where N is the number of fields. For a hash with 1000 fields, HGETALL returns all 1000. Use <code>HSCAN</code> or <code>HGET</code> for specific fields when the hash is large.</p>
+<h3 id="commands-explained_3">Commands Explained<a class="headerlink" href="#commands-explained_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Set fields</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>HSET<span class="w"> </span>user:1<span class="w"> </span>name<span class="w"> </span><span class="s2">&quot;Satjit&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>HSET<span class="w"> </span>user:1<span class="w"> </span>age<span class="w"> </span><span class="s2">&quot;25&quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>HSET<span class="w"> </span>user:1<span class="w"> </span>city<span class="w"> </span><span class="s2">&quot;Delhi&quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># Get one field</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>HGET<span class="w"> </span>user:1<span class="w"> </span>name<span class="w">                </span><span class="c1"># &quot;Satjit&quot;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># Get all fields and values</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>HGETALL<span class="w"> </span>user:1
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="c1"># 1) &quot;name&quot;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="c1"># 2) &quot;Satjit&quot;</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="c1"># 3) &quot;age&quot;</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1"># 4) &quot;25&quot;</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="c1"># 5) &quot;city&quot;</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1"># 6) &quot;Delhi&quot;</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="c1"># Set multiple fields at once</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>HMSET<span class="w"> </span>user:2<span class="w"> </span>name<span class="w"> </span><span class="s2">&quot;Rahul&quot;</span><span class="w"> </span>age<span class="w"> </span><span class="s2">&quot;30&quot;</span><span class="w"> </span>city<span class="w"> </span><span class="s2">&quot;Mumbai&quot;</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="c1"># Check if field exists</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>HEXISTS<span class="w"> </span>user:1<span class="w"> </span>email<span class="w">            </span><span class="c1"># 0 (no)</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="c1"># Delete a field</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>HDEL<span class="w"> </span>user:1<span class="w"> </span>city
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="c1"># Increment a numeric field</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>HINCRBY<span class="w"> </span>user:1<span class="w"> </span>age<span class="w"> </span><span class="m">1</span><span class="w">            </span><span class="c1"># 26</span>
+</code></pre></div>
+<p><strong>HSET</strong> sets one field. <strong>HGET</strong> gets one field. <strong>HGETALL</strong> returns all fields and values (alternating: field1, value1, field2, value2). <strong>HMSET</strong> sets multiple fields (or use <strong>HSET</strong> with multiple args in Redis 4+). <strong>HDEL</strong> removes a field. <strong>HINCRBY</strong> increments a numeric field.</p>
+<h3 id="how-it-looks_1">How It Looks<a class="headerlink" href="#how-it-looks_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Key: &quot;user:1&quot;
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>┌──────────┬──────────┐
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>│  Field   │  Value   │
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>├──────────┼──────────┤
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>│  name    │  Satjit  │
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>│  age     │  25      │
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>│  city    │  Delhi   │
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>└──────────┴──────────┘
+</code></pre></div>
+<h3 id="real-world-walkthrough-storing-a-user-profile-and-why-its-better-than-json-string">Real-World Walkthrough: Storing a User Profile (and Why It's Better Than JSON String)<a class="headerlink" href="#real-world-walkthrough-storing-a-user-profile-and-why-its-better-than-json-string" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> You want to cache user profile data. Option A: store as JSON string. Option B: store as Hash.</p>
+<p><strong>Option A (JSON string):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>SET<span class="w"> </span>user:1<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;Satjit&quot;,&quot;age&quot;:25,&quot;city&quot;:&quot;Delhi&quot;}&#39;</span>
+</code></pre></div>
+User updates their city. You must: GET user:1, parse JSON, change city, serialize, SET user:1. Plus, you're sending the whole object over the network twice.</p>
+<p><strong>Option B (Hash):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>HSET<span class="w"> </span>user:1<span class="w"> </span>name<span class="w"> </span><span class="s2">&quot;Satjit&quot;</span><span class="w"> </span>age<span class="w"> </span><span class="s2">&quot;25&quot;</span><span class="w"> </span>city<span class="w"> </span><span class="s2">&quot;Delhi&quot;</span>
+</code></pre></div>
+User updates their city. You do: <code>HSET user:1 city "Mumbai"</code>. Done. One command. One field update. No parsing, no serialization.</p>
+<p><strong>Why should you care?</strong> In a high-traffic app, updating one field without touching the rest saves CPU and network. Hashes also support <code>HINCRBY</code>—e.g., incrementing a "view_count" field without reading the whole object.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>Use Hashes instead of storing a JSON string. Why? You can <strong>update one field</strong> without reading the whole object.</p>
+</div>
+<h3 id="more-hash-use-cases">More Hash Use Cases<a class="headerlink" href="#more-hash-use-cases" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Product details</strong>: <code>HSET product:101 name "Laptop" price "50000" category "Electronics"</code></li>
+<li><strong>Shopping cart</strong>: User 42's cart: <code>HSET cart:42 "item_101" 2 "item_205" 1</code> — item ID as field, quantity as value</li>
+<li><strong>Counters per category</strong>: <code>HINCRBY stats:page:42 views 1</code> — multiple counters in one key</li>
+</ul>
+<h3 id="when-not-to-use-hashes">When NOT to use Hashes<a class="headerlink" href="#when-not-to-use-hashes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Don't use Hashes for single values.</strong> If you only need one field, a String is simpler. Hashes have overhead for the structure.</li>
+<li><strong>Don't use HGETALL on huge hashes.</strong> O(N) and blocks. Prefer HGET for specific fields or HSCAN for iteration.</li>
+<li><strong>Don't use Hashes when you need to query by field value.</strong> For "find all users where city=Delhi," use a database. Redis Hashes don't support secondary indexes.</li>
+</ul>
+<hr />
+<h2 id="5-sorted-sets-zsets">5. Sorted Sets (ZSets)<a class="headerlink" href="#5-sorted-sets-zsets" title="Permanent link">&para;</a></h2>
+<p>Like a Set, but every member has a <strong>score</strong>. Members are sorted by score. You can get the top N, the bottom N, or members in a score range.</p>
+<h3 id="why-sorted-sets-exist">Why Sorted Sets Exist<a class="headerlink" href="#why-sorted-sets-exist" title="Permanent link">&para;</a></h3>
+<p>Leaderboards. Trending posts. Priority queues. Anything where you need "ranked by a number" and "get top N" or "get by score range." Sorted Sets are built for this.</p>
+<p><strong>Time complexity:</strong> <code>ZADD</code>, <code>ZINCRBY</code>, <code>ZREM</code>, <code>ZRANK</code>, <code>ZSCORE</code> are <strong>O(log N)</strong>. <code>ZRANGE</code> and <code>ZREVRANGE</code> are <strong>O(log N + M)</strong> where M is the number of elements returned. So getting top 10 from a million-member leaderboard is still fast—O(log 1M + 10) ≈ 20 + 10 operations.</p>
+<h3 id="commands-explained_4">Commands Explained<a class="headerlink" href="#commands-explained_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Add members with scores</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>ZADD<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="s2">&quot;Alice&quot;</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>ZADD<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">250</span><span class="w"> </span><span class="s2">&quot;Bob&quot;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>ZADD<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">180</span><span class="w"> </span><span class="s2">&quot;Charlie&quot;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="c1"># Get all (sorted by score, low to high)</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>ZRANGE<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">0</span><span class="w"> </span>-1<span class="w"> </span>WITHSCORES
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1"># 1) &quot;Alice&quot;    - 100</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="c1"># 2) &quot;Charlie&quot;  - 180</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># 3) &quot;Bob&quot;      - 250</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="c1"># Get all (high to low)</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>ZREVRANGE<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">0</span><span class="w"> </span>-1<span class="w"> </span>WITHSCORES
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="c1"># 1) &quot;Bob&quot;      - 250</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="c1"># 2) &quot;Charlie&quot;  - 180</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="c1"># 3) &quot;Alice&quot;    - 100</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="c1"># Rank (0-based, lowest score = rank 0)</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>ZRANK<span class="w"> </span>leaderboard<span class="w"> </span><span class="s2">&quot;Bob&quot;</span><span class="w">        </span><span class="c1"># 2</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="c1"># Reverse rank (highest score = rank 0)</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>ZREVRANK<span class="w"> </span>leaderboard<span class="w"> </span><span class="s2">&quot;Bob&quot;</span><span class="w">     </span><span class="c1"># 0</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="c1"># Increment score</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>ZINCRBY<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">50</span><span class="w"> </span><span class="s2">&quot;Alice&quot;</span><span class="w"> </span><span class="c1"># Alice now has 150</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="c1"># Count members in score range</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>ZCOUNT<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="m">200</span><span class="w">     </span><span class="c1"># 2 (Alice and Charlie)</span>
+</code></pre></div>
+<p><strong>ZADD</strong> adds a member with a score. <strong>ZRANGE</strong> gets members from lowest to highest score. <strong>ZREVRANGE</strong> gets from highest to lowest. <strong>ZRANK</strong> gives the rank (0-based, lowest first). <strong>ZREVRANK</strong> gives the rank with highest first. <strong>ZINCRBY</strong> adds to a member's score. <strong>ZCOUNT</strong> counts members in a score range.</p>
+<h3 id="real-world-walkthrough-building-a-gaming-leaderboard">Real-World Walkthrough: Building a Gaming Leaderboard<a class="headerlink" href="#real-world-walkthrough-building-a-gaming-leaderboard" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> You're building a mobile game. Players earn points. You need a leaderboard: "Top 10 players this week."</p>
+<p><strong>Step 1:</strong> When Alice finishes a level with 100 points, you run <code>ZINCRBY leaderboard:week_42 100 "alice_123"</code>. Alice is added with score 100. Bob scores 250: <code>ZINCRBY leaderboard:week_42 250 "bob_456"</code>. Charlie scores 180: <code>ZINCRBY leaderboard:week_42 180 "charlie_789"</code>.</p>
+<p><strong>Step 2:</strong> To show the top 10: <code>ZREVRANGE leaderboard:week_42 0 9 WITHSCORES</code>. You get Bob (250), Charlie (180), Alice (100). Display in order.</p>
+<p><strong>Step 3:</strong> Alice plays again and earns 50 more points. <code>ZINCRBY leaderboard:week_42 50 "alice_123"</code>. Her score is now 150. The leaderboard updates automatically.</p>
+<p><strong>Step 4:</strong> To show Alice's rank: <code>ZREVRANK leaderboard:week_42 "alice_123"</code>. Returns 2 (0-based, so she's 3rd). To show "You're in the top 50%": <code>ZRANK leaderboard:week_42 "alice_123"</code> and compare to <code>ZCARD leaderboard:week_42</code>.</p>
+<p><strong>What happens behind the scenes?</strong> Redis uses a skip list + hash table. ZADD, ZINCRBY, ZRANK are O(log N). ZRANGE is O(log N + M) where M is the number of elements returned. Even with millions of players, leaderboard operations stay fast.</p>
+<h3 id="more-sorted-set-use-cases">More Sorted Set Use Cases<a class="headerlink" href="#more-sorted-set-use-cases" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Trending posts</strong>: Score = number of likes in last 24 hours. <code>ZREVRANGE trending:posts 0 9</code></li>
+<li><strong>Priority queue</strong>: Score = priority (lower = higher priority). Workers pop with <code>ZRANGE queue 0 0</code> then <code>ZREM</code></li>
+<li><strong>Rate limiter (sliding window)</strong>: Score = timestamp. Remove old entries with <code>ZREMRANGEBYSCORE</code>, count with <code>ZCARD</code></li>
+</ul>
+<h3 id="when-not-to-use-sorted-sets">When NOT to use Sorted Sets<a class="headerlink" href="#when-not-to-use-sorted-sets" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Don't use Sorted Sets when you don't need order.</strong> If you just need uniqueness, a Set is simpler and uses less memory.</li>
+<li><strong>Don't use Sorted Sets for huge score ranges with few members.</strong> The skip list structure has overhead. For simple "top 10" with a small set, a List might be fine.</li>
+<li><strong>Don't use Sorted Sets when scores change frequently and you need exact consistency.</strong> ZADD updates are O(log N). For millions of members with constant updates, this adds up. But for most leaderboards, it's fine.</li>
+</ul>
+<hr />
+<h2 id="6-bitmaps">6. Bitmaps<a class="headerlink" href="#6-bitmaps" title="Permanent link">&para;</a></h2>
+<p>A <strong>Bitmap</strong> is a special String that stores bits (0 or 1). You can set, get, and count bits at specific positions. Perfect for tracking binary flags.</p>
+<h3 id="why-bitmaps-exist">Why Bitmaps Exist<a class="headerlink" href="#why-bitmaps-exist" title="Permanent link">&para;</a></h3>
+<p>Imagine tracking "which users were active today?" You have 10 million user IDs. A Set would store 10 million strings—huge. A Bitmap uses one bit per user: user ID 42 = bit 42. 10 million users = ~1.25 MB. Massive savings.</p>
+<h3 id="commands-explained_5">Commands Explained<a class="headerlink" href="#commands-explained_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Set bit at position (user ID 42 was active)</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>SETBIT<span class="w"> </span>activity:2024-02-25<span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Get bit (was user 42 active?)</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>GETBIT<span class="w"> </span>activity:2024-02-25<span class="w"> </span><span class="m">42</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="c1"># (integer) 1</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="c1"># Count users active today</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>BITCOUNT<span class="w"> </span>activity:2024-02-25
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="c1"># (integer) 15000</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="c1"># Check if user 100 was active</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>GETBIT<span class="w"> </span>activity:2024-02-25<span class="w"> </span><span class="m">100</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="c1"># (integer) 0</span>
+</code></pre></div>
+<h3 id="real-world-walkthrough-daily-active-users">Real-World Walkthrough: Daily Active Users<a class="headerlink" href="#real-world-walkthrough-daily-active-users" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> You want to know "how many unique users logged in today?" and "was user 42 active today?"</p>
+<p><strong>Step 1:</strong> Use the date as the key. User ID as the bit position. When user 42 logs in: <code>SETBIT dau:2024-02-25 42 1</code>.</p>
+<p><strong>Step 2:</strong> To get the count: <code>BITCOUNT dau:2024-02-25</code>. Returns the number of unique users.</p>
+<p><strong>Step 3:</strong> To check if user 42 was active: <code>GETBIT dau:2024-02-25 42</code>. Returns 1 or 0.</p>
+<p><strong>Memory:</strong> 10 million users = 10 million bits = 1.25 MB. A Set would be hundreds of MB.</p>
+<div class="admonition tip">
+<p class="admonition-title">Bitmap limitations</p>
+<p>Bitmaps work best when user IDs are small integers (0 to a few million). If your IDs are UUIDs or large numbers, you need a hash function to map them to bit positions. Still efficient for "presence" tracking.</p>
+</div>
+<hr />
+<h2 id="7-hyperloglog">7. HyperLogLog<a class="headerlink" href="#7-hyperloglog" title="Permanent link">&para;</a></h2>
+<p><strong>HyperLogLog</strong> is a probabilistic data structure. It estimates the <strong>cardinality</strong> (number of unique elements) of a set using only ~12 KB of memory. The trade-off: it's approximate (~0.81% standard error), not exact.</p>
+<h3 id="why-hyperloglog-exists">Why HyperLogLog Exists<a class="headerlink" href="#why-hyperloglog-exists" title="Permanent link">&para;</a></h3>
+<p>You want to count "unique visitors to our site today." You have 100 million visitors. A Set would store 100 million strings—gigabytes. HyperLogLog stores an estimate in 12 KB. You can't list the members or check "was user X here?"—you can only get the count.</p>
+<h3 id="commands-explained_6">Commands Explained<a class="headerlink" href="#commands-explained_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Add members (duplicates are automatically ignored)</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>PFADD<span class="w"> </span>visitors:2024-02-25<span class="w"> </span><span class="s2">&quot;user_1&quot;</span><span class="w"> </span><span class="s2">&quot;user_2&quot;</span><span class="w"> </span><span class="s2">&quot;user_3&quot;</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>PFADD<span class="w"> </span>visitors:2024-02-25<span class="w"> </span><span class="s2">&quot;user_1&quot;</span><span class="w">  </span><span class="c1"># Ignored, already counted</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1"># Get estimated count</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>PFCOUNT<span class="w"> </span>visitors:2024-02-25
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># (integer) 3</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="c1"># Merge multiple HyperLogLogs (e.g., combine daily counts)</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>PFMERGE<span class="w"> </span>visitors:week<span class="w"> </span><span class="s2">&quot;visitors:mon&quot;</span><span class="w"> </span><span class="s2">&quot;visitors:tue&quot;</span><span class="w"> </span><span class="s2">&quot;visitors:wed&quot;</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>PFCOUNT<span class="w"> </span>visitors:week
+</code></pre></div>
+<h3 id="real-world-walkthrough-unique-visitors">Real-World Walkthrough: Unique Visitors<a class="headerlink" href="#real-world-walkthrough-unique-visitors" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> Your blog gets 5 million unique visitors per day. You want to count them without storing 5 million IDs.</p>
+<p><strong>Step 1:</strong> When a user visits, add their ID (or IP, or session ID): <code>PFADD visitors:2024-02-25 "user_42"</code>.</p>
+<p><strong>Step 2:</strong> At end of day: <code>PFCOUNT visitors:2024-02-25</code>. You get something like 4,987,234 (approximate).</p>
+<p><strong>Step 3:</strong> To get weekly unique: <code>PFMERGE visitors:week "visitors:mon" "visitors:tue" ... "visitors:sun"</code> then <code>PFCOUNT visitors:week</code>. Note: this counts unique across the week (no double-counting if someone visited on Monday and Tuesday).</p>
+<p><strong>Memory:</strong> 12 KB per HyperLogLog. 5 million visitors in a Set would be hundreds of MB.</p>
+<div class="admonition warning">
+<p class="admonition-title">HyperLogLog is approximate</p>
+<p>You get ~0.81% error. For 5 million, that's ±40,000. If you need exact counts (e.g., billing), use a Set or a database. For analytics and dashboards, HyperLogLog is perfect.</p>
+</div>
+<hr />
+<h2 id="8-redis-streams">8. Redis Streams<a class="headerlink" href="#8-redis-streams" title="Permanent link">&para;</a></h2>
+<p><strong>Redis Streams</strong> are a log-like data structure. Producers append messages. Consumers read them. Think of it as a modern alternative to Lists for message queues.</p>
+<h3 id="why-streams-exist">Why Streams Exist<a class="headerlink" href="#why-streams-exist" title="Permanent link">&para;</a></h3>
+<p>Lists are simple: LPUSH/RPOP. But they lack features. What if a consumer crashes before processing? The message is gone. What if you need multiple consumer groups (e.g., "email service" and "analytics" both read the same stream)? Lists don't support that.</p>
+<p>Streams add: <strong>consumer groups</strong>, <strong>acknowledgment</strong>, <strong>pending message tracking</strong>, <strong>range queries by ID</strong>. They're the right choice for reliable message queues.</p>
+<h3 id="quick-commands">Quick Commands<a class="headerlink" href="#quick-commands" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Add a message</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>XADD<span class="w"> </span>orders<span class="w"> </span>*<span class="w"> </span>user<span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="w"> </span>product<span class="w"> </span><span class="s2">&quot;101&quot;</span><span class="w"> </span>quantity<span class="w"> </span><span class="m">2</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Read messages (consumer)</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>XREAD<span class="w"> </span>COUNT<span class="w"> </span><span class="m">10</span><span class="w"> </span>STREAMS<span class="w"> </span>orders<span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># Create consumer group</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>XGROUP<span class="w"> </span>CREATE<span class="w"> </span>orders<span class="w"> </span>order-processors<span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="c1"># Read as consumer in group</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>XREADGROUP<span class="w"> </span>GROUP<span class="w"> </span>order-processors<span class="w"> </span>consumer1<span class="w"> </span>COUNT<span class="w"> </span><span class="m">10</span><span class="w"> </span>STREAMS<span class="w"> </span>orders<span class="w"> </span>&gt;
+</code></pre></div>
+<h3 id="when-to-use-streams-vs-lists">When to use Streams vs Lists<a class="headerlink" href="#when-to-use-streams-vs-lists" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>List</th>
+<th>Stream</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simple task queue, best-effort</td>
+<td>✅</td>
+<td>Overkill</td>
+</tr>
+<tr>
+<td>Reliable queue, no message loss</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Multiple consumers, same messages</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Need acknowledgment</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Chat history</td>
+<td>✅</td>
+<td>✅ (both work)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Streams are powerful</p>
+<p>Redis Streams support consumer groups, exactly-once processing, and replay. For production message queues, prefer Streams over Lists when you need reliability.</p>
+</div>
+<hr />
+<h2 id="choosing-the-right-data-structure-decision-flowchart">Choosing the Right Data Structure: Decision Flowchart<a class="headerlink" href="#choosing-the-right-data-structure-decision-flowchart" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Do you need to store a single value?
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  YES → String
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Do you need ordering (queue, stack, feed)?
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>  YES → List (simple) or Stream (reliable queue)
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>Do you need uniqueness (no duplicates)?
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>  YES → Do you need ranking by score?
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    YES → Sorted Set
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>    NO  → Do you need exact count or just approximate?
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>      Exact, small set → Set
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>      Approximate, huge set → HyperLogLog
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>Do you need to store an object with multiple fields?
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>  YES → Hash
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>Do you need to track binary flags (active/not) for many IDs?
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>  YES → Bitmap
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>Do you need to count unique items in millions?
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>  YES → HyperLogLog
+</code></pre></div>
+<h3 id="detailed-scenarios">Detailed Scenarios<a class="headerlink" href="#detailed-scenarios" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Best Structure</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cache API response</td>
+<td>String</td>
+<td>Single blob of data</td>
+</tr>
+<tr>
+<td>Page view counter</td>
+<td>String + INCR</td>
+<td>Atomic increment</td>
+</tr>
+<tr>
+<td>Task queue</td>
+<td>List</td>
+<td>FIFO order, LPUSH/RPOP</td>
+</tr>
+<tr>
+<td>Reliable message queue</td>
+<td>Stream</td>
+<td>Consumer groups, acknowledgment</td>
+</tr>
+<tr>
+<td>Online users</td>
+<td>Set</td>
+<td>Uniqueness, fast membership check</td>
+</tr>
+<tr>
+<td>User profile</td>
+<td>Hash</td>
+<td>Update individual fields</td>
+</tr>
+<tr>
+<td>Leaderboard</td>
+<td>Sorted Set</td>
+<td>Ranked by score, get top N</td>
+</tr>
+<tr>
+<td>Unique visitors per day (small)</td>
+<td>Set</td>
+<td>Uniqueness, SCARD for count</td>
+</tr>
+<tr>
+<td>Unique visitors per day (millions)</td>
+<td>HyperLogLog</td>
+<td>~12 KB, approximate count</td>
+</tr>
+<tr>
+<td>Daily active users (presence)</td>
+<td>Bitmap</td>
+<td>One bit per user, minimal memory</td>
+</tr>
+<tr>
+<td>Shopping cart</td>
+<td>Hash</td>
+<td>Item ID → quantity mapping</td>
+</tr>
+<tr>
+<td>Recent activity</td>
+<td>List</td>
+<td>Order matters, LPUSH + LTRIM</td>
+</tr>
+<tr>
+<td>Mutual friends</td>
+<td>Set (SINTER)</td>
+<td>Set intersection</td>
+</tr>
+<tr>
+<td>Tags on a post</td>
+<td>Set</td>
+<td>Uniqueness, no duplicates</td>
+</tr>
+</tbody>
+</table>
+<h3 id="comparison-when-to-use-what">Comparison: When to Use What<a class="headerlink" href="#comparison-when-to-use-what" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>String</th>
+<th>List</th>
+<th>Set</th>
+<th>Hash</th>
+<th>Sorted Set</th>
+<th>Bitmap</th>
+<th>HyperLogLog</th>
+<th>Stream</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single value</td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Order</td>
+<td></td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Uniqueness</td>
+<td></td>
+<td></td>
+<td>✅</td>
+<td></td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Multiple fields</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Ranking</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Presence (0/1)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✅</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Unique count (huge)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✅</td>
+<td></td>
+</tr>
+<tr>
+<td>Reliable queue</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Atomic counter</td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Like</th>
+<th>Example Use</th>
+<th>Complexity (key ops)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>Sticky note</td>
+<td>Cache, counter, OTP</td>
+<td>GET/SET O(1)</td>
+</tr>
+<tr>
+<td>List</td>
+<td>Queue/Stack</td>
+<td>Task queue, chat history</td>
+<td>LPUSH/RPOP O(1), LRANGE O(S+N)</td>
+</tr>
+<tr>
+<td>Set</td>
+<td>Bag of unique items</td>
+<td>Tags, online users</td>
+<td>SADD/SISMEMBER O(1), SMEMBERS O(N)</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>Mini dictionary</td>
+<td>User profile, cart</td>
+<td>HSET/HGET O(1), HGETALL O(N)</td>
+</tr>
+<tr>
+<td>Sorted Set</td>
+<td>Scoreboard</td>
+<td>Leaderboard, trending</td>
+<td>ZADD/ZRANGE O(log N)</td>
+</tr>
+<tr>
+<td>Bitmap</td>
+<td>Binary flags</td>
+<td>Daily active users</td>
+<td>SETBIT/GETBIT O(1)</td>
+</tr>
+<tr>
+<td>HyperLogLog</td>
+<td>Approximate counter</td>
+<td>Unique visitors (millions)</td>
+<td>PFADD/PFCOUNT O(1)</td>
+</tr>
+<tr>
+<td>Stream</td>
+<td>Log/Queue</td>
+<td>Reliable message queue</td>
+<td>XADD/XREAD O(1)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p><strong>Strings:</strong> Create a page view counter for a blog post. Use <code>INCR</code> and <code>GET</code>. What happens if you INCR a key that doesn't exist?</p>
+</li>
+<li>
+<p><strong>Hashes:</strong> Create a Hash for your profile with name, age, and city. Update just your city. Use <code>HGETALL</code> to verify.</p>
+</li>
+<li>
+<p><strong>Sorted Sets:</strong> Create a leaderboard with 5 players and scores. Find the top 3 using <code>ZREVRANGE</code>. Add 50 points to the last-place player. What's the new order?</p>
+</li>
+<li>
+<p><strong>Sets:</strong> Create two Sets: your friends and your sibling's friends. Use <code>SINTER</code> to find mutual friends. Use <code>SUNION</code> to find all unique friends.</p>
+</li>
+<li>
+<p><strong>Lists:</strong> Simulate a task queue. Add 3 tasks with <code>LPUSH</code>. Pop them one by one with <code>RPOP</code>. In what order do they come out?</p>
+</li>
+<li>
+<p><strong>Guided:</strong> You're building a "recently viewed products" feature. Each user can see the last 10 products they viewed. Which data structure? Write the Redis commands to add a product and to retrieve the last 10.</p>
+</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../caching-explained/">Caching Explained</a> - Understand why caching is the #1 use case for Redis.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

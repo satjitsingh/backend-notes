@@ -1,0 +1,1796 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/producers-consumers/">
+      
+      
+        <link rel="prev" href="../topics-partitions-offsets/">
+      
+      
+        <link rel="next" href="../consumer-groups/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Producers & Consumers - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#producers-consumers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Producers & Consumers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="producers-consumers">Producers &amp; Consumers<a class="headerlink" href="#producers-consumers" title="Permanent link">&para;</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>Producers send messages. Consumers read them. It sounds simple. But the devil is in the details. How do you guarantee a message was received? How do you avoid duplicates? How do you ensure ordering? What happens when things fail?</p>
+<p>This page walks you through every step. We'll use real-life analogies. We'll trace what happens behind the scenes. And we'll look at full code examples with line-by-line explanations.</p>
+<hr />
+<h1 id="producers-sending-messages">Producers: Sending Messages<a class="headerlink" href="#producers-sending-messages" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-a-producer">What is a Producer?<a class="headerlink" href="#what-is-a-producer" title="Permanent link">&para;</a></h2>
+<p>A <strong>producer</strong> is any application that sends messages to Kafka topics. When your Order Service creates an order, it produces an event. When your user-tracking service logs a click, it produces an event. The producer's job is simple: get the message to Kafka. That's it.</p>
+<h3 id="real-life-analogy">Real-Life Analogy<a class="headerlink" href="#real-life-analogy" title="Permanent link">&para;</a></h3>
+<p>You're sending postcards. You write the message. You put it in an envelope. You write the destination address (the topic). You drop it at the post office (Kafka). You might get a receipt (acknowledgment). Or you might not, depending on how you sent it. The producer doesn't wait for anyone to read the postcard. It just delivers.</p>
+<hr />
+<h2 id="the-full-lifecycle-of-sending-a-message">The Full Lifecycle of Sending a Message<a class="headerlink" href="#the-full-lifecycle-of-sending-a-message" title="Permanent link">&para;</a></h2>
+<p>Let's trace what happens from the moment you call <code>producer.send()</code> to the moment Kafka confirms receipt. Every step.</p>
+<h3 id="step-1-serialize">Step 1: Serialize<a class="headerlink" href="#step-1-serialize" title="Permanent link">&para;</a></h3>
+<p>Your message is a Java object. Or a Python dict. Or a JSON string. Kafka stores bytes. So the first step is <strong>serialization</strong>. Convert the key and value to byte arrays. Kafka provides serializers for String, Integer, and bytes. For custom objects, you use JSON or Avro serializers.</p>
+<p><strong>What happens behind the scenes:</strong> The producer calls your configured <code>Serializer</code>. For StringSerializer, it does <code>"hello".getBytes(UTF_8)</code>. The result is what gets sent over the network.</p>
+<h3 id="step-2-partition">Step 2: Partition<a class="headerlink" href="#step-2-partition" title="Permanent link">&para;</a></h3>
+<p>Kafka needs to know which partition to send the message to. If you provided a key, the partitioner hashes the key and does <code>hash % numPartitions</code>. Same key always goes to the same partition. If you didn't provide a key, the producer uses round-robin or a sticky partitioner (stays with a partition for a batch, then switches).</p>
+<p><strong>What happens behind the scenes:</strong> The producer has a <code>Partitioner</code> component. It runs before the message is sent. The result is a partition number. The producer now knows: "This message goes to Partition 3."</p>
+<h3 id="step-3-batch">Step 3: Batch<a class="headerlink" href="#step-3-batch" title="Permanent link">&para;</a></h3>
+<p>Sending one message at a time is inefficient. Network round-trips are expensive. So the producer <strong>batches</strong> messages. It collects messages for the same partition. Waits up to <code>linger.ms</code> (e.g., 5 milliseconds). Or until the batch is full (<code>batch.size</code>). Then it sends the whole batch in one network request.</p>
+<p><strong>What happens behind the scenes:</strong> Messages go into an in-memory buffer. Per partition. When the buffer has enough data or the linger time expires, the batch is sent. If you send 100 messages to Partition 0 in quick succession, they might all go in one or two batches. Much faster than 100 separate requests.</p>
+<h3 id="step-4-send">Step 4: Send<a class="headerlink" href="#step-4-send" title="Permanent link">&para;</a></h3>
+<p>The producer sends the batch to the broker that leads the target partition. Over the network. TCP. The broker receives it.</p>
+<h3 id="step-5-acknowledge">Step 5: Acknowledge<a class="headerlink" href="#step-5-acknowledge" title="Permanent link">&para;</a></h3>
+<p>The broker appends the messages to the log. Replicates to followers (if configured). Then sends back an acknowledgment. The producer receives it. The <code>send()</code> callback fires. Success.</p>
+<p>If the broker returns an error (e.g., "Leader not available"), the producer retries. With idempotence enabled, retries don't create duplicates.</p>
+<hr />
+<h2 id="acknowledgments-acks-the-registered-mail-analogy">Acknowledgments (acks): The Registered Mail Analogy<a class="headerlink" href="#acknowledgments-acks-the-registered-mail-analogy" title="Permanent link">&para;</a></h2>
+<p>When you send a letter, you have options. Drop it in a postbox and hope (no confirmation). Hand it to the postman and get a nod (some confirmation). Or use registered mail with a signature (full confirmation). Kafka's <code>acks</code> setting is the same idea.</p>
+<h3 id="acks0-dropping-in-a-postbox">acks=0: Dropping in a Postbox<a class="headerlink" href="#acks0-dropping-in-a-postbox" title="Permanent link">&para;</a></h3>
+<p>You drop the letter in the postbox. You don't wait. You don't get a receipt. Maybe it gets delivered. Maybe it gets lost. You'll never know.</p>
+<p><strong>In Kafka:</strong> The producer sends the message and immediately considers it successful. It doesn't wait for the broker to respond. Fastest. But if the broker never receives it (network failure, broker down), you've lost the message. No retry. No way to know.</p>
+<p><strong>Use case:</strong> Metrics, logs. Data where losing a few messages is acceptable. Ultra-low latency.</p>
+<h3 id="acks1-giving-to-the-postman">acks=1: Giving to the Postman<a class="headerlink" href="#acks1-giving-to-the-postman" title="Permanent link">&para;</a></h3>
+<p>You hand the letter to the postman. He takes it. You see him take it. That's your confirmation. You don't know if it reached the sorting facility. Or the destination. But at least it left your hands.</p>
+<p><strong>In Kafka:</strong> The producer waits for the <strong>leader</strong> broker to acknowledge. The leader has appended the message to its log. Good. But the leader might crash before replicating to followers. If that happens, the message could be lost. Moderate safety.</p>
+<p><strong>Use case:</strong> General purpose. Good balance of speed and safety. Acceptable for many applications.</p>
+<h3 id="acksall-or-acks-1-confirmed-delivery">acks=all (or acks=-1): Confirmed Delivery<a class="headerlink" href="#acksall-or-acks-1-confirmed-delivery" title="Permanent link">&para;</a></h3>
+<p>You use registered mail. The recipient signs for it. You get a delivery confirmation. You know it arrived.</p>
+<p><strong>In Kafka:</strong> The producer waits for the leader AND all in-sync replicas to acknowledge. The message is written to multiple brokers. If the leader dies, a replica has the data. No loss.</p>
+<p><strong>Use case:</strong> Payments, orders, critical data. When you cannot afford to lose a message.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Speed</th>
+<th>Safety</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>acks=0</td>
+<td>Fastest</td>
+<td>None</td>
+<td>Logs, metrics</td>
+</tr>
+<tr>
+<td>acks=1</td>
+<td>Fast</td>
+<td>Moderate</td>
+<td>General</td>
+</tr>
+<tr>
+<td>acks=all</td>
+<td>Slowest</td>
+<td>Highest</td>
+<td>Critical data</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>For critical data (payments, orders), use <code>acks=all</code>. For logs/metrics where some loss is okay, use <code>acks=1</code> or even <code>acks=0</code>.</p>
+</div>
+<hr />
+<h2 id="message-keys-why-order-123-must-go-to-the-same-partition">Message Keys: Why Order-123 Must Go to the Same Partition<a class="headerlink" href="#message-keys-why-order-123-must-go-to-the-same-partition" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem">The Problem<a class="headerlink" href="#the-problem" title="Permanent link">&para;</a></h3>
+<p>Imagine an order processing system. You have three events for order #123:
+1. Order created
+2. Payment received
+3. Order shipped</p>
+<p>If these go to different partitions, they might be processed by different consumers. And in the wrong order. Consumer A might process "shipped" before "payment received." Chaos. You might ship before charging. Or update the wrong state.</p>
+<h3 id="the-solution-use-the-order-id-as-the-key">The Solution: Use the Order ID as the Key<a class="headerlink" href="#the-solution-use-the-order-id-as-the-key" title="Permanent link">&para;</a></h3>
+<p>Set <code>key = "order-123"</code> for all three messages. The hash of "order-123" always maps to the same partition. Say Partition 2. All three messages go to Partition 2. One consumer reads Partition 2. It gets them in order: created, paid, shipped. Correct.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Message 1: key=&quot;order-123&quot;, value=&quot;created&quot;   → Partition 2
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Message 2: key=&quot;order-123&quot;, value=&quot;paid&quot;     → Partition 2
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Message 3: key=&quot;order-123&quot;, value=&quot;shipped&quot;  → Partition 2
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Consumer assigned to Partition 2 reads in order. Perfect.
+</code></pre></div>
+<h3 id="when-to-use-keys">When to Use Keys<a class="headerlink" href="#when-to-use-keys" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Use keys</strong> when you need ordering for a logical entity (user, order, session).</li>
+<li><strong>Don't use keys</strong> (or use null) when you want even distribution and don't care about ordering. Round-robin gives you better load balancing.</li>
+</ul>
+<hr />
+<h2 id="batching-the-delivery-truck-analogy">Batching: The Delivery Truck Analogy<a class="headerlink" href="#batching-the-delivery-truck-analogy" title="Permanent link">&para;</a></h2>
+<p>Sending one message is like sending one item by truck. The truck drives to the warehouse. Drops off one box. Drives back. Expensive. Wasteful.</p>
+<p>Batching is like filling the truck. You collect 100 boxes. Load the truck. One trip. Drop off 100 boxes. Much more efficient.</p>
+<p><strong>In Kafka:</strong> <code>batch.size</code> controls how many bytes to collect per partition before sending. <code>linger.ms</code> controls how long to wait for more messages. If you have low traffic, <code>linger.ms=5</code> means "wait up to 5ms to fill the batch." You trade a bit of latency for throughput.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>linger.ms=0:  Send immediately. Low latency. Low throughput.
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>linger.ms=10: Wait 10ms. Batch might fill. Higher throughput. Slightly higher latency.
+</code></pre></div>
+<p><strong>How linger.ms and batch.size interact (visual):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Time (ms)    0    1    2    3    4    5    6    7    8    9   10
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>            |----|----|----|----|----|----|----|----|----|----|
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Messages:   m1   m2   m3        m4   m5        m6
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>            |________________________|
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>            Batch for Partition 0 (linger.ms=5, batch.size=16KB)
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Scenario A: linger.ms=0
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  m1 arrives → send immediately (batch of 1)
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  m2 arrives → send immediately (batch of 1)
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  Low latency. Many small batches. Low throughput.
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>Scenario B: linger.ms=5, batch.size=16KB
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  m1 arrives at 0ms → wait
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  m2 arrives at 1ms → wait
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  m3 arrives at 2ms → wait
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  5ms elapsed → send batch [m1, m2, m3]
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  m4, m5, m6 arrive → wait until 10ms → send batch [m4, m5, m6]
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  Fewer network round-trips. Higher throughput. Slightly higher latency.
+</code></pre></div>
+<p>The batch is sent when <strong>either</strong> condition is met: (1) <code>linger.ms</code> time has passed, or (2) <code>batch.size</code> bytes have been collected. Whichever comes first.</p>
+<div class="admonition info">
+<p class="admonition-title">Trade-off</p>
+<p>For real-time systems (gaming, trading), use low linger. For bulk ingestion (logs, analytics), use higher linger and larger batches.</p>
+</div>
+<hr />
+<h2 id="idempotent-producer-preventing-duplicates-on-retry">Idempotent Producer: Preventing Duplicates on Retry<a class="headerlink" href="#idempotent-producer-preventing-duplicates-on-retry" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem_1">The Problem<a class="headerlink" href="#the-problem_1" title="Permanent link">&para;</a></h3>
+<p>You send a message. Network glitch. The broker received it, but the acknowledgment got lost. The producer doesn't know. It retries. Sends the same message again. The broker receives it twice. Duplicate. For a payment, that could mean charging the customer twice.</p>
+<h3 id="the-solution-enableidempotencetrue">The Solution: enable.idempotence=true<a class="headerlink" href="#the-solution-enableidempotencetrue" title="Permanent link">&para;</a></h3>
+<p>With idempotence, the producer assigns a unique ID (PID) and a sequence number to each message. The broker tracks "I've already seen PID 5, sequence 42." If the producer retries, the broker says "Already have it." Stores only once. Returns success. No duplicate.</p>
+<p><strong>Scenario:</strong> Producer sends message. Network glitch. Producer retries. Broker: "Duplicate. Ignoring." Producer gets ack. Consumer sees the message once. Perfect.</p>
+<div class="admonition tip">
+<p class="admonition-title">Recommendation</p>
+<p>Always use <code>enable.idempotence=true</code> for production. It's a no-brainer. Prevents duplicates from retries. Minimal overhead.</p>
+</div>
+<hr />
+<h2 id="producer-error-handling">Producer Error Handling<a class="headerlink" href="#producer-error-handling" title="Permanent link">&para;</a></h2>
+<p>Not all errors are the same. Some are retriable. Some are not. Your error handler should treat them differently.</p>
+<h3 id="retriable-vs-non-retriable-errors">Retriable vs Non-Retriable Errors<a class="headerlink" href="#retriable-vs-non-retriable-errors" title="Permanent link">&para;</a></h3>
+<p><strong>Retriable:</strong> The producer can retry. The message might succeed on the next attempt.</p>
+<ul>
+<li><code>Leader Not Available</code> — partition leader is moving (rebalance). Wait and retry.</li>
+<li><code>Not Leader For Partition</code> — same idea. Leader changed.</li>
+<li><code>NetworkException</code> — temporary network glitch.</li>
+<li><code>TimeoutException</code> — broker didn't respond in time. Message might have been received.</li>
+</ul>
+<p><strong>Non-Retriable:</strong> Retrying won't help. Fix the problem first.</p>
+<ul>
+<li><code>RecordTooLargeException</code> — message exceeds <code>max.message.bytes</code>. Split or compress.</li>
+<li><code>SerializationException</code> — your serializer failed. Bad data. Fix the data or serializer.</li>
+<li><code>InvalidTopicException</code> — topic doesn't exist or has invalid name.</li>
+<li><code>AuthenticationException</code> — wrong credentials. Won't fix by retrying.</li>
+</ul>
+<h3 id="custom-error-handler">Custom Error Handler<a class="headerlink" href="#custom-error-handler" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;retries&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;retry.backoff.ms&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1">// Custom callback: log non-retriable, retry retriable</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">record</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exception</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Sent to partition {} offset {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="na">partition</span><span class="p">(),</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="na">offset</span><span class="p">());</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exception</span><span class="w"> </span><span class="k">instanceof</span><span class="w"> </span><span class="n">RetriableException</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">warn</span><span class="p">(</span><span class="s">&quot;Retriable error, producer will retry: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Non-retriable error, message lost: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">            </span><span class="c1">// Maybe write to a dead-letter queue, alert, or persist for manual retry</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">            </span><span class="n">saveToDeadLetterQueue</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="p">});</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Best Practice</p>
+<p>For critical data, use a custom callback. On non-retriable errors, write to a dead-letter topic or database. Don't silently drop messages.</p>
+</div>
+<hr />
+<h2 id="producer-interceptors">Producer Interceptors<a class="headerlink" href="#producer-interceptors" title="Permanent link">&para;</a></h2>
+<p>Interceptors let you run code <strong>before</strong> a message is sent and <strong>after</strong> the broker acknowledges it. They're like middleware for the producer.</p>
+<h3 id="what-are-they">What Are They?<a class="headerlink" href="#what-are-they" title="Permanent link">&para;</a></h3>
+<p>An interceptor implements <code>ProducerInterceptor</code>. You can have multiple. They run in order.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">LoggingInterceptor</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">ProducerInterceptor</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">ProducerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">onSend</span><span class="p">(</span><span class="n">ProducerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">record</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Sending to topic {} partition {} key {}&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">            </span><span class="kd">record</span><span class="err">.</span><span class="nc">topic</span><span class="p">(),</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">partition</span><span class="p">(),</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">key</span><span class="p">());</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">record</span><span class="p">;</span><span class="w">  </span><span class="c1">// Return the record (possibly modified)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onAcknowledgement</span><span class="p">(</span><span class="n">RecordMetadata</span><span class="w"> </span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="n">exception</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exception</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Acked: partition {} offset {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="na">partition</span><span class="p">(),</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="na">offset</span><span class="p">());</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Failed: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">close</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">configure</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="o">?&gt;</span><span class="w"> </span><span class="n">configs</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="p">}</span>
+</code></pre></div>
+<p>Register it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">ProducerConfig</span><span class="p">.</span><span class="na">INTERCEPTOR_CLASSES_CONFIG</span><span class="p">,</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="s">&quot;com.example.LoggingInterceptor&quot;</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Logging:</strong> Log every message sent. Useful for debugging.</li>
+<li><strong>Metrics:</strong> Count messages per topic. Send to Prometheus or StatsD.</li>
+<li><strong>Header injection:</strong> Add tracing IDs (TraceId, SpanId) to every message for distributed tracing.</li>
+<li><strong>Encryption:</strong> Encrypt the value in <code>onSend</code>, decrypt in consumer interceptor.</li>
+<li><strong>Validation:</strong> Reject invalid messages before they're sent. Return null from <code>onSend</code> to skip sending.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Order Matters</p>
+<p>If you have multiple interceptors, they run in the order you list them. The first runs first on send, last on ack.</p>
+</div>
+<hr />
+<h2 id="what-can-go-wrong-producer-edition">What Can Go Wrong? Producer Edition<a class="headerlink" href="#what-can-go-wrong-producer-edition" title="Permanent link">&para;</a></h2>
+<p><strong>Buffer full:</strong> The producer has a buffer (<code>buffer.memory</code>). If you produce faster than the network can send, the buffer fills. <code>send()</code> blocks or throws. Slow down or increase buffer.</p>
+<p><strong>Leader not available:</strong> The partition leader might be moving (rebalance). Producer retries. With retries enabled, it usually succeeds eventually.</p>
+<p><strong>Timeout:</strong> Request times out. Broker might have received the message. Retry could duplicate. Use idempotence.</p>
+<p><strong>Serialization error:</strong> Your serializer throws. Message never sent. Handle the exception. Fix your data or serializer.</p>
+<hr />
+<h1 id="consumers-reading-messages">Consumers: Reading Messages<a class="headerlink" href="#consumers-reading-messages" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-a-consumer">What is a Consumer?<a class="headerlink" href="#what-is-a-consumer" title="Permanent link">&para;</a></h2>
+<p>A <strong>consumer</strong> is any application that reads messages from Kafka topics. It subscribes to topics. It polls for messages. It processes them. It commits offsets. Repeat.</p>
+<h3 id="real-life-analogy_1">Real-Life Analogy<a class="headerlink" href="#real-life-analogy_1" title="Permanent link">&para;</a></h3>
+<p>You go to your mailbox every morning. You check for new letters. You remember which ones you've already read (that's your offset). Tomorrow, you only read the new ones. You don't re-read yesterday's mail. The mailbox (Kafka) keeps everything. You decide where to start and how fast to read.</p>
+<hr />
+<h2 id="the-poll-loop-what-does-consumerpoll-actually-do">The Poll Loop: What Does consumer.poll() Actually Do?<a class="headerlink" href="#the-poll-loop-what-does-consumerpoll-actually-do" title="Permanent link">&para;</a></h2>
+<p>The consumer runs in a loop. <code>while (true) { records = consumer.poll(); process(records); commit(); }</code></p>
+<h3 id="what-happens-when-you-call-poll">What Happens When You Call poll()?<a class="headerlink" href="#what-happens-when-you-call-poll" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Fetch:</strong> The consumer sends a fetch request to the broker. "Give me messages from partition X, starting at offset Y." It can fetch from multiple partitions in one request.</p>
+</li>
+<li>
+<p><strong>Broker responds:</strong> The broker returns messages. Up to <code>max.partition.fetch.bytes</code> per partition. Up to <code>max.poll.records</code> total.</p>
+</li>
+<li>
+<p><strong>Deserialize:</strong> The consumer deserializes the bytes to objects. StringDeserializer, etc.</p>
+</li>
+<li>
+<p><strong>Return:</strong> You get a <code>ConsumerRecords</code> object. A collection of records. You iterate. Process. Done. Next poll.</p>
+</li>
+</ol>
+<p><strong>Important:</strong> <code>poll()</code> is a pull. The consumer asks. The broker doesn't push. If there are no new messages, <code>poll()</code> returns empty. It doesn't block forever. It blocks up to the timeout you pass (e.g., 100ms). Then returns whatever it got (maybe nothing).</p>
+<hr />
+<h2 id="consumer-interceptors">Consumer Interceptors<a class="headerlink" href="#consumer-interceptors" title="Permanent link">&para;</a></h2>
+<p>Consumers have interceptors too. They run <strong>before</strong> you receive the records and <strong>after</strong> you process them (when you commit).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MetricsInterceptor</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">ConsumerInterceptor</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">ConsumerRecords</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">onConsume</span><span class="p">(</span><span class="n">ConsumerRecords</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="c1">// Runs before records are returned to your code</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Received {} records&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">records</span><span class="p">.</span><span class="na">count</span><span class="p">());</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">records</span><span class="p">;</span><span class="w">  </span><span class="c1">// Can filter or modify</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCommit</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">TopicPartition</span><span class="p">,</span><span class="w"> </span><span class="n">OffsetAndMetadata</span><span class="o">&gt;</span><span class="w"> </span><span class="n">offsets</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="c1">// Runs when you commit</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Committed offsets: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">offsets</span><span class="p">);</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">close</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">configure</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="o">?&gt;</span><span class="w"> </span><span class="n">configs</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="use-cases_1">Use Cases<a class="headerlink" href="#use-cases_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Logging:</strong> Log every batch received. Track consumption rate.</li>
+<li><strong>Metrics:</strong> Measure lag, throughput, processing time. Send to monitoring.</li>
+<li><strong>Header extraction:</strong> Read TraceId from headers. Set in MDC for logging.</li>
+<li><strong>Filtering:</strong> Remove records you don't want to process (e.g., test data). Return a filtered <code>ConsumerRecords</code>.</li>
+</ul>
+<hr />
+<h2 id="serialization-deep-dive">Serialization Deep Dive<a class="headerlink" href="#serialization-deep-dive" title="Permanent link">&para;</a></h2>
+<p>Kafka stores bytes. Your app uses objects. Serialization converts between them. The choice matters for performance, compatibility, and schema evolution.</p>
+<h3 id="string-serialization">String Serialization<a class="headerlink" href="#string-serialization" title="Permanent link">&para;</a></h3>
+<p><strong>StringSerializer / StringDeserializer:</strong> Simple. UTF-8 bytes. Human-readable in tools. No schema. Good for JSON strings, log lines.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;value.serializer&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;org.apache.kafka.common.serialization.StringSerializer&quot;</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>When to use:</strong> Prototypes, simple text, JSON stored as string. Cross-language (any client can read UTF-8).</p>
+<h3 id="json-serialization">JSON Serialization<a class="headerlink" href="#json-serialization" title="Permanent link">&para;</a></h3>
+<p><strong>Jackson, Gson:</strong> Convert Java objects to JSON bytes. Flexible. No schema. But no backward compatibility guarantee. Add a field? Old consumers might break. Remove a field? New consumers might break.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">ObjectMapper</span><span class="w"> </span><span class="n">mapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ObjectMapper</span><span class="p">();</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapper</span><span class="p">.</span><span class="na">writeValueAsBytes</span><span class="p">(</span><span class="n">order</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>When to use:</strong> Internal services, rapid iteration. When you control producer and consumer and can deploy together.</p>
+<h3 id="avro-serialization">Avro Serialization<a class="headerlink" href="#avro-serialization" title="Permanent link">&para;</a></h3>
+<p><strong>Avro:</strong> Schema-based. Binary format. Compact. Schema Registry stores the schema. Producer sends schema ID + bytes. Consumer fetches schema, deserializes. <strong>Backward compatible.</strong> Add optional field? Old consumer ignores it. Remove optional field? New consumer handles missing.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">// With Schema Registry</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;value.serializer&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;io.confluent.kafka.serializers.KafkaAvroSerializer&quot;</span><span class="p">);</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;schema.registry.url&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;http://localhost:8081&quot;</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>When to use:</strong> Event-driven systems, microservices, when producers and consumers evolve independently. Used by Confluent, LinkedIn, Uber.</p>
+<h3 id="protobuf-serialization">Protobuf Serialization<a class="headerlink" href="#protobuf-serialization" title="Permanent link">&para;</a></h3>
+<p><strong>Protobuf:</strong> Like Avro. Schema-based. Binary. Very fast. Good tooling. Schema Registry supports it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;value.serializer&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer&quot;</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>When to use:</strong> High performance, strong typing, gRPC ecosystem. Google, many cloud-native apps.</p>
+<h3 id="comparison-table">Comparison Table<a class="headerlink" href="#comparison-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Size</th>
+<th>Speed</th>
+<th>Schema</th>
+<th>Cross-Language</th>
+<th>Schema Evolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>Large</td>
+<td>Fast</td>
+<td>No</td>
+<td>Yes</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>JSON</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>No</td>
+<td>Yes</td>
+<td>Manual</td>
+</tr>
+<tr>
+<td>Avro</td>
+<td>Small</td>
+<td>Fast</td>
+<td>Yes (Registry)</td>
+<td>Yes</td>
+<td>Built-in</td>
+</tr>
+<tr>
+<td>Protobuf</td>
+<td>Small</td>
+<td>Very fast</td>
+<td>Yes (Registry)</td>
+<td>Yes</td>
+<td>Built-in</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Schema Registry</p>
+<p>Schema Registry (e.g., Confluent Schema Registry) stores schemas. Producers and consumers reference schemas by ID. Enables evolution: add optional fields, remove optional fields. Old and new clients work together.</p>
+</div>
+<hr />
+<h2 id="backpressure-when-the-consumer-cant-keep-up">Backpressure: When the Consumer Can't Keep Up<a class="headerlink" href="#backpressure-when-the-consumer-cant-keep-up" title="Permanent link">&para;</a></h2>
+<h3 id="what-happens">What Happens<a class="headerlink" href="#what-happens" title="Permanent link">&para;</a></h3>
+<p>The producer sends 10,000 messages per second. The consumer processes 1,000 per second. The consumer is 10x slower. Messages pile up in Kafka. <strong>Consumer lag</strong> grows. Lag = how many messages are waiting to be read.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Producer: 10,000 msg/sec ──▶ Kafka ──▶ Consumer: 1,000 msg/sec
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>                                    │
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>                                    └── Lag grows by 9,000/sec
+</code></pre></div>
+<p>If this continues, lag reaches millions. By the time the consumer catches up, the data might be stale. Or Kafka runs out of disk (if retention is long).</p>
+<h3 id="how-to-handle-it">How to Handle It<a class="headerlink" href="#how-to-handle-it" title="Permanent link">&para;</a></h3>
+<p><strong>1. Increase partitions and consumers.</strong> If you have 1 partition and 1 consumer, that's your ceiling. Add 10 partitions. Run 10 consumers. 10 × 1,000 = 10,000 msg/sec. You keep up.</p>
+<p><strong>2. Optimize processing.</strong> Make the consumer faster. Batch database writes. Use async processing. Profile and remove bottlenecks.</p>
+<p><strong>3. Batch processing.</strong> Instead of processing one message at a time, fetch a batch. Process in parallel (thread pool). Commit after the batch. Higher throughput.</p>
+<p><strong>4. Scale out.</strong> Add more consumer instances. Kafka assigns partitions. More consumers = more parallelism. Up to the number of partitions.</p>
+<p><strong>5. Accept the lag.</strong> For non-real-time use cases (analytics, reporting), lag might be OK. The consumer eventually catches up. Monitor lag. Alert if it exceeds a threshold.</p>
+<div class="admonition warning">
+<p class="admonition-title">Partition Limit</p>
+<p>You can't have more consumers than partitions. If you have 6 partitions, 6 consumers can run in parallel. A 7th consumer sits idle. To add more parallelism, add more partitions first.</p>
+</div>
+<hr />
+<h2 id="offset-commit-the-reading-a-book-analogy">Offset Commit: The Reading-a-Book Analogy<a class="headerlink" href="#offset-commit-the-reading-a-book-analogy" title="Permanent link">&para;</a></h2>
+<p>You're reading a book. You put a bookmark at page 50. That's your offset. "I've read through page 50." Tomorrow you start at page 51. You don't re-read 1-50.</p>
+<p><strong>In Kafka:</strong> After processing messages, you commit the offset. "I've processed through offset 50." Kafka stores this. If you restart, you say "Give me messages from offset 51." You resume. No re-processing.</p>
+<p><strong>Where is the offset stored?</strong> In Kafka itself. There's an internal topic <code>__consumer_offsets</code>. Your consumer group's offsets live there. When you commit, you're writing to that topic.</p>
+<hr />
+<h2 id="auto-commit-vs-manual-commit-the-data-loss-risk">Auto-Commit vs Manual Commit: The Data Loss Risk<a class="headerlink" href="#auto-commit-vs-manual-commit-the-data-loss-risk" title="Permanent link">&para;</a></h2>
+<h3 id="auto-commit-enableautocommittrue">Auto-Commit (enable.auto.commit=true)<a class="headerlink" href="#auto-commit-enableautocommittrue" title="Permanent link">&para;</a></h3>
+<p>Kafka commits for you. Every <code>auto.commit.interval.ms</code> (default 5 seconds), it commits the latest offset you've received. You don't control when.</p>
+<p><strong>The risk:</strong> You poll. You get messages 1-10. You start processing. Message 5. Message 6. Crash. You never finished. But auto-commit might have already run after the poll. It committed offset 11. "I've processed through 10." On restart, you start at 11. Messages 5-10? Never fully processed. But Kafka thinks you did. <strong>Data loss.</strong> You skipped them.</p>
+<p>Or the opposite: You process 1-10. Before auto-commit runs, you crash. On restart, no commit. You get 1-10 again. <strong>Duplicate processing.</strong> You might charge someone twice.</p>
+<h3 id="manual-commit-enableautocommitfalse">Manual Commit (enable.auto.commit=false)<a class="headerlink" href="#manual-commit-enableautocommitfalse" title="Permanent link">&para;</a></h3>
+<p>You call <code>consumer.commitSync()</code> or <code>consumer.commitAsync()</code> after processing. You control exactly when.</p>
+<p><strong>Safe pattern:</strong> Process message. Then commit. If you crash after process but before commit, you'll reprocess. Duplicate. But at least you don't skip. That's at-least-once. Make your processing idempotent to handle duplicates.</p>
+<p><strong>Dangerous pattern:</strong> Commit before process. If you crash after commit but before process, you've lost the message. Never processed. At-most-once.</p>
+<div class="admonition warning">
+<p class="admonition-title">Common Mistake</p>
+<p>Never commit before processing if you need to ensure the message is handled. Commit after. Accept that you might reprocess on crash. Design for idempotency.</p>
+</div>
+<hr />
+<h2 id="consumer-rebalancing-step-by-step">Consumer Rebalancing: Step by Step<a class="headerlink" href="#consumer-rebalancing-step-by-step" title="Permanent link">&para;</a></h2>
+<p>When a consumer joins or leaves a group, Kafka <strong>rebalances</strong>. Partitions are reassigned. Let's walk through it.</p>
+<h3 id="consumer-leaves-crashes">Consumer Leaves (Crashes)<a class="headerlink" href="#consumer-leaves-crashes" title="Permanent link">&para;</a></h3>
+<p><strong>Before:</strong> C1→P0, C2→P1, C3→P2.</p>
+<p><strong>C3 crashes.</strong> Stops sending heartbeats. Kafka waits <code>session.timeout.ms</code> (default 45 seconds). Still no heartbeat. C3 is dead.</p>
+<p><strong>Rebalance starts.</strong> The group coordinator (a broker) triggers a rebalance. All consumers are told to stop fetching. They revoke their partitions.</p>
+<p><strong>New assignment:</strong> C1 and C2 are left. Partitions P0, P1, P2 must be assigned to 2 consumers. C1 gets P0 and P2. C2 gets P1. (Or similar. The assignor decides.)</p>
+<p><strong>Consumers resume.</strong> C1 fetches from P0 and P2. C2 fetches from P1. They resume from last committed offsets. Work continues.</p>
+<p><strong>Pause:</strong> During rebalance, consumption pauses. Usually a few seconds. For high-throughput systems, this can cause a backlog.</p>
+<h3 id="new-consumer-joins">New Consumer Joins<a class="headerlink" href="#new-consumer-joins" title="Permanent link">&para;</a></h3>
+<p><strong>Before:</strong> C1→P0, P1. C2→P2.</p>
+<p><strong>C3 joins.</strong> Sends a join group request.</p>
+<p><strong>Rebalance.</strong> Partitions redistributed. C1→P0. C2→P1. C3→P2. Better balance.</p>
+<p><strong>Resume.</strong> Everyone fetches. C2 and C1 gave up some partitions. They might need to seek to the correct offset if they had in-memory state.</p>
+<hr />
+<h2 id="delivery-semantics-payment-processing-scenario">Delivery Semantics: Payment Processing Scenario<a class="headerlink" href="#delivery-semantics-payment-processing-scenario" title="Permanent link">&para;</a></h2>
+<p>Imagine you're processing payments. A message says "Charge user $50." What happens if you process it twice? Or not at all?</p>
+<h3 id="at-most-once">At-Most-Once<a class="headerlink" href="#at-most-once" title="Permanent link">&para;</a></h3>
+<p><strong>Meaning:</strong> Process 0 or 1 time. Never more. Might skip.</p>
+<p><strong>How:</strong> Commit before processing. If you crash after commit, you never process. Message lost.</p>
+<p><strong>Payment scenario:</strong> You commit. Then you charge. Crash before charge. User was never charged. You lost the payment. Bad.</p>
+<p><strong>When to use:</strong> When duplicates are worse than loss. Rare. Maybe for "decrement inventory" where double-decrement is terrible.</p>
+<h3 id="at-least-once">At-Least-Once<a class="headerlink" href="#at-least-once" title="Permanent link">&para;</a></h3>
+<p><strong>Meaning:</strong> Process 1 or more times. Never skip. Might duplicate.</p>
+<p><strong>How:</strong> Process. Then commit. If you crash after process but before commit, you'll reprocess. Duplicate.</p>
+<p><strong>Payment scenario:</strong> You charge. Then commit. Crash before commit. Restart. You charge again. User charged twice. Bad. Unless you make it idempotent: "If payment ID X already processed, skip." Check before charging.</p>
+<p><strong>When to use:</strong> Most common. With idempotent consumers. Safe and practical.</p>
+<h3 id="exactly-once">Exactly-Once<a class="headerlink" href="#exactly-once" title="Permanent link">&para;</a></h3>
+<p><strong>Meaning:</strong> Process exactly 1 time. No skip. No duplicate.</p>
+<p><strong>How:</strong> Kafka Transactions. Producer and consumer participate. Atomic. Complex.</p>
+<p><strong>Payment scenario:</strong> Charge and commit in one transaction. Crash? Rollback. No duplicate. No loss. Perfect. But harder to implement.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"In most systems, I use <strong>at-least-once</strong> delivery with <strong>idempotent consumers</strong>. Making the consumer idempotent (e.g., checking if order already processed) is simpler than exactly-once semantics."</p>
+</div>
+<hr />
+<h2 id="full-java-code-examples">Full Java Code Examples<a class="headerlink" href="#full-java-code-examples" title="Permanent link">&para;</a></h2>
+<h3 id="producer-line-by-line-explanation">Producer: Line-by-Line Explanation<a class="headerlink" href="#producer-line-by-line-explanation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">// Step 1: Configure the producer</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">Properties</span><span class="w"> </span><span class="n">props</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Properties</span><span class="p">();</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;bootstrap.servers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;localhost:9092&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// Where to find Kafka</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;key.serializer&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="s">&quot;org.apache.kafka.common.serialization.StringSerializer&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// How to convert key to bytes</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;value.serializer&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="s">&quot;org.apache.kafka.common.serialization.StringSerializer&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// How to convert value to bytes</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;acks&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;all&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// Wait for all replicas. Safest.</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;enable.idempotence&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// Prevent duplicates on retry</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="c1">// Step 2: Create the producer</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="n">KafkaProducer</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">producer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">KafkaProducer</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">props</span><span class="p">);</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="c1">// Step 3: Create a record (topic, key, value)</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="c1">// Key &quot;order-123&quot; ensures all order-123 events go to same partition</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="n">ProducerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ProducerRecord</span><span class="o">&lt;&gt;</span><span class="p">(</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">    </span><span class="s">&quot;orders&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1">// topic</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="w">    </span><span class="s">&quot;order-123&quot;</span><span class="p">,</span><span class="w">        </span><span class="c1">// key (use for ordering!)</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">    </span><span class="s">&quot;Order placed&quot;</span><span class="w">      </span><span class="c1">// value</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="p">);</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="c1">// Step 4: Send (async with callback)</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">record</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exception</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="w">        </span><span class="c1">// Success! Message made it to Kafka.</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Sent to partition &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="na">partition</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">            </span><span class="s">&quot; offset &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="na">offset</span><span class="p">());</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a><span class="w">        </span><span class="c1">// Failure. Log it. Maybe retry.</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="w">        </span><span class="n">exception</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a><span class="p">});</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="c1">// Step 5: Flush and close (important: don&#39;t forget!)</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="n">producer</span><span class="p">.</span><span class="na">flush</span><span class="p">();</span><span class="w">  </span><span class="c1">// Wait for in-flight messages</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a><span class="n">producer</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+</code></pre></div>
+<p><strong>Line 1-8:</strong> Configuration. Bootstrap servers tell the producer where to find Kafka (it will discover the rest of the cluster). Serializers convert your objects to bytes. acks=all and idempotence for safety.</p>
+<p><strong>Line 11:</strong> Create the producer. It opens connections to Kafka.</p>
+<p><strong>Line 14-18:</strong> ProducerRecord is the message. Topic, key, value. The key is crucial for ordering. All "order-123" events go to the same partition.</p>
+<p><strong>Line 21-29:</strong> send() is asynchronous. It returns immediately. The callback runs when the broker responds. Check for exceptions. In production, you'd retry or alert.</p>
+<p><strong>Line 32-33:</strong> flush() waits for all buffered messages to be sent. close() releases resources. Without flush, you might exit before messages are actually delivered.</p>
+<h3 id="consumer-line-by-line-explanation">Consumer: Line-by-Line Explanation<a class="headerlink" href="#consumer-line-by-line-explanation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">// Step 1: Configure the consumer</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">Properties</span><span class="w"> </span><span class="n">props</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Properties</span><span class="p">();</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;bootstrap.servers&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;localhost:9092&quot;</span><span class="p">);</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;group.id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;order-processor&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// Consumer group. Required!</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;key.deserializer&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="s">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span><span class="p">);</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;value.deserializer&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="s">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span><span class="p">);</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;auto.offset.reset&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;earliest&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// If no offset, start from beginning</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;enable.auto.commit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="p">);</span><span class="w">    </span><span class="c1">// We&#39;ll commit manually</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="c1">// Step 2: Create consumer and subscribe</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="n">KafkaConsumer</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">consumer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">KafkaConsumer</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">props</span><span class="p">);</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="n">consumer</span><span class="p">.</span><span class="na">subscribe</span><span class="p">(</span><span class="n">Collections</span><span class="p">.</span><span class="na">singletonList</span><span class="p">(</span><span class="s">&quot;orders&quot;</span><span class="p">));</span><span class="w">  </span><span class="c1">// Subscribe to topic</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="c1">// Step 3: The poll loop</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">    </span><span class="c1">// Poll for messages. Blocks up to 100ms. Returns batch of records.</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="w">    </span><span class="n">ConsumerRecords</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">records</span><span class="w"> </span><span class="o">=</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="w">        </span><span class="n">consumer</span><span class="p">.</span><span class="na">poll</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMillis</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="w">    </span><span class="c1">// Process each record</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Key: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">key</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="w">            </span><span class="s">&quot; Value: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">value</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="w">            </span><span class="s">&quot; Partition: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">partition</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="w">            </span><span class="s">&quot; Offset: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">offset</span><span class="p">());</span>
+<a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>
+<a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a><span class="w">        </span><span class="c1">// Your business logic here. Process the order. Send email. etc.</span>
+<a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a><span class="w">        </span><span class="c1">// processOrder(record.value());  // Implement your processing logic</span>
+<a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a>
+<a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a><span class="w">    </span><span class="c1">// Commit after processing. Safe: we&#39;ve handled all messages.</span>
+<a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">records</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a><span class="w">        </span><span class="n">consumer</span><span class="p">.</span><span class="na">commitSync</span><span class="p">();</span><span class="w">  </span><span class="c1">// Blocking. Waits for commit to complete.</span>
+<a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Line 1-10:</strong> Configuration. group.id is required. Consumers in the same group share partitions. enable.auto.commit=false means we commit manually. Safer.</p>
+<p><strong>Line 13-14:</strong> Create consumer. Subscribe to "orders". The consumer will be assigned partitions by the group coordinator.</p>
+<p><strong>Line 17-18:</strong> poll() fetches messages. Duration.ofMillis(100) means "block up to 100ms if no messages, then return." You might get 0 or 1000 records. Depends on what's available.</p>
+<p><strong>Line 21-28:</strong> Iterate over records. Each has key, value, partition, offset. Process them. Do your work.</p>
+<p><strong>Line 31-33:</strong> After processing, commit. commitSync() blocks until Kafka confirms. Now if we crash, we'll resume after the last committed offset. No skips. Might have duplicates if we crash between process and commit—design for idempotency.</p>
+<hr />
+<h2 id="common-production-issues">Common Production Issues<a class="headerlink" href="#common-production-issues" title="Permanent link">&para;</a></h2>
+<p><strong>Consumer lag growing:</strong> Your consumers can't keep up. Add more consumers (up to partition count). Or optimize processing. Or add partitions and consumers.</p>
+<p><strong>Rebalance storms:</strong> Consumers constantly joining/leaving. Rebalances every few seconds. Check session.timeout. Increase if your processing is slow. Or use max.poll.interval.ms—if processing takes longer than this, the consumer is kicked out. Increase it if you have slow processing.</p>
+<p><strong>Duplicate processing:</strong> At-least-once means duplicates. Make consumers idempotent. Check "have I already processed this?" before doing work. Use a unique ID in the message. Store processed IDs in a DB.</p>
+<p><strong>Lost messages:</strong> At-most-once, or commit-before-process. Fix: commit after process. Use acks=all on producer.</p>
+<p><strong>OOM (Out of Memory):</strong> Fetching too many records. Reduce max.poll.records. Or process in smaller batches.</p>
+<p><strong>Coordinator not available:</strong> The broker that manages your consumer group is moving. Wait. Retry. Usually transient.</p>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Producer</th>
+<th>Consumer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Role</td>
+<td>Sends messages</td>
+<td>Reads messages</td>
+</tr>
+<tr>
+<td>Key config</td>
+<td>acks, retries, batch.size</td>
+<td>group.id, auto.offset.reset</td>
+</tr>
+<tr>
+<td>Ordering</td>
+<td>Use keys for ordering</td>
+<td>One partition per consumer in group</td>
+</tr>
+<tr>
+<td>Safety</td>
+<td>acks=all + idempotent</td>
+<td>Manual commit + idempotent processing</td>
+</tr>
+<tr>
+<td>Scaling</td>
+<td>Add more partitions</td>
+<td>Add more consumers (up to partition count)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Write a Java producer that sends 10 messages with key = "user-1".</li>
+<li>Verify all 10 messages go to the same partition.</li>
+<li>Start 2 consumers in the same group on a 3-partition topic. Observe partition assignment.</li>
+<li>Kill one consumer. Watch rebalancing happen.</li>
+<li>Reset offset to <code>earliest</code> and re-read all messages.</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../kafka-scaling/">Scaling Kafka</a> - Handle millions of messages.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

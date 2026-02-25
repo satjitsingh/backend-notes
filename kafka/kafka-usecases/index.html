@@ -1,0 +1,2750 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/kafka-usecases/">
+      
+      
+        <link rel="prev" href="../delivery-semantics/">
+      
+      
+        <link rel="next" href="../performance-best-practices/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Real-World Use Cases - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-use-cases" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Real-World Use Cases
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-is-kafka-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where is Kafka Used?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-event-driven-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Event-Driven Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Event-Driven Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-from-chaos-to-calm-at-startupxyz" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: From Chaos to Calm at StartupXYZ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes-beginners-make" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes Beginners Make
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-log-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Log Aggregation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Log Aggregation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-the-devops-engineer-drowning-in-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: The DevOps Engineer Drowning in Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-real-time-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Real-Time Analytics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Real-Time Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-the-dashboard-that-couldnt-keep-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: The Dashboard That Couldn't Keep Up
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-data-pipeline-etl" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Data Pipeline / ETL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Data Pipeline / ETL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-briefly" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem (Briefly)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-order-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Order Processing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Order Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-black-friday-without-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: Black Friday Without Kafka
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-flow_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-notification-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Notification System
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Notification System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-building-whatsapp-like-notifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: Building WhatsApp-Like Notifications
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-activity-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Activity Tracking
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Activity Tracking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-linkedin-tracking-your-profile-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: LinkedIn Tracking Your Profile Views
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-flow_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-change-data-capture-cdc" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Change Data Capture (CDC)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Change Data Capture (CDC)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-cdc-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is CDC? (From Scratch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-fits-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Fits In
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-iot-data-ingestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. IoT Data Ingestion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. IoT Data Ingestion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-briefly_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem (Briefly)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-fraud-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Fraud Detection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Fraud Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-briefly_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem (Briefly)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-saga-pattern-with-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Saga Pattern with Kafka
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Saga Pattern with Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-saga-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is the Saga Pattern?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-handles-distributed-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Handles Distributed Transactions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choreography-vs-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choreography vs Orchestration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simple-example-order-saga" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple Example: Order Saga
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-cqrs-with-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. CQRS with Kafka
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. CQRS with Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-cqrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is CQRS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-enables-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Enables It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow-command-topic-consumer-updates-read-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flow: Command Topic → Consumer Updates Read Model
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-event-replay-and-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Event Replay and Debugging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Event Replay and Debugging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-replay-events-for-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Replay Events for Debugging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resetting-offsets-to-investigate-production-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resetting Offsets to Investigate Production Issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companies-using-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Companies Using Kafka
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-is-kafka-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where is Kafka Used?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-event-driven-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Event-Driven Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Event-Driven Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-from-chaos-to-calm-at-startupxyz" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: From Chaos to Calm at StartupXYZ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes-beginners-make" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes Beginners Make
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-log-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Log Aggregation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Log Aggregation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-the-devops-engineer-drowning-in-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: The DevOps Engineer Drowning in Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-real-time-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Real-Time Analytics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Real-Time Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-the-dashboard-that-couldnt-keep-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: The Dashboard That Couldn't Keep Up
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-data-pipeline-etl" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Data Pipeline / ETL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Data Pipeline / ETL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-briefly" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem (Briefly)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-order-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Order Processing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Order Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-black-friday-without-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: Black Friday Without Kafka
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-flow_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-notification-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Notification System
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Notification System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-building-whatsapp-like-notifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: Building WhatsApp-Like Notifications
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-activity-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Activity Tracking
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Activity Tracking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story-linkedin-tracking-your-profile-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story: LinkedIn Tracking Your Profile Views
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-flow_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-change-data-capture-cdc" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Change Data Capture (CDC)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Change Data Capture (CDC)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-cdc-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is CDC? (From Scratch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-fits-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Fits In
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-iot-data-ingestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. IoT Data Ingestion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. IoT Data Ingestion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-briefly_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem (Briefly)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-solved-it_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Solved It
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-fraud-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Fraud Detection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Fraud Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-briefly_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem (Briefly)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-saga-pattern-with-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Saga Pattern with Kafka
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Saga Pattern with Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-saga-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is the Saga Pattern?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-handles-distributed-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Handles Distributed Transactions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choreography-vs-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choreography vs Orchestration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simple-example-order-saga" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple Example: Order Saga
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-cqrs-with-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. CQRS with Kafka
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. CQRS with Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-cqrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Is CQRS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-enables-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Enables It
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow-command-topic-consumer-updates-read-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flow: Command Topic → Consumer Updates Read Model
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-event-replay-and-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Event Replay and Debugging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Event Replay and Debugging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-replay-events-for-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Replay Events for Debugging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resetting-offsets-to-investigate-production-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resetting Offsets to Investigate Production Issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companies-using-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Companies Using Kafka
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="kafka-use-cases">Kafka Use Cases<a class="headerlink" href="#kafka-use-cases" title="Permanent link">&para;</a></h1>
+<h2 id="where-is-kafka-used">Where is Kafka Used?<a class="headerlink" href="#where-is-kafka-used" title="Permanent link">&para;</a></h2>
+<p>Kafka is everywhere in modern backend systems. But here's the thing—reading a list of use cases doesn't teach you much. You need to <em>feel</em> the problems that Kafka solves. You need to understand what life was like <em>before</em> Kafka, and why teams made the switch.</p>
+<p>In this guide, we're going to tell stories. Real-world scenarios where developers faced real pain, and how Kafka became the solution. By the end, you won't just know <em>what</em> Kafka does—you'll understand <em>why</em> it exists and <em>when</em> to reach for it.</p>
+<hr />
+<h2 id="1-event-driven-architecture">1. Event-Driven Architecture<a class="headerlink" href="#1-event-driven-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="the-story-from-chaos-to-calm-at-startupxyz">The Story: From Chaos to Calm at StartupXYZ<a class="headerlink" href="#the-story-from-chaos-to-calm-at-startupxyz" title="Permanent link">&para;</a></h3>
+<p>Imagine you're a backend developer at a fast-growing startup. Your company started simple: one monolithic application that did everything. Then the CTO said, "We need to scale. Let's break this into microservices."</p>
+<p>So you did. You now have an Order Service, a Payment Service, an Inventory Service, and an Email Service. The Order Service is the star—when someone places an order, it needs to tell everyone else. So you wrote code like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Order placed? Call Payment Service via HTTP.
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Payment done? Call Inventory Service via HTTP.
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Inventory updated? Call Email Service via HTTP.
+</code></pre></div>
+<p>Seems logical, right? Here's what happened in production.</p>
+<p><strong>Monday 2 AM:</strong> The Email Service crashed. Maybe a bug, maybe the email provider was down. Your Order Service made an HTTP call to send the order confirmation. The call failed. Your Order Service threw an exception. The entire order flow stopped. Customers who had <em>already paid</em> never got a confirmation email. Support tickets flooded in.</p>
+<p><strong>Tuesday:</strong> You added retry logic. "If Email Service fails, retry 3 times." But now when Email Service was slow, your Order Service waited. And waited. Your API response time went from 200ms to 5 seconds. Users thought the site was broken.</p>
+<p><strong>Wednesday:</strong> The Product team said, "We need to add SMS notifications too." And "We need to send data to our analytics warehouse." And "We need to update the search index." Every new requirement meant modifying the Order Service. It became a tangled web of HTTP calls. One service down, and the whole chain broke.</p>
+<p><strong>The breaking point:</strong> Black Friday. Traffic spiked 10x. The Payment Service got overwhelmed. Every HTTP call from Order Service to Payment Service started timing out. Orders were failing. The CEO was on the war room call. Someone said: "What if Order Service could just <em>fire and forget</em>? What if it didn't have to wait for anyone?"</p>
+<p>That's when you discovered Kafka.</p>
+<h3 id="how-kafka-solved-it">How Kafka Solved It<a class="headerlink" href="#how-kafka-solved-it" title="Permanent link">&para;</a></h3>
+<p>Think about it this way: Instead of Order Service <em>calling</em> other services, Order Service now <em>publishes an event</em> to a topic called "orders." It doesn't care who's listening. It doesn't wait. It just says, "Hey, an order happened. Here are the details." And it moves on.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Order Service ──▶ Kafka Topic: &quot;orders&quot;
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>                       │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>                       ├──▶ Payment Service (reads when ready)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                       ├──▶ Inventory Service (reads when ready)
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>                       ├──▶ Email Service (reads when it&#39;s back up)
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                       └──▶ Analytics Service (you added this without touching Order Service!)
+</code></pre></div>
+<p>If Email Service is down for an hour? The messages wait in Kafka. When Email Service comes back, it reads from where it left off. No lost emails. No blocked orders. No coupling.</p>
+<p><strong>The magic:</strong> Order Service doesn't know Payment Service exists. It doesn't know Email Service exists. It just knows: "I publish to Kafka." Want to add a new consumer that sends Slack notifications? Add it. No changes to Order Service. That's loose coupling.</p>
+<div class="admonition success">
+<p class="admonition-title">Real-World Scenario</p>
+<p><strong>Uber's use case:</strong> When a ride starts, dozens of systems need to know—driver app, rider app, billing, fraud detection, analytics, surge pricing. They don't call each other. They all subscribe to the same Kafka topics. When one system is slow, others keep moving.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Companies Using This Pattern</p>
+<ul>
+<li><strong>Netflix:</strong> Every user action (play, pause, search) becomes an event. Hundreds of services consume these events for recommendations, A/B testing, and analytics. No service directly calls another for these flows.</li>
+<li><strong>Airbnb:</strong> Search events, booking events, and messaging events flow through Kafka. The search ranking service, the notification service, and the analytics pipeline all consume independently.</li>
+<li><strong>Spotify:</strong> Playback events, skip events, and playlist changes go to Kafka. The recommendation engine, the royalty calculation system, and the analytics team all read from the same streams.</li>
+</ul>
+</div>
+<h3 id="common-mistakes-beginners-make">Common Mistakes Beginners Make<a class="headerlink" href="#common-mistakes-beginners-make" title="Permanent link">&para;</a></h3>
+<p><strong>Mistake 1:</strong> Treating Kafka like a queue. "I'll have one consumer that processes everything." That works for simple cases, but the power of event-driven architecture is <em>multiple independent consumers</em>. Each service gets its own copy of the event.</p>
+<p><strong>Mistake 2:</strong> Putting business logic in the producer. The producer should just publish "what happened." Don't make it decide who cares. Let consumers decide.</p>
+<p><strong>Mistake 3:</strong> Synchronous thinking. "But I need a response from Payment Service!" For that, you might use request-reply over Kafka, or keep a synchronous call for that specific flow. Event-driven doesn't mean <em>everything</em> is async.</p>
+<hr />
+<h2 id="2-log-aggregation">2. Log Aggregation<a class="headerlink" href="#2-log-aggregation" title="Permanent link">&para;</a></h2>
+<h3 id="the-story-the-devops-engineer-drowning-in-logs">The Story: The DevOps Engineer Drowning in Logs<a class="headerlink" href="#the-story-the-devops-engineer-drowning-in-logs" title="Permanent link">&para;</a></h3>
+<p>Meet Priya. She's a DevOps engineer at a company with 50 microservices running across 50 servers. Every service writes logs to its local disk. When something goes wrong at 3 AM, she gets paged. "The checkout is failing!"</p>
+<p>She SSHes into Server 23. Checks the Order Service logs. Nothing obvious. Maybe it's the Payment Service? SSH to Server 41. Check those logs. Maybe the failure is in the API Gateway? SSH to Server 7. She's jumping between servers, grepping through log files, trying to trace a single user's request across 5 different services. It takes 45 minutes to find the issue. The user gave up 44 minutes ago.</p>
+<p><strong>The daily struggle:</strong> Developers ask, "Can you get me the logs for user ID 12345 from yesterday?" That request touched 8 services across 6 servers. Priya writes a script. It takes 20 minutes to run. The developer needs it in 5.</p>
+<p><strong>The scaling nightmare:</strong> The company grows. 50 servers become 200. 200 become 500. Logs are everywhere. Disk space runs out. Log rotation deletes old logs before anyone can analyze them. There's no single place to search.</p>
+<p><strong>The solution:</strong> Log aggregation. Every server runs a lightweight agent that ships logs to a central place. But here's the problem—what's that central place? If you send 500 servers' worth of logs directly to Elasticsearch, you'll overwhelm it. If you send them to a database, you'll need a massive one. And what happens when the central system is down? Logs get lost.</p>
+<h3 id="how-kafka-solved-it_1">How Kafka Solved It<a class="headerlink" href="#how-kafka-solved-it_1" title="Permanent link">&para;</a></h3>
+<p>Kafka sits in the middle. Think of it as a shock absorber.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Server 1  ──▶ ┐
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Server 2  ──▶ ├──▶ Kafka Topic: &quot;application-logs&quot; ──▶ Logstash/Fluentd ──▶ Elasticsearch
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Server 3  ──▶ │         (buffers millions of messages)                      (search when ready)
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>...
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Server 500 ──▶ ┘
+</code></pre></div>
+<p>Each server produces logs to Kafka. Kafka holds them. It doesn't care if Elasticsearch is slow or restarting. The logs wait. A consumer (like Logstash or a custom service) reads from Kafka at its own pace and pushes to Elasticsearch. If Elasticsearch goes down for an hour, Kafka keeps the logs. No data loss.</p>
+<p><strong>Why Kafka and not just "send to Elasticsearch"?</strong> Because Kafka handles <em>bursts</em>. Black Friday? 10x log volume? Kafka absorbs it. Elasticsearch can't ingest that fast. Kafka buffers. The consumer catches up when traffic slows. That's the power of decoupling producers from consumers.</p>
+<div class="admonition tip">
+<p class="admonition-title">Think About It This Way</p>
+<p>Kafka is like a post office during Christmas. Millions of packages arrive. The post office doesn't deliver them all the same day. It holds them. Delivery trucks (consumers) take what they can handle. No packages are lost. Everyone gets their mail—eventually.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Companies Using This Pattern</p>
+<ul>
+<li><strong>LinkedIn:</strong> Kafka was <em>literally created</em> for this. LinkedIn had thousands of servers generating logs and metrics. They needed a system that could handle the volume. Kafka was born. Today, LinkedIn ingests billions of events per day into Kafka before they flow to monitoring and analytics systems.</li>
+<li><strong>Netflix:</strong> Every microservice sends logs and metrics to Kafka. From there, they flow to their monitoring stack. When Netflix does a chaos engineering experiment (intentionally killing servers), Kafka ensures no log data is lost during the chaos.</li>
+<li><strong>Twitter/X:</strong> Tweet ingestion, engagement events, and system logs all flow through Kafka. Their data pipeline starts with Kafka as the central nervous system.</li>
+</ul>
+</div>
+<hr />
+<h2 id="3-real-time-analytics">3. Real-Time Analytics<a class="headerlink" href="#3-real-time-analytics" title="Permanent link">&para;</a></h2>
+<h3 id="the-story-the-dashboard-that-couldnt-keep-up">The Story: The Dashboard That Couldn't Keep Up<a class="headerlink" href="#the-story-the-dashboard-that-couldnt-keep-up" title="Permanent link">&para;</a></h3>
+<p>Imagine you're building the operations dashboard for Uber. The product manager wants: "Show me how many drivers are currently active in San Francisco. Live. Not 5 minutes ago. Right now."</p>
+<p>Your first attempt: a batch job. Every 5 minutes, you run a query against the database. Count active drivers. Store the result. The dashboard reads the stored result. It works, but "live" it is not. During a concert or a game, demand spikes in minutes. By the time your dashboard updates, the surge is over. Dispatchers are making decisions with stale data.</p>
+<p>Your second attempt: query the database on every page load. "SELECT COUNT(*) FROM drivers WHERE status='active' AND city='SF'." With 10,000 concurrent dashboard users, your database melts. You add caching. Now you have a 30-second cache. Better, but still not real-time.</p>
+<p><strong>The real requirement:</strong> Every time a driver goes online, goes offline, or moves to a new city, the dashboard should reflect it within seconds. Not minutes. Seconds.</p>
+<h3 id="how-kafka-solved-it_2">How Kafka Solved It<a class="headerlink" href="#how-kafka-solved-it_2" title="Permanent link">&para;</a></h3>
+<p>Every state change becomes an event. Driver goes online? Event. Driver accepts a ride? Event. Driver completes a ride? Event. These events flow to Kafka. A stream processing application (Kafka Streams, Flink, or similar) consumes them and maintains a <em>real-time</em> aggregate. "Active drivers in SF right now." The dashboard queries this aggregate—or the aggregate pushes updates to the dashboard via WebSockets.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Driver App: &quot;I&#39;m online in SF&quot;
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    │
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    ▼
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Kafka Topic: &quot;driver-events&quot;
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    │
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    ▼
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Stream Processor: Maintains &quot;active_drivers_by_city&quot; state
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    │
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    ▼
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>Dashboard: &quot;SF has 847 active drivers&quot; (updated every 2 seconds)
+</code></pre></div>
+<p><strong>The key insight:</strong> You're not querying a database for "current state." You're <em>building</em> current state from a stream of events. The stream is the source of truth. The database (or in-memory store) is just a materialized view that gets updated in real time.</p>
+<div class="admonition example">
+<p class="admonition-title">Real-World Scenario</p>
+<p><strong>Uber's driver tracking:</strong> When you open the Uber app and see cars moving on the map, that's real-time. Driver location updates flow through Kafka. A geo-processing service consumes them, updates positions, and pushes to your phone. Millions of location updates per second. Kafka handles it.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Companies Using This Pattern</p>
+<ul>
+<li><strong>Uber:</strong> Trip events, driver location, surge pricing calculations—all real-time. The famous "heat map" showing demand? Kafka streams. Driver ETA estimates? Kafka streams.</li>
+<li><strong>Netflix:</strong> "Trending now" and "Because you watched X"—these use real-time viewing events. When millions of people start watching a new show, the system knows within seconds.</li>
+<li><strong>LinkedIn:</strong> The feed ranking algorithm uses real-time engagement. You like a post? That event flows through Kafka. The ranking model gets updated. Your feed reflects it.</li>
+</ul>
+</div>
+<hr />
+<h2 id="4-data-pipeline-etl">4. Data Pipeline / ETL<a class="headerlink" href="#4-data-pipeline-etl" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem-briefly">The Problem (Briefly)<a class="headerlink" href="#the-problem-briefly" title="Permanent link">&para;</a></h3>
+<p>Data lives in many places. Your transactional database (MySQL). Your data warehouse (Snowflake, BigQuery). Your search engine (Elasticsearch). Your cache (Redis). They all need to stay in sync. Or data needs to flow from source systems to analytics. Traditionally, you'd write ETL jobs—Extract, Transform, Load. Cron jobs that run every hour. Or custom scripts. They're brittle. They fail. They're hard to maintain.</p>
+<h3 id="how-kafka-solved-it_3">How Kafka Solved It<a class="headerlink" href="#how-kafka-solved-it_3" title="Permanent link">&para;</a></h3>
+<p>Kafka Connect is a framework that moves data in and out of Kafka <em>without writing application code</em>. You configure connectors. "Take every row from this MySQL table and put it in Kafka." "Take every message from this Kafka topic and put it in Elasticsearch." The connectors handle the heavy lifting.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>MySQL (orders table) ──▶ Kafka Connect (JDBC Source) ──▶ Kafka Topic: &quot;mysql.orders&quot;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>                                                              │
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>                                                              ├──▶ Kafka Connect (Snowflake Sink) ──▶ Data Warehouse
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>                                                              ├──▶ Kafka Connect (Elasticsearch Sink) ──▶ Search
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>                                                              └──▶ Kafka Connect (MongoDB Sink) ──▶ Analytics DB
+</code></pre></div>
+<p><strong>Why Kafka in the middle?</strong> Because you might have 10 destinations. Without Kafka, you'd need 10 different pipelines from MySQL. With Kafka, you have one source connector. Ten sink connectors. Add a new destination? Add a connector. No changes to the source.</p>
+<h3 id="step-by-step-flow">Step-by-Step Flow<a class="headerlink" href="#step-by-step-flow" title="Permanent link">&para;</a></h3>
+<p><strong>Step 1:</strong> Application inserts a row into MySQL <code>orders</code> table. MySQL writes to its transaction log (binlog).</p>
+<p><strong>Step 2:</strong> Kafka Connect JDBC Source (or Debezium) reads the binlog. Detects the new row.</p>
+<p><strong>Step 3:</strong> Source connector publishes change event to Kafka topic "mysql.orders": <code>{op: "c", after: {id: 1, customer_id: 42, total: 99.99}}</code>.</p>
+<p><strong>Step 4:</strong> Snowflake Sink connector consumes from "mysql.orders." Writes row to data warehouse. Analytics team can query.</p>
+<p><strong>Step 5:</strong> Elasticsearch Sink connector consumes the same event. Indexes the order for search. Customers can search orders.</p>
+<p><strong>Step 6:</strong> MongoDB Sink consumes. Syncs to analytics DB. One source. Many sinks. Each connector runs independently.</p>
+<div class="admonition info">
+<p class="admonition-title">Companies Using This Pattern</p>
+<p>Almost every data team at scale uses Kafka in their pipeline. Confluent (founded by Kafka creators) reports that the majority of their enterprise customers use Kafka Connect for database replication, data lake ingestion, and cloud data warehouse loading.</p>
+</div>
+<hr />
+<h2 id="5-order-processing">5. Order Processing<a class="headerlink" href="#5-order-processing" title="Permanent link">&para;</a></h2>
+<h3 id="the-story-black-friday-without-kafka">The Story: Black Friday Without Kafka<a class="headerlink" href="#the-story-black-friday-without-kafka" title="Permanent link">&para;</a></h3>
+<p>It's Black Friday at MegaShop, an e-commerce company. The architecture: Order Service receives an order. It makes synchronous HTTP calls to Payment Service, Inventory Service, and Shipping Service. If all succeed, it sends a confirmation email.</p>
+<p><strong>10:00 AM:</strong> Traffic is normal. Everything works.</p>
+<p><strong>10:15 AM:</strong> A viral tweet. Traffic doubles. Payment Service starts slowing down. Each HTTP call from Order Service takes 3 seconds instead of 200ms. Order Service threads are blocked. The thread pool fills up. New orders get "503 Service Unavailable." Customers see errors. They retry. Duplicate orders start appearing.</p>
+<p><strong>10:30 AM:</strong> Someone restarts Payment Service to "clear the load." All in-flight requests fail. Hundreds of orders were "charged" (money deducted) but Order Service never got the response. Those orders are stuck in limbo. Finance is panicking.</p>
+<p><strong>10:45 AM:</strong> Inventory Service runs out of connections to the database. It starts rejecting requests. Order Service gets errors. It doesn't know if the order was placed or not. Some orders went through. Some didn't. The data is inconsistent.</p>
+<p><strong>The post-mortem:</strong> "We need to decouple. We need to make our system resilient. We need to handle failures gracefully." The team decides to rebuild with Kafka.</p>
+<h3 id="how-kafka-solved-it_4">How Kafka Solved It<a class="headerlink" href="#how-kafka-solved-it_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Customer places order
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    │
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    ▼
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Order Service: Validates, publishes to Kafka Topic &quot;orders&quot;
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    │
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    ▼ (Order Service returns &quot;Order received!&quot; immediately. No waiting.)
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    │
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Kafka Topic: &quot;orders&quot;
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    │
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    ├──▶ Payment Service: Charges card, publishes to &quot;payment-results&quot;
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    │         │
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    │         └──▶ (If payment fails, publishes to &quot;payment-failures&quot; for retry)
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    │
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    ├──▶ Inventory Service: Reserves stock (reads when ready, processes at its own pace)
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    │
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    ├──▶ Shipping Service: Creates shipment (can batch for efficiency)
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    │
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    └──▶ Notification Service: Sends email (if this is slow, others aren&#39;t affected)
+</code></pre></div>
+<p><strong>What changed?</strong> Order Service doesn't wait for anyone. It publishes and returns. Each downstream service consumes at its own speed. Payment Service slow? Messages queue up in Kafka. Payment Service catches up. No blocked threads. No cascading failures. Payment Service down? Messages wait. When it's back, it processes. No lost orders.</p>
+<p><strong>For critical ordering:</strong> Use the order ID as the Kafka message key. All events for order-123 go to the same partition. They're processed in order. Payment before shipping. Always.</p>
+<h3 id="step-by-step-flow_1">Step-by-Step Flow<a class="headerlink" href="#step-by-step-flow_1" title="Permanent link">&para;</a></h3>
+<p><strong>Step 1:</strong> Customer clicks "Place Order" on MegaShop. Order Service validates cart, creates order record in DB with status "PENDING."</p>
+<p><strong>Step 2:</strong> Order Service publishes to Kafka topic "orders" with key=orderId. Message: <code>{orderId, customerId, items, total}</code>. Returns "Order received!" to customer. No waiting.</p>
+<p><strong>Step 3:</strong> Payment Service consumes the event. It charges the card. If success, publishes to "payment-results." If failure, publishes to "payment-failures" for retry or alert.</p>
+<p><strong>Step 4:</strong> Inventory Service consumes the same event. Reserves stock. Updates DB. Can batch multiple orders for efficiency.</p>
+<p><strong>Step 5:</strong> Shipping Service consumes. Creates shipment. May wait for payment-results first (depends on design).</p>
+<p><strong>Step 6:</strong> Notification Service consumes. Sends confirmation email. If Email Service is slow, others are not blocked. Messages wait in Kafka.</p>
+<div class="admonition warning">
+<p class="admonition-title">Common Mistake</p>
+<p>Don't use Kafka for the <em>synchronous</em> part of checkout—"Validate card and reserve inventory before showing order confirmation." That still needs a fast, synchronous flow. Use Kafka for the <em>asynchronous</em> follow-ups: send email, update analytics, notify warehouse. Know the difference.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Companies Using This Pattern</p>
+<ul>
+<li><strong>Walmart:</strong> Order events, inventory updates, and fulfillment events flow through Kafka. During peak shopping seasons, the decoupled architecture handles 10x traffic without the order service becoming a bottleneck.</li>
+<li><strong>Alibaba:</strong> Single's Day (their Black Friday) generates billions in sales. Kafka handles the event stream for orders, inventory, and logistics. Each system scales independently.</li>
+</ul>
+</div>
+<hr />
+<h2 id="6-notification-system">6. Notification System<a class="headerlink" href="#6-notification-system" title="Permanent link">&para;</a></h2>
+<h3 id="the-story-building-whatsapp-like-notifications">The Story: Building WhatsApp-Like Notifications<a class="headerlink" href="#the-story-building-whatsapp-like-notifications" title="Permanent link">&para;</a></h3>
+<p>You're building a social app. When someone likes your post, you need to notify the user. How? Email. Push notification. In-app badge. Maybe SMS for critical alerts. Maybe a Slack message for business users.</p>
+<p><strong>First attempt:</strong> Your "Like" service, when it receives a like, calls the Email Service API. Then calls the Push Service API. Then calls the In-App Service. Three HTTP calls. If Push Service is down, the whole flow fails. You add retries. Now the Like service is slow. And what about ordering? User gets a push before the in-app badge updates? Weird.</p>
+<p><strong>Second attempt:</strong> A "Notification Router" service. Like service calls the router. Router calls Email, Push, In-App. Same problem—router is a single point of failure. And adding a new channel (WhatsApp) means changing the router.</p>
+<h3 id="how-kafka-solved-it_5">How Kafka Solved It<a class="headerlink" href="#how-kafka-solved-it_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>User likes a post
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    │
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    ▼
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Like Service: Publishes to Kafka Topic &quot;notifications&quot;
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    │
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    │  Message: { userId, type: &quot;like&quot;, postId, actorId, timestamp }
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    │
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    ▼
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>Kafka Topic: &quot;notifications&quot;
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    │
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    ├──▶ Email Consumer: &quot;User prefers email? Send email.&quot;
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    ├──▶ Push Consumer: &quot;User has app? Send push.&quot;
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    ├──▶ In-App Consumer: &quot;Update badge count, store in DB.&quot;
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    ├──▶ SMS Consumer: &quot;Critical alert? Send SMS.&quot;
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>    └──▶ (Next month) WhatsApp Consumer: &quot;User opted in? Send WhatsApp.&quot;
+</code></pre></div>
+<p><strong>The beauty:</strong> Adding WhatsApp notifications doesn't touch the Like service. Doesn't touch the Email consumer. You add a new consumer. It subscribes to "notifications." Done. Each channel is independent. Email is slow? Push and In-App still work. That's the power of the pub/sub model.</p>
+<div class="admonition tip">
+<p class="admonition-title">Think About It This Way</p>
+<p>Kafka is like a radio broadcast. The radio station (producer) sends out a signal. You don't know who's listening. Could be 10 people. Could be 10 million. Could be someone with a radio, someone with a phone, someone with a car stereo. Each listener (consumer) gets the same content. Independently. The station doesn't wait for anyone to tune in.</p>
+</div>
+<hr />
+<h2 id="7-activity-tracking">7. Activity Tracking<a class="headerlink" href="#7-activity-tracking" title="Permanent link">&para;</a></h2>
+<h3 id="the-story-linkedin-tracking-your-profile-views">The Story: LinkedIn Tracking Your Profile Views<a class="headerlink" href="#the-story-linkedin-tracking-your-profile-views" title="Permanent link">&para;</a></h3>
+<p>You visit someone's LinkedIn profile. They get a notification: "Someone viewed your profile." How does LinkedIn know? They're tracking every page view, every click, every search. Millions of users. Billions of events per day.</p>
+<p><strong>The challenge:</strong> This data feeds many systems. The "Who viewed your profile" feature. The analytics team (what content gets engagement?). The recommendation engine (suggest people similar to those you viewed). The ad targeting system (show relevant ads). The data science team (build ML models). If each of these systems had to be called synchronously when you viewed a profile, the page load would take seconds. And one slow system would block the others.</p>
+<h3 id="how-kafka-solved-it_6">How Kafka Solved It<a class="headerlink" href="#how-kafka-solved-it_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>You click &quot;View Profile&quot; on John&#39;s page
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    │
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    ▼
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Frontend: Sends event to backend (async, fire-and-forget)
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    │
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    ▼
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Backend: Publishes to Kafka Topic &quot;user-activity&quot;
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    │  Message: { userId: you, action: &quot;profile_view&quot;, targetUserId: John, timestamp }
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    │
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    ▼
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>Kafka Topic: &quot;user-activity&quot;
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    │
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>    ├──▶ Profile Views Service: &quot;John has a new viewer. Update his &#39;Who viewed you&#39; list.&quot;
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    ├──▶ Analytics Service: &quot;Increment profile_view metric. Store for dashboards.&quot;
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    ├──▶ Recommendation Engine: &quot;User viewed John. Maybe suggest similar people.&quot;
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    ├──▶ Data Lake Consumer: &quot;Store in S3 for ML training.&quot;
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    └──▶ Ad Service: &quot;User interested in professionals like John. Refine ad targeting.&quot;
+</code></pre></div>
+<p><strong>Key point:</strong> The frontend doesn't wait. The event is published. The page loads fast. Five different systems get the data. They process independently. Some might be real-time (profile views). Some might be batch (ML training). Kafka serves both.</p>
+<h3 id="step-by-step-flow_2">Step-by-Step Flow<a class="headerlink" href="#step-by-step-flow_2" title="Permanent link">&para;</a></h3>
+<p><strong>Step 1:</strong> User clicks "View Profile" on John's LinkedIn page. Frontend sends async request to backend.</p>
+<p><strong>Step 2:</strong> Backend receives the request. It does not call Profile Views, Analytics, Recommendations, or Ad Service. It publishes one event to Kafka topic "user-activity": <code>{userId: you, action: "profile_view", targetUserId: John, timestamp}</code>.</p>
+<p><strong>Step 3:</strong> Backend returns 200 OK immediately. Page load is fast.</p>
+<p><strong>Step 4:</strong> Profile Views Service consumes the event. It updates John's "Who viewed you" list. Writes to DB.</p>
+<p><strong>Step 5:</strong> Analytics Service consumes the same event. Increments metrics. Stores for dashboards.</p>
+<p><strong>Step 6:</strong> Recommendation Engine consumes the same event. Updates model: "User viewed John. Maybe suggest similar people."</p>
+<p><strong>Step 7:</strong> Data Lake consumer stores the event in S3 for ML training. Batch job.</p>
+<p><strong>Step 8:</strong> Ad Service consumes the event. Refines ad targeting. All five systems get the same event. Independently. No blocking.</p>
+<div class="admonition info">
+<p class="admonition-title">Companies Using This Pattern</p>
+<ul>
+<li><strong>LinkedIn:</strong> Every click, view, search, and connection flows through Kafka. This data powers the feed, "People you may know," analytics, and more. Kafka was built at LinkedIn for exactly this.</li>
+<li><strong>Facebook/Meta:</strong> The activity stream—likes, comments, shares—flows through Kafka-like systems. Multiple consumers power different features.</li>
+<li><strong>Amazon:</strong> "Customers who viewed this also viewed"—that recommendation uses activity data. So does "Frequently bought together." Event streams feed the recommendation engines.</li>
+</ul>
+</div>
+<hr />
+<h2 id="8-change-data-capture-cdc">8. Change Data Capture (CDC)<a class="headerlink" href="#8-change-data-capture-cdc" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-cdc-from-scratch">What is CDC? (From Scratch)<a class="headerlink" href="#what-is-cdc-from-scratch" title="Permanent link">&para;</a></h3>
+<p>Most beginners haven't heard of CDC. Let's fix that.</p>
+<p><strong>The school register analogy:</strong> Imagine a school with a paper register. Every time a student enrolls, drops, or changes their address, the office updates the register. Other departments need this info. The library needs the student list for library cards. The cafeteria needs it for meal plans. The bus service needs it for routes.</p>
+<p><strong>Option 1:</strong> Every time the register changes, the office calls the library, the cafeteria, and the bus service. "Hey, we have an update." That's a lot of work. And what if the library is closed? Missed update.</p>
+<p><strong>Option 2:</strong> Each department comes to the office every hour and copies the entire register. Wasteful. And they might miss changes that happened between visits.</p>
+<p><strong>Option 3 (CDC):</strong> The office keeps a <em>change log</em>. "9:00 - Student 101 enrolled. 9:15 - Student 102 address updated. 9:30 - Student 103 dropped." Anyone who needs to stay in sync reads this log. The library reads it and updates its records. The cafeteria reads it. They all get the same changes, in order. No one has to copy the whole register. They just apply the changes.</p>
+<p><strong>CDC = Change Data Capture.</strong> It's the idea of capturing every change (insert, update, delete) that happens in a database and streaming those changes to other systems. The database is the source of truth. The change log is the stream. Other systems consume the stream and stay in sync.</p>
+<h3 id="how-kafka-fits-in">How Kafka Fits In<a class="headerlink" href="#how-kafka-fits-in" title="Permanent link">&para;</a></h3>
+<p>Databases don't natively publish to Kafka. You need a tool. <strong>Debezium</strong> is the most popular. It reads the database's transaction log (MySQL binlog, PostgreSQL WAL, etc.) and publishes each change as an event to Kafka.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>MySQL: INSERT into users (id, name) VALUES (1, &#39;Alice&#39;)
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    │
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    ▼ (Debezium reads the binlog)
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Kafka Topic: &quot;mysql.users&quot;
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    │  Message: { &quot;op&quot;: &quot;c&quot;, &quot;after&quot;: { &quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot; } }
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    │
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    ├──▶ Elasticsearch: Index the new user for search
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    ├──▶ Redis: Add to cache
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    ├──▶ Data Warehouse: Sync for analytics
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    └──▶ Search Index: Update &quot;Users named Alice&quot; index
+</code></pre></div>
+<p><strong>Why is this powerful?</strong> Your application writes to MySQL. Just MySQL. It doesn't know about Elasticsearch. It doesn't know about the cache. Debezium and Kafka handle the sync. Add a new consumer? Your application code doesn't change. The database doesn't change. You just add a consumer.</p>
+<div class="admonition info">
+<p class="admonition-title">Companies Using This Pattern</p>
+<ul>
+<li><strong>Netflix:</strong> Database changes flow to Kafka via CDC. Search indices, caches, and data lakes stay in sync with the source of truth.</li>
+<li><strong>Uber:</strong> Trip data, driver data, rider data—changes in primary databases are captured and streamed. Multiple systems consume for different purposes.</li>
+<li><strong>Financial services:</strong> Banks use CDC to sync transactional databases with reporting systems, fraud detection, and regulatory reporting. Consistency is critical.</li>
+</ul>
+</div>
+<hr />
+<h2 id="9-iot-data-ingestion">9. IoT Data Ingestion<a class="headerlink" href="#9-iot-data-ingestion" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem-briefly_1">The Problem (Briefly)<a class="headerlink" href="#the-problem-briefly_1" title="Permanent link">&para;</a></h3>
+<p>Millions of sensors. Temperature sensors in warehouses. GPS trackers on trucks. Smart meters in homes. Heart rate monitors. They all send data. Constantly. A single smart city might have 10 million devices sending a reading every minute. That's 10 million messages per minute. Per topic. You need a system that can ingest this firehose, buffer it, and let downstream systems process at their own pace.</p>
+<h3 id="how-kafka-solved-it_7">How Kafka Solved It<a class="headerlink" href="#how-kafka-solved-it_7" title="Permanent link">&para;</a></h3>
+<p>Kafka was designed for this. Millions of messages per second. Persistent storage. Multiple consumers. IoT devices produce to Kafka. Stream processors consume for real-time alerts ("Temperature &gt; 100° in Warehouse 3!"). Batch consumers store for historical analysis. Each use case gets the same data. Independently.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Sensor 1 (temperature) ──▶ ┐
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Sensor 2 (humidity)    ──▶ ├──▶ Kafka ──▶ Real-time alerting (&quot;Anomaly detected!&quot;)
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Sensor 3 (GPS)         ──▶ │              Historical storage (data lake)
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>...                     ──▶ │              ML model training
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Sensor 1,000,000       ──▶ ┘
+</code></pre></div>
+<hr />
+<h2 id="10-fraud-detection">10. Fraud Detection<a class="headerlink" href="#10-fraud-detection" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem-briefly_2">The Problem (Briefly)<a class="headerlink" href="#the-problem-briefly_2" title="Permanent link">&para;</a></h3>
+<p>A fraudulent transaction happens. You want to catch it <em>before</em> the money leaves. Or within seconds of it happening. Not in a batch job tomorrow. Real-time. The transaction flows through Kafka. A fraud detection service (often with an ML model) consumes it, scores it, and either allows or blocks. All in milliseconds.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Transaction event ──▶ Kafka ──▶ Fraud Detection Service
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>                                      │
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>                                      ├──▶ Score &gt; 0.8 → Block, alert, DLT
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>                                      └──▶ Score &lt; 0.8 → Allow, continue
+</code></pre></div>
+<p>Kafka Streams or Kafka with a fast consumer makes this possible. The key is low latency and the ability to maintain state (e.g., "This user has made 5 transactions in 2 minutes—suspicious").</p>
+<hr />
+<h2 id="11-saga-pattern-with-kafka">11. Saga Pattern with Kafka<a class="headerlink" href="#11-saga-pattern-with-kafka" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-the-saga-pattern">What Is the Saga Pattern?<a class="headerlink" href="#what-is-the-saga-pattern" title="Permanent link">&para;</a></h3>
+<p>A <strong>Saga</strong> coordinates a multi-step business process across microservices. Each step can fail. If one step fails, you need to undo (compensate) previous steps. There's no distributed transaction. You use events and compensating actions.</p>
+<h3 id="how-it-handles-distributed-transactions">How It Handles Distributed Transactions<a class="headerlink" href="#how-it-handles-distributed-transactions" title="Permanent link">&para;</a></h3>
+<p>Instead of a 2PC (two-phase commit) across services, each service does its work and publishes an event. If a later step fails, it publishes a "compensating" event. Previous services listen and undo their work.</p>
+<h3 id="choreography-vs-orchestration">Choreography vs Orchestration<a class="headerlink" href="#choreography-vs-orchestration" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Style</th>
+<th>How It Works</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Choreography</strong></td>
+<td>Each service listens to events and reacts. No central coordinator. Services react to "OrderPlaced," "PaymentCompleted," "PaymentFailed."</td>
+</tr>
+<tr>
+<td><strong>Orchestration</strong></td>
+<td>A central Saga orchestrator tells each service what to do. It tracks state. On failure, it sends compensating commands.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="simple-example-order-saga">Simple Example: Order Saga<a class="headerlink" href="#simple-example-order-saga" title="Permanent link">&para;</a></h3>
+<p><strong>Choreography style:</strong></p>
+<ol>
+<li>Order Service publishes "OrderPlaced."</li>
+<li>Payment Service consumes, charges card. Publishes "PaymentCompleted" or "PaymentFailed."</li>
+<li>Inventory Service consumes "PaymentCompleted," reserves stock. Publishes "InventoryReserved" or "InventoryFailed."</li>
+<li>If "InventoryFailed," Payment Service consumes it and issues a refund (compensating action).</li>
+<li>Shipping Service consumes "InventoryReserved," creates shipment.</li>
+</ol>
+<p>Kafka topics: <code>orders</code>, <code>payment-events</code>, <code>inventory-events</code>, <code>shipping-events</code>. Each service is a producer and consumer. Events drive the flow.</p>
+<hr />
+<h2 id="12-cqrs-with-kafka">12. CQRS with Kafka<a class="headerlink" href="#12-cqrs-with-kafka" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-cqrs">What Is CQRS?<a class="headerlink" href="#what-is-cqrs" title="Permanent link">&para;</a></h3>
+<p><strong>CQRS = Command Query Responsibility Segregation.</strong> Separate the write path (commands) from the read path (queries). Writes go to a command model. Reads come from a read model. They can be different shapes. Kafka enables this by carrying events from writes to read-model builders.</p>
+<h3 id="how-kafka-enables-it">How Kafka Enables It<a class="headerlink" href="#how-kafka-enables-it" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Write:</strong> Application receives a command (e.g., "Place Order"). It writes to the database (or command store). It publishes an event to Kafka.</li>
+<li><strong>Consume:</strong> A consumer reads the event. It updates the read model (e.g., a denormalized table, Elasticsearch index, cache).</li>
+<li><strong>Read:</strong> Queries hit the read model. Fast. Optimized for reads. No joins on the write side.</li>
+</ol>
+<h3 id="flow-command-topic-consumer-updates-read-model">Flow: Command Topic → Consumer Updates Read Model<a class="headerlink" href="#flow-command-topic-consumer-updates-read-model" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>User: &quot;Place Order&quot; (command)
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    │
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    ▼
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Order Service: Writes to DB, publishes to &quot;order-events&quot;
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    │
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    ▼
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>Kafka Topic: &quot;order-events&quot;
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    │
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    ▼
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>Read Model Consumer: Updates &quot;orders_by_customer&quot; table, search index, dashboard aggregates
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    │
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>    ▼
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>User: &quot;Show my orders&quot; (query) → Reads from read model. Fast.
+</code></pre></div>
+<p>The write model stays normalized. The read model is denormalized, cached, or indexed. Kafka is the bridge.</p>
+<hr />
+<h2 id="13-event-replay-and-debugging">13. Event Replay and Debugging<a class="headerlink" href="#13-event-replay-and-debugging" title="Permanent link">&para;</a></h2>
+<h3 id="how-to-replay-events-for-debugging">How to Replay Events for Debugging<a class="headerlink" href="#how-to-replay-events-for-debugging" title="Permanent link">&para;</a></h3>
+<p>Kafka keeps messages. You can reset a consumer group's offset to an earlier point. The consumer will re-read messages. Useful for debugging: "What did we process at 2 AM when the bug happened?"</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Reset consumer group to beginning of topic</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span>--group<span class="w"> </span>my-consumer<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span>--reset-offsets<span class="w"> </span>--to-earliest<span class="w"> </span>--execute
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1"># Reset to specific offset</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>kafka-consumer-groups<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span>--group<span class="w"> </span>my-consumer<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span>--reset-offsets<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">  </span>--to-offset<span class="w"> </span><span class="m">1000</span>:42<span class="w"> </span>--execute
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Stop consumers first</p>
+<p>Stop the consumer group before resetting offsets. Otherwise, the consumer might overwrite your reset.</p>
+</div>
+<h3 id="resetting-offsets-to-investigate-production-issues">Resetting Offsets to Investigate Production Issues<a class="headerlink" href="#resetting-offsets-to-investigate-production-issues" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> A bug caused wrong data to be written. You fix the bug. Now you need to re-process events from last night.</p>
+<ol>
+<li>Stop the consumer group.</li>
+<li>Reset offsets to the timestamp before the bad data (e.g., <code>--to-datetime 2024-02-24T00:00:00</code>).</li>
+<li>Restart consumers. They re-process. Ensure your consumer is idempotent so re-processing doesn't create duplicates.</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Retention matters</p>
+<p>If you need to replay, ensure topic retention is long enough. Default is 7 days. For critical topics, consider 30 days or more.</p>
+</div>
+<hr />
+<h2 id="companies-using-kafka">Companies Using Kafka<a class="headerlink" href="#companies-using-kafka" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Company</th>
+<th>Use Case</th>
+<th>Specific Problem Solved</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LinkedIn</strong></td>
+<td>Activity tracking, metrics, messaging</td>
+<td>Had thousands of servers generating logs and metrics. Needed a system to ingest billions of events per day without losing data. Created Kafka to solve log aggregation and activity tracking at scale.</td>
+</tr>
+<tr>
+<td><strong>Netflix</strong></td>
+<td>Event streaming, recommendations</td>
+<td>Needed to decouple hundreds of microservices. Playback events, A/B tests, and recommendations had to flow without blocking. Kafka ensures no data loss during chaos engineering experiments (intentionally killing servers).</td>
+</tr>
+<tr>
+<td><strong>Uber</strong></td>
+<td>Trip updates, driver matching, surge pricing</td>
+<td>Needed real-time driver location and trip state across rider app, driver app, billing, and surge pricing. HTTP calls would not scale. Kafka streams location updates; each system consumes at its own pace.</td>
+</tr>
+<tr>
+<td><strong>Airbnb</strong></td>
+<td>Search ranking, event processing</td>
+<td>Search and booking events needed to power the ranking algorithm in real time. Multiple consumers (search, notifications, analytics) without coupling. Kafka decouples producers from consumers.</td>
+</tr>
+<tr>
+<td><strong>Spotify</strong></td>
+<td>Log delivery, event-driven microservices</td>
+<td>Needed to deliver playback and skip events to royalty calculation, recommendations, and analytics. One event, many consumers. Kafka replaced point-to-point integrations.</td>
+</tr>
+<tr>
+<td><strong>Twitter/X</strong></td>
+<td>Real-time tweet processing</td>
+<td>Billions of tweets and engagement events. Needed a pipeline that could ingest, buffer, and fan out to timeline generation, analytics, and search. Kafka handles the firehose.</td>
+</tr>
+<tr>
+<td><strong>Goldman Sachs</strong></td>
+<td>Trade processing, risk calculation</td>
+<td>Trade events must flow to risk systems in real time. Cannot lose a trade. Kafka provides durability and replay capability for regulatory compliance.</td>
+</tr>
+<tr>
+<td><strong>Walmart</strong></td>
+<td>Inventory tracking, order processing</td>
+<td>Black Friday traffic spikes 10x. Order and inventory events had to flow without the order service blocking. Kafka decouples; each system scales independently during peak.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>What Kafka Does</th>
+<th>Key Benefit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event-Driven Architecture</td>
+<td>Decouples microservices</td>
+<td>Services don't block each other; add consumers without changing producers</td>
+</tr>
+<tr>
+<td>Log Aggregation</td>
+<td>Centralizes logs from many servers</td>
+<td>One place to search; handles bursts; no lost logs</td>
+</tr>
+<tr>
+<td>Real-Time Analytics</td>
+<td>Enables live dashboards</td>
+<td>Build current state from event stream; seconds, not minutes</td>
+</tr>
+<tr>
+<td>Data Pipeline</td>
+<td>Moves data between systems</td>
+<td>Kafka Connect; one source, many destinations</td>
+</tr>
+<tr>
+<td>Order Processing</td>
+<td>Orchestrates multi-step workflows</td>
+<td>Each step independent; no cascading failures</td>
+</tr>
+<tr>
+<td>Activity Tracking</td>
+<td>Records every user action</td>
+<td>One event, many consumers; fast page loads</td>
+</tr>
+<tr>
+<td>Notifications</td>
+<td>Routes to email/SMS/push</td>
+<td>Add channels without changing producers</td>
+</tr>
+<tr>
+<td>CDC</td>
+<td>Syncs database changes to other systems</td>
+<td>Database is source of truth; Debezium captures changes</td>
+</tr>
+<tr>
+<td>IoT</td>
+<td>Ingests millions of device messages</td>
+<td>Handles firehose; multiple consumers</td>
+</tr>
+<tr>
+<td>Fraud Detection</td>
+<td>Real-time transaction scoring</td>
+<td>Millisecond latency; block before money leaves</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>For each use case above</strong>, identify which one is most relevant to your current or target company. Write one paragraph explaining why.</li>
+<li><strong>Pick one use case</strong> and draw the Kafka architecture on paper. Include producers, topics, and at least 3 consumers.</li>
+<li><strong>Think about:</strong> What happens if the consumer is down for 1 hour? (Answer: Messages queue up in Kafka. The consumer stores its offset. When it comes back, it reads from where it left off. It catches up. No messages are lost—assuming retention is configured properly.)</li>
+<li><strong>Challenge:</strong> Your company has a monolith. It needs to send emails when orders are placed. Today it calls an Email API directly. How would you introduce Kafka? What's the migration path?</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../kafka-with-springboot/">Kafka with Spring Boot</a> - Write real Kafka code!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

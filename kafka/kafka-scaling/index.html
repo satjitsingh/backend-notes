@@ -1,0 +1,1824 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/kafka-scaling/">
+      
+      
+        <link rel="prev" href="../consumer-groups/">
+      
+      
+        <link rel="next" href="../fault-tolerance-replication/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Scaling Kafka - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#scaling-kafka" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Scaling Kafka
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-scaling-matters-a-food-delivery-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Scaling Matters: A Food Delivery Story
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-dimensions-of-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Three Dimensions of Scaling
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-scaling-matters-a-food-delivery-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Scaling Matters: A Food Delivery Story
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-dimensions-of-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Three Dimensions of Scaling
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="scaling-kafka">Scaling Kafka<a class="headerlink" href="#scaling-kafka" title="Permanent link">&para;</a></h1>
+<h2 id="why-scaling-matters-a-food-delivery-story">Why Scaling Matters: A Food Delivery Story<a class="headerlink" href="#why-scaling-matters-a-food-delivery-story" title="Permanent link">&para;</a></h2>
+<p>Imagine you're building a food delivery app. On day one, you have 10 orders. Your system handles it easily. One server. One Kafka broker. One consumer. Everything works.</p>
+<p>Six months later, you're doing 10,000 orders per day. That's roughly 7 orders per minute. Still manageable. But your single consumer is starting to sweat. Messages pile up during lunch rush. Lag grows.</p>
+<p>A year later, you're at 100,000 orders per day. Lunch rush is 500 orders per minute. Your single consumer is drowning. Lag is in the thousands. Orders take minutes to process. Customers complain. Restaurants complain. You need to scale. Fast.</p>
+<p>This is the reality of growing systems. What worked at 10 orders doesn't work at 10,000. And what works at 10,000 might not work at 1 million. Kafka is designed to scale. But you need to know how. This page teaches you exactly that.</p>
+<hr />
+<h2 id="the-three-dimensions-of-scaling">The Three Dimensions of Scaling<a class="headerlink" href="#the-three-dimensions-of-scaling" title="Permanent link">&para;</a></h2>
+<p>Kafka scaling happens in three places:</p>
+<ol>
+<li><strong>Producers</strong> — Can you send messages fast enough?</li>
+<li><strong>Consumers</strong> — Can you read and process messages fast enough?</li>
+<li><strong>Brokers</strong> — Can Kafka store and serve the data?</li>
+</ol>
+<p>We'll cover each. We'll use analogies. We'll walk through real scenarios. By the end, you'll know how to scale a Kafka system from zero to millions of messages.</p>
+<hr />
+<h1 id="producer-scaling">Producer Scaling<a class="headerlink" href="#producer-scaling" title="Permanent link">&para;</a></h1>
+<h2 id="the-problem-sending-one-message-at-a-time">The Problem: Sending One Message at a Time<a class="headerlink" href="#the-problem-sending-one-message-at-a-time" title="Permanent link">&para;</a></h2>
+<p>Every message you send has overhead. A network round-trip. Serialization. Connection setup. Sending 1000 messages as 1000 separate requests is slow. The network becomes the bottleneck.</p>
+<p>Think about it this way: If you're moving 100 boxes from your house to a warehouse, do you make 100 trips with one box each? Or do you rent a truck and make one trip with 100 boxes? The truck is batching. One trip. Much faster.</p>
+<hr />
+<h2 id="batching-the-delivery-truck-analogy">Batching: The Delivery Truck Analogy<a class="headerlink" href="#batching-the-delivery-truck-analogy" title="Permanent link">&para;</a></h2>
+<h3 id="without-batching">Without Batching<a class="headerlink" href="#without-batching" title="Permanent link">&para;</a></h3>
+<p>You send message 1. Wait for ack. Send message 2. Wait for ack. Send message 3. Wait for ack. Each message is a separate network request. If each round-trip takes 1ms, 1000 messages take 1 second. And you're not even using the network efficiently. Small packets. Lots of overhead.</p>
+<h3 id="with-batching">With Batching<a class="headerlink" href="#with-batching" title="Permanent link">&para;</a></h3>
+<p>You collect messages. Wait a few milliseconds (<code>linger.ms</code>). Or until you have enough bytes (<code>batch.size</code>). Then you send them all in one request. One round-trip. 100 messages in one go. Maybe 10 round-trips for 1000 messages instead of 1000. 100x fewer network calls.</p>
+<p><strong>Key settings:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What It Does</th>
+<th>Recommended</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>batch.size</code></td>
+<td>Max bytes per batch before sending</td>
+<td>16384 (16KB) to 65536 (64KB)</td>
+</tr>
+<tr>
+<td><code>linger.ms</code></td>
+<td>How long to wait for more messages</td>
+<td>5-20 ms</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>linger.ms=0:  Send immediately. Low latency. Good for real-time.
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>linger.ms=10: Wait 10ms. Batch fills. Higher throughput. Slight latency cost.
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>linger.ms=100: Wait 100ms. Big batches. Max throughput. Higher latency.
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Trade-off</p>
+<p>Low linger = low latency, lower throughput. High linger = higher throughput, higher latency. For event streaming (orders, clicks), 5-20ms is usually a good balance.</p>
+</div>
+<hr />
+<h2 id="compression-fitting-more-in-the-truck">Compression: Fitting More in the Truck<a class="headerlink" href="#compression-fitting-more-in-the-truck" title="Permanent link">&para;</a></h2>
+<p>Even with batching, you're sending a lot of data. Text compresses well. JSON compresses very well. Enabling compression means you send fewer bytes over the network. Less bandwidth. Faster transfer. Less disk usage on the broker.</p>
+<h3 id="the-analogy">The Analogy<a class="headerlink" href="#the-analogy" title="Permanent link">&para;</a></h3>
+<p>Your truck can hold 100 boxes. But if you compress the boxes (vacuum seal them), you can fit 200 in the same truck. One trip. Double the cargo. That's compression.</p>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Speed</th>
+<th>Compression Ratio</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>Fastest</td>
+<td>1x</td>
+<td>Don't use</td>
+</tr>
+<tr>
+<td>gzip</td>
+<td>Slow</td>
+<td>Best</td>
+<td>When bandwidth is very limited</td>
+</tr>
+<tr>
+<td>snappy</td>
+<td>Fast</td>
+<td>Good</td>
+<td>General purpose, balanced</td>
+</tr>
+<tr>
+<td>lz4</td>
+<td>Fastest</td>
+<td>Good</td>
+<td>Low latency, good compression</td>
+</tr>
+<tr>
+<td>zstd</td>
+<td>Fast</td>
+<td>Great</td>
+<td>Modern choice, best balance</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="na">compression.type</span><span class="o">=</span><span class="s">snappy</span>
+</code></pre></div>
+<h3 id="compression-benchmarks-approximate">Compression Benchmarks (Approximate)<a class="headerlink" href="#compression-benchmarks-approximate" title="Permanent link">&para;</a></h3>
+<p>Real numbers vary by data. JSON, log text, and repetitive data compress well. Binary or already-compressed data does not. These are typical for JSON-like payloads:</p>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Compression Ratio</th>
+<th>Throughput (relative)</th>
+<th>CPU Overhead</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>1.0x</td>
+<td>100% (baseline)</td>
+<td>None</td>
+</tr>
+<tr>
+<td>lz4</td>
+<td>2.5–3.5x</td>
+<td>80–90%</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>snappy</td>
+<td>2.0–3.0x</td>
+<td>70–80%</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>zstd</td>
+<td>3.0–4.0x</td>
+<td>60–75%</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>gzip</td>
+<td>3.5–5.0x</td>
+<td>40–50%</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> 1 MB of JSON. Uncompressed: 1 MB. With snappy: ~350 KB. With gzip: ~200 KB. Snappy gives you 65% size reduction with modest CPU cost. Gzip gives 80% but uses more CPU. For most workloads, snappy or lz4 is the sweet spot. zstd often beats both—better ratio than snappy, faster than gzip.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"I'd use <code>snappy</code> or <code>lz4</code> for a good balance of speed and compression. <code>zstd</code> is newer and often better. Avoid <code>gzip</code> unless you're bandwidth-bound. In benchmarks, snappy typically gives 2–3x compression on JSON with minimal latency impact."</p>
+</div>
+<hr />
+<h2 id="multiple-producer-instances">Multiple Producer Instances<a class="headerlink" href="#multiple-producer-instances" title="Permanent link">&para;</a></h2>
+<p>Your application might run on multiple servers. Each server has its own producer. They all write to the same topic. Kafka handles it. No coordination needed. Just run more instances.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>App Instance 1 → Producer → Kafka
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>App Instance 2 → Producer → Kafka
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>App Instance 3 → Producer → Kafka
+</code></pre></div>
+<p>Throughput scales linearly. Add more app instances. Get more producers. More messages per second.</p>
+<hr />
+<h1 id="consumer-scaling">Consumer Scaling<a class="headerlink" href="#consumer-scaling" title="Permanent link">&para;</a></h1>
+<h2 id="the-rule-one-partition-per-consumer-max">The Rule: One Partition Per Consumer (Max)<a class="headerlink" href="#the-rule-one-partition-per-consumer-max" title="Permanent link">&para;</a></h2>
+<p>Remember this. It's the most important rule for consumer scaling: <strong>The maximum number of useful consumers in a group equals the number of partitions.</strong> Add a 4th consumer to a 3-partition topic? One consumer sits idle. Forever.</p>
+<h3 id="why">Why?<a class="headerlink" href="#why" title="Permanent link">&para;</a></h3>
+<p>Each partition is assigned to exactly one consumer in the group. Partitions can't be split. So 3 partitions = max 3 busy consumers. The 4th has nothing to do.</p>
+<hr />
+<h2 id="adding-consumers-step-by-step">Adding Consumers Step by Step<a class="headerlink" href="#adding-consumers-step-by-step" title="Permanent link">&para;</a></h2>
+<p>Let's walk through scaling consumers. Topic "orders" has 3 partitions.</p>
+<h3 id="step-1-one-consumer">Step 1: One Consumer<a class="headerlink" href="#step-1-one-consumer" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Consumer 1 → Partition 0, Partition 1, Partition 2
+</code></pre></div>
+<p>One consumer reads everything. It's the bottleneck. If it processes 100 msg/sec and you produce 300 msg/sec, lag grows.</p>
+<h3 id="step-2-add-a-second-consumer">Step 2: Add a Second Consumer<a class="headerlink" href="#step-2-add-a-second-consumer" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Consumer 1 → Partition 0, Partition 1
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Consumer 2 → Partition 2
+</code></pre></div>
+<p>Rebalance happens. Partitions redistributed. Now two consumers. Better. Maybe you can handle 200 msg/sec. If you still produce 300, lag grows. Add more.</p>
+<h3 id="step-3-add-a-third-consumer">Step 3: Add a Third Consumer<a class="headerlink" href="#step-3-add-a-third-consumer" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Consumer 1 → Partition 0
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Consumer 2 → Partition 1
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Consumer 3 → Partition 2
+</code></pre></div>
+<p>Perfect balance. Each consumer has one partition. Max parallelism for 3 partitions. If each does 100 msg/sec, you handle 300. You're keeping up.</p>
+<h3 id="step-4-need-more-add-partitions-first">Step 4: Need More? Add Partitions First<a class="headerlink" href="#step-4-need-more-add-partitions-first" title="Permanent link">&para;</a></h3>
+<p>You're producing 600 msg/sec now. 3 consumers can't keep up. You need 6 consumers. But you only have 3 partitions. So first, add partitions:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kafka-topics<span class="w"> </span>--alter<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>--partitions<span class="w"> </span><span class="m">6</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Caution</p>
+<p>Increasing partitions <strong>cannot be undone</strong>. Also, existing keys may map to different partitions. Ordering for a key is still guaranteed (same key, same partition), but the partition number might change. Plan carefully.</p>
+</div>
+<p>Now add 3 more consumers. Rebalance. Each gets one partition. 6 consumers, 6 partitions. You handle 600 msg/sec.</p>
+<hr />
+<h2 id="consumer-lag-the-factory-assembly-line-analogy">Consumer Lag: The Factory Assembly Line Analogy<a class="headerlink" href="#consumer-lag-the-factory-assembly-line-analogy" title="Permanent link">&para;</a></h2>
+<p><strong>Consumer lag</strong> = how far behind the consumer is from the latest message in the partition.</p>
+<p>Imagine a factory assembly line. Boxes move down the line. Workers take boxes and process them. If workers are fast, they keep up. The line stays clear. If workers are slow, boxes pile up. The line backs up. Lag.</p>
+<p><strong>In Kafka:</strong> Messages arrive in the partition. The consumer reads and processes. If the consumer is slow, messages pile up. Lag = (latest offset) - (consumer's current offset). Lag of 0 means "fully caught up." Lag of 10,000 means "10,000 messages behind."</p>
+<h3 id="why-lag-matters">Why Lag Matters<a class="headerlink" href="#why-lag-matters" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Lag growing:</strong> Your consumer can't keep up. You're falling further behind. Eventually, you're processing data from hours ago. Real-time? Forget it.</li>
+<li><strong>Lag stable but high:</strong> You're keeping up with new messages, but you have a backlog. You'll eventually catch up. Or not, if produce rate equals consume rate.</li>
+<li><strong>Lag near zero:</strong> Healthy. Consumer is keeping up.</li>
+</ul>
+<h3 id="how-to-monitor-lag">How to Monitor Lag<a class="headerlink" href="#how-to-monitor-lag" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kafka-consumer-groups<span class="w"> </span>--describe<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--group<span class="w"> </span>order-processor<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>GROUP           TOPIC   PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>order-processor orders  0          950             1000            50
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>order-processor orders  1          1100            1100            0
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>order-processor orders  2          800             900             100
+</code></pre></div>
+<p>LAG = LOG-END-OFFSET - CURRENT-OFFSET. Partition 0 has lag 50. Partition 2 has lag 100. Partition 1 is caught up.</p>
+<h3 id="fixing-high-lag">Fixing High Lag<a class="headerlink" href="#fixing-high-lag" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Add more consumers</strong> (up to partition count)</li>
+<li><strong>Add more partitions</strong> (then add consumers)</li>
+<li><strong>Optimize processing</strong> (faster code, better algorithms)</li>
+<li><strong>Increase max.poll.records</strong> (process more per batch)</li>
+<li><strong>Parallelize within consumer</strong> (multiple threads processing from the same partition—advanced, use carefully)</li>
+</ol>
+<hr />
+<h1 id="broker-scaling">Broker Scaling<a class="headerlink" href="#broker-scaling" title="Permanent link">&para;</a></h1>
+<h2 id="the-warehouse-expansion-analogy">The Warehouse Expansion Analogy<a class="headerlink" href="#the-warehouse-expansion-analogy" title="Permanent link">&para;</a></h2>
+<p>Your warehouse is full. Shelves are packed. Workers are overwhelmed. You have two options: optimize the current warehouse (bigger shelves, faster workers) or build a new warehouse (add a broker).</p>
+<p><strong>Adding a broker</strong> = adding a new server to the cluster. It can hold new partitions. It can take over replicas from overloaded brokers. The cluster gets more capacity.</p>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<p>When you add Broker 4 to a 3-broker cluster, the new broker is empty. Existing partitions don't automatically move. You have to <strong>reassign</strong> them. Kafka has a tool for that: <code>kafka-reassign-partitions</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Create a reassignment plan (simplified - real usage needs a JSON file)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>kafka-reassign-partitions<span class="w"> </span>--execute<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span>--reassignment-json-file<span class="w"> </span>reassignment.json<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<p>The reassignment moves partition replicas to the new broker. Data is copied. Eventually, the load is balanced. Broker 1 had 8 partitions. Now it has 6. Broker 4 has 2. Better balance.</p>
+<h3 id="when-to-add-brokers">When to Add Brokers<a class="headerlink" href="#when-to-add-brokers" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Disk space running low on existing brokers</li>
+<li>CPU or network saturated</li>
+<li>Need higher replication (more copies for durability)</li>
+<li>Planning for growth</li>
+</ul>
+<hr />
+<h2 id="horizontal-vs-vertical-scaling">Horizontal vs Vertical Scaling<a class="headerlink" href="#horizontal-vs-vertical-scaling" title="Permanent link">&para;</a></h2>
+<p>You have two ways to add capacity: <strong>horizontal</strong> (more machines) and <strong>vertical</strong> (bigger machines). Kafka favors horizontal. Here's when to use each.</p>
+<h3 id="horizontal-scaling-add-more-brokers">Horizontal Scaling: Add More Brokers<a class="headerlink" href="#horizontal-scaling-add-more-brokers" title="Permanent link">&para;</a></h3>
+<p><strong>What it means:</strong> Add Broker 4, 5, 6 to the cluster. Spread partitions across them. More disk. More CPU. More network capacity.</p>
+<p><strong>When to use:</strong>
+- Disk is full on existing brokers
+- You've hit the limit of useful consumers (partition count)
+- You need more replication capacity
+- Cluster is I/O bound (disk or network)</p>
+<p><strong>Pros:</strong> Linear scaling. No single point of failure. Add capacity incrementally.
+<strong>Cons:</strong> More machines to operate. Rebalancing takes time. Network overhead between brokers.</p>
+<h3 id="vertical-scaling-upgrade-existing-brokers">Vertical Scaling: Upgrade Existing Brokers<a class="headerlink" href="#vertical-scaling-upgrade-existing-brokers" title="Permanent link">&para;</a></h3>
+<p><strong>What it means:</strong> Give each broker more CPU, more RAM, bigger/faster disks. Same number of brokers, more power each.</p>
+<p><strong>When to use:</strong>
+- You have few brokers (1–3) and can't add more yet
+- Single broker is the bottleneck (e.g., controller + data on same node)
+- Disk I/O is slow—upgrade to SSDs
+- CPU is maxed—upgrade to more cores</p>
+<p><strong>Pros:</strong> Simpler. No rebalancing. Fewer machines.
+<strong>Cons:</strong> There's a ceiling. You can't infinitely upgrade one machine. Cost per additional unit of capacity goes up. Single machine failure still affects multiple partitions.</p>
+<h3 id="the-kafka-way">The Kafka Way<a class="headerlink" href="#the-kafka-way" title="Permanent link">&para;</a></h3>
+<p>Kafka is designed for horizontal scaling. Add brokers. Add partitions. Add consumers. Vertical scaling helps in the short term (faster disks, more RAM for page cache). But long-term growth is horizontal. Plan for it.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"I'd scale horizontally first—add brokers and partitions. Vertical scaling is useful when we're I/O bound and can upgrade disks, or when we have a small cluster and need a quick win. But Kafka's model is horizontal. That's how we scale to millions of messages."</p>
+</div>
+<hr />
+<h2 id="scaling-story-how-swiggy-handles-1-million-orders">Scaling Story: How Swiggy Handles 1 Million Orders<a class="headerlink" href="#scaling-story-how-swiggy-handles-1-million-orders" title="Permanent link">&para;</a></h2>
+<p>Let's walk through a fictional but realistic scaling story. Swiggy (or any food delivery platform) at scale.</p>
+<h3 id="phase-1-startup-1000-ordersday">Phase 1: Startup (1,000 orders/day)<a class="headerlink" href="#phase-1-startup-1000-ordersday" title="Permanent link">&para;</a></h3>
+<ul>
+<li>1 broker</li>
+<li>1 topic "orders" with 3 partitions</li>
+<li>1 consumer in group "order-processor"</li>
+<li>Producer: Single app server, no batching, acks=1</li>
+<li>Works fine. Lag near zero.</li>
+</ul>
+<h3 id="phase-2-growth-50000-ordersday">Phase 2: Growth (50,000 orders/day)<a class="headerlink" href="#phase-2-growth-50000-ordersday" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Lag starts growing during lunch rush (12-2 PM)</li>
+<li><strong>Fix 1:</strong> Add 2 more consumers. Now 3 consumers for 3 partitions. Perfect.</li>
+<li><strong>Fix 2:</strong> Enable producer batching. linger.ms=10, batch.size=32KB. Throughput improves.</li>
+<li><strong>Fix 3:</strong> Enable compression. snappy. Network load drops.</li>
+<li>3 brokers for redundancy. Replication factor 2.</li>
+</ul>
+<h3 id="phase-3-scale-500000-ordersday">Phase 3: Scale (500,000 orders/day)<a class="headerlink" href="#phase-3-scale-500000-ordersday" title="Permanent link">&para;</a></h3>
+<ul>
+<li>6 partitions. 6 consumers. Still good.</li>
+<li>But brokers are sweating. Disk I/O high. <strong>Fix:</strong> Add 2 more brokers. Reassign partitions. Spread load.</li>
+<li>Consumer lag spikes during dinner rush. <strong>Fix:</strong> Optimize order processing. Cache restaurant data. Reduce DB calls. Processing time per message drops from 50ms to 10ms. Lag drops.</li>
+</ul>
+<h3 id="phase-4-hypergrowth-1000000-ordersday">Phase 4: Hypergrowth (1,000,000+ orders/day)<a class="headerlink" href="#phase-4-hypergrowth-1000000-ordersday" title="Permanent link">&para;</a></h3>
+<ul>
+<li>12 partitions. 12 consumers. 6 brokers.</li>
+<li>Producer: 10 app server instances. Each produces. Batching + compression. Idempotence enabled.</li>
+<li>Consumer: 12 consumer instances. Each processes one partition. Async processing where possible. Batch DB writes.</li>
+<li>Monitoring: Lag alerts. If lag &gt; 1000 for 5 minutes, page on-call. Broker disk alerts. Consumer group health checks.</li>
+<li>Capacity planning: Peak is 3x average. System designed for 3x current load. Headroom for growth.</li>
+</ul>
+<div class="admonition example">
+<p class="admonition-title">Key Takeaway</p>
+<p>Scaling is iterative. You don't build for 1 million on day one. You start small. You monitor. You add consumers when lag grows. You add partitions when you need more parallelism. You add brokers when disk or CPU is saturated. You tune as you go.</p>
+</div>
+<hr />
+<h2 id="capacity-planning-how-many-partitions-do-i-need">Capacity Planning: How Many Partitions Do I Need?<a class="headerlink" href="#capacity-planning-how-many-partitions-do-i-need" title="Permanent link">&para;</a></h2>
+<p>This is the most common question. There's no perfect formula. But here are guidelines.</p>
+<h3 id="throughput-based">Throughput-Based<a class="headerlink" href="#throughput-based" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Estimate messages per second per topic.</li>
+<li>Each partition can handle roughly 10-50 MB/sec (depends on message size, batching, etc.).</li>
+<li>For 1000 msg/sec at 1KB each = 1 MB/sec. One partition could handle it. But you want parallelism. Start with at least 3-6 for a production topic.</li>
+</ul>
+<h3 id="consumer-based">Consumer-Based<a class="headerlink" href="#consumer-based" title="Permanent link">&para;</a></h3>
+<ul>
+<li>How many consumers do you want to run? That's your minimum partition count.</li>
+<li>Want 10 consumers? Need at least 10 partitions.</li>
+<li>Add some headroom. Maybe 12 or 15. So you can add a few more consumers without altering the topic.</li>
+</ul>
+<h3 id="retention-based">Retention-Based<a class="headerlink" href="#retention-based" title="Permanent link">&para;</a></h3>
+<ul>
+<li>More partitions = more files on disk. More overhead. For small topics, don't over-partition.</li>
+<li>For large topics (millions of messages), more partitions help with parallelism and distribution.</li>
+</ul>
+<h3 id="practical-rule-of-thumb">Practical Rule of Thumb<a class="headerlink" href="#practical-rule-of-thumb" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Small topic (&lt; 10 msg/sec):</strong> 3 partitions. Simple.</li>
+<li><strong>Medium topic (10-1000 msg/sec):</strong> 6-12 partitions. Room to scale.</li>
+<li><strong>Large topic (&gt; 1000 msg/sec):</strong> 12-50+ partitions. Match your consumer count. Plan for 2-3x growth.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Remember</p>
+<p>You can increase partitions later. You cannot decrease. Start conservative. Add when needed.</p>
+</div>
+<h3 id="capacity-planning-worked-example">Capacity Planning: Worked Example<a class="headerlink" href="#capacity-planning-worked-example" title="Permanent link">&para;</a></h3>
+<p>Let's size a system for a food delivery app. <strong>Requirements:</strong> 10,000 orders per day peak, 1 KB per message, 7-day retention, 6 consumers.</p>
+<p><strong>Step 1: Throughput</strong>
+- 10,000 orders/day ≈ 0.12 msg/sec average. Peak might be 3x = 0.36 msg/sec. Round up: 1 msg/sec.
+- 1 msg/sec × 1 KB = 1 KB/sec. One partition handles 10-50 MB/sec. Throughput is not the bottleneck.</p>
+<p><strong>Step 2: Partitions</strong>
+- Need 6 consumers. Minimum 6 partitions. Add headroom: 9 or 12 partitions. Choose 12.</p>
+<p><strong>Step 3: Storage</strong>
+- 10,000 msg/day × 1 KB × 7 days = 70 MB per partition. 12 partitions = 840 MB. With replication factor 2 = 1.68 GB total. Tiny. One broker is enough for storage.</p>
+<p><strong>Step 4: Brokers</strong>
+- Replication factor 2 → need 2 brokers minimum. For production, use 3 for better availability and balance.</p>
+<p><strong>Result:</strong> 3 brokers, 12 partitions, replication 2. Handles 10K orders/day with room to grow.</p>
+<p><strong>Scale up:</strong> 100,000 orders/day. 100K × 1 KB × 7 = 700 MB per partition. 12 partitions = 8.4 GB. Replication 2 = 16.8 GB. Still fine. 1M orders/day = 84 GB. Plan for more disk or more brokers.</p>
+<hr />
+<h2 id="performance-tuning-checklist">Performance Tuning Checklist<a class="headerlink" href="#performance-tuning-checklist" title="Permanent link">&para;</a></h2>
+<h3 id="producer-side">Producer Side<a class="headerlink" href="#producer-side" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What to Do</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>acks</td>
+<td>Use acks=1 for speed, acks=all for safety</td>
+<td>Trade latency for durability</td>
+</tr>
+<tr>
+<td>compression</td>
+<td>Enable snappy or lz4</td>
+<td>Less network, less disk</td>
+</tr>
+<tr>
+<td>batch.size</td>
+<td>16KB-64KB</td>
+<td>Bigger batches = more throughput</td>
+</tr>
+<tr>
+<td>linger.ms</td>
+<td>5-20 ms</td>
+<td>Allow batching</td>
+</tr>
+<tr>
+<td>idempotence</td>
+<td>Always true in production</td>
+<td>Prevent duplicates</td>
+</tr>
+<tr>
+<td>retries</td>
+<td>3 or more</td>
+<td>Handle transient failures</td>
+</tr>
+</tbody>
+</table>
+<h3 id="consumer-side">Consumer Side<a class="headerlink" href="#consumer-side" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What to Do</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partitions</td>
+<td>Match consumer count</td>
+<td>Max parallelism</td>
+</tr>
+<tr>
+<td>enable.auto.commit</td>
+<td>false for critical apps</td>
+<td>Control when you commit</td>
+</tr>
+<tr>
+<td>max.poll.records</td>
+<td>500-1000</td>
+<td>Balance batch size and processing time</td>
+</tr>
+<tr>
+<td>session.timeout.ms</td>
+<td>30-45 seconds</td>
+<td>Allow slow processing</td>
+</tr>
+<tr>
+<td>max.poll.interval.ms</td>
+<td>5 minutes or more</td>
+<td>If processing is slow, increase this</td>
+</tr>
+</tbody>
+</table>
+<h3 id="broker-side">Broker Side<a class="headerlink" href="#broker-side" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What to Do</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brokers</td>
+<td>Add when disk/CPU saturated</td>
+<td>More capacity</td>
+</tr>
+<tr>
+<td>Replication</td>
+<td>2 or 3 for production</td>
+<td>Durability</td>
+</tr>
+<tr>
+<td>Disk</td>
+<td>Use SSDs for better I/O</td>
+<td>Kafka is disk-bound</td>
+</tr>
+<tr>
+<td>num.network.threads</td>
+<td>Increase if needed</td>
+<td>Handle more connections</td>
+</tr>
+<tr>
+<td>num.io.threads</td>
+<td>Increase if needed</td>
+<td>Handle more requests</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="monitoring-key-metrics-explained">Monitoring: Key Metrics Explained<a class="headerlink" href="#monitoring-key-metrics-explained" title="Permanent link">&para;</a></h2>
+<h3 id="producer-metrics">Producer Metrics<a class="headerlink" href="#producer-metrics" title="Permanent link">&para;</a></h3>
+<p><strong>record-send-rate:</strong> Messages per second sent. Is your producer keeping up with your app's needs?</p>
+<p><strong>record-error-rate:</strong> Failed sends. Should be 0 or near 0. If high, check broker health, network, serialization.</p>
+<p><strong>request-latency-avg:</strong> How long for the broker to respond. High latency = network issues or broker overload.</p>
+<h3 id="consumer-metrics">Consumer Metrics<a class="headerlink" href="#consumer-metrics" title="Permanent link">&para;</a></h3>
+<p><strong>records-consumed-rate:</strong> Messages per second consumed. Compare to produce rate. Should be close.</p>
+<p><strong>records-lag:</strong> The most important metric. How far behind. Alert if lag &gt; threshold for too long.</p>
+<p><strong>fetch-latency-avg:</strong> How long to fetch from broker. High = broker or network issues.</p>
+<h3 id="broker-metrics">Broker Metrics<a class="headerlink" href="#broker-metrics" title="Permanent link">&para;</a></h3>
+<p><strong>under-replicated-partitions:</strong> Partitions with replicas that are lagging. Should be 0. If &gt; 0, replicas are unhealthy.</p>
+<p><strong>offline-partitions-count:</strong> Partitions with no leader. Should be 0. If &gt; 0, data loss risk.</p>
+<p><strong>request-handler-avg-idle-percent:</strong> How busy the broker is. Low = overloaded. Consider adding brokers.</p>
+<p><strong>disk-usage:</strong> Disk space per broker. Alert when &gt; 80%. Plan for expansion.</p>
+<h3 id="how-to-monitor">How to Monitor<a class="headerlink" href="#how-to-monitor" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>JMX:</strong> Kafka exposes metrics via JMX. Use Prometheus + JMX exporter, or Grafana + Kafka dashboards.</li>
+<li><strong>kafka-consumer-groups:</strong> CLI for lag. Script it. Alert on lag.</li>
+<li><strong>Confluent Control Center / Kafka UI:</strong> Web UIs that show broker health, consumer lag, topic config.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Alerting Checklist</p>
+<p>Set up alerts for: consumer lag &gt; 1000, under-replicated partitions &gt; 0, broker disk &gt; 80%, consumer group rebalance frequency. These catch most production issues.</p>
+</div>
+<hr />
+<h2 id="scaling-decision-flowchart">Scaling Decision Flowchart<a class="headerlink" href="#scaling-decision-flowchart" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Is your producer too slow?
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>├── Yes → Enable batching (batch.size, linger.ms)
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>│         Enable compression (snappy/lz4)
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>│         Run multiple producer instances
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>└── No
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>Is your consumer too slow? (high lag)
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>├── Yes → Are there idle consumers?
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>│         ├── No → Add more partitions, then add consumers
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>│         └── Yes → Optimize processing logic
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>│                   Increase max.poll.records
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>└── No
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>Is your broker overloaded? (high CPU, disk, request latency)
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>├── Yes → Add more brokers
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>│         Reassign partitions to spread load
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>│         Use SSDs
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>└── No → You&#39;re good! 🎉
+</code></pre></div>
+<hr />
+<h2 id="throughput-numbers-approximate">Throughput Numbers (Approximate)<a class="headerlink" href="#throughput-numbers-approximate" title="Permanent link">&para;</a></h2>
+<p>Real-world Kafka performance varies. Hardware, network, message size, batching—all matter. These are rough guidelines:</p>
+<table>
+<thead>
+<tr>
+<th>Setup</th>
+<th>Approximate Throughput</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single broker, single partition</td>
+<td>~100K messages/sec</td>
+</tr>
+<tr>
+<td>3 brokers, 12 partitions</td>
+<td>~500K messages/sec</td>
+</tr>
+<tr>
+<td>10 brokers, 100 partitions</td>
+<td>~2M messages/sec</td>
+</tr>
+<tr>
+<td>LinkedIn (production)</td>
+<td>~7 trillion messages/day</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>What to Scale</th>
+<th>How</th>
+<th>Limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Producers</td>
+<td>Batching, compression, multiple instances</td>
+<td>No hard limit</td>
+</tr>
+<tr>
+<td>Consumers</td>
+<td>Add consumers to group</td>
+<td>Max = partition count</td>
+</tr>
+<tr>
+<td>Partitions</td>
+<td>Increase partition count</td>
+<td>Cannot decrease later</td>
+</tr>
+<tr>
+<td>Brokers</td>
+<td>Add more servers</td>
+<td>No hard limit</td>
+</tr>
+<tr>
+<td>Consumer Lag</td>
+<td>Add consumers, optimize processing</td>
+<td>Monitor constantly</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Create a topic with 3 partitions. Start 1 consumer. Check lag.</li>
+<li>Send 10,000 messages rapidly. Watch lag increase.</li>
+<li>Add 2 more consumers to the group. Watch lag decrease.</li>
+<li>Experiment: What happens when you add a 4th consumer (more than partitions)?</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../kafka-usecases/">Use Cases</a> - Where Kafka is used in the real world.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

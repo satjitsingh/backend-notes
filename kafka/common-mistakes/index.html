@@ -1,0 +1,3067 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/common-mistakes/">
+      
+      
+        <link rel="prev" href="../kafka-with-springboot/">
+      
+      
+        <link rel="next" href="../kafka-interview-questions/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Common Mistakes - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#common-mistakes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Common Mistakes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-page-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Page Exists
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-1-not-using-message-keys-when-ordering-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 1: Not Using Message Keys When Ordering Matters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 1: Not Using Message Keys When Ordering Matters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-2-too-many-or-too-few-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 2: Too Many or Too Few Partitions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 2: Too Many or Too Few Partitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#too-few-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Too Few Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#too-many-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Too Many Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-3-using-auto-commit-for-critical-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 3: Using Auto-Commit for Critical Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 3: Using Auto-Commit for Critical Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-4-not-making-consumers-idempotent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 4: Not Making Consumers Idempotent
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 4: Not Making Consumers Idempotent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-5-ignoring-consumer-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 5: Ignoring Consumer Lag
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 5: Ignoring Consumer Lag">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-6-replication-factor-of-1-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 6: Replication Factor of 1 in Production
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 6: Replication Factor of 1 in Production">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-7-not-handling-deserialization-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 7: Not Handling Deserialization Errors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 7: Not Handling Deserialization Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-8-treating-kafka-like-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 8: Treating Kafka Like a Database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 8: Treating Kafka Like a Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-9-not-setting-retention-properly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 9: Not Setting Retention Properly
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 9: Not Setting Retention Properly">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-10-not-testing-with-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 10: Not Testing with Failures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 10: Not Testing with Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-11-producing-messages-synchronously-in-a-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 11: Producing Messages Synchronously in a Loop
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 11: Producing Messages Synchronously in a Loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-12-not-configuring-proper-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 12: Not Configuring Proper Timeouts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 12: Not Configuring Proper Timeouts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-13-using-kafka-for-request-reply-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 13: Using Kafka for Request-Reply Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 13: Using Kafka for Request-Reply Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-14-not-planning-for-schema-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 14: Not Planning for Schema Evolution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 14: Not Planning for Schema Evolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-the-14-commandments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary: The 14 Commandments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary-revision-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary: Revision Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-page-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Page Exists
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-1-not-using-message-keys-when-ordering-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 1: Not Using Message Keys When Ordering Matters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 1: Not Using Message Keys When Ordering Matters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-2-too-many-or-too-few-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 2: Too Many or Too Few Partitions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 2: Too Many or Too Few Partitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#too-few-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Too Few Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#too-many-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Too Many Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-3-using-auto-commit-for-critical-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 3: Using Auto-Commit for Critical Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 3: Using Auto-Commit for Critical Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-4-not-making-consumers-idempotent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 4: Not Making Consumers Idempotent
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 4: Not Making Consumers Idempotent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-5-ignoring-consumer-lag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 5: Ignoring Consumer Lag
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 5: Ignoring Consumer Lag">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-6-replication-factor-of-1-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 6: Replication Factor of 1 in Production
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 6: Replication Factor of 1 in Production">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-7-not-handling-deserialization-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 7: Not Handling Deserialization Errors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 7: Not Handling Deserialization Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-8-treating-kafka-like-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 8: Treating Kafka Like a Database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 8: Treating Kafka Like a Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-9-not-setting-retention-properly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 9: Not Setting Retention Properly
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 9: Not Setting Retention Properly">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-10-not-testing-with-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 10: Not Testing with Failures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 10: Not Testing with Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-actually-happens-in-production_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Actually Happens in Production
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-11-producing-messages-synchronously-in-a-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 11: Producing Messages Synchronously in a Loop
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 11: Producing Messages Synchronously in a Loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-12-not-configuring-proper-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 12: Not Configuring Proper Timeouts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 12: Not Configuring Proper Timeouts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-13-using-kafka-for-request-reply-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 13: Using Kafka for Request-Reply Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 13: Using Kafka for Request-Reply Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-wrong_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mistake-14-not-planning-for-schema-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistake 14: Not Planning for Schema Evolution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mistake 14: Not Planning for Schema Evolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-mistake_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mistake
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-dangerous_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why It's Dangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-do_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      What To Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-the-14-commandments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary: The 14 Commandments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary-revision-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary: Revision Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="common-mistakes">Common Mistakes<a class="headerlink" href="#common-mistakes" title="Permanent link">&para;</a></h1>
+<h2 id="why-this-page-exists">Why This Page Exists<a class="headerlink" href="#why-this-page-exists" title="Permanent link">&para;</a></h2>
+<p>These are the mistakes that every developer makes when starting with Kafka. Some cause subtle bugs that only show up under load. Others cause production outages. Learning them here saves you from learning them the hard way at 2 AM with your manager on the phone.</p>
+<hr />
+<h2 id="mistake-1-not-using-message-keys-when-ordering-matters">Mistake 1: Not Using Message Keys When Ordering Matters<a class="headerlink" href="#mistake-1-not-using-message-keys-when-ordering-matters" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake">The Mistake<a class="headerlink" href="#the-mistake" title="Permanent link">&para;</a></h3>
+<p>You send order events without a key:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ProducerRecord</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="s">&quot;orders&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">toJson</span><span class="p">()));</span>
+</code></pre></div>
+<p>Events for the same order land in different partitions. The consumer processes "PAYMENT_SUCCESS" before "ORDER_CREATED."</p>
+<h3 id="why-its-wrong">Why It's Wrong<a class="headerlink" href="#why-its-wrong" title="Permanent link">&para;</a></h3>
+<p>Without a key, Kafka uses round-robin partitioning. Related events scatter across partitions. Since ordering is only guaranteed within a partition, events arrive out of order.</p>
+<h3 id="what-to-do">What To Do<a class="headerlink" href="#what-to-do" title="Permanent link">&para;</a></h3>
+<p>Use the entity ID as the key:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ProducerRecord</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="s">&quot;orders&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="n">event</span><span class="p">.</span><span class="na">getOrderId</span><span class="p">(),</span><span class="w">    </span><span class="c1">// Key: same order always → same partition</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">event</span><span class="p">.</span><span class="na">toJson</span><span class="p">()));</span>
+</code></pre></div>
+<p>Now all events for order #100 go to the same partition. ORDER_CREATED always comes before PAYMENT_SUCCESS.</p>
+<h3 id="what-actually-happens-in-production">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production" title="Permanent link">&para;</a></h3>
+<p>A fintech startup shipped their order pipeline without keys. In dev, with low volume, everything seemed fine. In production during Black Friday, the payment service processed "PAYMENT_SUCCESS" for order #4521 before "ORDER_CREATED." The system tried to charge a customer for an order that didn't exist yet. Support got flooded with "ghost charge" complaints. They spent two days debugging before someone noticed the event order in the logs. Adding keys and redeploying fixed it — but the damage to customer trust was done.</p>
+<hr />
+<h2 id="mistake-2-too-many-or-too-few-partitions">Mistake 2: Too Many or Too Few Partitions<a class="headerlink" href="#mistake-2-too-many-or-too-few-partitions" title="Permanent link">&para;</a></h2>
+<h3 id="too-few-partitions">Too Few Partitions<a class="headerlink" href="#too-few-partitions" title="Permanent link">&para;</a></h3>
+<p>You create a topic with 1 partition. You can only have 1 consumer. When traffic grows 10x, you can't scale consumption.</p>
+<h3 id="too-many-partitions">Too Many Partitions<a class="headerlink" href="#too-many-partitions" title="Permanent link">&para;</a></h3>
+<p>You create a topic with 200 partitions "just in case." Each partition uses file handles, memory, and replication bandwidth. The cluster is stressed for a topic that gets 100 messages a day.</p>
+<h3 id="what-to-do_1">What To Do<a class="headerlink" href="#what-to-do_1" title="Permanent link">&para;</a></h3>
+<p>Start with a sensible number. A good formula:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Partitions = max(expected consumer count, 6)
+</code></pre></div>
+<p>For most services, 6-12 partitions is a good starting point. You can always increase (but never decrease).</p>
+<h3 id="what-actually-happens-in-production_1">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production_1" title="Permanent link">&para;</a></h3>
+<p>A team started with 1 partition for their "notifications" topic. When they launched a big marketing campaign, 50,000 users signed up in an hour. One consumer couldn't keep up. Lag hit 40,000 messages. Users waited 6 hours for their welcome email. Another team went the opposite way: 500 partitions for a topic that got 10 messages per minute. Broker memory usage spiked. Rebalancing took 30 seconds every time a consumer restarted. Both teams learned the hard way that partition count matters.</p>
+<hr />
+<h2 id="mistake-3-using-auto-commit-for-critical-data">Mistake 3: Using Auto-Commit for Critical Data<a class="headerlink" href="#mistake-3-using-auto-commit-for-critical-data" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_1">The Mistake<a class="headerlink" href="#the-mistake_1" title="Permanent link">&para;</a></h3>
+<p>You leave the default <code>enable.auto.commit=true</code>. The consumer auto-commits every 5 seconds. If it crashes between auto-commit and finishing processing, messages are either lost or duplicated in unpredictable ways.</p>
+<h3 id="why-its-wrong_1">Why It's Wrong<a class="headerlink" href="#why-its-wrong_1" title="Permanent link">&para;</a></h3>
+<p>Auto-commit is time-based, not processing-based. It has no idea whether your consumer actually finished processing the messages.</p>
+<h3 id="what-to-do_2">What To Do<a class="headerlink" href="#what-to-do_2" title="Permanent link">&para;</a></h3>
+<p>Disable auto-commit and commit manually after successful processing:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="na">enable.auto.commit</span><span class="o">=</span><span class="s">false</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="n">processMessage</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="p">}</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">consumer</span><span class="p">.</span><span class="na">commitSync</span><span class="p">();</span><span class="w">  </span><span class="c1">// Commit only after all messages are processed</span>
+</code></pre></div>
+<h3 id="what-actually-happens-in-production_2">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production_2" title="Permanent link">&para;</a></h3>
+<p>A logistics company used auto-commit for their shipment tracking events. One night, a consumer processed 200 messages, then crashed at message 198 — right before the 5-second auto-commit timer fired. On restart, it re-read from offset 150 (the last auto-commit). It processed 48 messages again. Some shipments got duplicate "out for delivery" notifications. Others got "delivered" before "out for delivery." The tracking timeline was a mess. Customers called asking "Where is my package?" The ops team spent hours correlating logs to understand the duplicate events.</p>
+<hr />
+<h2 id="mistake-4-not-making-consumers-idempotent">Mistake 4: Not Making Consumers Idempotent<a class="headerlink" href="#mistake-4-not-making-consumers-idempotent" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_2">The Mistake<a class="headerlink" href="#the-mistake_2" title="Permanent link">&para;</a></h3>
+<p>Your consumer charges a payment every time it receives a "PAYMENT" event. Due to a rebalance, the same event is processed twice. Customer is charged twice.</p>
+<h3 id="why-its-wrong_2">Why It's Wrong<a class="headerlink" href="#why-its-wrong_2" title="Permanent link">&para;</a></h3>
+<p>With at-least-once delivery (the default in production), duplicates are expected. If your consumer can't handle being called twice with the same data, you will have bugs.</p>
+<h3 id="what-to-do_3">What To Do<a class="headerlink" href="#what-to-do_3" title="Permanent link">&para;</a></h3>
+<p>Before processing, check if the message was already handled:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">processPayment</span><span class="p">(</span><span class="n">PaymentEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">paymentRepository</span><span class="p">.</span><span class="na">existsByTransactionId</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">getTransactionId</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Already processed {}, skipping&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">getTransactionId</span><span class="p">());</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="n">paymentRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="n">chargeCustomer</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">getAmount</span><span class="p">());</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="what-actually-happens-in-production_3">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production_3" title="Permanent link">&para;</a></h3>
+<p>An e-commerce company had a consumer that applied loyalty points when a purchase event arrived. No idempotency check. During a deployment, a rebalance caused the same "PURCHASE_COMPLETE" event to be processed twice. Customers woke up to double points. Some cashed them in before the team noticed. The finance team had to manually reverse thousands of point transactions. The CTO sent a company-wide email: "We gave away $12,000 in duplicate loyalty points. From now on, every consumer checks before processing."</p>
+<hr />
+<h2 id="mistake-5-ignoring-consumer-lag">Mistake 5: Ignoring Consumer Lag<a class="headerlink" href="#mistake-5-ignoring-consumer-lag" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_3">The Mistake<a class="headerlink" href="#the-mistake_3" title="Permanent link">&para;</a></h3>
+<p>Your consumer is running. No errors in the logs. Everything looks fine. But consumer lag has been growing for 3 days. You have 500,000 unprocessed messages.</p>
+<h3 id="why-its-dangerous">Why It's Dangerous<a class="headerlink" href="#why-its-dangerous" title="Permanent link">&para;</a></h3>
+<p>Consumer lag means your consumer is falling behind. Users might see delayed notifications, stale data, or missing updates. By the time you notice, the backlog is so large it takes hours to catch up.</p>
+<h3 id="what-to-do_4">What To Do<a class="headerlink" href="#what-to-do_4" title="Permanent link">&para;</a></h3>
+<p>Monitor consumer lag and set alerts:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kafka-consumer-groups<span class="w"> </span>--describe<span class="w"> </span>--group<span class="w"> </span>my-group<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<p>Set alerts in your monitoring system:</p>
+<ul>
+<li><strong>Warning:</strong> Lag &gt; 1,000 messages for more than 5 minutes</li>
+<li><strong>Critical:</strong> Lag &gt; 10,000 messages for more than 15 minutes</li>
+</ul>
+<p>When lag grows: add more consumers (up to partition count) or optimize processing speed.</p>
+<h3 id="what-actually-happens-in-production_4">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production_4" title="Permanent link">&para;</a></h3>
+<p>A real-time dashboard team had no lag monitoring. Their consumer processed analytics events. One day, a bug caused each message to take 2 seconds instead of 50ms. Nobody noticed for 3 days. Lag grew to 2 million messages. When they finally caught it, catching up took 18 hours. During that time, the dashboard showed data from 3 days ago. The product manager thought the feature was broken. They added lag alerts the next week. Now they get paged if lag exceeds 1,000 for more than 5 minutes.</p>
+<hr />
+<h2 id="mistake-6-replication-factor-of-1-in-production">Mistake 6: Replication Factor of 1 in Production<a class="headerlink" href="#mistake-6-replication-factor-of-1-in-production" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_4">The Mistake<a class="headerlink" href="#the-mistake_4" title="Permanent link">&para;</a></h3>
+<p>You create topics with <code>--replication-factor 1</code> because it was quick during development. You deploy to production the same way.</p>
+<h3 id="why-its-dangerous_1">Why It's Dangerous<a class="headerlink" href="#why-its-dangerous_1" title="Permanent link">&para;</a></h3>
+<p>Replication factor 1 means zero fault tolerance. If the broker holding that partition dies, the data is gone. Permanently. No backup. No recovery.</p>
+<h3 id="what-to-do_5">What To Do<a class="headerlink" href="#what-to-do_5" title="Permanent link">&para;</a></h3>
+<p>Always use replication factor <strong>3</strong> in production:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--partitions<span class="w"> </span><span class="m">6</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span>--replication-factor<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<h3 id="what-actually-happens-in-production_5">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production_5" title="Permanent link">&para;</a></h3>
+<p>A startup ran their staging Kafka with replication factor 1. "It's just staging," they said. One Friday, a broker's SSD failed. All staging data — 2 weeks of test events, fixtures, and integration test state — vanished. They couldn't run end-to-end tests until they rebuilt everything. Worse: they had copied the same config to a "low-priority" production topic. When that broker died on a holiday weekend, they lost 3 days of audit logs. The compliance team was not happy. Replication factor 3 is now mandatory for every topic, no exceptions.</p>
+<hr />
+<h2 id="mistake-7-not-handling-deserialization-errors">Mistake 7: Not Handling Deserialization Errors<a class="headerlink" href="#mistake-7-not-handling-deserialization-errors" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_5">The Mistake<a class="headerlink" href="#the-mistake_5" title="Permanent link">&para;</a></h3>
+<p>A producer sends a malformed message (wrong format, missing fields, corrupt JSON). Your consumer tries to deserialize it, throws an exception, and crashes. It restarts, reads the same bad message, crashes again. Infinite loop.</p>
+<h3 id="why-its-dangerous_2">Why It's Dangerous<a class="headerlink" href="#why-its-dangerous_2" title="Permanent link">&para;</a></h3>
+<p>One bad message can permanently block an entire partition. Your consumer is stuck in a crash loop. Thousands of good messages behind the bad one never get processed.</p>
+<h3 id="what-to-do_6">What To Do<a class="headerlink" href="#what-to-do_6" title="Permanent link">&para;</a></h3>
+<p>Use an error-handling deserializer:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="na">spring.kafka.consumer.value-deserializer</span><span class="o">=</span><span class="s">org.springframework.kafka.support.serializer.ErrorHandlingDeserializer</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="na">spring.kafka.consumer.properties.spring.deserializer.value.delegate.class</span><span class="o">=</span><span class="s">org.springframework.kafka.support.serializer.JsonDeserializer</span>
+</code></pre></div>
+<p>Or catch and skip bad messages:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="n">OrderEvent</span><span class="w"> </span><span class="n">event</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">deserialize</span><span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="na">value</span><span class="p">());</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="n">process</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">DeserializationException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Bad message at offset {}, skipping: {}&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="kd">record</span><span class="err">.</span><span class="nc">offset</span><span class="p">(),</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="c1">// Optionally: send to dead letter topic</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="what-actually-happens-in-production_6">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production_6" title="Permanent link">&para;</a></h3>
+<p>A team had a consumer that expected JSON with a "userId" field. A buggy producer sent a message with "user_id" (snake_case) instead. The consumer threw a deserialization exception and crashed. It restarted, read the same bad message, crashed again. Infinite loop. The partition was blocked. 50,000 good messages piled up behind the one bad message. The team didn't notice until users reported missing notifications. They added an error-handling deserializer that logs and skips bad messages. Now bad messages go to a dead-letter topic for investigation instead of blocking the pipeline.</p>
+<hr />
+<h2 id="mistake-8-treating-kafka-like-a-database">Mistake 8: Treating Kafka Like a Database<a class="headerlink" href="#mistake-8-treating-kafka-like-a-database" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_6">The Mistake<a class="headerlink" href="#the-mistake_6" title="Permanent link">&para;</a></h3>
+<p>You store data in Kafka and query it by key: "Give me order #12345." You expect random-access reads like a database.</p>
+<h3 id="why-its-wrong_3">Why It's Wrong<a class="headerlink" href="#why-its-wrong_3" title="Permanent link">&para;</a></h3>
+<p>Kafka is a <strong>log</strong>, not a database. You can read sequentially (from an offset forward) but not randomly (by key). There are no indexes, no <code>SELECT WHERE</code>, no joins.</p>
+<h3 id="what-to-do_7">What To Do<a class="headerlink" href="#what-to-do_7" title="Permanent link">&para;</a></h3>
+<p>Use Kafka for event streaming. Use a database for querying.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Producer → Kafka (event log) → Consumer → Database (queryable store)
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>&quot;Give me all orders&quot; → Query the database
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>&quot;Something just happened&quot; → Read from Kafka
+</code></pre></div>
+<p>If you need key-based lookup from Kafka, consider <strong>Kafka Streams</strong> with a state store, or consume events into a database/cache.</p>
+<h3 id="what-actually-happens-in-production_7">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production_7" title="Permanent link">&para;</a></h3>
+<p>A team built a "query service" that read from Kafka to answer "show me order #12345." They scanned the topic from the beginning every time. With 10 million messages, each query took 30 seconds. They added caching, but cache misses were brutal. Users complained about slow load times. The team eventually moved to a proper design: Kafka for the event stream, a database for the materialized view. Queries went from 30 seconds to 50ms. The lesson: use the right tool. Kafka is a log. Databases are for querying.</p>
+<hr />
+<h2 id="mistake-9-not-setting-retention-properly">Mistake 9: Not Setting Retention Properly<a class="headerlink" href="#mistake-9-not-setting-retention-properly" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_7">The Mistake<a class="headerlink" href="#the-mistake_7" title="Permanent link">&para;</a></h3>
+<p>You leave the default retention (7 days) for all topics. A high-throughput topic generates 50 GB/day. After a week, you have 350 GB of data on each broker for that one topic. Disk fills up.</p>
+<h3 id="why-its-dangerous_3">Why It's Dangerous<a class="headerlink" href="#why-its-dangerous_3" title="Permanent link">&para;</a></h3>
+<p>When brokers run out of disk, they crash. All partitions on that broker go offline.</p>
+<h3 id="what-to-do_8">What To Do<a class="headerlink" href="#what-to-do_8" title="Permanent link">&para;</a></h3>
+<p>Set retention based on your needs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Short-lived events (notifications, logs):</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>kafka-topics<span class="w"> </span>--alter<span class="w"> </span>--topic<span class="w"> </span>notifications<span class="w"> </span>--config<span class="w"> </span>retention.ms<span class="o">=</span><span class="m">86400000</span><span class="w">  </span><span class="c1"># 1 day</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Important events (orders):</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>kafka-topics<span class="w"> </span>--alter<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span>--config<span class="w"> </span>retention.ms<span class="o">=</span><span class="m">604800000</span><span class="w">  </span><span class="c1"># 7 days</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># Compacted topic (latest value per key, forever):</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>kafka-topics<span class="w"> </span>--alter<span class="w"> </span>--topic<span class="w"> </span>user-profiles<span class="w"> </span>--config<span class="w"> </span>cleanup.policy<span class="o">=</span>compact
+</code></pre></div>
+<p>Monitor disk usage on each broker.</p>
+<h3 id="what-actually-happens-in-production_8">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production_8" title="Permanent link">&para;</a></h3>
+<p>A company had a high-volume event topic with default 7-day retention. It produced 100 GB per day. After a week, each broker had 700 GB for that topic alone. They had 3 brokers. Disk usage hit 95%. One broker ran out of space and crashed. Its partitions went offline. Producers got "Leader Not Available" errors. The whole pipeline stopped. They had to add disks, reduce retention to 2 days, and set up disk usage alerts. A simple retention config would have prevented the outage.</p>
+<hr />
+<h2 id="mistake-10-not-testing-with-failures">Mistake 10: Not Testing with Failures<a class="headerlink" href="#mistake-10-not-testing-with-failures" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_8">The Mistake<a class="headerlink" href="#the-mistake_8" title="Permanent link">&para;</a></h3>
+<p>You test Kafka with everything running perfectly: 3 brokers up, network stable, consumers healthy. You go to production. First broker failure? Chaos. Consumer crash? Data loss. Network partition? Nobody knows what happens.</p>
+<h3 id="what-to-do_9">What To Do<a class="headerlink" href="#what-to-do_9" title="Permanent link">&para;</a></h3>
+<p>Test failure scenarios:</p>
+<ul>
+<li>Kill a broker. Do consumers recover?</li>
+<li>Kill a consumer. Does the group rebalance?</li>
+<li>Send malformed messages. Does the consumer handle them?</li>
+<li>Simulate network latency. Do producers time out gracefully?</li>
+<li>Fill the disk. Does the broker alert you before crashing?</li>
+</ul>
+<h3 id="what-actually-happens-in-production_9">What Actually Happens in Production<a class="headerlink" href="#what-actually-happens-in-production_9" title="Permanent link">&para;</a></h3>
+<p>A team had never killed a broker in their test environment. In production, a broker died during peak traffic. Producers started getting timeouts. Some retried. Some didn't. Consumers got "NotLeaderForPartition" and stalled. The team didn't know how long leader election would take. They didn't know their consumers would automatically reconnect. Panic. They restarted everything "just in case." That caused more rebalances. The outage lasted 45 minutes. A 15-minute runbook drill ("kill a broker, watch what happens") would have cut that to 5 minutes. Now they run chaos tests every sprint.</p>
+<hr />
+<h2 id="mistake-11-producing-messages-synchronously-in-a-loop">Mistake 11: Producing Messages Synchronously in a Loop<a class="headerlink" href="#mistake-11-producing-messages-synchronously-in-a-loop" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_9">The Mistake<a class="headerlink" href="#the-mistake_9" title="Permanent link">&para;</a></h3>
+<p>You send 10,000 messages in a loop, waiting for each one to complete before sending the next:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">OrderEvent</span><span class="w"> </span><span class="n">event</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">events</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">record</span><span class="p">).</span><span class="na">get</span><span class="p">();</span><span class="w">  </span><span class="c1">// Blocks until ack received!</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="p">}</span>
+</code></pre></div>
+<p>Your producer crawls. What should take seconds takes minutes.</p>
+<h3 id="why-its-wrong_4">Why It's Wrong<a class="headerlink" href="#why-its-wrong_4" title="Permanent link">&para;</a></h3>
+<p><code>send().get()</code> blocks the thread until Kafka acknowledges the message. You're doing everything one at a time. Network round-trip latency (often 1-5ms per message) adds up. 10,000 messages × 3ms = 30 seconds of pure waiting. You're not using Kafka's batching or async capabilities.</p>
+<h3 id="what-to-do_10">What To Do<a class="headerlink" href="#what-to-do_10" title="Permanent link">&para;</a></h3>
+<p>Use async send with callbacks. Let the producer batch and send in parallel:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">OrderEvent</span><span class="w"> </span><span class="n">event</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">events</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">record</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exception</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Send failed for {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">getOrderId</span><span class="p">(),</span><span class="w"> </span><span class="n">exception</span><span class="p">);</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="p">});</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="p">}</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="n">producer</span><span class="p">.</span><span class="na">flush</span><span class="p">();</span><span class="w">  </span><span class="c1">// Optional: wait for all to complete before exiting</span>
+</code></pre></div>
+<p>The producer batches messages internally. It sends multiple messages in one network request. Throughput can be 10-100x higher.</p>
+<div class="admonition tip">
+<p class="admonition-title">When to use sync send</p>
+<p>Use <code>send().get()</code> only when you need to know the result immediately (e.g., the next line depends on it). For bulk ingestion, async with callbacks is almost always better.</p>
+</div>
+<hr />
+<h2 id="mistake-12-not-configuring-proper-timeouts">Mistake 12: Not Configuring Proper Timeouts<a class="headerlink" href="#mistake-12-not-configuring-proper-timeouts" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_10">The Mistake<a class="headerlink" href="#the-mistake_10" title="Permanent link">&para;</a></h3>
+<p>You use default timeouts. Things work in dev. In production, under load, you get mysterious "timed out" errors. Or your consumer gets kicked out of the group during a slow database query.</p>
+<h3 id="why-its-dangerous_4">Why It's Dangerous<a class="headerlink" href="#why-its-dangerous_4" title="Permanent link">&para;</a></h3>
+<p>Kafka has many timeout settings. Wrong values cause false failures or hide real problems.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What It Controls</th>
+<th>Default</th>
+<th>Production Tip</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>request.timeout.ms</code></td>
+<td>How long producer waits for broker response</td>
+<td>30000</td>
+<td>Increase if brokers are slow (60000)</td>
+</tr>
+<tr>
+<td><code>delivery.timeout.ms</code></td>
+<td>Total time for a message (includes retries)</td>
+<td>120000</td>
+<td>Must be &gt; request.timeout.ms × (1 + retries)</td>
+</tr>
+<tr>
+<td><code>session.timeout.ms</code></td>
+<td>How long before consumer is considered dead</td>
+<td>10000</td>
+<td>30000-45000 for slow processors</td>
+</tr>
+<tr>
+<td><code>max.poll.interval.ms</code></td>
+<td>Max time between poll() calls</td>
+<td>300000</td>
+<td>Increase if processing is slow (600000)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-to-do_11">What To Do<a class="headerlink" href="#what-to-do_11" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Producer: allow time for retries</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="na">request.timeout.ms</span><span class="o">=</span><span class="s">30000</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="na">delivery.timeout.ms</span><span class="o">=</span><span class="s">120000</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="na">retries</span><span class="o">=</span><span class="s">3</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1"># Consumer: avoid false &quot;dead consumer&quot; during slow processing</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="na">session.timeout.ms</span><span class="o">=</span><span class="s">45000</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="na">max.poll.interval.ms</span><span class="o">=</span><span class="s">600000</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">The max.poll.interval.ms trap</p>
+<p>If your consumer takes 10 minutes to process a batch (e.g., calling a slow API), and <code>max.poll.interval.ms</code> is 5 minutes, Kafka will kick the consumer out. It thinks the consumer is dead. Increase the interval or process in smaller batches.</p>
+</div>
+<hr />
+<h2 id="mistake-13-using-kafka-for-request-reply-pattern">Mistake 13: Using Kafka for Request-Reply Pattern<a class="headerlink" href="#mistake-13-using-kafka-for-request-reply-pattern" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_11">The Mistake<a class="headerlink" href="#the-mistake_11" title="Permanent link">&para;</a></h3>
+<p>You want a synchronous request-response flow. You send a request to a Kafka topic, block waiting for a reply on another topic. "It's async under the hood, but we'll make it sync with a timeout."</p>
+<h3 id="why-its-wrong_5">Why It's Wrong<a class="headerlink" href="#why-its-wrong_5" title="Permanent link">&para;</a></h3>
+<p>Kafka is designed for <strong>asynchronous, fire-and-forget</strong> messaging. It's not a RPC system. Request-reply on Kafka means:</p>
+<ul>
+<li>You must correlate request and response (custom IDs, headers)</li>
+<li>You block a thread waiting for a response that might never come</li>
+<li>Timeouts are tricky (what if the consumer is slow?)</li>
+<li>You're fighting the system. Kafka has no built-in request-reply semantics.</li>
+</ul>
+<h3 id="what-to-do_12">What To Do<a class="headerlink" href="#what-to-do_12" title="Permanent link">&para;</a></h3>
+<p>Use HTTP or gRPC for request-reply. Use Kafka for event streaming.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Need sync response?  → HTTP/gRPC
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>Need async events?   → Kafka
+</code></pre></div>
+<p>If you truly need request-reply over Kafka (e.g., legacy integration), use a library like Spring Kafka's <code>ReplyingKafkaTemplate</code> — but know you're adding complexity. For most cases, keep sync and async separate.</p>
+<hr />
+<h2 id="mistake-14-not-planning-for-schema-evolution">Mistake 14: Not Planning for Schema Evolution<a class="headerlink" href="#mistake-14-not-planning-for-schema-evolution" title="Permanent link">&para;</a></h2>
+<h3 id="the-mistake_12">The Mistake<a class="headerlink" href="#the-mistake_12" title="Permanent link">&para;</a></h3>
+<p>Your messages have a fixed format. One day you add a new field. You deploy the new producer. Old consumers crash. "Unknown field" or "Missing required field" errors everywhere.</p>
+<h3 id="why-its-dangerous_5">Why It's Dangerous<a class="headerlink" href="#why-its-dangerous_5" title="Permanent link">&para;</a></h3>
+<p>Message formats change. New features need new fields. If you don't plan for it, every change is a coordinated big-bang deployment. One service can't upgrade until all others do. That doesn't scale.</p>
+<h3 id="what-to-do_13">What To Do<a class="headerlink" href="#what-to-do_13" title="Permanent link">&para;</a></h3>
+<p>Use a schema registry (Confluent Schema Registry, AWS Glue Schema Registry) with Avro or Protobuf. Define backward- and forward-compatible rules:</p>
+<ul>
+<li><strong>Backward compatible:</strong> Old consumers can read new messages (e.g., new optional field)</li>
+<li><strong>Forward compatible:</strong> New consumers can read old messages (e.g., old messages lack new required field — make it optional)</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">// With Schema Registry, adding optional field is safe</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;OrderEvent&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="s">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;orderId&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;string&quot;</span><span class="p">},</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">    </span><span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;amount&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;double&quot;</span><span class="p">},</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">    </span><span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;discountCode&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="s">&quot;null&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;string&quot;</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w">  </span><span class="c1">// New, optional</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">  </span><span class="o">]</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="p">}</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Breaking changes</p>
+<p>Renaming a field, changing a type, or removing a field often breaks consumers. Use a new topic or versioned topics for breaking changes. Migrate consumers gradually.</p>
+</div>
+<hr />
+<h2 id="summary-the-14-commandments">Summary: The 14 Commandments<a class="headerlink" href="#summary-the-14-commandments" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Commandment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Use message keys when ordering matters</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Start with 6-12 partitions, not 1 or 200</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Use manual offset commits for critical data</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Always make consumers idempotent</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Monitor consumer lag and set alerts</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Use replication factor 3 in production</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Handle deserialization errors gracefully</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Kafka is a log, not a database</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Set retention based on your actual needs</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Test with failures before going to production</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Use async send with callbacks for bulk producing, not sync in a loop</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Configure timeouts (request, delivery, session, max.poll) for your workload</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Use HTTP/gRPC for request-reply, not Kafka</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Plan for schema evolution with Schema Registry</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-summary-revision-table">Quick Summary: Revision Table<a class="headerlink" href="#quick-summary-revision-table" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Mistake</th>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No message keys</td>
+<td>Events out of order, wrong sequence</td>
+<td>Use entity ID as key</td>
+</tr>
+<tr>
+<td>Wrong partition count</td>
+<td>Can't scale, or wasted resources</td>
+<td>6-12 partitions to start</td>
+</tr>
+<tr>
+<td>Auto-commit for critical data</td>
+<td>Lost or duplicated messages</td>
+<td>Manual commit after processing</td>
+</tr>
+<tr>
+<td>Non-idempotent consumer</td>
+<td>Duplicate charges, double processing</td>
+<td>Check before process (DB, Redis, etc.)</td>
+</tr>
+<tr>
+<td>Ignoring lag</td>
+<td>Delayed data, backlog explosion</td>
+<td>Monitor lag, set alerts</td>
+</tr>
+<tr>
+<td>Replication factor 1</td>
+<td>Data loss when broker dies</td>
+<td>Use replication factor 3</td>
+</tr>
+<tr>
+<td>No deserialization error handling</td>
+<td>Consumer crash loop, blocked partition</td>
+<td>ErrorHandlingDeserializer or try/catch</td>
+</tr>
+<tr>
+<td>Kafka as database</td>
+<td>Slow queries, wrong tool</td>
+<td>Kafka for events, DB for queries</td>
+</tr>
+<tr>
+<td>Wrong retention</td>
+<td>Disk full, or data gone too soon</td>
+<td>Set retention per topic needs</td>
+</tr>
+<tr>
+<td>No failure testing</td>
+<td>Panic during real outage</td>
+<td>Chaos test: kill broker, consumer</td>
+</tr>
+<tr>
+<td>Sync send in loop</td>
+<td>Slow producer, low throughput</td>
+<td>Async send with callbacks</td>
+</tr>
+<tr>
+<td>Wrong timeouts</td>
+<td>False failures, consumer kicked out</td>
+<td>Tune request, delivery, session, max.poll</td>
+</tr>
+<tr>
+<td>Kafka for request-reply</td>
+<td>Complex, fragile, fighting the system</td>
+<td>Use HTTP/gRPC for sync</td>
+</tr>
+<tr>
+<td>No schema evolution plan</td>
+<td>Breaking changes, big-bang deploys</td>
+<td>Schema Registry, compatible changes</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Send 5 messages without a key to a 3-partition topic. Verify they go to different partitions.</li>
+<li>Send 5 messages with the same key. Verify they all go to the same partition.</li>
+<li>Set <code>enable.auto.commit=true</code>, process a message, and kill the consumer. What happens on restart?</li>
+<li>Repeat with <code>enable.auto.commit=false</code> and manual commit. What's different?</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../kafka-with-springboot/">Kafka with Spring Boot</a> — Build real applications with Kafka.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

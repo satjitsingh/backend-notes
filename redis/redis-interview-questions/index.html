@@ -1,0 +1,2645 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/redis/redis-interview-questions/">
+      
+      
+        <link rel="prev" href="../common-mistakes/">
+      
+      
+        <link rel="next" href="../../kafka/kafka-basics/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Interview Questions - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#redis-interview-questions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Interview Questions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-what-is-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: What is Redis?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-why-is-redis-so-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: Why is Redis so fast?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-is-redis-single-threaded-is-that-a-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: Is Redis single-threaded? Is that a problem?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-what-data-structures-does-redis-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: What data structures does Redis support?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-what-is-the-difference-between-redis-and-memcached" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: What is the difference between Redis and Memcached?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intermediate-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intermediate Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intermediate Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q6-explain-cache-aside-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: Explain Cache-Aside pattern.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-what-is-cache-invalidation-why-is-it-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q7: What is cache invalidation? Why is it hard?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-what-is-a-cache-stampede-how-do-you-prevent-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q8: What is a Cache Stampede? How do you prevent it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-is-cache-penetration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q9: What is cache penetration?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-what-is-cache-avalanche" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q10: What is cache avalanche?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q11-how-does-redis-persist-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q11: How does Redis persist data?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q12-what-is-redis-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q12: What is Redis replication?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q13-what-is-redis-sentinel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q13: What is Redis Sentinel?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q14-what-is-redis-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q14: What is Redis Cluster?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q15-what-is-the-difference-between-cacheable-and-cacheput-in-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q15: What is the difference between @Cacheable and @CachePut in Spring?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q16-what-happens-when-redis-runs-out-of-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q16: What happens when Redis runs out of memory?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q17-how-do-you-handle-redis-downtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q17: How do you handle Redis downtime?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q18-what-is-a-redis-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q18: What is a Redis transaction?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-design-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario / Design Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenario / Design Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q19-design-a-rate-limiter-using-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q19: Design a rate limiter using Redis.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q20-design-a-session-store-using-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q20: Design a session store using Redis.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q21-design-a-trending-posts-feature-posts-should-be-ranked-by-likes-in-the-last-24-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q21: Design a "trending posts" feature. Posts should be ranked by likes in the last 24 hours.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q22-how-would-you-implement-whos-online-for-a-chat-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q22: How would you implement "who's online" for a chat app?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q23-your-cache-hit-ratio-is-30-how-do-you-improve-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q23: Your cache hit ratio is 30%. How do you improve it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q24-how-would-you-cache-a-users-feed-eg-instagram-style-that-is-personalized-and-changes-frequently" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q24: How would you cache a user's feed (e.g., Instagram-style) that is personalized and changes frequently?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q25-explain-when-you-would-use-redis-vs-a-message-queue-like-rabbitmq-or-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q25: Explain when you would use Redis vs a message queue like RabbitMQ or Kafka.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q26-what-is-redis-cluster-how-does-it-differ-from-sentinel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q26: What is Redis Cluster? How does it differ from Sentinel?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q27-explain-the-redis-pipeline-when-would-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q27: Explain the Redis pipeline. When would you use it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q28-what-is-redis-pubsub-what-are-its-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q28: What is Redis Pub/Sub? What are its limitations?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q29-how-would-you-implement-a-distributed-lock-using-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q29: How would you implement a distributed lock using Redis?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q30-what-is-redis-streams-how-does-it-compare-to-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q30: What is Redis Streams? How does it compare to Lists?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#top-5-mistakes-in-redis-interviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      Top 5 Mistakes in Redis Interviews
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-second-revision-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      30-Second Revision Cheat Sheet
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-what-is-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: What is Redis?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-why-is-redis-so-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: Why is Redis so fast?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-is-redis-single-threaded-is-that-a-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: Is Redis single-threaded? Is that a problem?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-what-data-structures-does-redis-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: What data structures does Redis support?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-what-is-the-difference-between-redis-and-memcached" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: What is the difference between Redis and Memcached?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intermediate-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Intermediate Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intermediate Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q6-explain-cache-aside-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6: Explain Cache-Aside pattern.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-what-is-cache-invalidation-why-is-it-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q7: What is cache invalidation? Why is it hard?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-what-is-a-cache-stampede-how-do-you-prevent-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q8: What is a Cache Stampede? How do you prevent it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q9-what-is-cache-penetration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q9: What is cache penetration?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q10-what-is-cache-avalanche" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q10: What is cache avalanche?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q11-how-does-redis-persist-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q11: How does Redis persist data?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q12-what-is-redis-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q12: What is Redis replication?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q13-what-is-redis-sentinel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q13: What is Redis Sentinel?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q14-what-is-redis-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q14: What is Redis Cluster?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q15-what-is-the-difference-between-cacheable-and-cacheput-in-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q15: What is the difference between @Cacheable and @CachePut in Spring?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q16-what-happens-when-redis-runs-out-of-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q16: What happens when Redis runs out of memory?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q17-how-do-you-handle-redis-downtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q17: How do you handle Redis downtime?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q18-what-is-a-redis-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q18: What is a Redis transaction?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-design-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario / Design Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenario / Design Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q19-design-a-rate-limiter-using-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q19: Design a rate limiter using Redis.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q20-design-a-session-store-using-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q20: Design a session store using Redis.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q21-design-a-trending-posts-feature-posts-should-be-ranked-by-likes-in-the-last-24-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q21: Design a "trending posts" feature. Posts should be ranked by likes in the last 24 hours.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q22-how-would-you-implement-whos-online-for-a-chat-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q22: How would you implement "who's online" for a chat app?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q23-your-cache-hit-ratio-is-30-how-do-you-improve-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q23: Your cache hit ratio is 30%. How do you improve it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q24-how-would-you-cache-a-users-feed-eg-instagram-style-that-is-personalized-and-changes-frequently" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q24: How would you cache a user's feed (e.g., Instagram-style) that is personalized and changes frequently?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q25-explain-when-you-would-use-redis-vs-a-message-queue-like-rabbitmq-or-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q25: Explain when you would use Redis vs a message queue like RabbitMQ or Kafka.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q26-what-is-redis-cluster-how-does-it-differ-from-sentinel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q26: What is Redis Cluster? How does it differ from Sentinel?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q27-explain-the-redis-pipeline-when-would-you-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q27: Explain the Redis pipeline. When would you use it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q28-what-is-redis-pubsub-what-are-its-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q28: What is Redis Pub/Sub? What are its limitations?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q29-how-would-you-implement-a-distributed-lock-using-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q29: How would you implement a distributed lock using Redis?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q30-what-is-redis-streams-how-does-it-compare-to-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q30: What is Redis Streams? How does it compare to Lists?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#top-5-mistakes-in-redis-interviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      Top 5 Mistakes in Redis Interviews
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-second-revision-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      30-Second Revision Cheat Sheet
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="redis-interview-questions">Redis Interview Questions<a class="headerlink" href="#redis-interview-questions" title="Permanent link">&para;</a></h1>
+<div class="admonition tip">
+<p class="admonition-title">How to Use This Page</p>
+<p>Each answer has a <strong>one-liner</strong> for quick revision, a <strong>detailed explanation</strong>, an <strong>example</strong>, and a <strong>"How to say it in an interview"</strong> tip. Read the one-liner first. If you need more detail, read the full answer.</p>
+</div>
+<hr />
+<h2 id="basic-questions">Basic Questions<a class="headerlink" href="#basic-questions" title="Permanent link">&para;</a></h2>
+<h3 id="q1-what-is-redis">Q1: What is Redis?<a class="headerlink" href="#q1-what-is-redis" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Redis is an in-memory key-value store used for caching, sessions, and real-time data.</p>
+<p><strong>Detailed explanation:</strong> Redis stands for Remote Dictionary Server. It stores data in RAM, which makes it extremely fast—sub-millisecond response times. It supports multiple data structures: Strings, Lists, Sets, Hashes, Sorted Sets, Streams, and more. It's commonly used as a cache layer between your application and database, but it's also used for sessions, rate limiting, leaderboards, and message queues. Redis is single-threaded for command execution, which avoids race conditions and keeps the implementation simple.</p>
+<p><strong>Example:</strong> When a user requests a product page, your app checks Redis first. If the product is cached, it returns in 0.1 ms. If not, it queries the database (10 ms), stores the result in Redis, and returns. The next 1000 requests get the cached version.</p>
+<p><strong>How to say it in an interview:</strong> "Redis is an in-memory key-value store. It's used primarily for caching to reduce database load and improve response times. It supports rich data structures like Lists and Sorted Sets, which makes it useful for things like leaderboards and task queues, not just simple caching."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<p>Don't say "Redis is a database" without clarifying. It's a cache/session store that can persist, but it's not a replacement for MySQL or PostgreSQL. Don't say "Redis is like Memcached" and leave it at that—Redis does much more.</p>
+</div>
+<hr />
+<h3 id="q2-why-is-redis-so-fast">Q2: Why is Redis so fast?<a class="headerlink" href="#q2-why-is-redis-so-fast" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Because it stores data in RAM, is single-threaded (no locking overhead), and uses efficient data structures.</p>
+<p><strong>Detailed explanation:</strong> 
+- <strong>In-Memory:</strong> RAM access is 100x faster than disk. Redis keeps all data in memory, so there's no disk I/O for reads.
+- <strong>Single-Threaded:</strong> Redis processes commands one at a time. No locks, no context switching, no race conditions. Each operation is microseconds, so a single thread can handle ~100,000 ops/sec.
+- <strong>Efficient data structures:</strong> Internally uses hash tables, skip lists, and compact representations. Operations are O(1) or O(log N).
+- <strong>Non-blocking I/O:</strong> Uses epoll (Linux) or kqueue (BSD) for network I/O. While waiting for network, it can process other commands. (Note: command execution is single-threaded; I/O can use background threads in Redis 6+.)</p>
+<p><strong>Example:</strong> A <code>GET</code> in Redis takes ~0.1 ms. A <code>SELECT</code> from MySQL on SSD might take 1–10 ms. For 10,000 reads/sec, Redis handles it easily; a database might struggle.</p>
+<p><strong>How to say it in an interview:</strong> "Redis is fast because of three things: in-memory storage, single-threaded execution that avoids locking, and efficient internal data structures. RAM is orders of magnitude faster than disk, and the single-threaded model keeps things simple and predictable."</p>
+<hr />
+<h3 id="q3-is-redis-single-threaded-is-that-a-problem">Q3: Is Redis single-threaded? Is that a problem?<a class="headerlink" href="#q3-is-redis-single-threaded-is-that-a-problem" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Yes, for command execution. No, it's not a problem because RAM operations are microsecond-fast.</p>
+<p><strong>Detailed explanation:</strong> Redis processes commands in a single thread. One command at a time. This avoids race conditions and locking overhead. Since each operation takes microseconds, a single thread can handle ~100,000 operations per second. For I/O (network, persistence to disk), Redis 6+ can use background threads, but the core command execution remains single-threaded. The bottleneck is rarely CPU—it's usually network or memory.</p>
+<p><strong>Example:</strong> Even with 50,000 concurrent connections, Redis processes commands sequentially. A <code>SET</code> might take 0.05 ms. So in 1 second, you can do 20,000 SETs. That's enough for most applications.</p>
+<p><strong>How to say it in an interview:</strong> "Redis is single-threaded for command execution. That's by design—it avoids locks and keeps the model simple. Because operations are so fast, a single thread can handle hundreds of thousands of ops per second. For scaling beyond that, you'd use Redis Cluster to shard data across multiple nodes."</p>
+<div class="admonition info">
+<p class="admonition-title">What the interviewer is really asking</p>
+<p>They want to know if you understand the trade-off. Single-threaded = no locks, simple, but one slow command blocks others. You should mention that Redis is optimized for fast commands and that blocking commands (like KEYS *) should be avoided.</p>
+</div>
+<hr />
+<h3 id="q4-what-data-structures-does-redis-support">Q4: What data structures does Redis support?<a class="headerlink" href="#q4-what-data-structures-does-redis-support" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Strings, Lists, Sets, Hashes, Sorted Sets, Streams, Bitmaps, HyperLogLogs.</p>
+<table>
+<thead>
+<tr>
+<th>Structure</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>Caching, counters, OTPs</td>
+</tr>
+<tr>
+<td>List</td>
+<td>Message queues, activity feeds</td>
+</tr>
+<tr>
+<td>Set</td>
+<td>Unique tags, online users</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>User profiles, objects</td>
+</tr>
+<tr>
+<td>Sorted Set</td>
+<td>Leaderboards, rate limiting</td>
+</tr>
+<tr>
+<td>Stream</td>
+<td>Event sourcing, message queues</td>
+</tr>
+<tr>
+<td>Bitmap</td>
+<td>Feature flags, presence</td>
+</tr>
+<tr>
+<td>HyperLogLog</td>
+<td>Unique count approximation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Detailed explanation:</strong> Redis is not just key-value strings. It has rich types. Strings can hold text, numbers, or JSON. Lists are ordered and support push/pop from both ends. Sets are unique, unordered. Hashes are like mini key-value stores inside a key. Sorted Sets add a score to each member for ranking. Streams are append-only logs. Bitmaps and HyperLogLog are for specific use cases (flags, approximate counts).</p>
+<p><strong>Example:</strong> For a leaderboard: <code>ZADD leaderboard 100 "Alice"</code> and <code>ZREVRANGE leaderboard 0 9</code> for top 10. For online users: <code>SADD online_users "user_42"</code> and <code>SMEMBERS online_users</code>.</p>
+<p><strong>How to say it in an interview:</strong> "Redis supports Strings, Lists, Sets, Hashes, and Sorted Sets as the main types. Plus Streams, Bitmaps, and HyperLogLog. I've used Sorted Sets for leaderboards and Sets for tracking online users. The right structure depends on the access pattern."</p>
+<hr />
+<h3 id="q5-what-is-the-difference-between-redis-and-memcached">Q5: What is the difference between Redis and Memcached?<a class="headerlink" href="#q5-what-is-the-difference-between-redis-and-memcached" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Redis</th>
+<th>Memcached</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data Structures</td>
+<td>Strings, Lists, Sets, Hashes, etc.</td>
+<td>Only Strings</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>Yes (RDB, AOF)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Replication</td>
+<td>Yes (Master-Replica)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Pub/Sub</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Transactions</td>
+<td>Yes (MULTI/EXEC)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Threading</td>
+<td>Single-threaded</td>
+<td>Multi-threaded</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Detailed explanation:</strong> Memcached is simpler. It only does key-value strings. No persistence. No replication. Redis is a superset: it can do everything Memcached does, plus persistence, replication, pub/sub, and rich data structures. Memcached is multi-threaded, so on a single machine with many cores, it might handle more connections. But Redis's single-threaded model is often fast enough, and Redis offers more features.</p>
+<p><strong>Example:</strong> For simple caching of API responses, both work. For a leaderboard, you need Redis Sorted Sets. For session storage with TTL, both work, but Redis can persist if you need it.</p>
+<p><strong>How to say it in an interview:</strong> "Redis and Memcached are both in-memory key-value stores. Memcached is simpler—only strings, no persistence. Redis has rich data structures, persistence, and replication. I'd use Redis when I need those features. I'd use Memcached only for very simple caching where multi-threading might give an edge."</p>
+<hr />
+<h2 id="intermediate-questions">Intermediate Questions<a class="headerlink" href="#intermediate-questions" title="Permanent link">&para;</a></h2>
+<h3 id="q6-explain-cache-aside-pattern">Q6: Explain Cache-Aside pattern.<a class="headerlink" href="#q6-explain-cache-aside-pattern" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> App checks cache first. On miss, queries DB and stores result in cache. On write, app updates DB and deletes cache.</p>
+<p><strong>Detailed explanation:</strong> The application is responsible for the cache. On read: check Redis. If hit, return. If miss, query database, store in Redis, return. On write: update database, delete the cache key. The next read will be a miss and will repopulate the cache. The cache doesn't know about the database. The database doesn't know about the cache. The app orchestrates both.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>READ:  GET product:101 → nil → SELECT * FROM products WHERE id=101 → SET product:101 &lt;json&gt; EX 3600 → return
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>WRITE: UPDATE products SET ... → DEL product:101
+</code></pre></div></p>
+<p><strong>How to say it in an interview:</strong> "Cache-Aside is the most common pattern. The app checks the cache first. On a miss, it fetches from the database, stores in the cache, and returns. On writes, it updates the database and invalidates the cache. I'd use TTL as a safety net in case we miss an invalidation."</p>
+<hr />
+<h3 id="q7-what-is-cache-invalidation-why-is-it-hard">Q7: What is cache invalidation? Why is it hard?<a class="headerlink" href="#q7-what-is-cache-invalidation-why-is-it-hard" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Removing stale data from cache when the source data changes. It's hard because you need to know when and what to invalidate, especially in distributed systems.</p>
+<p><strong>Detailed explanation:</strong> When the database changes, the cached copy is stale. You must remove or update it. That's invalidation. It's hard because: (1) You need to know <em>when</em> data changed—every code path that writes must trigger invalidation. (2) You need to know <em>which</em> keys to invalidate—a product update might affect <code>product:101</code> and <code>category:electronics:page_1</code>. (3) In distributed systems, multiple app servers might have different views. Race conditions can occur.</p>
+<p><strong>Strategies:</strong> TTL (time-based expiry), event-based (delete on update), or both. Best practice: TTL as safety net + event-based for known changes.</p>
+<p><strong>Example:</strong> User updates profile. You run <code>userRepository.save(user)</code> and <code>redis.del("user:" + user.getId())</code>. If you forget the <code>redis.del</code>, users see old data until TTL expires.</p>
+<p><strong>How to say it in an interview:</strong> "Cache invalidation is removing stale data when the source changes. It's hard because you have to invalidate on every write path, and you have to figure out all the keys that depend on that data. I use event-based invalidation for known writes and TTL as a fallback."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<p>Don't say "we just use TTL" without mentioning that data can be stale for the whole TTL. Don't say "we invalidate everything"—that defeats the purpose of caching.</p>
+</div>
+<hr />
+<h3 id="q8-what-is-a-cache-stampede-how-do-you-prevent-it">Q8: What is a Cache Stampede? How do you prevent it?<a class="headerlink" href="#q8-what-is-a-cache-stampede-how-do-you-prevent-it" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> When a popular cache key expires, thousands of requests hit the database simultaneously. Prevent with mutex lock, early refresh, or stale-while-revalidate.</p>
+<p><strong>Detailed explanation:</strong> A hot key expires. Thousands of requests arrive at once. All get cache miss. All query the database. The database is overwhelmed. Solutions: (1) <strong>Mutex:</strong> Only one request fetches. Others wait and then read from the refreshed cache. (2) <strong>Early refresh:</strong> Refresh the cache at 80% of TTL so it never expires. (3) <strong>Stale-while-revalidate:</strong> Serve stale data immediately, refresh in background.</p>
+<p><strong>Example:</strong> Product "iPhone 15" cached with 1-hour TTL. At expiry, 10,000 users refresh. Without protection: 10,000 DB queries. With mutex: 1 DB query, 9,999 requests wait and get cache hit.</p>
+<p><strong>How to say it in an interview:</strong> "A cache stampede happens when a popular key expires and many requests hit the database at once. I'd use a distributed lock so only one request fetches; the rest wait and read from cache. Alternatively, refresh the cache before it expires so it never actually expires."</p>
+<hr />
+<h3 id="q9-what-is-cache-penetration">Q9: What is cache penetration?<a class="headerlink" href="#q9-what-is-cache-penetration" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Requests for data that doesn't exist in cache or database, so every request hits the database.</p>
+<p><strong>Detailed explanation:</strong> An attacker (or bug) queries for non-existent IDs: <code>GET /user/999999999</code>. The user doesn't exist. Cache returns nil. Database returns null. Every request is a cache miss. Cache never helps. Database gets hammered.</p>
+<p><strong>Solutions:</strong> (1) <strong>Cache null values:</strong> When DB returns "not found", cache that with a short TTL (e.g., 60 seconds). Next requests hit the cache. (2) <strong>Bloom filter:</strong> Probabilistic structure that can say "definitely doesn't exist." Check before DB. If "definitely doesn't exist," return 404 without querying.</p>
+<p><strong>Example:</strong> <code>redis.setex("user:null:999999", 60, "null")</code> when user not found. Next 10,000 requests for that ID hit Redis, not the database.</p>
+<p><strong>How to say it in an interview:</strong> "Cache penetration is when requests for non-existent data always miss the cache and hit the database. I'd cache null results with a short TTL so repeated requests for the same non-existent ID don't keep hitting the DB. A Bloom filter is another option to filter out known non-existent keys."</p>
+<hr />
+<h3 id="q10-what-is-cache-avalanche">Q10: What is cache avalanche?<a class="headerlink" href="#q10-what-is-cache-avalanche" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Many cache keys expire at the same time, causing a flood of database queries.</p>
+<p><strong>Detailed explanation:</strong> Unlike a stampede (one key), an avalanche is many keys. Example: app starts at 9 AM, caches 1000 products with TTL 1 hour. All expire at 10 AM. Users request products. All 1000 are cache miss. Database gets 1000 queries at once.</p>
+<p><strong>Solutions:</strong> (1) <strong>Random jitter on TTL:</strong> <code>TTL = 3600 + random(0, 300)</code>. Keys expire at different times. (2) <strong>Stagger cache population:</strong> Don't cache everything at once. (3) <strong>Cache warming:</strong> After restart, pre-load gradually.</p>
+<p><strong>Example:</strong> <code>redis.setex("product:" + id, 3600 + (int)(Math.random() * 300), product)</code> spreads expiry over 5 minutes.</p>
+<p><strong>How to say it in an interview:</strong> "Cache avalanche is when many keys expire together and cause a spike in DB load. I add random jitter to TTL so keys expire at different times. For example, 3600 + random(0, 300) seconds instead of exactly 3600."</p>
+<hr />
+<h2 id="advanced-questions">Advanced Questions<a class="headerlink" href="#advanced-questions" title="Permanent link">&para;</a></h2>
+<h3 id="q11-how-does-redis-persist-data">Q11: How does Redis persist data?<a class="headerlink" href="#q11-how-does-redis-persist-data" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Two methods: RDB (snapshots) and AOF (append-only log).</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>How</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RDB</strong></td>
+<td>Periodic full snapshots (e.g., every 5 min)</td>
+<td>Fast recovery, compact files</td>
+<td>Data loss between snapshots</td>
+</tr>
+<tr>
+<td><strong>AOF</strong></td>
+<td>Logs every write command</td>
+<td>Minimal data loss</td>
+<td>Larger files, slower recovery</td>
+</tr>
+<tr>
+<td><strong>Both</strong></td>
+<td>Use RDB + AOF together</td>
+<td>Best of both worlds</td>
+<td>More disk usage</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Detailed explanation:</strong> RDB takes a point-in-time snapshot of all data. Good for backups. If Redis crashes, you lose data since the last snapshot. AOF logs every SET, DEL, etc. On restart, Redis replays the log. More durable, but the log can grow large. Production often uses both: RDB for fast restarts, AOF for durability.</p>
+<p><strong>Example:</strong> With RDB every 5 minutes, you might lose up to 5 minutes of data on crash. With AOF with fsync every second, you lose at most 1 second.</p>
+<p><strong>How to say it in an interview:</strong> "Redis has RDB for snapshots and AOF for an append-only log. RDB is fast to recover but you can lose data since the last snapshot. AOF is more durable but recovery can be slower. For critical data, I'd use both—RDB for speed, AOF for durability."</p>
+<hr />
+<h3 id="q12-what-is-redis-replication">Q12: What is Redis replication?<a class="headerlink" href="#q12-what-is-redis-replication" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Master-Replica setup where replicas copy all data from the master. Writes go to master; reads can be distributed to replicas.</p>
+<p><strong>Detailed explanation:</strong> One Redis instance is the master. It handles all writes. Replicas connect to the master and receive a stream of commands to replicate. Replicas are read-only by default. You can scale reads by adding replicas. If the master fails, a replica can be promoted (manually or via Sentinel).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>        ┌──────────┐
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>        │  Master  │  (Handles writes)
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        └────┬─────┘
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>             │ Replication
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>      ┌──────┴──────┐
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>      ▼             ▼
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>┌──────────┐  ┌──────────┐
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│ Replica 1│  │ Replica 2│  (Handle reads)
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>└──────────┘  └──────────┘
+</code></pre></div>
+<p><strong>How to say it in an interview:</strong> "Redis replication is master-replica. The master handles writes; replicas sync from the master and can serve reads. It's useful for read scaling and high availability. If the master fails, we can promote a replica."</p>
+<hr />
+<h3 id="q13-what-is-redis-sentinel">Q13: What is Redis Sentinel?<a class="headerlink" href="#q13-what-is-redis-sentinel" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> A system that monitors Redis instances and automatically promotes a replica to master if the master fails.</p>
+<p><strong>Detailed explanation:</strong> Sentinel runs as a separate process (or multiple for quorum). It monitors the master and replicas. If the master is down, Sentinel promotes a replica to master and notifies clients. Clients connect to Sentinel to discover the current master. It provides automatic failover without manual intervention.</p>
+<p><strong>How to say it in an interview:</strong> "Redis Sentinel provides automatic failover. It monitors the master and replicas. If the master fails, Sentinel promotes a replica and updates clients. It's the standard way to achieve high availability with Redis."</p>
+<hr />
+<h3 id="q14-what-is-redis-cluster">Q14: What is Redis Cluster?<a class="headerlink" href="#q14-what-is-redis-cluster" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Distributes data across multiple Redis nodes using hash slots for horizontal scaling.</p>
+<p><strong>Detailed explanation:</strong> Redis Cluster shards data across nodes. There are 16,384 hash slots. Each key is mapped to a slot: <code>CRC16(key) % 16384</code>. Each node owns a range of slots. When you SET a key, Redis routes it to the correct node. No single node holds all data. You can add nodes to scale.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Node 1: Slots 0 - 5460
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Node 2: Slots 5461 - 10922
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Node 3: Slots 10923 - 16383
+</code></pre></div>
+<p><strong>How to say it in an interview:</strong> "Redis Cluster shards data across nodes using 16,384 hash slots. Each key maps to a slot, and each node owns a range. It's for horizontal scaling when a single node isn't enough. You need to design keys so related data lands on the same node, or use hash tags like <code>user:{123}:profile</code>."</p>
+<hr />
+<h3 id="q15-what-is-the-difference-between-cacheable-and-cacheput-in-spring">Q15: What is the difference between @Cacheable and @CachePut in Spring?<a class="headerlink" href="#q15-what-is-the-difference-between-cacheable-and-cacheput-in-spring" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@Cacheable</code></td>
+<td>Checks cache first. Skips method if hit</td>
+</tr>
+<tr>
+<td><code>@CachePut</code></td>
+<td>Always runs the method and updates cache</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Detailed explanation:</strong> <code>@Cacheable</code> is for reads. First call: cache miss, method runs, result cached. Second call: cache hit, method does not run. <code>@CachePut</code> is for writes. The method always runs. The return value is stored in the cache. Use <code>@CachePut</code> when you want to update the cache with the result of an update operation.</p>
+<p><strong>Example:</strong> <code>getProduct(id)</code> uses <code>@Cacheable</code>. <code>updateProduct(product)</code> uses <code>@CachePut</code> so the cache gets the updated product. Alternatively, use <code>@CacheEvict</code> on update to invalidate and let the next read repopulate.</p>
+<p><strong>How to say it in an interview:</strong> "<code>@Cacheable</code> checks the cache first and skips the method on a hit. <code>@CachePut</code> always runs the method and updates the cache. I use <code>@Cacheable</code> for reads and either <code>@CachePut</code> or <code>@CacheEvict</code> for writes, depending on whether I want to update the cache or invalidate it."</p>
+<hr />
+<h3 id="q16-what-happens-when-redis-runs-out-of-memory">Q16: What happens when Redis runs out of memory?<a class="headerlink" href="#q16-what-happens-when-redis-runs-out-of-memory" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Depends on <code>maxmemory-policy</code>. Default is <code>noeviction</code> (reject writes). For caching, use <code>allkeys-lru</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>noeviction</code></td>
+<td>Returns error on writes (default)</td>
+</tr>
+<tr>
+<td><code>allkeys-lru</code></td>
+<td>Evicts least recently used keys</td>
+</tr>
+<tr>
+<td><code>volatile-lru</code></td>
+<td>Evicts LRU keys that have TTL set</td>
+</tr>
+<tr>
+<td><code>allkeys-random</code></td>
+<td>Evicts random keys</td>
+</tr>
+<tr>
+<td><code>volatile-ttl</code></td>
+<td>Evicts keys with shortest TTL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Detailed explanation:</strong> When Redis hits <code>maxmemory</code>, it needs to decide what to do. <code>noeviction</code> means new writes fail. For a cache, you usually want <code>allkeys-lru</code> so Redis evicts old keys to make room. You lose cached data but the app keeps working.</p>
+<p><strong>How to say it in an interview:</strong> "When Redis runs out of memory, it depends on the eviction policy. For caching, I'd set <code>allkeys-lru</code> so Redis evicts least recently used keys. That way the app keeps working; we just get more cache misses. The default <code>noeviction</code> would cause writes to fail."</p>
+<hr />
+<h3 id="q17-how-do-you-handle-redis-downtime">Q17: How do you handle Redis downtime?<a class="headerlink" href="#q17-how-do-you-handle-redis-downtime" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Use fallback to database + circuit breaker. Design for cache failure.</p>
+<p><strong>Detailed explanation:</strong> Redis can go down. Your app should not crash. Wrap Redis calls in try-catch. On failure, fall back to the database. The app is slower but works. Use a circuit breaker to avoid hammering Redis when it's down. For high availability, use Redis Sentinel or a managed service (AWS ElastiCache, etc.).</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">RedisConnectionException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">database</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>How to say it in an interview:</strong> "I design for cache failure. If Redis is down, we fall back to the database. The app is slower but still works. I'd also use a circuit breaker so we don't keep trying Redis when it's clearly down. For HA, Redis Sentinel or a managed service handles failover."</p>
+<hr />
+<h3 id="q18-what-is-a-redis-transaction">Q18: What is a Redis transaction?<a class="headerlink" href="#q18-what-is-a-redis-transaction" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Group multiple commands using MULTI/EXEC so they run together without interruption from other clients.</p>
+<p><strong>Detailed explanation:</strong> <code>MULTI</code> starts a transaction. Commands are queued. <code>EXEC</code> runs them all. No other client's commands are interleaved. But: Redis transactions are NOT like SQL transactions. There is no rollback. If one command fails, the others still execute. It's more like "batch" than "transaction."</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>MULTI
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>SET<span class="w"> </span>user:1:name<span class="w"> </span><span class="s2">&quot;Satjit&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>SET<span class="w"> </span>user:1:age<span class="w"> </span><span class="s2">&quot;25&quot;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>INCR<span class="w"> </span>total_users
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>EXEC
+</code></pre></div></p>
+<p><strong>How to say it in an interview:</strong> "Redis transactions use MULTI and EXEC to group commands. They run atomically without interleaving from other clients. But there's no rollback—if one command fails, others still run. It's useful for batching, not for ACID guarantees."</p>
+<div class="admonition warning">
+<p class="admonition-title">Red flags in your answer</p>
+<p>Don't say "Redis transactions provide ACID" or "rollback on failure." That's wrong.</p>
+</div>
+<hr />
+<h2 id="scenario-design-questions">Scenario / Design Questions<a class="headerlink" href="#scenario-design-questions" title="Permanent link">&para;</a></h2>
+<h3 id="q19-design-a-rate-limiter-using-redis">Q19: Design a rate limiter using Redis.<a class="headerlink" href="#q19-design-a-rate-limiter-using-redis" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Use INCR with EXPIRE for a fixed window, or Sorted Sets for a sliding window.</p>
+<p><strong>Detailed explanation:</strong> 
+- <strong>Fixed window:</strong> <code>INCR rate:user:42</code>, <code>EXPIRE rate:user:42 60</code>. If count &gt; 100, reject. Resets every 60 seconds. Simple but can allow 200 requests at the boundary (end of one window + start of next).
+- <strong>Sliding window:</strong> Use Sorted Set. Score = timestamp. Add each request: <code>ZADD rate:user:42 &lt;timestamp&gt; &lt;request-id&gt;</code>. Remove old: <code>ZREMRANGEBYSCORE rate:user:42 0 &lt;now-60&gt;</code>. Count: <code>ZCARD rate:user:42</code>. If &gt; 100, reject. More accurate.</p>
+<p><strong>Example (fixed):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>INCR<span class="w"> </span><span class="s2">&quot;rate:user:42&quot;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>EXPIRE<span class="w"> </span><span class="s2">&quot;rate:user:42&quot;</span><span class="w"> </span><span class="m">60</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>GET<span class="w"> </span><span class="s2">&quot;rate:user:42&quot;</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># If &gt; 100, reject</span>
+</code></pre></div></p>
+<p><strong>How to say it in an interview:</strong> "I'd use Redis INCR with EXPIRE for a simple fixed-window rate limiter. For a sliding window, I'd use a Sorted Set with timestamps as scores, remove old entries, and count. The sliding window is more accurate but a bit more complex."</p>
+<hr />
+<h3 id="q20-design-a-session-store-using-redis">Q20: Design a session store using Redis.<a class="headerlink" href="#q20-design-a-session-store-using-redis" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> SETEX with session ID as key, JSON payload as value, TTL for expiry.</p>
+<p><strong>Detailed explanation:</strong> On login, create a session ID. Store <code>SETEX session:&lt;id&gt; 1800 '{"userId":42,"role":"admin"}'</code>. TTL of 30 minutes. On each request, GET the session. If nil, redirect to login. On logout, DEL the key. On activity, EXPIRE to extend the session.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>SETEX<span class="w"> </span><span class="s2">&quot;session:abc123&quot;</span><span class="w"> </span><span class="m">1800</span><span class="w"> </span><span class="s1">&#39;{&quot;userId&quot;: 42, &quot;role&quot;: &quot;admin&quot;}&#39;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>GET<span class="w"> </span><span class="s2">&quot;session:abc123&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>EXPIRE<span class="w"> </span><span class="s2">&quot;session:abc123&quot;</span><span class="w"> </span><span class="m">1800</span><span class="w">   </span><span class="c1"># Extend on activity</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>DEL<span class="w"> </span><span class="s2">&quot;session:abc123&quot;</span><span class="w">            </span><span class="c1"># Logout</span>
+</code></pre></div></p>
+<p><strong>How to say it in an interview:</strong> "I'd use Redis SETEX with the session ID as the key and a JSON payload as the value. TTL handles expiry. On each request, I GET the session. If it's nil, the user is logged out. On logout, I DEL the key. For sliding expiry, I'd refresh EXPIRE on activity."</p>
+<hr />
+<h3 id="q21-design-a-trending-posts-feature-posts-should-be-ranked-by-likes-in-the-last-24-hours">Q21: Design a "trending posts" feature. Posts should be ranked by likes in the last 24 hours.<a class="headerlink" href="#q21-design-a-trending-posts-feature-posts-should-be-ranked-by-likes-in-the-last-24-hours" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Use a Sorted Set. Score = like count (or a time-decayed score). Add/update on like. ZREVRANGE for top N.</p>
+<p><strong>Detailed explanation:</strong> When a user likes a post, <code>ZINCRBY trending:posts 1 post_123</code>. Or use a time-decayed score: score = likes / (1 + decay * hours_old). To get top 10: <code>ZREVRANGE trending:posts 0 9 WITHSCORES</code>. To reset daily: use a key with the date, e.g., <code>trending:posts:2025-02-25</code>, and rotate.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ZINCRBY<span class="w"> </span>trending:posts<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="s2">&quot;post_101&quot;</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>ZREVRANGE<span class="w"> </span>trending:posts<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">9</span><span class="w"> </span>WITHSCORES
+</code></pre></div></p>
+<p><strong>How to say it in an interview:</strong> "I'd use a Redis Sorted Set. Score is the number of likes. When someone likes a post, I ZINCRBY. To get trending, I ZREVRANGE for the top N. For 'last 24 hours,' I might use a key per day and rotate, or use a time-decayed score."</p>
+<hr />
+<h3 id="q22-how-would-you-implement-whos-online-for-a-chat-app">Q22: How would you implement "who's online" for a chat app?<a class="headerlink" href="#q22-how-would-you-implement-whos-online-for-a-chat-app" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Use a Redis Set. SADD on login/activity, SREM on logout. SMEMBERS to list. Use a short TTL or heartbeat to detect disconnects.</p>
+<p><strong>Detailed explanation:</strong> When a user comes online or sends a message, <code>SADD online_users user_42</code>. When they log out, <code>SREM online_users user_42</code>. To list online users: <code>SMEMBERS online_users</code>. For disconnect detection (user closed browser without logging out), use a heartbeat: every 30 seconds, refresh a key like <code>online:user_42</code> with SETEX 60. A background job removes users whose key expired. Or use a Sorted Set with last-seen timestamp as score.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>SADD<span class="w"> </span>online_users<span class="w"> </span><span class="s2">&quot;user_42&quot;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>SREM<span class="w"> </span>online_users<span class="w"> </span><span class="s2">&quot;user_42&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>SMEMBERS<span class="w"> </span>online_users
+</code></pre></div></p>
+<p><strong>How to say it in an interview:</strong> "I'd use a Redis Set. SADD when the user comes online, SREM on logout. For detecting disconnects, I'd use a heartbeat—refresh a key with SETEX every 30 seconds. If the key expires, the user is considered offline. A background job can sync the Set with these keys."</p>
+<hr />
+<h3 id="q23-your-cache-hit-ratio-is-30-how-do-you-improve-it">Q23: Your cache hit ratio is 30%. How do you improve it?<a class="headerlink" href="#q23-your-cache-hit-ratio-is-30-how-do-you-improve-it" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Increase TTL, cache more data types, fix invalidation (maybe you're invalidating too aggressively), warm the cache, and analyze what's being requested.</p>
+<p><strong>Detailed explanation:</strong> Low hit ratio means most requests are cache misses. Possible causes: (1) TTL too short—data expires before it's reused. (2) Caching the wrong things—maybe you're not caching high-traffic endpoints. (3) Over-invalidation—deleting cache too often. (4) Cold cache—after restarts, everything is miss. (5) Unique keys—each request generates a different key (e.g., timestamp in key). Fix: Increase TTL where appropriate. Add cache warming. Use cache analytics to see which keys are hit. Avoid over-invalidation. Normalize keys.</p>
+<p><strong>How to say it in an interview:</strong> "I'd first analyze what's being requested and what's cached. I'd check if TTL is too short, if we're invalidating too aggressively, or if we're not caching the right endpoints. I'd add cache warming for popular data. I'd also ensure we're not putting unique values like timestamps in cache keys."</p>
+<hr />
+<h3 id="q24-how-would-you-cache-a-users-feed-eg-instagram-style-that-is-personalized-and-changes-frequently">Q24: How would you cache a user's feed (e.g., Instagram-style) that is personalized and changes frequently?<a class="headerlink" href="#q24-how-would-you-cache-a-users-feed-eg-instagram-style-that-is-personalized-and-changes-frequently" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Cache the feed for a short TTL (e.g., 1–5 minutes). Or cache the components (followed users' posts) and merge on read. Or pre-compute and cache per user with short TTL.</p>
+<p><strong>Detailed explanation:</strong> A feed is personalized (different for each user) and changes when new posts arrive. Options: (1) <strong>Short TTL per user:</strong> Cache <code>feed:user_42</code> with 1–5 min TTL. Simple but more cache misses. (2) <strong>Cache components:</strong> Cache each followed user's recent posts. On read, merge and sort. More complex but better reuse. (3) <strong>Pre-compute in background:</strong> When a new post is created, push to followers' feed cache. Write-heavy but read is instant. Choice depends on read/write ratio and consistency requirements.</p>
+<p><strong>How to say it in an interview:</strong> "I'd cache the feed per user with a short TTL—maybe 1–5 minutes—since it changes often. For better hit ratio, I could cache the components—each followed user's recent posts—and merge on read. For real-time, I'd push new posts to followers' cached feeds in the background. It's a trade-off between freshness and cache efficiency."</p>
+<hr />
+<h3 id="q25-explain-when-you-would-use-redis-vs-a-message-queue-like-rabbitmq-or-kafka">Q25: Explain when you would use Redis vs a message queue like RabbitMQ or Kafka.<a class="headerlink" href="#q25-explain-when-you-would-use-redis-vs-a-message-queue-like-rabbitmq-or-kafka" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Redis for simple, fast queues with low throughput and no persistence requirements. RabbitMQ/Kafka for durable, high-throughput, complex routing.</p>
+<p><strong>Detailed explanation:</strong> Redis Lists or Streams can act as a queue. Good for: simple task queues, low volume, speed over durability. If a worker dies, tasks might be lost (unless you use Redis Streams with consumer groups). RabbitMQ and Kafka are built for messaging: persistence, acknowledgments, dead-letter queues, complex routing. Use them when: you need durability, high throughput, or complex patterns (pub/sub, fanout, etc.).</p>
+<p><strong>Example:</strong> Redis List for "send email" tasks in a small app. Kafka for event streaming, order processing, or analytics pipelines.</p>
+<p><strong>How to say it in an interview:</strong> "Redis is good for simple, fast queues—task queues, job processing. If I need durability, retries, and complex routing, I'd use RabbitMQ or Kafka. Redis is in-memory first; message queues are built for persistence and reliability. For a small app with simple needs, Redis might be enough. For production event-driven systems, I'd use Kafka or RabbitMQ."</p>
+<hr />
+<h3 id="q26-what-is-redis-cluster-how-does-it-differ-from-sentinel">Q26: What is Redis Cluster? How does it differ from Sentinel?<a class="headerlink" href="#q26-what-is-redis-cluster-how-does-it-differ-from-sentinel" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Redis Cluster shards data across multiple nodes using hash slots. Sentinel provides HA for a single master-replica setup. Cluster = horizontal scaling. Sentinel = failover only.</p>
+<p><strong>Detailed explanation:</strong> Redis Cluster distributes data across multiple nodes. There are 16,384 hash slots. Each key maps to a slot: <code>CRC16(key) % 16384</code>. Each node owns a range of slots. Data is sharded. You can add nodes to scale. It's multi-master—each node can handle reads and writes for its slots. Sentinel, by contrast, monitors one master and its replicas. When the master fails, Sentinel promotes a replica. No data sharding. One logical dataset. Cluster is for when one node can't hold all your data. Sentinel is for when you need automatic failover but data fits on one node.</p>
+<p><strong>Cross-slot limitations:</strong> Commands that touch multiple keys (e.g., MGET, MSET, transactions) only work if all keys hash to the same slot. Use hash tags: <code>user:{123}:profile</code> and <code>user:{123}:settings</code> both hash to the same slot because <code>{123}</code> is used for the hash. Without hash tags, you get CROSSSLOT errors.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Redis Cluster</th>
+<th>Redis Sentinel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data sharding</td>
+<td>Yes (hash slots)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Multi-master</td>
+<td>Yes (each node handles its slots)</td>
+<td>No (one master)</td>
+</tr>
+<tr>
+<td>Scaling</td>
+<td>Add nodes, rebalance slots</td>
+<td>Add replicas (read scaling only)</td>
+</tr>
+<tr>
+<td>Failover</td>
+<td>Built-in (each shard has leader)</td>
+<td>Sentinel promotes replica</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Data too big for one node</td>
+<td>HA for single dataset</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to say it in an interview:</strong> "Redis Cluster shards data across nodes using 16,384 hash slots. It's for horizontal scaling when one node isn't enough. Sentinel is for high availability—it monitors master and replicas and promotes on failure. Cluster gives you both scaling and HA. Sentinel gives you HA only. For cross-slot commands, I'd use hash tags like <code>user:{id}:field</code> so related keys land on the same node."</p>
+<hr />
+<h3 id="q27-explain-the-redis-pipeline-when-would-you-use-it">Q27: Explain the Redis pipeline. When would you use it?<a class="headerlink" href="#q27-explain-the-redis-pipeline-when-would-you-use-it" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> A pipeline batches multiple commands into one network round-trip. Use it when you need to send many commands and latency matters.</p>
+<p><strong>Detailed explanation:</strong> Normally, each Redis command is a separate request. Client sends GET. Waits for response. Sends another GET. Waits. If each round-trip takes 1ms, 100 commands take 100ms. A pipeline sends all commands at once. The client buffers them. Sends in one batch. Redis processes them in order. Returns all responses in one batch. One round-trip. 100 commands might take 2–3ms total. Huge win when you have many small commands.</p>
+<p><strong>When to use:</strong> (1) Bulk loading—inserting thousands of keys. (2) Reading many keys in one request (e.g., MGET, or pipeline of GETs if keys aren't in same slot in Cluster). (3) Any loop that does many Redis calls. Pipeline reduces network round-trips. That's the main bottleneck when the client and Redis are on different machines.</p>
+<p><strong>Example (Java with Jedis):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">Jedis</span><span class="w"> </span><span class="n">jedis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Jedis</span><span class="p">(</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">6379</span><span class="p">);</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">Pipeline</span><span class="w"> </span><span class="n">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jedis</span><span class="p">.</span><span class="na">pipelined</span><span class="p">();</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="n">pipeline</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="s">&quot;key:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;value&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">}</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">pipeline</span><span class="p">.</span><span class="na">sync</span><span class="p">();</span><span class="w">  </span><span class="c1">// Sends all at once, waits for all responses</span>
+</code></pre></div></p>
+<p><strong>Example (Redis CLI):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="o">(</span><span class="nb">echo</span><span class="w"> </span>-en<span class="w"> </span><span class="s2">&quot;SET key1 val1\r\nSET key2 val2\r\nGET key1\r\n&quot;</span><span class="p">;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">0</span>.1<span class="o">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>redis-cli<span class="w"> </span>--pipe
+</code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Pipeline vs Transaction</p>
+<p>Pipeline is not a transaction. Commands from other clients can interleave. If you need atomicity, use MULTI/EXEC. Pipeline is purely for batching network calls.</p>
+</div>
+<p><strong>How to say it in an interview:</strong> "A pipeline batches multiple commands into one network round-trip. Instead of 100 round-trips for 100 commands, you get one. I'd use it when bulk loading data or when a loop does many Redis calls. It doesn't provide atomicity—for that I'd use MULTI/EXEC. Pipeline is about reducing latency, not transactions."</p>
+<hr />
+<h3 id="q28-what-is-redis-pubsub-what-are-its-limitations">Q28: What is Redis Pub/Sub? What are its limitations?<a class="headerlink" href="#q28-what-is-redis-pubsub-what-are-its-limitations" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Pub/Sub lets publishers send messages to channels. Subscribers receive them. Fire-and-forget. No persistence. No replay. Offline subscribers miss messages.</p>
+<p><strong>Detailed explanation:</strong> PUBLISH sends a message to a channel. SUBSCRIBE makes a client listen. When a message is published, all subscribers get it. It's real-time. But: (1) <strong>No persistence</strong>—messages are not stored. If no one is subscribed, the message is gone. (2) <strong>Fire-and-forget</strong>—publisher gets no acknowledgment that anyone received it. (3) <strong>Offline subscribers miss messages</strong>—if a subscriber disconnects, they never see messages sent while offline. (4) <strong>No backpressure</strong>—if a subscriber is slow, Redis doesn't wait. It pushes. Slow subscribers can cause memory issues. (5) <strong>No consumer groups</strong>—unlike Kafka, you can't have multiple consumers sharing the load with each getting a copy.</p>
+<p><strong>When to use Pub/Sub:</strong> Live dashboards, live scores, "user is typing" indicators, presence notifications. When missing a message is acceptable. When you need the lowest latency.</p>
+<p><strong>When to use Kafka instead:</strong> Order events, payment events, chat history, audit logs. When you need guaranteed delivery, replay, or offline consumers to catch up.</p>
+<p><strong>How to say it in an interview:</strong> "Redis Pub/Sub is fire-and-forget. No persistence. No replay. Offline subscribers miss messages. I'd use it for live updates where missing one is okay—like live scores or presence. For anything that needs guaranteed delivery or replay, I'd use Kafka or Redis Streams."</p>
+<hr />
+<h3 id="q29-how-would-you-implement-a-distributed-lock-using-redis">Q29: How would you implement a distributed lock using Redis?<a class="headerlink" href="#q29-how-would-you-implement-a-distributed-lock-using-redis" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Use <code>SET key value NX EX seconds</code> to acquire. Only one client succeeds. Release by deleting the key, but only if you own it (check value). Use Lua script for atomic release.</p>
+<p><strong>Detailed explanation:</strong> The basic pattern: <code>SET lock:resource uuid NX EX 30</code>. NX = set only if not exists. EX 30 = expire in 30 seconds. Only one client gets the lock. Others get nil. To release: check that the value matches your uuid, then DEL. Why check? If your process pauses (GC, network) and the lock expires, another client might acquire it. When you wake up, you might DEL a lock you no longer own. So: <code>if GET lock:resource == my_uuid then DEL lock:resource</code>. This must be atomic—use a Lua script.</p>
+<p><strong>Redlock algorithm:</strong> For higher reliability across multiple Redis nodes, use Redlock. Acquire the lock on a majority of N independent Redis instances (e.g., 5). If you get it on 3+, you have the lock. Reduces risk of single-node failure. More complex. Use a library (e.g., Redisson) rather than implementing yourself.</p>
+<p><strong>Edge cases:</strong> (1) <strong>Clock skew</strong>—if servers have different times, TTL might be wrong. (2) <strong>Long GC pause</strong>—your process holds the lock but is paused. Lock expires. Another process gets it. You wake up and think you still have it. Use a "fencing token" (monotonically increasing value) when doing critical work. (3) <strong>Lock extension</strong>—if work takes longer than 30 seconds, extend the TTL. Use a background thread or Redlock's extension mechanism.</p>
+<p><strong>How to say it in an interview:</strong> "I'd use SET with NX and EX to acquire the lock. For release, I'd use a Lua script to atomically check the value matches my uuid and then DEL. For multi-node setups, I'd consider Redlock. I'd also handle the case where the lock expires while I'm still working—maybe a fencing token or extending the TTL."</p>
+<hr />
+<h3 id="q30-what-is-redis-streams-how-does-it-compare-to-lists">Q30: What is Redis Streams? How does it compare to Lists?<a class="headerlink" href="#q30-what-is-redis-streams-how-does-it-compare-to-lists" title="Permanent link">&para;</a></h3>
+<p><strong>One-liner:</strong> Streams are append-only logs with consumer groups, message IDs, and acknowledgment. Lists are simple push/pop. Use Streams when you need Kafka-like semantics.</p>
+<p><strong>Detailed explanation:</strong> Redis Streams (added in Redis 5.0) are like a log. You XADD messages. Each gets a unique ID (timestamp-sequence, e.g., <code>1635789012345-0</code>). Consumers read with XREAD. Consumer groups let multiple consumers share the work—each message goes to one consumer in the group. XACK acknowledges processing. Unacked messages can be retried. You can replay from any ID. Lists (LPUSH/RPOP) are simpler. No IDs. No consumer groups. No ack. Once you pop, it's gone. If the consumer crashes before processing, the message is lost.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Redis Lists</th>
+<th>Redis Streams</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Message ID</td>
+<td>No</td>
+<td>Yes (auto-generated)</td>
+</tr>
+<tr>
+<td>Consumer groups</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Acknowledgment</td>
+<td>No (pop = consume)</td>
+<td>Yes (XACK)</td>
+</tr>
+<tr>
+<td>Replay</td>
+<td>No</td>
+<td>Yes (read from ID)</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>Optional</td>
+<td>Optional (same as Redis)</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Simple task queue</td>
+<td>Reliable queue, event sourcing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to use Lists:</strong> Simple task queues. Fire-and-forget. Low volume. If a task is lost, it's okay.</p>
+<p><strong>When to use Streams:</strong> Need at-least-once delivery. Multiple consumers. Replay. Event sourcing. Higher reliability requirements.</p>
+<p><strong>How to say it in an interview:</strong> "Redis Streams are append-only logs with consumer groups and message IDs. Lists are push/pop—no IDs, no ack. Once you pop from a List, it's gone. Streams let you acknowledge and replay. I'd use Lists for simple task queues. Streams when I need reliability, consumer groups, or replay—similar to Kafka but lighter weight."</p>
+<hr />
+<h2 id="top-5-mistakes-in-redis-interviews">Top 5 Mistakes in Redis Interviews<a class="headerlink" href="#top-5-mistakes-in-redis-interviews" title="Permanent link">&para;</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Mistake 1: Saying Redis is a database</p>
+<p>Redis is a cache and data structure store. It can persist, but it's not a replacement for PostgreSQL. Don't say "we use Redis as our primary database" unless you mean something very specific (e.g., session store). Clarify: "Redis is our cache layer" or "Redis stores sessions."</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Mistake 2: Confusing Cache-Aside with Write-Through</p>
+<p>Cache-Aside: app manages cache. On miss, app fetches from DB and populates cache. Write-Through: cache sits in front of DB; writes go to cache, which writes to DB. They're different. Know both. Cache-Aside is more common.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Mistake 3: Saying Redis transactions have rollback</p>
+<p>Redis MULTI/EXEC does NOT rollback on failure. If one command fails, others still run. There is no ROLLBACK. Say "Redis transactions are for batching and atomicity of execution order, not ACID rollback."</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Mistake 4: Recommending KEYS * in production</p>
+<p>KEYS * scans all keys. It blocks Redis. With millions of keys, it can freeze the server for seconds. Use SCAN instead. It's incremental and non-blocking. This is a classic interview trap.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Mistake 5: Not knowing when to use Cluster vs Sentinel</p>
+<p>Sentinel = HA for single dataset. Cluster = data sharding + HA. If your data fits in RAM on one node, Sentinel is simpler. If you need to scale beyond one node's memory, you need Cluster. Don't mix them up.</p>
+</div>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Key Point</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Speed</td>
+<td>In-memory, single-threaded, ~100K ops/sec</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>RDB (snapshots) + AOF (write log)</td>
+</tr>
+<tr>
+<td>Scaling</td>
+<td>Replication (reads) + Cluster (data sharding)</td>
+</tr>
+<tr>
+<td>High Availability</td>
+<td>Redis Sentinel for auto-failover</td>
+</tr>
+<tr>
+<td>Caching Pattern</td>
+<td>Cache-Aside is the default</td>
+</tr>
+<tr>
+<td>Common Problems</td>
+<td>Stampede, Penetration, Avalanche</td>
+</tr>
+<tr>
+<td>Spring Integration</td>
+<td>@Cacheable, @CachePut, @CacheEvict</td>
+</tr>
+<tr>
+<td>Memory Full</td>
+<td>Use <code>allkeys-lru</code> eviction policy</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="30-second-revision-cheat-sheet">30-Second Revision Cheat Sheet<a class="headerlink" href="#30-second-revision-cheat-sheet" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Topic</th>
+<th>One-Line Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>What is Redis?</td>
+<td>In-memory key-value store for caching, sessions, real-time data</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Why fast?</td>
+<td>RAM, single-threaded, efficient data structures</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Single-threaded?</td>
+<td>Yes for commands. ~100K ops/sec. Scale with Cluster</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Data structures?</td>
+<td>String, List, Set, Hash, Sorted Set, Stream, Bitmap, HyperLogLog</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Redis vs Memcached?</td>
+<td>Redis: rich types, persistence, replication. Memcached: strings only</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Cache-Aside?</td>
+<td>App checks cache → miss → DB → store in cache. Write: update DB, delete cache</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Cache invalidation?</td>
+<td>Hard. Use event-based + TTL. Know what to invalidate</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Cache stampede?</td>
+<td>Hot key expires, many hit DB. Fix: mutex, early refresh, stale-while-revalidate</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Cache penetration?</td>
+<td>Requests for non-existent data. Fix: cache null, Bloom filter</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Cache avalanche?</td>
+<td>Many keys expire together. Fix: TTL jitter</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Persistence?</td>
+<td>RDB (snapshots) + AOF (append log). Use both for production</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Replication?</td>
+<td>Master-Replica. Writes to master, reads from replicas</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Sentinel?</td>
+<td>Auto-failover. Monitors master, promotes replica on failure</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Cluster?</td>
+<td>Hash slots (16384), data sharding, multi-master. Cross-slot: use hash tags</td>
+</tr>
+<tr>
+<td>15</td>
+<td>@Cacheable vs @CachePut?</td>
+<td>Cacheable: check first, skip if hit. CachePut: always run, update cache</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Out of memory?</td>
+<td>maxmemory-policy. Use allkeys-lru for cache</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Redis down?</td>
+<td>Fallback to DB. Circuit breaker. Design for failure</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Transactions?</td>
+<td>MULTI/EXEC. No rollback. Batch only</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Rate limiter?</td>
+<td>INCR + EXPIRE (fixed) or Sorted Set (sliding)</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Session store?</td>
+<td>SETEX session:id TTL json</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Trending posts?</td>
+<td>Sorted Set, ZINCRBY on like, ZREVRANGE for top N</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Who's online?</td>
+<td>Set: SADD/SREM. Heartbeat with SETEX for disconnect</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Low hit ratio?</td>
+<td>Increase TTL, cache more, fix invalidation, warm cache</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Personalized feed?</td>
+<td>Short TTL, cache components, or push to cache on write</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Redis vs Kafka?</td>
+<td>Redis: fast queues, simple. Kafka: durable, replay, high throughput</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Cluster vs Sentinel?</td>
+<td>Cluster = sharding. Sentinel = failover only</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Pipeline?</td>
+<td>Batch commands, one round-trip. For bulk ops</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Pub/Sub?</td>
+<td>Fire-and-forget. No persistence. Offline = miss messages</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Distributed lock?</td>
+<td>SET NX EX. Lua for atomic release. Redlock for multi-node</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Streams vs Lists?</td>
+<td>Streams: IDs, consumer groups, ack, replay. Lists: simple push/pop</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>Done with Redis! Next:</strong> <a href="../../kafka/kafka-basics/">Kafka Basics</a> - Start your Kafka journey.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

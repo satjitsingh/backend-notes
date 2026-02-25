@@ -1,0 +1,2609 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/delivery-semantics/">
+      
+      
+        <link rel="prev" href="../fault-tolerance-replication/">
+      
+      
+        <link rel="next" href="../kafka-usecases/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Message Delivery Semantics - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#message-delivery-semantics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Message Delivery Semantics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-what-could-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem: What Could Go Wrong?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Three Guarantees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Three Guarantees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-analogy-sending-important-mail" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Analogy: Sending Important Mail
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-scenario-payment-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Scenario: Payment Processing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-World Scenario: Payment Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#at-most-once-user-not-charged-data-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      At-Most-Once: User Not Charged (Data Loss)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#at-least-once-charged-twice-duplicate" class="md-nav__link">
+    <span class="md-ellipsis">
+      At-Least-Once: Charged Twice (Duplicate)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exactly-once-charged-once-correct" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exactly-Once: Charged Once (Correct)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#at-most-once-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      At-Most-Once Delivery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="At-Most-Once Delivery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      When To Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-scenario-metrics-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: Metrics Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#producer-side-acks0" class="md-nav__link">
+    <span class="md-ellipsis">
+      Producer Side: acks=0
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#at-least-once-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      At-Least-Once Delivery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="At-Least-Once Delivery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#this-is-the-most-common-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      This Is the Most Common Guarantee
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-scenario-order-fulfillment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: Order Fulfillment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-handle-duplicates-idempotent-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      How To Handle Duplicates: Idempotent Consumers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotency-patterns-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Idempotency Patterns in Detail
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#producer-side-acksall-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Producer Side: acks=all + retries
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exactly-once-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exactly-Once Delivery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exactly-Once Delivery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-holy-grail" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Holy Grail
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-achieves-exactly-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Achieves Exactly-Once
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-streams-exactly-once-exactly_once_v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Streams Exactly-Once (exactly_once_v2)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-transactions-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Transactions Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Transactions Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transactionalid" class="md-nav__link">
+    <span class="md-ellipsis">
+      transactional.id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isolationlevel-read_committed-vs-read_uncommitted" class="md-nav__link">
+    <span class="md-ellipsis">
+      isolation.level: read_committed vs read_uncommitted
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction-coordinator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transaction Coordinator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-offset-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Offset Storage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Offset Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-are-offsets-stored" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Are Offsets Stored?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-long-are-offsets-retained" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Long Are Offsets Retained?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offset-commit-failure-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offset Commit Failure Scenarios
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-exactly-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      When To Use Exactly-Once
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-scenario-kafka-streams-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: Kafka Streams Aggregation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-the-right-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing the Right Guarantee
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing the Right Guarantee">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Framework
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison Table
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offset-commit-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offset Commit Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offset Commit Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auto-commit-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      Auto Commit (Default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-sync-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Sync Commit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-async-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Async Commit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-message-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Per-Message Commit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-what-could-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem: What Could Go Wrong?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Three Guarantees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Three Guarantees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-analogy-sending-important-mail" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Analogy: Sending Important Mail
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-scenario-payment-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Scenario: Payment Processing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-World Scenario: Payment Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#at-most-once-user-not-charged-data-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      At-Most-Once: User Not Charged (Data Loss)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#at-least-once-charged-twice-duplicate" class="md-nav__link">
+    <span class="md-ellipsis">
+      At-Least-Once: Charged Twice (Duplicate)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exactly-once-charged-once-correct" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exactly-Once: Charged Once (Correct)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#at-most-once-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      At-Most-Once Delivery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="At-Most-Once Delivery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      When To Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-scenario-metrics-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: Metrics Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#producer-side-acks0" class="md-nav__link">
+    <span class="md-ellipsis">
+      Producer Side: acks=0
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#at-least-once-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      At-Least-Once Delivery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="At-Least-Once Delivery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#this-is-the-most-common-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      This Is the Most Common Guarantee
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-scenario-order-fulfillment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: Order Fulfillment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-handle-duplicates-idempotent-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      How To Handle Duplicates: Idempotent Consumers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotency-patterns-in-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Idempotency Patterns in Detail
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#producer-side-acksall-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Producer Side: acks=all + retries
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exactly-once-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exactly-Once Delivery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exactly-Once Delivery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-holy-grail" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Holy Grail
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-kafka-achieves-exactly-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka Achieves Exactly-Once
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-streams-exactly-once-exactly_once_v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Streams Exactly-Once (exactly_once_v2)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-transactions-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Transactions Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Transactions Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transactionalid" class="md-nav__link">
+    <span class="md-ellipsis">
+      transactional.id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isolationlevel-read_committed-vs-read_uncommitted" class="md-nav__link">
+    <span class="md-ellipsis">
+      isolation.level: read_committed vs read_uncommitted
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction-coordinator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transaction Coordinator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-offset-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Offset Storage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Offset Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-are-offsets-stored" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Are Offsets Stored?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-long-are-offsets-retained" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Long Are Offsets Retained?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offset-commit-failure-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offset Commit Failure Scenarios
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-exactly-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      When To Use Exactly-Once
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-scenario-kafka-streams-aggregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Scenario: Kafka Streams Aggregation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-the-right-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing the Right Guarantee
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing the Right Guarantee">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Framework
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison Table
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offset-commit-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offset Commit Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offset Commit Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auto-commit-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      Auto Commit (Default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-sync-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Sync Commit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-async-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Async Commit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-message-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Per-Message Commit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="message-delivery-semantics">Message Delivery Semantics<a class="headerlink" href="#message-delivery-semantics" title="Permanent link">&para;</a></h1>
+<h2 id="the-problem-what-could-go-wrong">The Problem: What Could Go Wrong?<a class="headerlink" href="#the-problem-what-could-go-wrong" title="Permanent link">&para;</a></h2>
+<p>When a producer sends a message and a consumer processes it, several things can fail at different stages. Networks drop. Servers crash. Processes get killed mid-operation. The question is: after a failure, what happened to the message?</p>
+<p>Was it delivered? Was it processed? Was it processed <strong>twice</strong>? Was it <strong>lost</strong>?</p>
+<p>Kafka gives you three levels of guarantee, and understanding them is essential — both for building reliable systems and for interviews.</p>
+<hr />
+<h2 id="the-three-guarantees">The Three Guarantees<a class="headerlink" href="#the-three-guarantees" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Guarantee</th>
+<th>What It Means</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>At-most-once</strong></td>
+<td>Message is delivered 0 or 1 time. It might be lost.</td>
+<td>Data loss possible</td>
+</tr>
+<tr>
+<td><strong>At-least-once</strong></td>
+<td>Message is delivered 1 or more times. It might be duplicated.</td>
+<td>Duplicates possible</td>
+</tr>
+<tr>
+<td><strong>Exactly-once</strong></td>
+<td>Message is delivered exactly 1 time. Never lost, never duplicated.</td>
+<td>Complex to implement</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-analogy-sending-important-mail">The Analogy: Sending Important Mail<a class="headerlink" href="#the-analogy-sending-important-mail" title="Permanent link">&para;</a></h3>
+<p><strong>At-most-once:</strong> You drop a letter in a public mailbox. You hope it arrives. You never check. If it gets lost in transit, too bad. You don't send another.</p>
+<p><strong>At-least-once:</strong> You send a registered letter. If you don't get a delivery confirmation within 3 days, you send the letter again. The recipient might get 2 copies, but at least they get it.</p>
+<p><strong>Exactly-once:</strong> You send a registered letter with a unique tracking number. The post office checks: "Have we already delivered a letter with this tracking number?" If yes, they discard the duplicate. The recipient gets exactly one copy.</p>
+<hr />
+<h2 id="real-world-scenario-payment-processing">Real-World Scenario: Payment Processing<a class="headerlink" href="#real-world-scenario-payment-processing" title="Permanent link">&para;</a></h2>
+<p>Let's trace a payment through each delivery guarantee. A customer pays $100 for an order. The payment service produces a "PAYMENT_COMPLETE" event to Kafka. The order service consumes it and marks the order as paid. Here's the detailed story for each case.</p>
+<h3 id="at-most-once-user-not-charged-data-loss">At-Most-Once: User Not Charged (Data Loss)<a class="headerlink" href="#at-most-once-user-not-charged-data-loss" title="Permanent link">&para;</a></h3>
+<p><strong>Setup:</strong> The order service uses "commit before process." It reads the event, commits the offset immediately, then starts processing.</p>
+<p><strong>Step 1:</strong> Customer completes payment. Payment service publishes <code>{orderId: 123, amount: 100, txId: "tx_abc"}</code> to topic "payments."</p>
+<p><strong>Step 2:</strong> Order service consumer reads the message at offset 42. It commits offset 42 right away. "I'm done with this message," it tells Kafka.</p>
+<p><strong>Step 3:</strong> Consumer starts processing. It calls the payment gateway to confirm the charge. It updates the order in the database. But before it finishes, the pod is killed. OOM. Deployment. Crash.</p>
+<p><strong>Step 4:</strong> Consumer restarts. It asks Kafka: "Where did I leave off?" Kafka says: "Offset 42 is committed. Start from 43."</p>
+<p><strong>Step 5:</strong> The message at offset 42 was never fully processed. The order is still "pending." The customer's $100 was deducted by the payment gateway, but the order service never recorded it. Money is in limbo. The customer calls support: "I paid but my order says unpaid." Manual refund or manual order update. At-most-once lost the event.</p>
+<h3 id="at-least-once-charged-twice-duplicate">At-Least-Once: Charged Twice (Duplicate)<a class="headerlink" href="#at-least-once-charged-twice-duplicate" title="Permanent link">&para;</a></h3>
+<p><strong>Setup:</strong> The order service uses "process then commit." It processes first, commits after.</p>
+<p><strong>Step 1:</strong> Same event: <code>{orderId: 123, amount: 100, txId: "tx_abc"}</code> at offset 42.</p>
+<p><strong>Step 2:</strong> Consumer processes. It marks the order as paid. It records the transaction. No idempotency check.</p>
+<p><strong>Step 3:</strong> Before it can commit offset 42, the consumer crashes. Network partition. Pod eviction.</p>
+<p><strong>Step 4:</strong> Consumer restarts. Last committed offset was 41. It reads from 42 again.</p>
+<p><strong>Step 5:</strong> Consumer processes the same event again. It marks the order as paid again. It calls the payment gateway again. The customer gets charged twice. $100 becomes $200. Chargebacks. Angry customer. At-least-once without idempotency causes duplicates.</p>
+<h3 id="exactly-once-charged-once-correct">Exactly-Once: Charged Once (Correct)<a class="headerlink" href="#exactly-once-charged-once-correct" title="Permanent link">&para;</a></h3>
+<p><strong>Setup:</strong> The order service uses idempotency. Before doing anything, it checks: "Have we already processed tx_abc?"</p>
+<p><strong>Step 1:</strong> Same event at offset 42.</p>
+<p><strong>Step 2:</strong> Consumer processes. It checks: <code>SELECT 1 FROM processed_transactions WHERE tx_id = 'tx_abc'</code>. No row. First time.</p>
+<p><strong>Step 3:</strong> It marks the order as paid. It inserts into <code>processed_transactions</code>. It commits offset 42.</p>
+<p><strong>Step 4:</strong> Crash. Restart. Re-read offset 42.</p>
+<p><strong>Step 5:</strong> Consumer processes again. It checks: <code>SELECT 1 FROM processed_transactions WHERE tx_id = 'tx_abc'</code>. Row exists. Skip. No duplicate charge. Commit offset 42 again (idempotent commit). Customer charged exactly once. Order marked paid. Clean.</p>
+<hr />
+<h2 id="at-most-once-delivery">At-Most-Once Delivery<a class="headerlink" href="#at-most-once-delivery" title="Permanent link">&para;</a></h2>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<p>The consumer commits its offset <strong>before</strong> processing the message. If it crashes after committing but before finishing processing, the message is lost. When the consumer restarts, it skips the message (already committed).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Step 1: Consumer reads message at offset 5
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Step 2: Consumer commits offset 5 → &quot;I&#39;m done with this message&quot;
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Step 3: Consumer starts processing the message
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Step 4: CRASH! Processing never finishes
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Step 5: Consumer restarts → &quot;My committed offset is 5, start from 6&quot;
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>Step 6: Message at offset 5 was never processed ❌ Lost!
+</code></pre></div>
+<h3 id="when-to-use">When To Use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h3>
+<p>Honestly, rarely. But some use cases tolerate data loss:</p>
+<ul>
+<li><strong>Logging:</strong> If you lose a log line, it's usually not catastrophic.</li>
+<li><strong>Metrics sampling:</strong> Missing one data point out of thousands doesn't ruin your graphs.</li>
+<li><strong>Real-time sensor readings:</strong> If a temperature reading is lost, the next one comes in 5 seconds anyway.</li>
+</ul>
+<h3 id="real-scenario-metrics-dashboard">Real Scenario: Metrics Dashboard<a class="headerlink" href="#real-scenario-metrics-dashboard" title="Permanent link">&para;</a></h3>
+<p>A dashboard consumes CPU metrics from Kafka. At-most-once is fine. If one data point is lost, the graph has a tiny gap. The next second's data fills in. Nobody notices. Using at-least-once here would add complexity (deduplication) for no benefit. The team keeps it simple: commit before processing, accept occasional gaps.</p>
+<h3 id="producer-side-acks0">Producer Side: acks=0<a class="headerlink" href="#producer-side-acks0" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="na">acks</span><span class="o">=</span><span class="s">0</span>
+</code></pre></div>
+<p>The producer doesn't wait for any acknowledgment. It sends the message and moves on. If the broker never received it, the producer doesn't know. Message lost.</p>
+<hr />
+<h2 id="at-least-once-delivery">At-Least-Once Delivery<a class="headerlink" href="#at-least-once-delivery" title="Permanent link">&para;</a></h2>
+<h3 id="how-it-works_1">How It Works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h3>
+<p>The consumer processes the message <strong>first</strong>, then commits the offset. If it crashes after processing but before committing, it will re-read and re-process the message when it restarts.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Step 1: Consumer reads message at offset 5
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Step 2: Consumer processes the message → &quot;Order #100 paid&quot;
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Step 3: CRASH! Before committing offset 5
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Step 4: Consumer restarts → &quot;My committed offset is 4, start from 5&quot;
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Step 5: Consumer reads offset 5 AGAIN → &quot;Order #100 paid&quot; (again!)
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Step 6: Order #100 might get charged TWICE ❌ Duplicate!
+</code></pre></div>
+<h3 id="this-is-the-most-common-guarantee">This Is the Most Common Guarantee<a class="headerlink" href="#this-is-the-most-common-guarantee" title="Permanent link">&para;</a></h3>
+<p>Most production Kafka systems use at-least-once. Why? Because it's simpler than exactly-once and doesn't lose data. You handle duplicates in your application logic.</p>
+<h3 id="real-scenario-order-fulfillment">Real Scenario: Order Fulfillment<a class="headerlink" href="#real-scenario-order-fulfillment" title="Permanent link">&para;</a></h3>
+<p>An order service consumes "ORDER_PLACED" events. It creates an order in the database and sends a confirmation email. At-least-once. During a deploy, a consumer processes an order, sends the email, then crashes before committing. On restart, it re-processes. Without idempotency: duplicate order in DB (or unique constraint violation), duplicate email to customer. With idempotency: check <code>orderRepository.existsById(orderId)</code> before creating. Skip if exists. Customer gets one email. Clean.</p>
+<h3 id="how-to-handle-duplicates-idempotent-consumers">How To Handle Duplicates: Idempotent Consumers<a class="headerlink" href="#how-to-handle-duplicates-idempotent-consumers" title="Permanent link">&para;</a></h3>
+<p>An <strong>idempotent</strong> operation is one that produces the same result no matter how many times you run it. <code>SET x = 5</code> is idempotent (doing it twice doesn't change x). <code>INCR x</code> is NOT idempotent (doing it twice gives a different result).</p>
+<p>Make your consumers idempotent:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">processOrder</span><span class="p">(</span><span class="n">OrderEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="c1">// Check if we&#39;ve already processed this message</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">orderRepository</span><span class="p">.</span><span class="na">existsById</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">getOrderId</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Already processed order {}, skipping&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">            </span><span class="n">event</span><span class="p">.</span><span class="na">getOrderId</span><span class="p">());</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="c1">// Process for the first time</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="n">orderRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="n">paymentService</span><span class="p">.</span><span class="na">charge</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">getAmount</span><span class="p">());</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">}</span>
+</code></pre></div>
+<p>Other idempotency strategies:</p>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>How It Works</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database unique constraint</td>
+<td><code>INSERT ... ON CONFLICT DO NOTHING</code> — DB rejects duplicates</td>
+</tr>
+<tr>
+<td>Processed message ID table</td>
+<td>Store message IDs in a "processed" table, check before processing</td>
+</tr>
+<tr>
+<td>Business key deduplication</td>
+<td>Use orderId/transactionId to check if already done</td>
+</tr>
+<tr>
+<td>Redis deduplication</td>
+<td><code>SET msg:&lt;id&gt; "processed" NX EX 3600</code> — returns false if already set</td>
+</tr>
+</tbody>
+</table>
+<h3 id="idempotency-patterns-in-detail">Idempotency Patterns in Detail<a class="headerlink" href="#idempotency-patterns-in-detail" title="Permanent link">&para;</a></h3>
+<p>Here are four patterns with code. Pick based on your stack and latency needs.</p>
+<p><strong>Pattern 1: Database Unique Constraint</strong></p>
+<p>Use a unique constraint on the business key. Duplicate inserts fail. Your code handles the failure.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@Entity</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nd">@Table</span><span class="p">(</span><span class="n">uniqueConstraints</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@UniqueConstraint</span><span class="p">(</span><span class="n">columnNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;orderId&quot;</span><span class="p">))</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ProcessedOrder</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nd">@Id</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">orderId</span><span class="p">;</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="c1">// ...</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">}</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1">// In consumer:</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="n">repository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ProcessedOrder</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">getOrderId</span><span class="p">()));</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="n">doWork</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">DataIntegrityViolationException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Already processed order {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">getOrderId</span><span class="p">());</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span><span class="w">  </span><span class="c1">// Duplicate, skip</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Pattern 2: Redis SET NX for Dedup</strong></p>
+<p>Use Redis as a dedup store. <code>SET key NX</code> only succeeds if the key doesn't exist. Set TTL so old keys expire.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">String</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;processed:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">getTransactionId</span><span class="p">();</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">Boolean</span><span class="w"> </span><span class="n">added</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForValue</span><span class="p">().</span><span class="na">setIfAbsent</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Duration</span><span class="p">.</span><span class="na">ofHours</span><span class="p">(</span><span class="mi">24</span><span class="p">));</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Boolean</span><span class="p">.</span><span class="na">FALSE</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">added</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Already processed tx {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">getTransactionId</span><span class="p">());</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">doWork</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Pattern 3: Idempotency Key in HTTP Header</strong></p>
+<p>When calling an external API, send an idempotency key. The API stores it and rejects duplicate requests with the same key.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">String</span><span class="w"> </span><span class="n">idempotencyKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">getOrderId</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">getTimestamp</span><span class="p">();</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">restTemplate</span><span class="p">.</span><span class="na">exchange</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">HttpMethod</span><span class="p">.</span><span class="na">POST</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="k">new</span><span class="w"> </span><span class="n">HttpEntity</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">body</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="s">&quot;Idempotency-Key&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">idempotencyKey</span><span class="p">)),</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="n">Response</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1">// If duplicate, API returns 409 or same response. Your consumer can treat as success.</span>
+</code></pre></div>
+<p><strong>Pattern 4: Processed-Message-IDs Table</strong></p>
+<p>Store Kafka message IDs (or topic+partition+offset) in a table. Check before processing.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">String</span><span class="w"> </span><span class="n">msgId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">topic</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">partition</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">offset</span><span class="p">();</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">processedRepo</span><span class="p">.</span><span class="na">existsByMessageId</span><span class="p">(</span><span class="n">msgId</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">}</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">processedRepo</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ProcessedMessage</span><span class="p">(</span><span class="n">msgId</span><span class="p">));</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">doWork</span><span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="na">value</span><span class="p">());</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Choose wisely</p>
+<p>Database unique constraint: simple, durable. Redis: fast, but Redis failure loses dedup state. Idempotency key: for external APIs. Processed-IDs table: flexible, works for any message source.</p>
+</div>
+<h3 id="producer-side-acksall-retries">Producer Side: acks=all + retries<a class="headerlink" href="#producer-side-acksall-retries" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="na">acks</span><span class="o">=</span><span class="s">all</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="na">retries</span><span class="o">=</span><span class="s">3</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="na">enable.idempotence</span><span class="o">=</span><span class="s">true</span>
+</code></pre></div>
+<p>With <code>acks=all</code>, the producer waits for all ISR replicas to confirm. With retries, if a network glitch occurs, the producer retries. With idempotence enabled, Kafka deduplicates retries on the broker side.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"In most production systems, I use at-least-once delivery with idempotent consumers. The producer uses <code>acks=all</code> with <code>enable.idempotence=true</code>. On the consumer side, I check if the message was already processed using a unique business key like orderId before processing. This gives me durability without the complexity of exactly-once semantics."</p>
+</div>
+<hr />
+<h2 id="exactly-once-delivery">Exactly-Once Delivery<a class="headerlink" href="#exactly-once-delivery" title="Permanent link">&para;</a></h2>
+<h3 id="the-holy-grail">The Holy Grail<a class="headerlink" href="#the-holy-grail" title="Permanent link">&para;</a></h3>
+<p>Exactly-once means every message is processed exactly one time. No loss. No duplicates. Sounds perfect, right? So why doesn't everyone use it?</p>
+<p>Because it's <strong>hard</strong> and <strong>expensive</strong>. It requires coordination between the producer, Kafka, and the consumer — all in a transaction.</p>
+<h3 id="how-kafka-achieves-exactly-once">How Kafka Achieves Exactly-Once<a class="headerlink" href="#how-kafka-achieves-exactly-once" title="Permanent link">&para;</a></h3>
+<p>Kafka supports exactly-once through two mechanisms:</p>
+<p><strong>1. Idempotent Producer (producer → Kafka)</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="na">enable.idempotence</span><span class="o">=</span><span class="s">true</span>
+</code></pre></div>
+<p>The producer assigns a sequence number to each message. If a network retry causes Kafka to receive the same message twice, Kafka detects the duplicate sequence number and discards it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Producer sends: msg (seq=42) → Kafka stores it at offset 100
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Network glitch → Producer retries: msg (seq=42) → Kafka says &quot;I already have seq 42, skip&quot;
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>Result: Message stored exactly once in Kafka ✅
+</code></pre></div>
+<p>But this only covers producer-to-Kafka. What about the consumer?</p>
+<p><strong>2. Transactional Processing (Kafka → consumer → Kafka)</strong></p>
+<p>If your consumer reads from one topic, processes data, and writes to another topic, you can wrap it in a Kafka transaction:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">producer</span><span class="p">.</span><span class="na">initTransactions</span><span class="p">();</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="n">producer</span><span class="p">.</span><span class="na">beginTransaction</span><span class="p">();</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span><span class="c1">// Read from input topic</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="n">ConsumerRecords</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">records</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">consumer</span><span class="p">.</span><span class="na">poll</span><span class="p">(...);</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">        </span><span class="c1">// Process</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">process</span><span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="na">value</span><span class="p">());</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">        </span><span class="c1">// Write to output topic</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">        </span><span class="n">producer</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ProducerRecord</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="s">&quot;output-topic&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">));</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">    </span><span class="c1">// Commit offset + output message atomically</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="w">    </span><span class="n">producer</span><span class="p">.</span><span class="na">sendOffsetsToTransaction</span><span class="p">(</span><span class="n">offsets</span><span class="p">,</span><span class="w"> </span><span class="n">groupMetadata</span><span class="p">);</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="w">    </span><span class="n">producer</span><span class="p">.</span><span class="na">commitTransaction</span><span class="p">();</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="w">    </span><span class="n">producer</span><span class="p">.</span><span class="na">abortTransaction</span><span class="p">();</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="p">}</span>
+</code></pre></div>
+<p>Either BOTH the output write and the offset commit happen, or NEITHER happens. No partial state.</p>
+<h3 id="kafka-streams-exactly-once-exactly_once_v2">Kafka Streams Exactly-Once (exactly_once_v2)<a class="headerlink" href="#kafka-streams-exactly-once-exactly_once_v2" title="Permanent link">&para;</a></h3>
+<p>Kafka Streams supports exactly-once processing out of the box. Set the processing guarantee:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="na">processing.guarantee</span><span class="o">=</span><span class="s">exactly_once_v2</span>
+</code></pre></div>
+<p>With this, Kafka Streams uses transactional producers and consumer offsets are committed as part of the transaction. If the app crashes, it restarts and re-processes from the last committed offset. No duplicates. No data loss.</p>
+<p><strong>How it works:</strong> Streams uses a transactional producer. It reads from input topics, processes, writes to output topics and state stores. All in one transaction. Commit happens atomically. <code>exactly_once_v2</code> improves on the older <code>exactly_once</code> with better handling of producer fencing and recovery.</p>
+<div class="admonition info">
+<p class="admonition-title">When to use</p>
+<p>Use <code>exactly_once_v2</code> for Kafka Streams apps that do aggregations, joins, or topic-to-topic ETL. The cost is slightly higher latency. For simple consumers, at-least-once + idempotency is often enough.</p>
+</div>
+<hr />
+<h2 id="kafka-transactions-deep-dive">Kafka Transactions Deep Dive<a class="headerlink" href="#kafka-transactions-deep-dive" title="Permanent link">&para;</a></h2>
+<h3 id="transactionalid">transactional.id<a class="headerlink" href="#transactionalid" title="Permanent link">&para;</a></h3>
+<p>When using transactions, you must set <code>transactional.id</code> on the producer. This ID is used to identify the producer across restarts. Kafka uses it to fence out old instances — if a new producer starts with the same ID, the old one can no longer write.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="na">transactional.id</span><span class="o">=</span><span class="s">my-producer-1</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">One transactional ID per producer instance</p>
+<p>Each producer instance (e.g., each pod in Kubernetes) should have a unique <code>transactional.id</code>. If two producers share the same ID, they will fence each other out. Use something like <code>my-producer-${pod-name}</code> or <code>my-producer-${uuid}</code>.</p>
+</div>
+<h3 id="isolationlevel-read_committed-vs-read_uncommitted">isolation.level: read_committed vs read_uncommitted<a class="headerlink" href="#isolationlevel-read_committed-vs-read_uncommitted" title="Permanent link">&para;</a></h3>
+<p>Consumers can choose what to read:</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read_uncommitted</code> (default)</td>
+<td>Read all messages, including those in uncommitted transactions. Fastest. May see duplicates if a transaction aborts.</td>
+</tr>
+<tr>
+<td><code>read_committed</code></td>
+<td>Only read messages from committed transactions. Never see aborted or in-progress data. Slightly slower.</td>
+</tr>
+</tbody>
+</table>
+<p>For exactly-once processing, consumers of the output topic should use <code>read_committed</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="na">isolation.level</span><span class="o">=</span><span class="s">read_committed</span>
+</code></pre></div>
+<h3 id="transaction-coordinator">Transaction Coordinator<a class="headerlink" href="#transaction-coordinator" title="Permanent link">&para;</a></h3>
+<p>Kafka has a <strong>transaction coordinator</strong> — a special broker that manages transactions. When a producer calls <code>initTransactions()</code>, it finds the coordinator. The coordinator tracks the producer's state, handles commits and aborts, and writes to the internal <code>__transaction_state</code> topic.</p>
+<p><strong>Flow:</strong> Producer begins transaction → sends messages → sends offset commit → commits transaction. The coordinator writes a "commit" record. Only then do the messages become visible to <code>read_committed</code> consumers.</p>
+<hr />
+<h2 id="consumer-offset-storage">Consumer Offset Storage<a class="headerlink" href="#consumer-offset-storage" title="Permanent link">&para;</a></h2>
+<h3 id="where-are-offsets-stored">Where Are Offsets Stored?<a class="headerlink" href="#where-are-offsets-stored" title="Permanent link">&para;</a></h3>
+<p>Kafka stores consumer group offsets in an internal topic: <code>__consumer_offsets</code>. Each consumer group has entries like:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Group &quot;order-processors&quot;, Topic &quot;orders&quot;, Partition 2 → Offset 15420
+</code></pre></div>
+<p>When a consumer commits, it writes to this topic. When it starts, it reads from this topic to know where to resume.</p>
+<h3 id="how-long-are-offsets-retained">How Long Are Offsets Retained?<a class="headerlink" href="#how-long-are-offsets-retained" title="Permanent link">&para;</a></h3>
+<p>By default, <code>__consumer_offsets</code> has a retention policy. Old offset commits are eventually deleted. The setting is <code>offsets.retention.minutes</code> (default: 10080 = 7 days).</p>
+<p>If a consumer group doesn't commit for 7 days, its offsets may be expired. When the consumer comes back, it has no stored offset. It will use <code>auto.offset.reset</code> (earliest or latest) to decide where to start. You might re-process millions of messages or skip them — depending on the setting.</p>
+<div class="admonition tip">
+<p class="admonition-title">Long-running consumers</p>
+<p>If you have consumer groups that might be inactive for weeks (e.g., a batch job that runs monthly), increase <code>offsets.retention.minutes</code> on the broker. Or use external offset storage (e.g., a database) for critical replay scenarios.</p>
+</div>
+<h3 id="offset-commit-failure-scenarios">Offset Commit Failure Scenarios<a class="headerlink" href="#offset-commit-failure-scenarios" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario 1:</strong> Consumer commits, but the commit request fails (network error). The consumer thinks it committed. On restart, it re-reads from the old offset. Duplicate processing. Use <code>commitSync()</code> to ensure the commit succeeds before proceeding, or implement retry logic.</p>
+<p><strong>Scenario 2:</strong> Consumer commits offset 100. Before the commit is fully replicated, the coordinator (broker) dies. The new coordinator might not have the commit. Consumer restarts, reads from an older offset. Again, duplicates.</p>
+<p><strong>Scenario 3:</strong> Rebalance during commit. The consumer is removed from the group. Its commit might be ignored. When it rejoins and gets a new partition assignment, it might re-process. This is why idempotency is critical.</p>
+<hr />
+<h3 id="when-to-use-exactly-once">When To Use Exactly-Once<a class="headerlink" href="#when-to-use-exactly-once" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Exactly-Once Needed?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Financial transactions</td>
+<td>Yes — can't charge someone twice</td>
+</tr>
+<tr>
+<td>Kafka Streams processing (topic-to-topic)</td>
+<td>Yes — built-in support</td>
+</tr>
+<tr>
+<td>Simple event logging</td>
+<td>No — at-least-once is fine</td>
+</tr>
+<tr>
+<td>Notifications</td>
+<td>No — getting 2 emails is annoying but not catastrophic</td>
+</tr>
+<tr>
+<td>Analytics counters</td>
+<td>Depends — idempotent at-least-once is usually sufficient</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">The cost</p>
+<p>Exactly-once adds latency (transactions are slower) and complexity (more failure modes to handle). Use it only when the business requires it.</p>
+</div>
+<h3 id="real-scenario-kafka-streams-aggregation">Real Scenario: Kafka Streams Aggregation<a class="headerlink" href="#real-scenario-kafka-streams-aggregation" title="Permanent link">&para;</a></h3>
+<p>A team uses Kafka Streams to aggregate sales by region. Input topic: "sales". Output topic: "sales-by-region". They use exactly-once. The Streams app reads, aggregates, and writes in a transaction. If it crashes mid-batch, the transaction aborts. On restart, it re-reads from the last committed offset. No partial writes. The output topic has consistent, deduplicated aggregates. Without exactly-once, a crash could produce duplicate counts (same sale counted twice) or missing counts. For analytics, that would corrupt reports.</p>
+<hr />
+<h2 id="choosing-the-right-guarantee">Choosing the Right Guarantee<a class="headerlink" href="#choosing-the-right-guarantee" title="Permanent link">&para;</a></h2>
+<h3 id="decision-framework">Decision Framework<a class="headerlink" href="#decision-framework" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Is losing a message acceptable?
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>├── Yes → At-most-once (acks=0, commit before processing)
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>└── No
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    ├── Is receiving a duplicate acceptable?
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    │   ├── Yes → At-least-once (acks=all, commit after processing)
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    │   │         + Make consumers idempotent
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    │   └── No → Exactly-once (transactions + idempotent producer)
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>    └── Usually, &quot;at-least-once + idempotent consumer&quot; is the sweet spot
+</code></pre></div>
+<h3 id="comparison-table">Comparison Table<a class="headerlink" href="#comparison-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>At-Most-Once</th>
+<th>At-Least-Once</th>
+<th>Exactly-Once</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data loss?</td>
+<td>Possible</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Duplicates?</td>
+<td>No</td>
+<td>Possible</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Simple</td>
+<td>Moderate</td>
+<td>Complex</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Fastest</td>
+<td>Fast</td>
+<td>Slowest</td>
+</tr>
+<tr>
+<td>Producer acks</td>
+<td><code>0</code></td>
+<td><code>all</code></td>
+<td><code>all</code> + transactions</td>
+</tr>
+<tr>
+<td>Consumer offset</td>
+<td>Commit before processing</td>
+<td>Commit after processing</td>
+<td>Transactional commit</td>
+</tr>
+<tr>
+<td>When to use</td>
+<td>Logs, metrics</td>
+<td><strong>Most use cases</strong></td>
+<td>Financial, streams</td>
+</tr>
+<tr>
+<td><strong>Real-world example</strong></td>
+<td>Dashboard metrics, log aggregation</td>
+<td>Order processing, notifications, most microservices</td>
+<td>Payment processing, Kafka Streams ETL</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="offset-commit-strategies">Offset Commit Strategies<a class="headerlink" href="#offset-commit-strategies" title="Permanent link">&para;</a></h2>
+<p>How you commit offsets determines your delivery guarantee on the consumer side.</p>
+<h3 id="auto-commit-default">Auto Commit (Default)<a class="headerlink" href="#auto-commit-default" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="na">enable.auto.commit</span><span class="o">=</span><span class="s">true</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="na">auto.commit.interval.ms</span><span class="o">=</span><span class="s">5000</span>
+</code></pre></div>
+<p>Kafka auto-commits every 5 seconds. Simple, but risky:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Consumer reads messages 1-10
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Auto-commit happens at message 7 (5-second timer fires)
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>Consumer processes message 8, 9...
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>CRASH at message 9!
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>Restart: committed offset = 7, re-reads 8, 9, 10
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>Messages 8 and 9 processed twice. Message 10 not lost.
+</code></pre></div>
+<h3 id="manual-sync-commit">Manual Sync Commit<a class="headerlink" href="#manual-sync-commit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span><span class="n">process</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="p">}</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">consumer</span><span class="p">.</span><span class="na">commitSync</span><span class="p">();</span><span class="w">  </span><span class="c1">// Block until commit succeeds</span>
+</code></pre></div>
+<p>Safer. You commit only after all processing is done. But if you crash between processing and committing, you re-process.</p>
+<h3 id="manual-async-commit">Manual Async Commit<a class="headerlink" href="#manual-async-commit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">consumer</span><span class="p">.</span><span class="na">commitAsync</span><span class="p">((</span><span class="n">offsets</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exception</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Commit failed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">);</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="p">});</span>
+</code></pre></div>
+<p>Non-blocking. Faster. But if the commit fails, you don't retry (to avoid out-of-order commits). Use <code>commitSync()</code> in the <code>finally</code> block or on shutdown.</p>
+<h3 id="per-message-commit">Per-Message Commit<a class="headerlink" href="#per-message-commit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">    </span><span class="n">process</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="n">consumer</span><span class="p">.</span><span class="na">commitSync</span><span class="p">(</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">        </span><span class="n">Map</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">TopicPartition</span><span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="na">topic</span><span class="p">(),</span><span class="w"> </span><span class="n">record</span><span class="p">.</span><span class="na">partition</span><span class="p">()),</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">               </span><span class="k">new</span><span class="w"> </span><span class="n">OffsetAndMetadata</span><span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="na">offset</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)));</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="p">}</span>
+</code></pre></div>
+<p>Most granular. Commits after each message. If you crash, at most 1 message is re-processed. But it's slow — one commit per message is expensive.</p>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Guarantee</th>
+<th>Lost?</th>
+<th>Duplicated?</th>
+<th>How</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>At-most-once</td>
+<td>Yes</td>
+<td>No</td>
+<td>Commit before process</td>
+<td>Logs, metrics</td>
+</tr>
+<tr>
+<td>At-least-once</td>
+<td>No</td>
+<td>Yes</td>
+<td>Process then commit + idempotent consumer</td>
+<td><strong>Most apps</strong></td>
+</tr>
+<tr>
+<td>Exactly-once</td>
+<td>No</td>
+<td>No</td>
+<td>Kafka transactions</td>
+<td>Financial, streams</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Commit Strategy</th>
+<th>Risk</th>
+<th>Performance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Auto commit</td>
+<td>Unpredictable duplicates/loss</td>
+<td>Fastest</td>
+</tr>
+<tr>
+<td>Manual sync after batch</td>
+<td>Batch re-processing on crash</td>
+<td>Good</td>
+</tr>
+<tr>
+<td>Manual per-message</td>
+<td>At most 1 re-processed</td>
+<td>Slowest</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Write a consumer with auto-commit enabled. Process 10 messages. Kill it mid-way. Restart. How many messages are re-processed?</li>
+<li>Switch to manual commit (<code>commitSync()</code> after processing). Repeat the test. What's different?</li>
+<li>Implement an idempotent consumer that checks a database before processing.</li>
+<li>Explain to a friend (or a rubber duck): "Why is at-least-once with idempotent consumers the most common production pattern?"</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../kafka-usecases/">Real-World Use Cases</a> — Where Kafka is used in the real world.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

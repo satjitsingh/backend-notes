@@ -1,0 +1,2736 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/redis/caching-patterns/">
+      
+      
+        <link rel="prev" href="../caching-explained/">
+      
+      
+        <link rel="next" href="../real-world-usecases/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Caching Patterns - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#caching-patterns" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Caching Patterns
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-patterns-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Patterns Matter
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-cache-aside-lazy-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Cache-Aside (Lazy Loading)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Cache-Aside (Lazy Loading)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-story-swiggy-restaurant-listing-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Story: Swiggy Restaurant Listing (Step by Step)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-things-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Things Go Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-read-through" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Read-Through
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Read-Through">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-differs-from-cache-aside-same-swiggy-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Differs from Cache-Aside (Same Swiggy Example)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#difference-from-cache-aside" class="md-nav__link">
+    <span class="md-ellipsis">
+      Difference from Cache-Aside
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-things-go-wrong_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Things Go Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-write-through" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Write-Through
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Write-Through">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-story-bank-account-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Story: Bank Account Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-things-go-wrong_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Things Go Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-write-behind-write-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Write-Behind (Write-Back)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Write-Behind (Write-Back)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-story-analytics-page-view-counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Story: Analytics / Page View Counting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-things-go-wrong_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Things Go Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cache-warming-pre-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Cache Warming (Pre-loading)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Cache Warming (Pre-loading)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-example_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-refresh-ahead" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Refresh-Ahead
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Refresh-Ahead">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits-over-cache-aside" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits Over Cache-Aside
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-cache-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Cache Versioning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Cache Versioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-for-schema-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful for Schema Changes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-multi-level-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Multi-Level Caching
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Multi-Level Caching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-boot-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Boot Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example-amazon-product-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Production Example: Amazon Product Page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-pattern-does-your-favorite-company-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Pattern Does Your Favorite Company Use?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-comparison-detailed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern Comparison (Detailed)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern Comparison (Detailed)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-which" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use Which
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-patterns-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Patterns Matter
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-cache-aside-lazy-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Cache-Aside (Lazy Loading)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Cache-Aside (Lazy Loading)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-story-swiggy-restaurant-listing-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Story: Swiggy Restaurant Listing (Step by Step)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-things-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Things Go Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-read-through" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Read-Through
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Read-Through">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-differs-from-cache-aside-same-swiggy-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Differs from Cache-Aside (Same Swiggy Example)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#difference-from-cache-aside" class="md-nav__link">
+    <span class="md-ellipsis">
+      Difference from Cache-Aside
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-things-go-wrong_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Things Go Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-write-through" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Write-Through
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Write-Through">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-story-bank-account-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Story: Bank Account Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-things-go-wrong_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Things Go Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-write-behind-write-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Write-Behind (Write-Back)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Write-Behind (Write-Back)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-story-analytics-page-view-counting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Story: Analytics / Page View Counting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-things-go-wrong_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      When Things Go Wrong
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cache-warming-pre-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Cache Warming (Pre-loading)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Cache Warming (Pre-loading)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-example_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-refresh-ahead" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Refresh-Ahead
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Refresh-Ahead">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits-over-cache-aside" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits Over Cache-Aside
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-cache-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Cache Versioning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Cache Versioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-for-schema-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful for Schema Changes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-multi-level-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Multi-Level Caching
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Multi-Level Caching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-boot-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Boot Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example-amazon-product-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Production Example: Amazon Product Page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-pattern-does-your-favorite-company-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Pattern Does Your Favorite Company Use?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-comparison-detailed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern Comparison (Detailed)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern Comparison (Detailed)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-which" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use Which
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="caching-patterns">Caching Patterns<a class="headerlink" href="#caching-patterns" title="Permanent link">&para;</a></h1>
+<h2 id="why-patterns-matter">Why Patterns Matter<a class="headerlink" href="#why-patterns-matter" title="Permanent link">&para;</a></h2>
+<p>There are different <strong>strategies</strong> for how your application talks to the cache and database. Each pattern has a different flow for reads and writes. Choosing the right one depends on your use case: read-heavy vs write-heavy, how fresh your data needs to be, and how much complexity you're willing to handle.</p>
+<p>Think of it like choosing a workflow for a team. Cache-Aside is like "everyone manages their own desk." Read-Through is like "the assistant fetches things for you." Write-Through is like "every update goes through the filing cabinet and the desk at the same time." Write-Behind is like "update the desk now, file later." Each has trade-offs.</p>
+<p>Let's walk through each pattern with complete stories and real scenarios.</p>
+<hr />
+<h2 id="1-cache-aside-lazy-loading">1. Cache-Aside (Lazy Loading)<a class="headerlink" href="#1-cache-aside-lazy-loading" title="Permanent link">&para;</a></h2>
+<p>The <strong>most common</strong> pattern. The application manages the cache itself. The cache doesn't know about the database. The database doesn't know about the cache. Your app is the conductor.</p>
+<h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<p><strong>READ:</strong>
+1. App checks cache first
+2. Cache Hit → Return data to the user
+3. Cache Miss → Query database → Store result in cache → Return data to the user</p>
+<p><strong>WRITE:</strong>
+1. App writes to database
+2. App deletes the cache key (invalidate)
+3. Next read will be a cache miss and will load fresh data</p>
+<h3 id="complete-story-swiggy-restaurant-listing-step-by-step">Complete Story: Swiggy Restaurant Listing (Step by Step)<a class="headerlink" href="#complete-story-swiggy-restaurant-listing-step-by-step" title="Permanent link">&para;</a></h3>
+<p>Imagine you're building Swiggy. A user opens the app and searches for "restaurants near Connaught Place, Delhi."</p>
+<p><strong>Step 1:</strong> User taps "Search." Your app receives the request. It needs to show a list of restaurants.</p>
+<p><strong>Step 2:</strong> App checks the cache. Key: <code>restaurants:delhi:connaught_place</code>. 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>GET restaurants:delhi:connaught_place
+</code></pre></div></p>
+<p><strong>Step 3a (Cache Hit):</strong> Redis returns the list. Your app sends it to the user. Done. Total time: 3 ms.</p>
+<p><strong>Step 3b (Cache Miss):</strong> Redis returns <code>(nil)</code>. Your app must fetch from the database.</p>
+<p><strong>Step 4:</strong> App queries the database:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">restaurants</span><span class="w"> </span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Delhi&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Connaught Place&#39;</span><span class="w"> </span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">rating</span><span class="w"> </span><span class="k">DESC</span>
+</code></pre></div></p>
+<p><strong>Step 5:</strong> Database returns 50 restaurants. App stores them in Redis:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>SETEX restaurants:delhi:connaught_place 600 &lt;json_of_50_restaurants&gt;
+</code></pre></div>
+TTL of 10 minutes (600 seconds). Next user searching the same area will get a cache hit.</p>
+<p><strong>Step 6:</strong> App returns the list to the user. Total time: 45 ms (first user pays the cost).</p>
+<p><strong>Step 7:</strong> A new restaurant opens in Connaught Place. Admin adds it via the dashboard. Your app runs:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">restaurantRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">newRestaurant</span><span class="p">);</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">redis</span><span class="p">.</span><span class="na">del</span><span class="p">(</span><span class="s">&quot;restaurants:delhi:connaught_place&quot;</span><span class="p">);</span>
+</code></pre></div>
+The cache is invalidated. The next user searching for Connaught Place will get a cache miss and see the new restaurant in the list.</p>
+<h3 id="diagram">Diagram<a class="headerlink" href="#diagram" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>READ Flow:
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>                    ┌─────────┐
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>           1. GET   │         │  2. Hit? Return
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  App ────────────▶ │  Redis  │ ────────────▶ App
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>   │                │         │
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>   │                └─────────┘
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>   │                     │
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>   │               3. Miss?
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>   │                     │
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>   │                     ▼
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>   │                ┌─────────┐
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>   │    4. Query    │         │
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>   └───────────────▶│   DB    │
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>   ◀────────────────│         │
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>   │  5. Result     └─────────┘
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>   │
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>   └──▶ 6. Store in Redis, return to user
+</code></pre></div>
+<h3 id="code-example">Code Example<a class="headerlink" href="#code-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">public</span><span class="w"> </span><span class="n">Product</span><span class="w"> </span><span class="nf">getProduct</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="c1">// Step 1: Check cache</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">cached</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cached</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">deserialize</span><span class="p">(</span><span class="n">cached</span><span class="p">);</span><span class="w">  </span><span class="c1">// Cache Hit</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="c1">// Step 2: Cache Miss - query database</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="n">Product</span><span class="w"> </span><span class="n">product</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">database</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="c1">// Step 3: Store in cache for next time</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="n">redis</span><span class="p">.</span><span class="na">setex</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span><span class="w"> </span><span class="n">serialize</span><span class="p">(</span><span class="n">product</span><span class="p">));</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">product</span><span class="p">;</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="p">}</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">updateProduct</span><span class="p">(</span><span class="n">Product</span><span class="w"> </span><span class="n">product</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">    </span><span class="c1">// Step 1: Update database</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">    </span><span class="n">database</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">product</span><span class="p">);</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">    </span><span class="c1">// Step 2: Invalidate cache</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">    </span><span class="n">redis</span><span class="p">.</span><span class="na">del</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">product</span><span class="p">.</span><span class="na">getId</span><span class="p">());</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="when-things-go-wrong">When Things Go Wrong<a class="headerlink" href="#when-things-go-wrong" title="Permanent link">&para;</a></h3>
+<p><strong>Redis is down:</strong> Your app gets an error when calling <code>redis.get()</code>. You should catch it and fall back to the database. The app still works—just slower. Design for cache failure.</p>
+<p><strong>You forget to invalidate on write:</strong> User updates a product. You update the database but forget to delete the cache. Users see stale data until TTL expires. Always invalidate on write.</p>
+<p><strong>Cache stampede:</strong> Popular key expires. Thousands of requests hit the database. Use a lock (mutex) so only one request fetches; others wait and then read from the refreshed cache.</p>
+<h3 id="pros-and-cons">Pros and Cons<a class="headerlink" href="#pros-and-cons" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Only caches data that is actually requested</td>
+<td>First request is always slow (miss)</td>
+</tr>
+<tr>
+<td>Simple to implement</td>
+<td>Data can be stale until TTL expires</td>
+</tr>
+<tr>
+<td>Cache failure doesn't break the app</td>
+<td>App must handle cache logic</td>
+</tr>
+<tr>
+<td>Flexible—you control what to cache</td>
+<td>Must remember to invalidate on every write path</td>
+</tr>
+<tr>
+<td>No wasted cache space on unused data</td>
+<td>Cache stampede risk when popular key expires</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>Cache-Aside is the <strong>default answer</strong> in interviews. Say: "I would use Cache-Aside with TTL and event-based invalidation on writes."</p>
+</div>
+<hr />
+<h2 id="2-read-through">2. Read-Through<a class="headerlink" href="#2-read-through" title="Permanent link">&para;</a></h2>
+<p>Similar to Cache-Aside, but the <strong>cache layer</strong> (or a library) handles the database fetch. The application only talks to the cache. The app doesn't know the database exists for reads.</p>
+<h3 id="how-it-works_1">How It Works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h3>
+<p><strong>READ:</strong>
+1. App asks cache for data
+2. Cache Hit → Return data
+3. Cache Miss → Cache layer itself queries the database → Stores result → Returns to app</p>
+<p><strong>WRITE:</strong>
+Same as Cache-Aside. App writes to database and invalidates cache. (Or pair with Write-Through.)</p>
+<h3 id="how-it-differs-from-cache-aside-same-swiggy-example">How It Differs from Cache-Aside (Same Swiggy Example)<a class="headerlink" href="#how-it-differs-from-cache-aside-same-swiggy-example" title="Permanent link">&para;</a></h3>
+<p><strong>Cache-Aside:</strong> Your app code does:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">database</span><span class="p">.</span><span class="na">query</span><span class="p">(...);</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="n">redis</span><span class="p">.</span><span class="na">setex</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">ttl</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Read-Through:</strong> Your app code does:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cache</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">key</span><span class="p">);</span><span class="w">  </span><span class="c1">// That&#39;s it. Cache handles the rest.</span>
+</code></pre></div></p>
+<p>The cache layer (e.g., a library like Spring Cache with a custom CacheLoader) is configured to know how to load data when there's a miss. When you call <code>cache.get("restaurants:delhi:connaught_place")</code>, the library checks Redis. On miss, it calls your loader function (which queries the database), stores the result in Redis, and returns it. Your app code is simpler.</p>
+<h3 id="diagram_1">Diagram<a class="headerlink" href="#diagram_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>  App ──────────▶ Cache ──────────▶ DB (on miss)
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  App ◀────────── Cache ◀────────── DB
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  App never talks to DB directly for reads!
+</code></pre></div>
+<h3 id="difference-from-cache-aside">Difference from Cache-Aside<a class="headerlink" href="#difference-from-cache-aside" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cache-Aside</th>
+<th>Read-Through</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Who fetches from DB on miss?</td>
+<td><strong>App</strong></td>
+<td><strong>Cache layer</strong></td>
+</tr>
+<tr>
+<td>App knows about DB?</td>
+<td>Yes</td>
+<td>No (for reads)</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>In app code</td>
+<td>In cache library/config</td>
+</tr>
+<tr>
+<td>Code</td>
+<td>More boilerplate</td>
+<td>Cleaner, less code</td>
+</tr>
+</tbody>
+</table>
+<h3 id="when-things-go-wrong_1">When Things Go Wrong<a class="headerlink" href="#when-things-go-wrong_1" title="Permanent link">&para;</a></h3>
+<p><strong>Cache layer bug:</strong> If the loader has a bug, every cache miss fails. Test the loader thoroughly.</p>
+<p><strong>Cache and DB both down:</strong> Same as Cache-Aside. Design for failure. The cache layer should throw, and your app should have a fallback (e.g., return a default or error page).</p>
+<h3 id="pros-and-cons_1">Pros and Cons<a class="headerlink" href="#pros-and-cons_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cleaner app code (no DB logic in reads)</td>
+<td>Cache layer is a single point of logic</td>
+</tr>
+<tr>
+<td>Same benefits as Cache-Aside for cache hits</td>
+<td>Loader bugs affect all cache misses</td>
+</tr>
+<tr>
+<td>Centralized cache logic</td>
+<td>Less control over cache behavior from app</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-write-through">3. Write-Through<a class="headerlink" href="#3-write-through" title="Permanent link">&para;</a></h2>
+<p>Every write goes to the cache <strong>and</strong> the database <strong>at the same time</strong>. The cache is always up-to-date. No stale data.</p>
+<h3 id="how-it-works_2">How It Works<a class="headerlink" href="#how-it-works_2" title="Permanent link">&para;</a></h3>
+<p><strong>WRITE:</strong>
+1. App writes to cache
+2. Cache layer synchronously writes to database
+3. Both are updated before the write returns</p>
+<p><strong>READ:</strong>
+Cache always has the latest data. Just read from cache. (Or the cache layer loads from DB on miss—Read-Through style.)</p>
+<h3 id="complete-story-bank-account-update">Complete Story: Bank Account Update<a class="headerlink" href="#complete-story-bank-account-update" title="Permanent link">&para;</a></h3>
+<p>Imagine you're building a banking app. A user transfers ₹1000 from their savings to their checking account.</p>
+<p><strong>With Write-Through:</strong>
+1. User clicks "Transfer." App calls <code>updateBalance(accountId, newBalance)</code>.
+2. The cache layer receives the write. It does two things in one transaction (or sequence):
+   - Updates Redis: <code>HSET account:42 balance 50000</code>
+   - Updates database: <code>UPDATE accounts SET balance = 50000 WHERE id = 42</code>
+3. Only when both succeed does the call return. User sees "Transfer complete."
+4. Next read of the account balance comes from Redis. It's correct. No stale data.</p>
+<p><strong>Why this matters for banking:</strong> You cannot show stale balances. A user might make multiple transfers. If the cache had an old balance, they could overdraw. Write-Through ensures the cache and database are always in sync.</p>
+<h3 id="diagram_2">Diagram<a class="headerlink" href="#diagram_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>  App ──▶ Cache ──▶ DB
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>         (both updated together, synchronously)
+</code></pre></div>
+<h3 id="code-example_1">Code Example<a class="headerlink" href="#code-example_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">saveProduct</span><span class="p">(</span><span class="n">Product</span><span class="w"> </span><span class="n">product</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="c1">// Cache library handles both</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="n">cache</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">product</span><span class="p">.</span><span class="na">getId</span><span class="p">(),</span><span class="w"> </span><span class="n">product</span><span class="p">);</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="c1">// Internally: cache writes to Redis AND database before returning</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="when-things-go-wrong_2">When Things Go Wrong<a class="headerlink" href="#when-things-go-wrong_2" title="Permanent link">&para;</a></h3>
+<p><strong>Database write fails:</strong> The cache might have been updated but the database failed. Now they're out of sync. You need transactional semantics or compensating logic. Write-Through is often implemented with "write to DB first, then cache" to avoid this—if DB fails, cache is never updated.</p>
+<p><strong>Slower writes:</strong> Every write hits two systems. Latency increases. For write-heavy workloads, this can be a bottleneck.</p>
+<h3 id="pros-and-cons_2">Pros and Cons<a class="headerlink" href="#pros-and-cons_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cache is always up-to-date</td>
+<td>Every write is slower (writes to 2 places)</td>
+</tr>
+<tr>
+<td>No stale data</td>
+<td>Writes data that may never be read (waste)</td>
+</tr>
+<tr>
+<td>Simple read logic</td>
+<td>Higher write latency</td>
+</tr>
+<tr>
+<td>Good for data that must be fresh</td>
+<td>Not ideal for high write volume</td>
+</tr>
+<tr>
+<td>No invalidation logic needed</td>
+<td>Write failure can leave cache and DB out of sync</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-write-behind-write-back">4. Write-Behind (Write-Back)<a class="headerlink" href="#4-write-behind-write-back" title="Permanent link">&para;</a></h2>
+<p>Similar to Write-Through, but the database write happens <strong>later</strong> (asynchronously). The app gets a fast response. The cache is updated immediately. The database is updated in the background, often in batches.</p>
+<h3 id="how-it-works_3">How It Works<a class="headerlink" href="#how-it-works_3" title="Permanent link">&para;</a></h3>
+<p><strong>WRITE:</strong>
+1. App writes to cache
+2. Cache acknowledges immediately (fast!)
+3. Cache queues the write. A background process writes to the database later (batched).</p>
+<p><strong>READ:</strong>
+Cache has the latest data. Reads are fast.</p>
+<h3 id="complete-story-analytics-page-view-counting">Complete Story: Analytics / Page View Counting<a class="headerlink" href="#complete-story-analytics-page-view-counting" title="Permanent link">&para;</a></h3>
+<p>Imagine you're building an analytics dashboard. Every page view needs to be recorded. You get 10,000 page views per second.</p>
+<p><strong>With Write-Behind:</strong>
+1. User loads a page. Your app runs <code>incrementPageView(pageId)</code>.
+2. The cache layer does: <code>INCR page:42:views</code> in Redis. Returns immediately. 0.1 ms.
+3. In the background, a worker batches these increments. Every 5 seconds, it flushes: "Page 42: +150 views, Page 43: +200 views..." to the database.
+4. The database gets 1 batch write every 5 seconds instead of 10,000 writes per second. It can handle that.</p>
+<p><strong>Why this works for analytics:</strong> If you lose a few page views (e.g., Redis crashes before the batch is flushed), it's acceptable. Analytics is approximate. Speed and database load matter more than perfect accuracy.</p>
+<h3 id="diagram_3">Diagram<a class="headerlink" href="#diagram_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>  App ──▶ Cache ──────▶ DB (later, in background, batched)
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>          ↑
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>          Fast response!
+</code></pre></div>
+<h3 id="when-things-go-wrong_3">When Things Go Wrong<a class="headerlink" href="#when-things-go-wrong_3" title="Permanent link">&para;</a></h3>
+<p><strong>Redis crashes before flush:</strong> Data in the cache that hasn't been written to the database is lost. Use Write-Behind only when some data loss is acceptable (analytics, logs, non-critical counters).</p>
+<p><strong>Background writer falls behind:</strong> If the database is slow, the queue of pending writes grows. You need monitoring. If the queue gets too large, you might need to backpressure (slow down or reject writes).</p>
+<div class="admonition warning">
+<p class="admonition-title">Risk</p>
+<p>If Redis crashes before flushing to the database, <strong>you lose data</strong>. Use Write-Behind only when some data loss is acceptable (e.g., analytics, page views, activity logs).</p>
+</div>
+<h3 id="pros-and-cons_3">Pros and Cons<a class="headerlink" href="#pros-and-cons_3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Very fast writes</td>
+<td>Data loss risk if cache crashes before DB write</td>
+</tr>
+<tr>
+<td>Reduces DB load (batches writes)</td>
+<td>Complex to implement</td>
+</tr>
+<tr>
+<td>Good for write-heavy apps</td>
+<td>Eventual consistency</td>
+</tr>
+<tr>
+<td>Database doesn't get hammered</td>
+<td>Need to handle failure cases</td>
+</tr>
+<tr>
+<td>Handles write bursts gracefully</td>
+<td>Queue can grow if DB is slow</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-cache-warming-pre-loading">5. Cache Warming (Pre-loading)<a class="headerlink" href="#5-cache-warming-pre-loading" title="Permanent link">&para;</a></h2>
+<p>Load frequently used data into the cache <strong>before</strong> users request it. Not a read/write pattern—it's a startup or scheduled strategy.</p>
+<h3 id="how-it-works_4">How It Works<a class="headerlink" href="#how-it-works_4" title="Permanent link">&para;</a></h3>
+<p>App starts up (or a scheduled job runs) → Load top N products, popular categories, config, etc. into Redis → When users arrive, cache is already warm.</p>
+<h3 id="code-example_2">Code Example<a class="headerlink" href="#code-example_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nd">@PostConstruct</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">warmCache</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span><span class="w"> </span><span class="n">popular</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">database</span><span class="p">.</span><span class="na">getTopProducts</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Product</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">popular</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">        </span><span class="n">redis</span><span class="p">.</span><span class="na">setex</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="na">getId</span><span class="p">(),</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span><span class="w"> </span><span class="n">serialize</span><span class="p">(</span><span class="n">p</span><span class="p">));</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Cache warmed with {} products&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">popular</span><span class="p">.</span><span class="na">size</span><span class="p">());</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="when-to-use">When to Use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h3>
+<ul>
+<li>After app restart</li>
+<li>After Redis restart</li>
+<li>Before a known traffic spike (e.g., sale starts at 10 AM, warm at 9:30 AM)</li>
+<li>For data you <strong>know</strong> will be requested often</li>
+</ul>
+<hr />
+<h2 id="6-refresh-ahead">6. Refresh-Ahead<a class="headerlink" href="#6-refresh-ahead" title="Permanent link">&para;</a></h2>
+<p>Proactively refresh the cache <strong>before</strong> TTL expires. A background thread or scheduler checks keys that are about to expire and refreshes them. Users rarely see a cache miss.</p>
+<h3 id="how-it-works_5">How It Works<a class="headerlink" href="#how-it-works_5" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Key has TTL of 10 minutes.</li>
+<li>At 8 minutes (or when TTL &lt; 2 min), a background job triggers.</li>
+<li>The job fetches fresh data from the database and updates the cache.</li>
+<li>TTL resets. User requests keep hitting a warm cache.</li>
+</ol>
+<h3 id="benefits-over-cache-aside">Benefits Over Cache-Aside<a class="headerlink" href="#benefits-over-cache-aside" title="Permanent link">&para;</a></h3>
+<p>In Cache-Aside, when TTL expires, the first request pays the cost (cache miss, DB query). With Refresh-Ahead, the refresh happens in the background. Users get fast responses. No spike when popular keys expire.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nd">@Scheduled</span><span class="p">(</span><span class="n">fixedRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60000</span><span class="p">)</span><span class="w">  </span><span class="c1">// Every minute</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">refreshAhead</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">keys</span><span class="p">(</span><span class="s">&quot;product:*&quot;</span><span class="p">);</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">keys</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">ttl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">getExpire</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ttl</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ttl</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">120</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// Expires in &lt; 2 min</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">key</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">            </span><span class="n">Product</span><span class="w"> </span><span class="n">fresh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">database</span><span class="p">.</span><span class="na">getProduct</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">            </span><span class="n">redis</span><span class="p">.</span><span class="na">setex</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="mi">600</span><span class="p">,</span><span class="w"> </span><span class="n">serialize</span><span class="p">(</span><span class="n">fresh</span><span class="p">));</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="p">}</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">When to use</p>
+<p>High-traffic product pages, config that changes rarely. Avoids cache stampede. Slightly more complex than Cache-Aside.</p>
+</div>
+<hr />
+<h2 id="7-cache-versioning">7. Cache Versioning<a class="headerlink" href="#7-cache-versioning" title="Permanent link">&para;</a></h2>
+<p>Put a version number in the cache key. When your schema or data format changes, use a new version. Old keys expire naturally. No big-bang invalidation.</p>
+<h3 id="how-it-works_6">How It Works<a class="headerlink" href="#how-it-works_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>product:101:v1   →  Old format (e.g., {name, price})
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>product:101:v2   →  New format (e.g., {name, price, discount})
+</code></pre></div>
+<p>When you roll out v2, new requests use <code>product:101:v2</code>. Old keys <code>product:101:v1</code> stay until TTL. No need to delete them. Gradual rollout.</p>
+<h3 id="useful-for-schema-changes">Useful for Schema Changes<a class="headerlink" href="#useful-for-schema-changes" title="Permanent link">&para;</a></h3>
+<p>You add a new field to the product model. Old cache entries don't have it. Instead of invalidating everything, bump the version. New cache entries use the new schema.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">CACHE_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">String</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;:v&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">CACHE_VERSION</span><span class="p">;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Rolling out new versions</p>
+<p>Deploy code that reads both v2 and v3. Then switch writes to v3. After TTL, v2 keys disappear. Clean.</p>
+</div>
+<hr />
+<h2 id="8-multi-level-caching">8. Multi-Level Caching<a class="headerlink" href="#8-multi-level-caching" title="Permanent link">&para;</a></h2>
+<p>Use multiple cache layers. L1 (local, in-process) → L2 (Redis) → L3 (Database). Each level is faster but smaller. L1 avoids network for hot data.</p>
+<h3 id="when-to-use_1">When to Use<a class="headerlink" href="#when-to-use_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Very hot keys (e.g., top 100 products).</li>
+<li>High Redis latency (e.g., Redis in another region).</li>
+<li>Reduce Redis load.</li>
+</ul>
+<h3 id="spring-boot-example">Spring Boot Example<a class="headerlink" href="#spring-boot-example" title="Permanent link">&para;</a></h3>
+<p>Use Caffeine for L1 (local) and Redis for L2. Check L1 first, then L2, then DB.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">// L1: Caffeine (in-memory, per instance)</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">Cache</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Product</span><span class="o">&gt;</span><span class="w"> </span><span class="n">l1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Caffeine</span><span class="p">.</span><span class="na">newBuilder</span><span class="p">()</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="p">.</span><span class="na">maximumSize</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="p">.</span><span class="na">expireAfterWrite</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">MINUTES</span><span class="p">)</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1">// L2: Redis (shared across instances)</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1">// In your service:</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="kd">public</span><span class="w"> </span><span class="n">Product</span><span class="w"> </span><span class="nf">getProduct</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">    </span><span class="n">Product</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l1</span><span class="p">.</span><span class="na">getIfPresent</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForValue</span><span class="p">().</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="w">        </span><span class="n">l1</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">database</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="w">    </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForValue</span><span class="p">().</span><span class="na">set</span><span class="p">(</span><span class="s">&quot;product:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMinutes</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="w">    </span><span class="n">l1</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a><span class="p">}</span>
+</code></pre></div>
+<p>L1 is checked first. On miss, L2 (Redis). On miss, database. Write-invalidate must clear both L1 and L2.</p>
+<hr />
+<h2 id="real-production-example-amazon-product-page">Real Production Example: Amazon Product Page<a class="headerlink" href="#real-production-example-amazon-product-page" title="Permanent link">&para;</a></h2>
+<p>How might Amazon cache a product detail page? It's a mix of patterns.</p>
+<p><strong>Product info (name, description, images):</strong> Cache-Aside. Cached for 15–60 minutes. Invalidated when seller updates. Key: <code>product:{id}</code>.</p>
+<p><strong>Price:</strong> Often <strong>not</strong> cached for long. Or cached with short TTL (seconds). Price can change (dynamic pricing, flash deals). Some parts of the page are real-time.</p>
+<p><strong>Reviews:</strong> Cache-Aside. Cached for 5–15 minutes. Key: <code>product:{id}:reviews</code>. Invalidated when new review is added (or TTL).</p>
+<p><strong>"Frequently bought together":</strong> Cache-Aside or Refresh-Ahead. Computed from purchase history. Expensive to compute. Cached for hours. Refresh-Ahead keeps it warm.</p>
+<p><strong>"Customers who viewed this":</strong> Similar to reviews. Cached. Eventual consistency is fine.</p>
+<p><strong>Summary:</strong> One page uses multiple cache keys and TTLs. Product info: long TTL. Price: short or real-time. Reviews: medium TTL. Recommendations: long TTL with Refresh-Ahead. That's how big e-commerce sites do it.</p>
+<hr />
+<h2 id="what-pattern-does-your-favorite-company-use">What Pattern Does Your Favorite Company Use?<a class="headerlink" href="#what-pattern-does-your-favorite-company-use" title="Permanent link">&para;</a></h2>
+<p><strong>E-commerce (Amazon, Flipkart):</strong> Mostly <strong>Cache-Aside</strong> for product data. Read-heavy. Products don't change every second. On product update, they invalidate. They use <strong>Cache Warming</strong> before big sales.</p>
+<p><strong>Social media (Instagram, Twitter):</strong> <strong>Cache-Aside</strong> for feeds and profiles. <strong>Write-Behind</strong> for some analytics (like counts, engagement metrics). They need fast writes for counts; eventual consistency is fine.</p>
+<p><strong>Banking / Finance:</strong> <strong>Write-Through</strong> for account balances and transactions. Data must always be fresh. They can't afford stale cache.</p>
+<p><strong>Netflix / Streaming:</strong> <strong>Cache-Aside</strong> + <strong>Cache Warming</strong>. They pre-compute recommendations and popular content. Heavy use of CDN (which is also a cache) for video. Redis for metadata.</p>
+<p><strong>Uber / Ola:</strong> <strong>Cache-Aside</strong> for ride data, driver locations. <strong>Write-Behind</strong> for trip logs and analytics. Real-time location might use a different system (e.g., in-memory stores with pub/sub).</p>
+<hr />
+<h2 id="pattern-comparison-detailed">Pattern Comparison (Detailed)<a class="headerlink" href="#pattern-comparison-detailed" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>┌─────────────────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>│                         Pattern Comparison                                   │
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>├─────────────────┬───────────┬───────────┬──────────────────┬───────────────┤
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>│ Pattern         │ Read Perf │ Write Perf│ Data Freshness    │ Complexity    │
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>├─────────────────┼───────────┼───────────┼──────────────────┼───────────────┤
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>│ Cache-Aside     │ Fast*     │ Normal    │ Can be stale      │ Low           │
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>│ Read-Through    │ Fast*     │ Normal    │ Can be stale      │ Low (in lib)  │
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>│ Write-Through   │ Fast      │ Slow     │ Always fresh      │ Medium        │
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>│ Write-Behind    │ Fast      │ Very Fast │ Fresh**           │ High          │
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>│ Cache Warming   │ Fast      │ N/A      │ Depends on TTL    │ Low           │
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>└─────────────────┴───────────┴───────────┴──────────────────┴───────────────┘
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>* After first request (cold miss)
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>** Risk of data loss if cache crashes before DB write
+</code></pre></div>
+<h3 id="when-to-use-which">When to Use Which<a class="headerlink" href="#when-to-use-which" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Recommended Pattern</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>General-purpose caching</td>
+<td><strong>Cache-Aside</strong></td>
+<td>Simple, flexible, works for most apps</td>
+</tr>
+<tr>
+<td>Read-heavy workload</td>
+<td>Cache-Aside or Read-Through</td>
+<td>Minimize DB reads</td>
+</tr>
+<tr>
+<td>Write-heavy workload</td>
+<td><strong>Write-Behind</strong></td>
+<td>Batch writes, reduce DB load</td>
+</tr>
+<tr>
+<td>Data must always be fresh</td>
+<td><strong>Write-Through</strong></td>
+<td>Cache and DB in sync</td>
+</tr>
+<tr>
+<td>App just started</td>
+<td><strong>Cache Warming</strong> + Cache-Aside</td>
+<td>Avoid cold start spike</td>
+</tr>
+<tr>
+<td>Banking, finance</td>
+<td><strong>Write-Through</strong></td>
+<td>No stale balances</td>
+</tr>
+<tr>
+<td>Analytics, logs</td>
+<td><strong>Write-Behind</strong></td>
+<td>High write volume, eventual consistency OK</td>
+</tr>
+<tr>
+<td>Most interview answers</td>
+<td><strong>Cache-Aside</strong></td>
+<td>Safe default, easy to explain</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Who writes to cache?</th>
+<th>DB write timing</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cache-Aside</td>
+<td>App</td>
+<td>App writes to DB, deletes cache</td>
+<td>General use</td>
+</tr>
+<tr>
+<td>Read-Through</td>
+<td>Cache layer</td>
+<td>App writes to DB</td>
+<td>Cleaner code</td>
+</tr>
+<tr>
+<td>Write-Through</td>
+<td>Cache layer</td>
+<td>Synchronous (with cache)</td>
+<td>Data consistency</td>
+</tr>
+<tr>
+<td>Write-Behind</td>
+<td>Cache layer</td>
+<td>Asynchronous (batched)</td>
+<td>Write-heavy apps</td>
+</tr>
+<tr>
+<td>Cache Warming</td>
+<td>App (on startup)</td>
+<td>N/A</td>
+<td>Avoiding cold starts</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>You're building an e-commerce product page. Which pattern would you use? Why? Walk through one read and one write.</p>
+</li>
+<li>
+<p>You're building a real-time analytics dashboard (lots of writes, few reads). Which pattern fits best? What happens if Redis crashes?</p>
+</li>
+<li>
+<p>Your app just restarted and users are complaining about slow responses. What pattern helps here? How would you implement it?</p>
+</li>
+<li>
+<p>Explain Cache-Aside in 3 sentences (practice for interviews).</p>
+</li>
+<li>
+<p><strong>Scenario:</strong> You're building a banking app. User transfers money. Should you use Write-Through or Write-Behind? Why?</p>
+</li>
+<li>
+<p><strong>Scenario:</strong> You're building a social media feed. New posts are written frequently. Reads are 100x more than writes. Which pattern? Why?</p>
+</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../redis-with-springboot/">Redis with Spring Boot</a> - Write real code!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

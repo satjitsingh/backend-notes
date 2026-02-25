@@ -1,0 +1,3351 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/redis/real-world-usecases/">
+      
+      
+        <link rel="prev" href="../caching-patterns/">
+      
+      
+        <link rel="next" href="../performance-best-practices/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Real-World Use Cases - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#real-world-use-cases" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Real-World Use Cases
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#redis-is-everywhere" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Is Everywhere
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-caching-the-1-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Caching (The #1 Use Case)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Caching (The #1 Use Case)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-session-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Session Storage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Session Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Rate Limiting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Rate Limiting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-leaderboards-rankings" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Leaderboards &amp; Rankings
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Leaderboards & Rankings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-real-time-analytics-counters" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Real-Time Analytics &amp; Counters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Real-Time Analytics & Counters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-distributed-locking" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Distributed Locking
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Distributed Locking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-message-queue-lightweight" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Message Queue (Lightweight)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Message Queue (Lightweight)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-pubsub-real-time-broadcasting" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Pub/Sub (Real-Time Broadcasting)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Pub/Sub (Real-Time Broadcasting)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-geospatial-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Geospatial Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Geospatial Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-feature-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Feature Flags
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Feature Flags">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-shopping-cart" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Shopping Cart
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Shopping Cart">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-redis-is-better-than-session-or-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Redis Is Better Than Session or DB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-api-response-caching-with-cdn-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. API Response Caching with CDN Fallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. API Response Caching with CDN Fallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-decision-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Case Decision Matrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#redis-is-everywhere" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Is Everywhere
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-caching-the-1-use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Caching (The #1 Use Case)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Caching (The #1 Use Case)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-session-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Session Storage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Session Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Rate Limiting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Rate Limiting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-leaderboards-rankings" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Leaderboards &amp; Rankings
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Leaderboards & Rankings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-real-time-analytics-counters" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Real-Time Analytics &amp; Counters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Real-Time Analytics & Counters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-distributed-locking" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Distributed Locking
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Distributed Locking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-message-queue-lightweight" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Message Queue (Lightweight)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Message Queue (Lightweight)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-pubsub-real-time-broadcasting" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Pub/Sub (Real-Time Broadcasting)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Pub/Sub (Real-Time Broadcasting)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-geospatial-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Geospatial Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Geospatial Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-feature-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Feature Flags
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Feature Flags">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-shopping-cart" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Shopping Cart
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Shopping Cart">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-redis-is-better-than-session-or-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Redis Is Better Than Session or DB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-api-response-caching-with-cdn-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. API Response Caching with CDN Fallback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. API Response Caching with CDN Fallback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-story_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Story
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-redis-solution_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Redis Solution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works-step-by-step_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-this_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses This
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-decision-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Case Decision Matrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="real-world-use-cases">Real-World Use Cases<a class="headerlink" href="#real-world-use-cases" title="Permanent link">&para;</a></h1>
+<h2 id="redis-is-everywhere">Redis Is Everywhere<a class="headerlink" href="#redis-is-everywhere" title="Permanent link">&para;</a></h2>
+<p>Redis isn't just a toy for tutorials. It powers features you use every day — from the Instagram feed on your phone to the Uber driver tracking on your screen. This page walks through the most important real-world use cases with detailed stories and explanations.</p>
+<hr />
+<h2 id="1-caching-the-1-use-case">1. Caching (The #1 Use Case)<a class="headerlink" href="#1-caching-the-1-use-case" title="Permanent link">&para;</a></h2>
+<h3 id="the-story">The Story<a class="headerlink" href="#the-story" title="Permanent link">&para;</a></h3>
+<p>You work at Flipkart. The product page for "iPhone 15 Pro" gets 50,000 views per minute during a sale. Every view triggers a database query: product details, reviews, ratings, seller info. That's 50,000 queries per minute for the <strong>same data</strong>.</p>
+<p>Your database can handle maybe 5,000 queries per second before it slows down. You're hitting 833 queries per second just for ONE product. You have thousands of products. The database is drowning.</p>
+<h3 id="the-redis-solution">The Redis Solution<a class="headerlink" href="#the-redis-solution" title="Permanent link">&para;</a></h3>
+<p>Cache the product page data in Redis.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SETEX<span class="w"> </span>product:iphone15pro<span class="w"> </span><span class="m">600</span><span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;iPhone 15 Pro&quot;,&quot;price&quot;:134900,...}&#39;</span>
+</code></pre></div>
+<ul>
+<li>1st request: Cache miss → query database → store in Redis → return to user (45ms)</li>
+<li>2nd through 50,000th request: Cache hit → return from Redis (0.3ms)</li>
+</ul>
+<p>Database load: 1 query instead of 50,000. Response time: 150x faster.</p>
+<h3 id="how-it-works-step-by-step">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step" title="Permanent link">&para;</a></h3>
+<ol>
+<li>User requests product page for iPhone 15 Pro.</li>
+<li>App checks Redis: <code>GET product:iphone15pro</code></li>
+<li><strong>Cache hit:</strong> Redis returns the JSON. App sends it to the user. Done. No database.</li>
+<li><strong>Cache miss:</strong> Redis returns nil. App queries the database.</li>
+<li>App gets product data from DB. App writes to Redis: <code>SETEX product:iphone15pro 600 '{"name":"iPhone 15 Pro",...}'</code></li>
+<li>App returns the data to the user.</li>
+<li>Next 50,000 requests hit the cache. No database load.</li>
+</ol>
+<h3 id="anti-patterns">Anti-Patterns<a class="headerlink" href="#anti-patterns" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't cache everything.</strong> Cache only hot data.</p>
+</li>
+<li>
+<p><strong>Don't forget TTL.</strong> Cache without expiry = stale data forever.</p>
+</li>
+<li>
+<p><strong>Don't cache user-specific data with a shared key.</strong> If the key is the same for all users but the data differs per user, you'll serve wrong data.</p>
+</li>
+</ul>
+<h3 id="who-uses-this">Who Uses This<a class="headerlink" href="#who-uses-this" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Amazon</strong>: Caches product details, recommendations, pricing</li>
+<li><strong>Netflix</strong>: Caches movie metadata, thumbnails, user preferences</li>
+<li><strong>Flipkart/Myntra</strong>: Caches product listings, search results, filter counts</li>
+<li><strong>Walmart</strong>: Caches product pages, inventory counts, pricing for millions of SKUs</li>
+</ul>
+<hr />
+<h2 id="2-session-storage">2. Session Storage<a class="headerlink" href="#2-session-storage" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_1">The Story<a class="headerlink" href="#the-story_1" title="Permanent link">&para;</a></h3>
+<p>You run a banking app. A user logs in on their phone. Their session (who they are, what permissions they have, their account details) is stored in your server's memory. Everything works.</p>
+<p>Then your DevOps team deploys a new version. The server restarts. The session is gone. The user is logged out mid-transaction. They're furious.</p>
+<p>Or worse: you have 3 servers behind a load balancer. Request 1 goes to Server A (which has the session). Request 2 goes to Server B (which doesn't). The user sees "Please log in again." Terrible experience.</p>
+<h3 id="the-redis-solution_1">The Redis Solution<a class="headerlink" href="#the-redis-solution_1" title="Permanent link">&para;</a></h3>
+<p>Store sessions in Redis instead of server memory.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SETEX<span class="w"> </span>session:token:abc123<span class="w"> </span><span class="m">1800</span><span class="w"> </span><span class="s1">&#39;{&quot;userId&quot;:42,&quot;role&quot;:&quot;admin&quot;,&quot;cartItems&quot;:3}&#39;</span>
+</code></pre></div>
+<ul>
+<li>All servers read from the same Redis. No session mismatch.</li>
+<li>Server restarts? Sessions are still in Redis.</li>
+<li>Session expires after 30 minutes of inactivity (TTL).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>┌──────────┐       ┌──────────┐       ┌──────────┐
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>│ Server A │──────▶│          │◀──────│ Server C │
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>└──────────┘       │  Redis   │       └──────────┘
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>┌──────────┐──────▶│(sessions)│
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│ Server B │       │          │
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>└──────────┘       └──────────┘
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>All servers share the same session store!
+</code></pre></div>
+<h3 id="how-it-works-step-by-step_1">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step_1" title="Permanent link">&para;</a></h3>
+<ol>
+<li>User logs in. Server generates a session token (e.g., UUID).</li>
+<li>Server stores session data in Redis: <code>SETEX session:token:abc123 1800 '{"userId":42,"role":"admin"}'</code></li>
+<li>Server sends the token to the client (cookie or response header).</li>
+<li>Next request: User sends the token. Request goes to Server B (load balancer).</li>
+<li>Server B: <code>GET session:token:abc123</code> from Redis. Gets the session. Knows user 42, role admin.</li>
+<li>Server B processes the request. No "please log in again" — session is shared.</li>
+<li>After 30 minutes of no activity, TTL expires. Key is deleted. User must log in again.</li>
+</ol>
+<h3 id="anti-patterns_1">Anti-Patterns<a class="headerlink" href="#anti-patterns_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't store session in server memory.</strong> It's lost on restart. Use Redis.</p>
+</li>
+<li>
+<p><strong>Don't store huge objects in session.</strong> Keep it small. Session is read on every request.</p>
+</li>
+<li>
+<p><strong>Don't forget to set TTL.</strong> Sessions without expiry = memory leak.</p>
+</li>
+</ul>
+<h3 id="who-uses-this_1">Who Uses This<a class="headerlink" href="#who-uses-this_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>GitHub</strong>: Stores user sessions in Redis for seamless experience across server restarts</li>
+<li><strong>Shopify</strong>: Millions of merchant sessions stored in Redis</li>
+<li><strong>Twitter/X</strong>: Session data for logged-in users</li>
+<li>Every major web app with multiple servers</li>
+</ul>
+<hr />
+<h2 id="3-rate-limiting">3. Rate Limiting<a class="headerlink" href="#3-rate-limiting" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_2">The Story<a class="headerlink" href="#the-story_2" title="Permanent link">&para;</a></h3>
+<p>You run a public API. A malicious user writes a script that sends 10,000 requests per second to your <code>/api/search</code> endpoint. Your servers are overwhelmed. Other users can't search. Your database is hammered.</p>
+<h3 id="the-redis-solution_2">The Redis Solution<a class="headerlink" href="#the-redis-solution_2" title="Permanent link">&para;</a></h3>
+<p>Count requests per user per time window using Redis atomic counters.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># When a request comes from user 42:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>INCR<span class="w"> </span>rate:user:42:minute
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># If this is the first request, set a 60-second expiry:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>EXPIRE<span class="w"> </span>rate:user:42:minute<span class="w"> </span><span class="m">60</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Check the count:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>GET<span class="w"> </span>rate:user:42:minute
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># If &gt; 100, reject with HTTP 429 &quot;Too Many Requests&quot;</span>
+</code></pre></div>
+<p>Why Redis? Because <code>INCR</code> is <strong>atomic</strong>. Even if 100 requests arrive at the exact same millisecond, the counter is accurate. No race conditions. No double-counting.</p>
+<h3 id="how-it-works-step-by-step_2">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step_2" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Request arrives from user 42. App extracts user ID from token or IP.</li>
+<li>App runs: <code>INCR rate:user:42:minute</code></li>
+<li>If the key was just created (Redis returns 1), app runs: <code>EXPIRE rate:user:42:minute 60</code></li>
+<li>App: <code>GET rate:user:42:minute</code> → returns count.</li>
+<li>If count &gt; 100: Return HTTP 429 "Too Many Requests". Reject.</li>
+<li>If count &lt;= 100: Process the request. Allow.</li>
+<li>After 60 seconds, key expires. Next minute starts fresh.</li>
+</ol>
+<h3 id="anti-patterns_2">Anti-Patterns<a class="headerlink" href="#anti-patterns_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't use a database for rate limiting.</strong> DB updates are slow. Redis INCR is microseconds.</p>
+</li>
+<li>
+<p><strong>Don't forget TTL.</strong> Without EXPIRE, the counter never resets. User gets blocked forever.</p>
+</li>
+<li>
+<p><strong>Don't rate limit by IP only.</strong> Use user ID when possible. IPs can be shared (NAT).</p>
+</li>
+</ul>
+<h3 id="who-uses-this_2">Who Uses This<a class="headerlink" href="#who-uses-this_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>GitHub API</strong>: 60 requests per hour for unauthenticated, 5000 for authenticated</li>
+<li><strong>Twitter API</strong>: Rate limits per 15-minute window</li>
+<li><strong>Stripe</strong>: Rate limits API calls per account</li>
+<li><strong>Twilio</strong>: Rate limits SMS and voice API calls per account</li>
+</ul>
+<hr />
+<h2 id="4-leaderboards-rankings">4. Leaderboards &amp; Rankings<a class="headerlink" href="#4-leaderboards-rankings" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_3">The Story<a class="headerlink" href="#the-story_3" title="Permanent link">&para;</a></h3>
+<p>You're building a gaming app. Players earn points. You need to show:
+- Top 100 players globally
+- A player's rank
+- Players ranked 50-60</p>
+<p>With a relational database, ranking millions of players requires sorting the entire table. That's slow.</p>
+<h3 id="the-redis-solution_3">The Redis Solution<a class="headerlink" href="#the-redis-solution_3" title="Permanent link">&para;</a></h3>
+<p>Redis <strong>Sorted Sets</strong> were literally designed for this.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Add player scores</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>ZADD<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">2500</span><span class="w"> </span><span class="s2">&quot;player:alice&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>ZADD<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">4200</span><span class="w"> </span><span class="s2">&quot;player:bob&quot;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>ZADD<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">3100</span><span class="w"> </span><span class="s2">&quot;player:charlie&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>ZADD<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">1800</span><span class="w"> </span><span class="s2">&quot;player:diana&quot;</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Top 3 players (highest score first)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>ZREVRANGE<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>WITHSCORES
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1"># 1) &quot;player:bob&quot;      4200</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1"># 2) &quot;player:charlie&quot;  3100</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># 3) &quot;player:alice&quot;    2500</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="c1"># Alice&#39;s rank (0-based, highest = 0)</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>ZREVRANK<span class="w"> </span>leaderboard<span class="w"> </span><span class="s2">&quot;player:alice&quot;</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="c1"># (integer) 2   ← 3rd place</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="c1"># Update score (player earns more points)</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>ZINCRBY<span class="w"> </span>leaderboard<span class="w"> </span><span class="m">2000</span><span class="w"> </span><span class="s2">&quot;player:alice&quot;</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="c1"># Alice now has 4500, she&#39;s #1!</span>
+</code></pre></div>
+<p>All these operations are <strong>O(log N)</strong>. Even with 10 million players, ranking is instant.</p>
+<h3 id="how-it-works-step-by-step_3">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step_3" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Player Alice finishes a game. She earns 2500 points.</li>
+<li>Game server: <code>ZADD leaderboard 2500 "player:alice"</code></li>
+<li>Player Bob earns 4200. <code>ZADD leaderboard 4200 "player:bob"</code></li>
+<li>User opens leaderboard page. App: <code>ZREVRANGE leaderboard 0 99 WITHSCORES</code></li>
+<li>Redis returns top 100 players. App renders the list.</li>
+<li>User clicks "My rank". App: <code>ZREVRANK leaderboard "player:alice"</code> → returns 2 (3rd place).</li>
+<li>Alice plays again. <code>ZINCRBY leaderboard 2000 "player:alice"</code>. Her score updates. Leaderboard reflects it on next fetch.</li>
+</ol>
+<h3 id="anti-patterns_3">Anti-Patterns<a class="headerlink" href="#anti-patterns_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't use a database with ORDER BY for real-time leaderboards.</strong> It's slow at scale. Sorted Sets are built for this.</p>
+</li>
+<li>
+<p><strong>Don't store the entire player object in the member.</strong> Store ID. Fetch details from DB when needed.</p>
+</li>
+<li>
+<p><strong>Don't forget to handle ties.</strong> Same score = same rank. Use a secondary sort (e.g., timestamp) if needed.</p>
+</li>
+</ul>
+<h3 id="who-uses-this_3">Who Uses This<a class="headerlink" href="#who-uses-this_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>PUBG/Free Fire</strong>: Real-time leaderboards</li>
+<li><strong>Stack Overflow</strong>: Reputation rankings</li>
+<li><strong>Duolingo</strong>: Weekly leaderboards per league</li>
+<li><strong>Discord</strong>: Server member activity rankings</li>
+</ul>
+<hr />
+<h2 id="5-real-time-analytics-counters">5. Real-Time Analytics &amp; Counters<a class="headerlink" href="#5-real-time-analytics-counters" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_4">The Story<a class="headerlink" href="#the-story_4" title="Permanent link">&para;</a></h3>
+<p>You're YouTube. You need to show "1,523,847 views" on a video page. This number increases by hundreds every second. You can't query the database for a <code>COUNT(*)</code> on every page view — that would be insanely slow.</p>
+<h3 id="the-redis-solution_4">The Redis Solution<a class="headerlink" href="#the-redis-solution_4" title="Permanent link">&para;</a></h3>
+<p>Use Redis as a real-time counter.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Every time someone watches the video:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>INCR<span class="w"> </span>video:views:abc123
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># To display the count:</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>GET<span class="w"> </span>video:views:abc123
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># &quot;1523847&quot;</span>
+</code></pre></div>
+<p><code>INCR</code> is atomic, single-threaded, and takes microseconds. It can handle thousands of increments per second without breaking a sweat.</p>
+<p>For more complex analytics (unique visitors):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Track unique visitors using HyperLogLog (probabilistic, very memory efficient)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>PFADD<span class="w"> </span>visitors:today:page:home<span class="w"> </span><span class="s2">&quot;user:42&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>PFADD<span class="w"> </span>visitors:today:page:home<span class="w"> </span><span class="s2">&quot;user:99&quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>PFADD<span class="w"> </span>visitors:today:page:home<span class="w"> </span><span class="s2">&quot;user:42&quot;</span><span class="w">   </span><span class="c1"># Duplicate, not counted</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>PFCOUNT<span class="w"> </span>visitors:today:page:home
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># (integer) 2</span>
+</code></pre></div>
+<p>HyperLogLog can count <strong>millions</strong> of unique items using only <strong>12 KB of memory</strong>.</p>
+<h3 id="who-uses-this_4">Who Uses This<a class="headerlink" href="#who-uses-this_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>YouTube</strong>: View counts</li>
+<li><strong>Twitter/X</strong>: Like, retweet, and reply counts</li>
+<li><strong>Instagram</strong>: Story view counts</li>
+</ul>
+<hr />
+<h2 id="6-distributed-locking">6. Distributed Locking<a class="headerlink" href="#6-distributed-locking" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_5">The Story<a class="headerlink" href="#the-story_5" title="Permanent link">&para;</a></h3>
+<p>You run an e-commerce site. User clicks "Place Order." Due to a network glitch, the request is sent twice. Without a lock, two orders are created. User gets charged twice. Bad.</p>
+<h3 id="the-redis-solution_5">The Redis Solution<a class="headerlink" href="#the-redis-solution_5" title="Permanent link">&para;</a></h3>
+<p>Use Redis as a distributed lock.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Try to acquire lock (NX = only if not exists, EX = expire in 10 seconds)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>SET<span class="w"> </span>lock:order:user:42<span class="w"> </span><span class="s2">&quot;server-1&quot;</span><span class="w"> </span>NX<span class="w"> </span>EX<span class="w"> </span><span class="m">10</span>
+</code></pre></div>
+<p>If the command returns <code>OK</code>, you got the lock. Process the order. When done, delete the lock.</p>
+<p>If it returns <code>nil</code>, someone else has the lock. Don't process. The duplicate request is blocked.</p>
+<p>The <code>EX 10</code> is a safety net. If the server crashes while holding the lock, it auto-releases after 10 seconds.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Request 1: SET lock:order:user:42 ... NX → OK (got lock, processes order)
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Request 2: SET lock:order:user:42 ... NX → nil (lock taken, skip)
+</code></pre></div>
+<h3 id="who-uses-this_5">Who Uses This<a class="headerlink" href="#who-uses-this_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Payment systems</strong>: Prevent double charges</li>
+<li><strong>Inventory systems</strong>: Prevent overselling (only 1 left, 2 people click "buy")</li>
+<li><strong>Scheduled jobs</strong>: Ensure only one server runs a cron job</li>
+</ul>
+<hr />
+<h2 id="7-message-queue-lightweight">7. Message Queue (Lightweight)<a class="headerlink" href="#7-message-queue-lightweight" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_6">The Story<a class="headerlink" href="#the-story_6" title="Permanent link">&para;</a></h3>
+<p>You need a simple task queue. Workers pick up tasks and process them. You don't need the full power of Kafka or RabbitMQ. Just a simple queue.</p>
+<h3 id="the-redis-solution_6">The Redis Solution<a class="headerlink" href="#the-redis-solution_6" title="Permanent link">&para;</a></h3>
+<p>Use Redis Lists as a queue.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Producer: Push tasks to the queue</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>LPUSH<span class="w"> </span>task:queue<span class="w"> </span><span class="s1">&#39;{&quot;type&quot;:&quot;send_email&quot;,&quot;to&quot;:&quot;user@mail.com&quot;}&#39;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>LPUSH<span class="w"> </span>task:queue<span class="w"> </span><span class="s1">&#39;{&quot;type&quot;:&quot;resize_image&quot;,&quot;imageId&quot;:&quot;img123&quot;}&#39;</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># Consumer: Pop tasks from the other end</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>BRPOP<span class="w"> </span>task:queue<span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># Returns the oldest task (FIFO). Blocks until a task is available.</span>
+</code></pre></div>
+<p><code>BRPOP</code> is a <strong>blocking pop</strong>. The consumer waits until a task appears. No polling. No busy-waiting.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Producer ──LPUSH──▶ [task3, task2, task1] ──BRPOP──▶ Consumer
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>            (left)                          (right)
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">When to use Redis vs Kafka for queuing</p>
+<p>Redis queues are great for simple, lightweight task queuing (&lt; 10,000 tasks/sec). For high-throughput event streaming with replay, message retention, and consumer groups, use Kafka.</p>
+</div>
+<h3 id="how-it-works-step-by-step_4">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step_4" title="Permanent link">&para;</a></h3>
+<ol>
+<li>API receives "send email" request. App: <code>LPUSH task:queue '{"type":"send_email","to":"user@mail.com"}'</code></li>
+<li>Task is at the left end of the list. Worker is blocking on: <code>BRPOP task:queue 0</code></li>
+<li>Redis delivers the task to the worker. Worker gets the JSON.</li>
+<li>Worker parses it. Sends the email. Task done.</li>
+<li>Worker calls BRPOP again. Blocks. Waits for next task.</li>
+<li>Multiple workers can run BRPOP. Redis delivers each task to only one worker. Load balanced.</li>
+</ol>
+<h3 id="anti-patterns_4">Anti-Patterns<a class="headerlink" href="#anti-patterns_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't use Redis for mission-critical queues with strict ordering.</strong> If Redis restarts, in-flight tasks can be lost. Use Kafka for that.</p>
+</li>
+<li>
+<p><strong>Don't use LPOP without blocking.</strong> Polling with LPOP wastes CPU. Use BRPOP to block until a task arrives.</p>
+</li>
+<li>
+<p><strong>Don't forget to handle task failures.</strong> If the worker crashes mid-processing, the task is lost. Consider using Redis Streams for acknowledgment.</p>
+</li>
+</ul>
+<h3 id="who-uses-this_6">Who Uses This<a class="headerlink" href="#who-uses-this_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Celery</strong>: Uses Redis as a broker for Python task queues</li>
+<li><strong>Sidekiq</strong>: Uses Redis for Ruby background jobs</li>
+<li><strong>Laravel</strong>: Redis queue driver for PHP</li>
+<li><strong>Bull</strong>: Node.js job queue with Redis</li>
+</ul>
+<hr />
+<h2 id="8-pubsub-real-time-broadcasting">8. Pub/Sub (Real-Time Broadcasting)<a class="headerlink" href="#8-pubsub-real-time-broadcasting" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_7">The Story<a class="headerlink" href="#the-story_7" title="Permanent link">&para;</a></h3>
+<p>You're building a live cricket score app. When India hits a six, 500,000 users need to see the updated score instantly.</p>
+<h3 id="the-redis-solution_7">The Redis Solution<a class="headerlink" href="#the-redis-solution_7" title="Permanent link">&para;</a></h3>
+<p>Redis Pub/Sub broadcasts messages to all subscribers in real time.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Subscriber (each user&#39;s connection):</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>SUBSCRIBE<span class="w"> </span>cricket:live:IND_vs_AUS
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Publisher (score update service):</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>PUBLISH<span class="w"> </span>cricket:live:IND_vs_AUS<span class="w"> </span><span class="s1">&#39;{&quot;event&quot;:&quot;SIX&quot;,&quot;score&quot;:&quot;267/4&quot;,&quot;over&quot;:&quot;42.3&quot;}&#39;</span>
+</code></pre></div>
+<p>Every subscriber receives the message instantly. No polling. No database queries.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Publisher ──PUBLISH──▶ Redis Channel ──▶ Subscriber 1 (gets message instantly)
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>                                    ──▶ Subscriber 2 (gets message instantly)
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>                                    ──▶ Subscriber 3 (gets message instantly)
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>                                    ──▶ ... 500,000 subscribers
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Limitation</p>
+<p>Redis Pub/Sub is fire-and-forget. If a subscriber is offline, it misses the message. There's no message history. For durable messaging, use Kafka or Redis Streams.</p>
+</div>
+<h3 id="how-it-works-step-by-step_5">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step_5" title="Permanent link">&para;</a></h3>
+<ol>
+<li>500,000 users open the cricket app. Each connection subscribes: <code>SUBSCRIBE cricket:live:IND_vs_AUS</code></li>
+<li>Score update service receives "India hits a six" from the data feed.</li>
+<li>Service: <code>PUBLISH cricket:live:IND_vs_AUS '{"event":"SIX","score":"267/4"}'</code></li>
+<li>Redis receives the message. Redis sends it to all 500,000 subscribers.</li>
+<li>Each subscriber's connection receives the message. App pushes it to the user's browser via WebSocket.</li>
+<li>All users see the update within milliseconds. No polling. No database.</li>
+</ol>
+<h3 id="anti-patterns_5">Anti-Patterns<a class="headerlink" href="#anti-patterns_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't use Pub/Sub when you need message history.</strong> If a subscriber reconnects, it gets nothing. Use Redis Streams or Kafka.</p>
+</li>
+<li>
+<p><strong>Don't use Pub/Sub for critical commands.</strong> If the subscriber is down, the message is lost. Use a queue for "must process" messages.</p>
+</li>
+<li>
+<p><strong>Don't have one subscriber do heavy work.</strong> Each message is sent to all subscribers. If one is slow, it doesn't block others, but that subscriber will fall behind.</p>
+</li>
+</ul>
+<h3 id="who-uses-this_7">Who Uses This<a class="headerlink" href="#who-uses-this_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Live score apps</strong>: Cricbuzz, ESPN</li>
+<li><strong>Chat applications</strong>: Real-time message delivery</li>
+<li><strong>Collaborative editing</strong>: Google Docs-style presence</li>
+<li><strong>Sports betting platforms</strong>: Live odds updates</li>
+</ul>
+<hr />
+<h2 id="9-geospatial-data">9. Geospatial Data<a class="headerlink" href="#9-geospatial-data" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_8">The Story<a class="headerlink" href="#the-story_8" title="Permanent link">&para;</a></h3>
+<p>You're building Uber. User opens the app and asks: "Show me drivers within 2 km."</p>
+<h3 id="the-redis-solution_8">The Redis Solution<a class="headerlink" href="#the-redis-solution_8" title="Permanent link">&para;</a></h3>
+<p>Redis has built-in geospatial support.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Add driver locations (longitude, latitude, name)</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>GEOADD<span class="w"> </span>drivers<span class="w"> </span><span class="m">77</span>.2090<span class="w"> </span><span class="m">28</span>.6139<span class="w"> </span><span class="s2">&quot;driver:101&quot;</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>GEOADD<span class="w"> </span>drivers<span class="w"> </span><span class="m">77</span>.2100<span class="w"> </span><span class="m">28</span>.6150<span class="w"> </span><span class="s2">&quot;driver:102&quot;</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>GEOADD<span class="w"> </span>drivers<span class="w"> </span><span class="m">77</span>.2300<span class="w"> </span><span class="m">28</span>.6400<span class="w"> </span><span class="s2">&quot;driver:103&quot;</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="c1"># Find drivers within 2 km of user&#39;s location</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>GEORADIUS<span class="w"> </span>drivers<span class="w"> </span><span class="m">77</span>.2095<span class="w"> </span><span class="m">28</span>.6145<span class="w"> </span><span class="m">2</span><span class="w"> </span>km<span class="w"> </span>WITHCOORD<span class="w"> </span>WITHDIST<span class="w"> </span>COUNT<span class="w"> </span><span class="m">5</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="c1"># Returns driver:101 (0.08 km), driver:102 (0.15 km)</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="c1"># driver:103 is too far (3.2 km)</span>
+</code></pre></div>
+<p>This is backed by Sorted Sets internally. Very fast, even with millions of entries.</p>
+<h3 id="how-it-works-step-by-step_6">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step_6" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Driver 101 starts his shift. App: <code>GEOADD drivers 77.2090 28.6139 "driver:101"</code></li>
+<li>Driver moves. App updates: <code>GEOADD drivers 77.2100 28.6145 "driver:101"</code> (overwrites)</li>
+<li>User at (77.2095, 28.6145) requests "Show nearby drivers."</li>
+<li>App: <code>GEORADIUS drivers 77.2095 28.6145 2 km WITHCOORD WITHDIST COUNT 5</code></li>
+<li>Redis returns drivers within 2 km, sorted by distance. Driver 101 is 0.08 km away.</li>
+<li>App displays them on the map. User selects driver 101. Assignment happens.</li>
+</ol>
+<h3 id="anti-patterns_6">Anti-Patterns<a class="headerlink" href="#anti-patterns_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't update location on every GPS tick.</strong> Batch updates. E.g., update every 10 seconds or when the driver moves 50 meters.</p>
+</li>
+<li>
+<p><strong>Don't store driver details in the member.</strong> Store ID. Fetch name, photo, rating from DB when displaying.</p>
+</li>
+<li>
+<p><strong>Don't use GEORADIUS for very large radii.</strong> For "drivers in the city," consider pre-filtering by region first.</p>
+</li>
+</ul>
+<h3 id="who-uses-this_8">Who Uses This<a class="headerlink" href="#who-uses-this_8" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Uber, Ola, Lyft</strong>: Find nearby drivers</li>
+<li><strong>Swiggy, Zomato</strong>: Find nearby restaurants, delivery partners</li>
+<li><strong>Pokemon GO</strong>: Find nearby Pokestops</li>
+<li><strong>Dating apps</strong>: Find nearby users</li>
+</ul>
+<hr />
+<h2 id="10-feature-flags">10. Feature Flags<a class="headerlink" href="#10-feature-flags" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_9">The Story<a class="headerlink" href="#the-story_9" title="Permanent link">&para;</a></h3>
+<p>You want to roll out a new checkout UI to 10% of users. If it causes problems, you want to disable it instantly — without deploying new code.</p>
+<h3 id="the-redis-solution_9">The Redis Solution<a class="headerlink" href="#the-redis-solution_9" title="Permanent link">&para;</a></h3>
+<p>Store feature flags in Redis.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Enable new checkout for 10% of users</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>SET<span class="w"> </span>feature:new_checkout<span class="w"> </span><span class="s1">&#39;{&quot;enabled&quot;:true,&quot;percentage&quot;:10}&#39;</span>
+</code></pre></div>
+<p>Your app checks Redis on each request:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">String</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;feature:new_checkout&quot;</span><span class="p">);</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">shouldShowFeature</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span><span class="w"> </span><span class="n">userId</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="n">showNewCheckout</span><span class="p">();</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="n">showOldCheckout</span><span class="p">();</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="p">}</span>
+</code></pre></div>
+<p>To disable instantly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>SET<span class="w"> </span>feature:new_checkout<span class="w"> </span><span class="s1">&#39;{&quot;enabled&quot;:false}&#39;</span>
+</code></pre></div>
+<p>All servers pick up the change immediately. No deployment. No restart.</p>
+<h3 id="how-it-works-step-by-step_7">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step_7" title="Permanent link">&para;</a></h3>
+<ol>
+<li>DevOps sets flag: <code>SET feature:new_checkout '{"enabled":true,"percentage":10}'</code></li>
+<li>User 42 requests checkout page. App: <code>GET feature:new_checkout</code></li>
+<li>App gets the JSON. Parses it. <code>hash(userId) % 100 &lt; 10</code>? User 42 might be in the 10%.</li>
+<li>If yes: Render new checkout UI. If no: Render old UI.</li>
+<li>Bug found. DevOps: <code>SET feature:new_checkout '{"enabled":false}'</code></li>
+<li>Next request from any user: App fetches again. Gets disabled. All users see old UI. Instant rollback.</li>
+</ol>
+<h3 id="anti-patterns_7">Anti-Patterns<a class="headerlink" href="#anti-patterns_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't cache feature flags in app memory for too long.</strong> You want quick rollback. Cache for a few seconds, or fetch on each request for critical flags.</p>
+</li>
+<li>
+<p><strong>Don't use feature flags for security.</strong> "Admin only" should be enforced in the backend, not by a flag that could be tampered with.</p>
+</li>
+<li>
+<p><strong>Don't have hundreds of flags with complex logic.</strong> Keep it simple. Use a proper feature flag service (LaunchDarkly, etc.) if you need targeting rules.</p>
+</li>
+</ul>
+<h3 id="who-uses-this_9">Who Uses This<a class="headerlink" href="#who-uses-this_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Netflix</strong>: A/B testing, gradual rollouts</li>
+<li><strong>Spotify</strong>: Feature toggles for experiments</li>
+<li><strong>Every modern tech company</strong>: Canary deployments, kill switches</li>
+</ul>
+<hr />
+<h2 id="11-shopping-cart">11. Shopping Cart<a class="headerlink" href="#11-shopping-cart" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_10">The Story<a class="headerlink" href="#the-story_10" title="Permanent link">&para;</a></h3>
+<p>You run an e-commerce site. Users add items to their cart. They might leave and come back later. They might switch devices. The cart must persist. Storing the cart in the database on every add/remove is expensive. Sessions are lost when the server restarts. You need something fast and shared.</p>
+<h3 id="the-redis-solution_10">The Redis Solution<a class="headerlink" href="#the-redis-solution_10" title="Permanent link">&para;</a></h3>
+<p>Store the cart in a Redis Hash. One Hash per user. Field = product ID. Value = quantity.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># User 42 adds 2x product 101, 1x product 205</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>HSET<span class="w"> </span>cart:user:42<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="m">2</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>HSET<span class="w"> </span>cart:user:42<span class="w"> </span><span class="m">205</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="c1"># Get entire cart</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>HGETALL<span class="w"> </span>cart:user:42
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1"># 101 -&gt; 2, 205 -&gt; 1</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="c1"># Update quantity</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>HSET<span class="w"> </span>cart:user:42<span class="w"> </span><span class="m">101</span><span class="w"> </span><span class="m">3</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="c1"># Remove item</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>HDEL<span class="w"> </span>cart:user:42<span class="w"> </span><span class="m">205</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="c1"># Set expiry (cart expires after 7 days of inactivity)</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>EXPIRE<span class="w"> </span>cart:user:42<span class="w"> </span><span class="m">604800</span>
+</code></pre></div>
+<p>Why a Hash? You can add, update, or remove individual items without reading and rewriting the whole cart. Atomic operations. Fast.</p>
+<h3 id="how-it-works-step-by-step_8">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step_8" title="Permanent link">&para;</a></h3>
+<ol>
+<li>User adds "Laptop" (product 101) to cart. App: <code>HINCRBY cart:user:42 101 1</code></li>
+<li>User adds another laptop. <code>HINCRBY cart:user:42 101 1</code> → quantity is 2.</li>
+<li>User opens cart page. App: <code>HGETALL cart:user:42</code> → gets {101: 2, 205: 1}</li>
+<li>App fetches product details (name, price) from DB for 101 and 205. Renders cart.</li>
+<li>User removes product 205. App: <code>HDEL cart:user:42 205</code></li>
+<li>User abandons cart. After 7 days, TTL expires. Key is deleted. Cart is gone.</li>
+</ol>
+<h3 id="why-redis-is-better-than-session-or-db">Why Redis Is Better Than Session or DB<a class="headerlink" href="#why-redis-is-better-than-session-or-db" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>vs Session:</strong> Session is in server memory. Lost on restart. Not shared across servers. Redis is shared and persistent.</li>
+<li><strong>vs Database:</strong> DB write on every add/remove is slow. Redis HSET/HDEL is microseconds. You can sync to DB at checkout if you need analytics.</li>
+</ul>
+<h3 id="anti-patterns_8">Anti-Patterns<a class="headerlink" href="#anti-patterns_8" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't store full product data in the cart.</strong> Store product ID and quantity. Fetch name, price, image from DB when displaying. Product data can change.</p>
+</li>
+<li>
+<p><strong>Don't forget TTL.</strong> Carts should expire. Otherwise, abandoned carts fill memory forever.</p>
+</li>
+<li>
+<p><strong>Don't use a String with JSON for the cart.</strong> A Hash lets you update one item without parsing and rewriting the whole thing. More efficient.</p>
+</li>
+</ul>
+<h3 id="who-uses-this_10">Who Uses This<a class="headerlink" href="#who-uses-this_10" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Amazon</strong>: Cart in Redis for fast add/remove</li>
+<li><strong>Walmart</strong>: Shopping cart with cross-device sync</li>
+<li><strong>Etsy</strong>: Cart persistence for logged-in and guest users</li>
+</ul>
+<hr />
+<h2 id="12-api-response-caching-with-cdn-fallback">12. API Response Caching with CDN Fallback<a class="headerlink" href="#12-api-response-caching-with-cdn-fallback" title="Permanent link">&para;</a></h2>
+<h3 id="the-story_11">The Story<a class="headerlink" href="#the-story_11" title="Permanent link">&para;</a></h3>
+<p>You run a public API. Responses are expensive to compute. You want two layers: L1 = Redis (fast, in your datacenter). L2 = CDN (CloudFront, Cloudflare) at the edge. If Redis has it, serve from Redis. If not, compute, store in Redis, and cache at CDN. Next request from another region might hit the CDN first. Even faster.</p>
+<h3 id="the-redis-solution_11">The Redis Solution<a class="headerlink" href="#the-redis-solution_11" title="Permanent link">&para;</a></h3>
+<p>Redis is your L1 cache. CDN is L2. The flow:</p>
+<ol>
+<li>Request arrives. Check CDN (via Cache-Control headers or CDN config).</li>
+<li>CDN miss → Request hits your origin server.</li>
+<li>Origin checks Redis: <code>GET api:products:list:v2</code></li>
+<li>Redis hit → Return from Redis. Set CDN cache headers (e.g., max-age=300).</li>
+<li>Redis miss → Compute response (query DB, aggregate). Store in Redis: <code>SETEX api:products:list:v2 300 '{"data":[...]}'</code></li>
+<li>Return to client. CDN caches the response. Next request from same region hits CDN. No origin. No Redis.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Request from Delhi:
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>  CDN (Mumbai edge) → miss → Origin → Redis miss → DB → Store Redis → Return
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>  CDN caches it.
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>Next request from Delhi:
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>  CDN (Mumbai edge) → HIT → Return (no origin, no Redis)
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>Request from Bangalore:
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>  CDN (Bangalore edge) → miss → Origin → Redis HIT → Return
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>  CDN caches it.
+</code></pre></div>
+<h3 id="how-it-works-step-by-step_9">How It Works Step by Step<a class="headerlink" href="#how-it-works-step-by-step_9" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Client requests <code>GET /api/products?category=electronics</code></li>
+<li>Request goes to CDN. CDN has a cache key: <code>/api/products?category=electronics</code></li>
+<li>CDN miss. Request forwarded to origin (your API server).</li>
+<li>API server: <code>GET cache:api:products:category:electronics</code> from Redis.</li>
+<li>Redis hit: Return cached JSON. Add header <code>Cache-Control: public, max-age=300</code></li>
+<li>Redis miss: Query DB. Build response. <code>SETEX cache:api:products:category:electronics 300 '{"data":[...]}'</code></li>
+<li>Return response with Cache-Control. CDN stores it for 5 minutes.</li>
+<li>Next request (same URL, within 5 min): CDN serves from edge. Origin never hit.</li>
+</ol>
+<h3 id="anti-patterns_9">Anti-Patterns<a class="headerlink" href="#anti-patterns_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Don't cache user-specific responses at CDN.</strong> CDN is shared. Cache only public, non-personalized data.</p>
+</li>
+<li>
+<p><strong>Don't forget to invalidate.</strong> When products change, invalidate Redis and CDN. Use cache keys with version numbers or tags.</p>
+</li>
+<li>
+<p><strong>Don't set CDN TTL longer than Redis TTL.</strong> If Redis expires first, origin will recompute. That's fine. But if CDN TTL &gt; Redis TTL, you might serve stale data from CDN after Redis has refreshed.</p>
+</li>
+</ul>
+<h3 id="who-uses-this_11">Who Uses This<a class="headerlink" href="#who-uses-this_11" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Stripe</strong>: API response caching with edge caching</li>
+<li><strong>GitHub API</strong>: Cached responses at edge and origin</li>
+<li><strong>Content APIs</strong>: News, weather, stock data with CDN + Redis</li>
+</ul>
+<hr />
+<h2 id="use-case-decision-matrix">Use Case Decision Matrix<a class="headerlink" href="#use-case-decision-matrix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>I need to...</th>
+<th>Use Redis...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Speed up database reads</td>
+<td>Caching (Strings/Hashes with TTL)</td>
+</tr>
+<tr>
+<td>Store user login state</td>
+<td>Sessions (Strings with TTL)</td>
+</tr>
+<tr>
+<td>Limit API abuse</td>
+<td>Rate limiting (INCR + EXPIRE)</td>
+</tr>
+<tr>
+<td>Rank players / items</td>
+<td>Leaderboards (Sorted Sets)</td>
+</tr>
+<tr>
+<td>Count page views, likes</td>
+<td>Counters (INCR)</td>
+</tr>
+<tr>
+<td>Prevent duplicate actions</td>
+<td>Distributed Locks (SET NX EX)</td>
+</tr>
+<tr>
+<td>Simple task queue</td>
+<td>Lists (LPUSH / BRPOP)</td>
+</tr>
+<tr>
+<td>Broadcast real-time updates</td>
+<td>Pub/Sub</td>
+</tr>
+<tr>
+<td>Find nearby drivers/stores</td>
+<td>Geospatial (GEO commands)</td>
+</tr>
+<tr>
+<td>Toggle features on/off</td>
+<td>Feature flags (Strings)</td>
+</tr>
+<tr>
+<td>Store shopping cart</td>
+<td>Hashes (HSET, HGETALL, HDEL)</td>
+</tr>
+<tr>
+<td>Cache API responses with CDN</td>
+<td>Strings + CDN as L2 cache</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Redis Feature</th>
+<th>Companies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Caching</td>
+<td>Strings, Hashes, TTL</td>
+<td>Amazon, Netflix, Flipkart, Walmart</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td>Strings with TTL</td>
+<td>GitHub, Shopify, Twitter</td>
+</tr>
+<tr>
+<td>Rate Limiting</td>
+<td>INCR + EXPIRE</td>
+<td>GitHub API, Twitter API, Stripe, Twilio</td>
+</tr>
+<tr>
+<td>Leaderboards</td>
+<td>Sorted Sets</td>
+<td>PUBG, Stack Overflow, Duolingo, Discord</td>
+</tr>
+<tr>
+<td>Counters</td>
+<td>INCR, HyperLogLog</td>
+<td>YouTube, Instagram, Twitter, Medium</td>
+</tr>
+<tr>
+<td>Dist. Locks</td>
+<td>SET NX EX, Redlock</td>
+<td>Payment systems, inventory</td>
+</tr>
+<tr>
+<td>Task Queues</td>
+<td>Lists (LPUSH/BRPOP)</td>
+<td>Celery, Sidekiq, Bull</td>
+</tr>
+<tr>
+<td>Real-time Broadcast</td>
+<td>Pub/Sub</td>
+<td>Cricbuzz, chat apps, sports betting</td>
+</tr>
+<tr>
+<td>Geospatial</td>
+<td>GEO commands</td>
+<td>Uber, Swiggy, Ola, Pokemon GO</td>
+</tr>
+<tr>
+<td>Feature Flags</td>
+<td>Strings</td>
+<td>Netflix, Spotify, every modern company</td>
+</tr>
+<tr>
+<td>Shopping Cart</td>
+<td>Hashes</td>
+<td>Amazon, Walmart, Etsy</td>
+</tr>
+<tr>
+<td>API + CDN Cache</td>
+<td>Strings + CDN L2</td>
+<td>Stripe, GitHub API</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Build a page view counter for 3 pages. Increment them randomly. Display the counts.</li>
+<li>Implement rate limiting: Allow 5 operations in 30 seconds. Test by running 10 operations quickly.</li>
+<li>Create a leaderboard with 5 players. Find the top 3. Find a specific player's rank.</li>
+<li>Use <code>GEOADD</code> to add 3 locations and find which ones are within 1 km of a point.</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../performance-best-practices/">Performance &amp; Best Practices</a> — Make your Redis usage production-grade.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

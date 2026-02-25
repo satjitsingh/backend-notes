@@ -1,0 +1,3030 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/kafka-architecture/">
+      
+      
+        <link rel="prev" href="../kafka-basics/">
+      
+      
+        <link rel="next" href="../topics-partitions-offsets/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Architecture Overview - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-architecture-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Architecture Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-warehouse-analogy-your-mental-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Warehouse Analogy: Your Mental Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Warehouse Analogy: Your Mental Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-warehouse-kafka-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Warehouse (Kafka Cluster)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shelving-units-brokers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shelving Units (Brokers)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aisles-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aisles (Topics)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shelf-sections-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shelf Sections (Partitions)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#box-positions-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Box Positions (Offsets)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics-the-named-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics: The Named Streams
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topics: The Named Streams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-should-you-care" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Should You Care?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#three-different-topic-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Three Different Topic Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partitions-the-highway-to-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partitions: The Highway to Parallelism
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Partitions: The Highway to Parallelism">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-do-partitions-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Do Partitions Exist?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-traffic-analogy-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Traffic Analogy: Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-problem-do-partitions-solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Problem Do Partitions Solve?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offsets-your-bookmark-in-the-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offsets: Your Bookmark in the Stream
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offsets: Your Bookmark in the Stream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-book-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Book Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walk-through-consumer-crashes-and-restarts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Walk-Through: Consumer Crashes and Restarts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#brokers-the-server-rooms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Brokers: The Server Rooms
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Brokers: The Server Rooms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-does-each-broker-actually-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Does Each Broker Actually Do?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-controller-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Controller Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Controller Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-does-the-controller-actually-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Does the Controller Actually Do?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-is-the-controller-elected" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Is the Controller Elected?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-the-controller-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens When the Controller Fails?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-networking-model-how-clients-discover-brokers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Networking Model: How Clients Discover Brokers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Networking Model: How Clients Discover Brokers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap-servers-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap Servers Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-this-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Matters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metadata Refresh
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replication-backup-copies-of-important-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replication: Backup Copies of Important Documents
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Replication: Backup Copies of Important Documents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-replication-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Replication Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broker-failure-scenario-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker Failure Scenario: Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isr-in-sync-replicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      ISR: In-Sync Replicas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ISR: In-Sync Replicas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-classroom-note-taking-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Classroom Note-Taking Analogy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-groups-the-pizza-delivery-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Groups: The Pizza Delivery Team
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Groups: The Pizza Delivery Team">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-pizza-delivery-team-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Pizza Delivery Team Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rule-one-partition-one-consumer-per-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rule: One Partition, One Consumer (per group)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-2-consumers-3-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: 2 Consumers, 3 Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-3-consumers-3-partitions-perfect-balance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: 3 Consumers, 3 Partitions (Perfect Balance)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-5-consumers-3-partitions-extra-consumers-idle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: 5 Consumers, 3 Partitions (Extra Consumers Idle)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-4-consumer-crashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 4: Consumer Crashes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-5-new-consumer-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 5: New Consumer Joins
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zookeeper-and-kraft-whos-the-boss" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZooKeeper and KRaft: Who's the Boss?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ZooKeeper and KRaft: Who's the Boss?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zookeeper-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZooKeeper (Legacy)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kraft-mode-new-kafka-33" class="md-nav__link">
+    <span class="md-ellipsis">
+      KRaft Mode (New, Kafka 3.3+)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-from-zookeeper-to-kraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration from ZooKeeper to KRaft
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#end-to-end-message-journey-one-message-every-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      End-to-End Message Journey: One Message, Every Step
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="End-to-End Message Journey: One Message, Every Step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-producer-creates-the-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Producer Creates the Message
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-serialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Serialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-partition-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Partition Selection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-batching-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Batching (Optional)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-send-to-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Send to Broker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-broker-appends" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: Broker Appends
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Replication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-acknowledgment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 8: Acknowledgment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-9-consumer-polls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 9: Consumer Polls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-10-consumer-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 10: Consumer Processes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-when-things-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens When Things Go Wrong?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Happens When Things Go Wrong?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#broker-dies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker Dies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumer-crashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Crashes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Partition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-full" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disk Full
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#message-storage-how-kafka-keeps-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Storage: How Kafka Keeps Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Message Storage: How Kafka Keeps Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#retention-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retention Policy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-architecture-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Architecture Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-warehouse-analogy-your-mental-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Warehouse Analogy: Your Mental Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Warehouse Analogy: Your Mental Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-warehouse-kafka-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Warehouse (Kafka Cluster)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shelving-units-brokers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shelving Units (Brokers)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aisles-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aisles (Topics)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shelf-sections-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shelf Sections (Partitions)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#box-positions-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Box Positions (Offsets)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topics-the-named-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics: The Named Streams
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topics: The Named Streams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-should-you-care" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Should You Care?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#three-different-topic-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Three Different Topic Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partitions-the-highway-to-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partitions: The Highway to Parallelism
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Partitions: The Highway to Parallelism">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-do-partitions-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Do Partitions Exist?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-traffic-analogy-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Traffic Analogy: Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-problem-do-partitions-solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Problem Do Partitions Solve?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offsets-your-bookmark-in-the-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offsets: Your Bookmark in the Stream
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offsets: Your Bookmark in the Stream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-book-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Book Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walk-through-consumer-crashes-and-restarts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Walk-Through: Consumer Crashes and Restarts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#brokers-the-server-rooms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Brokers: The Server Rooms
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Brokers: The Server Rooms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-does-each-broker-actually-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Does Each Broker Actually Do?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-controller-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Controller Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Controller Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-does-the-controller-actually-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Does the Controller Actually Do?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-is-the-controller-elected" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Is the Controller Elected?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-the-controller-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens When the Controller Fails?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-networking-model-how-clients-discover-brokers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka Networking Model: How Clients Discover Brokers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Networking Model: How Clients Discover Brokers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap-servers-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap Servers Explained
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-this-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Matters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metadata Refresh
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replication-backup-copies-of-important-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replication: Backup Copies of Important Documents
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Replication: Backup Copies of Important Documents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-replication-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Replication Works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broker-failure-scenario-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker Failure Scenario: Step by Step
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isr-in-sync-replicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      ISR: In-Sync Replicas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ISR: In-Sync Replicas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-classroom-note-taking-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Classroom Note-Taking Analogy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-groups-the-pizza-delivery-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Groups: The Pizza Delivery Team
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Groups: The Pizza Delivery Team">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-pizza-delivery-team-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Pizza Delivery Team Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rule-one-partition-one-consumer-per-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rule: One Partition, One Consumer (per group)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-2-consumers-3-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: 2 Consumers, 3 Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-3-consumers-3-partitions-perfect-balance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: 3 Consumers, 3 Partitions (Perfect Balance)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-5-consumers-3-partitions-extra-consumers-idle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: 5 Consumers, 3 Partitions (Extra Consumers Idle)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-4-consumer-crashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 4: Consumer Crashes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-5-new-consumer-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 5: New Consumer Joins
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zookeeper-and-kraft-whos-the-boss" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZooKeeper and KRaft: Who's the Boss?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ZooKeeper and KRaft: Who's the Boss?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zookeeper-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZooKeeper (Legacy)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kraft-mode-new-kafka-33" class="md-nav__link">
+    <span class="md-ellipsis">
+      KRaft Mode (New, Kafka 3.3+)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-from-zookeeper-to-kraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration from ZooKeeper to KRaft
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#end-to-end-message-journey-one-message-every-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      End-to-End Message Journey: One Message, Every Step
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="End-to-End Message Journey: One Message, Every Step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-producer-creates-the-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Producer Creates the Message
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-serialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Serialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-partition-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Partition Selection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-batching-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Batching (Optional)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-send-to-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Send to Broker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-broker-appends" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: Broker Appends
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Replication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-acknowledgment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 8: Acknowledgment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-9-consumer-polls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 9: Consumer Polls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-10-consumer-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 10: Consumer Processes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-when-things-go-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens When Things Go Wrong?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Happens When Things Go Wrong?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#broker-dies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker Dies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumer-crashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer Crashes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Partition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-full" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disk Full
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#message-storage-how-kafka-keeps-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Storage: How Kafka Keeps Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Message Storage: How Kafka Keeps Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#retention-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retention Policy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="kafka-architecture">Kafka Architecture<a class="headerlink" href="#kafka-architecture" title="Permanent link">&para;</a></h1>
+<h2 id="why-architecture-matters">Why Architecture Matters<a class="headerlink" href="#why-architecture-matters" title="Permanent link">&para;</a></h2>
+<p>Kafka's architecture is what makes it powerful. Understanding it will help you design better systems, debug problems, and answer interview questions. But it can feel overwhelming. Topics, partitions, offsets, brokers, replication, consumer groups—it's a lot.</p>
+<p>Don't worry. We'll use one analogy throughout this entire page: <strong>a warehouse</strong>. By the end, you'll see how every Kafka concept maps to something physical and familiar. Let's build that mental model.</p>
+<hr />
+<h2 id="the-warehouse-analogy-your-mental-model">The Warehouse Analogy: Your Mental Model<a class="headerlink" href="#the-warehouse-analogy-your-mental-model" title="Permanent link">&para;</a></h2>
+<p>Imagine a <strong>massive distribution warehouse</strong> for an online retailer.</p>
+<h3 id="the-warehouse-kafka-cluster">The Warehouse (Kafka Cluster)<a class="headerlink" href="#the-warehouse-kafka-cluster" title="Permanent link">&para;</a></h3>
+<p>The warehouse is the entire operation. It's not one building—it's a complex of buildings, each with its own staff and storage. In Kafka, the warehouse is the <strong>cluster</strong>. The sum of all brokers working together.</p>
+<h3 id="shelving-units-brokers">Shelving Units (Brokers)<a class="headerlink" href="#shelving-units-brokers" title="Permanent link">&para;</a></h3>
+<p>Each building in the warehouse complex has rows of shelving units. These units hold the actual boxes. In Kafka, each building is a <strong>broker</strong>. A broker is a server. It stores data on disk. It serves read and write requests. A cluster has multiple brokers (typically 3, 5, or more) for redundancy.</p>
+<h3 id="aisles-topics">Aisles (Topics)<a class="headerlink" href="#aisles-topics" title="Permanent link">&para;</a></h3>
+<p>Inside each building, products are organized by category. The "Electronics" aisle. The "Clothing" aisle. The "Groceries" aisle. In Kafka, an aisle is a <strong>topic</strong>. A topic is a named stream. All order events go in the "orders" aisle. All payment events go in the "payments" aisle.</p>
+<h3 id="shelf-sections-partitions">Shelf Sections (Partitions)<a class="headerlink" href="#shelf-sections-partitions" title="Permanent link">&para;</a></h3>
+<p>Each aisle is divided into sections. The Electronics aisle might have Section A (phones), Section B (laptops), Section C (accessories). Workers can stock different sections in parallel. In Kafka, a section is a <strong>partition</strong>. A topic is split into partitions. Each partition is an ordered, immutable log. Partitions enable parallelism.</p>
+<h3 id="box-positions-offsets">Box Positions (Offsets)<a class="headerlink" href="#box-positions-offsets" title="Permanent link">&para;</a></h3>
+<p>Within each shelf section, boxes are placed in order. Position 0, Position 1, Position 2. You can say "I've processed everything up to Position 47." In Kafka, each message has an <strong>offset</strong>—a sequential ID within its partition. Offset 0, 1, 2, 3... It's like a page number. Or a bookmark.</p>
+<hr />
+<h2 id="topics-the-named-streams">Topics: The Named Streams<a class="headerlink" href="#topics-the-named-streams" title="Permanent link">&para;</a></h2>
+<p>A <strong>topic</strong> is a category or channel for messages. Producers write to topics. Consumers read from topics. It's that simple at the high level.</p>
+<h3 id="why-should-you-care">Why Should You Care?<a class="headerlink" href="#why-should-you-care" title="Permanent link">&para;</a></h3>
+<p>Topics let you organize your events. Without topics, everything would be one giant stream. Imagine a warehouse with no aisles—just a pile of boxes. Chaos. Topics give you structure.</p>
+<h3 id="three-different-topic-examples">Three Different Topic Examples<a class="headerlink" href="#three-different-topic-examples" title="Permanent link">&para;</a></h3>
+<p><strong>Example 1: E-commerce</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Topic: &quot;orders&quot;
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  - order_placed, order_cancelled, order_shipped
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  - High volume, needs many partitions
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Topic: &quot;payments&quot;
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  - payment_received, payment_failed, refund_issued
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  - Critical data, needs replication
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>Topic: &quot;user-activity&quot;
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  - page_view, click, search
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  - Huge volume, analytics consumers
+</code></pre></div>
+<p><strong>Example 2: IoT Sensors</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Topic: &quot;temperature-sensors&quot;
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  - Readings from factory machines
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  - Time-series data, high throughput
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Topic: &quot;alerts&quot;
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  - Critical alerts (overheating, failure)
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  - Low volume, must not lose any
+</code></pre></div>
+<p><strong>Example 3: Social Media</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Topic: &quot;posts&quot;
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  - New posts, edits, deletes
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  - Feed generation, search indexing
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Topic: &quot;likes&quot;
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  - Like, unlike events
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  - Real-time counters, analytics
+</code></pre></div>
+<p>You create topics with a name, number of partitions, and replication factor:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>--partitions<span class="w"> </span><span class="m">6</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>--replication-factor<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<hr />
+<h2 id="partitions-the-highway-to-parallelism">Partitions: The Highway to Parallelism<a class="headerlink" href="#partitions-the-highway-to-parallelism" title="Permanent link">&para;</a></h2>
+<p>Partitions are where beginners get confused. Let's fix that.</p>
+<h3 id="why-do-partitions-exist">Why Do Partitions Exist?<a class="headerlink" href="#why-do-partitions-exist" title="Permanent link">&para;</a></h3>
+<p>Imagine a single-lane highway. All cars must go in order. One car at a time. Slow. Now imagine a 6-lane highway. Six cars can move in parallel. Six times the throughput. Partitions are the lanes.</p>
+<p><strong>Without partitions:</strong> One topic = one stream. One consumer reads it. Bottleneck.</p>
+<p><strong>With partitions:</strong> One topic = multiple streams (partitions). Multiple consumers can read different partitions simultaneously. Parallelism.</p>
+<h3 id="the-traffic-analogy-step-by-step">The Traffic Analogy: Step by Step<a class="headerlink" href="#the-traffic-analogy-step-by-step" title="Permanent link">&para;</a></h3>
+<p>Let's say you have a topic "orders" with 3 partitions. Messages arrive. How do they get distributed?</p>
+<p><strong>Scenario: 10 messages, no keys (round-robin)</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Message 1 → Partition 0
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Message 2 → Partition 1
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Message 3 → Partition 2
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Message 4 → Partition 0
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Message 5 → Partition 1
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Message 6 → Partition 2
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Message 7 → Partition 0
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Message 8 → Partition 1
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>Message 9 → Partition 2
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>Message 10 → Partition 0
+</code></pre></div>
+<p>Kafka distributes evenly. Load balancing. Simple.</p>
+<p><strong>Scenario: 10 messages, WITH keys (same key = same partition)</strong></p>
+<p>Say we have keys: order-101, order-102, order-103, order-101, order-102...</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>hash(&quot;order-101&quot;) % 3 = Partition 2
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>hash(&quot;order-102&quot;) % 3 = Partition 0
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>hash(&quot;order-103&quot;) % 3 = Partition 1
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>hash(&quot;order-101&quot;) % 3 = Partition 2  (same as first order-101!)
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>hash(&quot;order-102&quot;) % 3 = Partition 0  (same as first order-102!)
+</code></pre></div>
+<p>All messages for order-101 go to Partition 2. In order. That's how we guarantee ordering for a specific order. Critical for "order created → order paid → order shipped."</p>
+<div class="admonition tip">
+<p class="admonition-title">Key Rule</p>
+<p>Same key always goes to the same partition. Use keys when you need ordering for a logical entity (user, order, session).</p>
+</div>
+<h3 id="what-problem-do-partitions-solve">What Problem Do Partitions Solve?<a class="headerlink" href="#what-problem-do-partitions-solve" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Parallelism:</strong> Multiple consumers can read different partitions at once.</li>
+<li><strong>Scalability:</strong> More partitions = more throughput (up to a point).</li>
+<li><strong>Ordering:</strong> Messages within ONE partition are strictly ordered. Across partitions, no guarantee.</li>
+</ol>
+<hr />
+<h2 id="offsets-your-bookmark-in-the-stream">Offsets: Your Bookmark in the Stream<a class="headerlink" href="#offsets-your-bookmark-in-the-stream" title="Permanent link">&para;</a></h2>
+<p>An <strong>offset</strong> is the position of a message within a partition. It's a sequential number. 0, 1, 2, 3, 4...</p>
+<h3 id="the-book-analogy">The Book Analogy<a class="headerlink" href="#the-book-analogy" title="Permanent link">&para;</a></h3>
+<p>You're reading a 500-page book. You put a bookmark at page 247. That's your offset. "I've read up to page 247." Tomorrow, you start from page 248. You don't re-read from page 1.</p>
+<p>In Kafka, the consumer commits its offset. "I've processed up to offset 247 in Partition 0." If the consumer crashes and restarts, it asks Kafka: "What was my last offset?" Kafka says "247." The consumer resumes from 248. No re-processing of old messages (unless you want to).</p>
+<h3 id="walk-through-consumer-crashes-and-restarts">Walk-Through: Consumer Crashes and Restarts<a class="headerlink" href="#walk-through-consumer-crashes-and-restarts" title="Permanent link">&para;</a></h3>
+<p>Let's trace what happens:</p>
+<p><strong>Initial state:</strong> Partition 0 has messages at offsets 0-9. Consumer starts. No previous offset.</p>
+<p><strong>Consumer reads:</strong> Messages 0, 1, 2, 3, 4. Processes them. Commits offset 5. (Meaning: "I've processed up through offset 4, next is 5.")</p>
+<p><strong>Consumer crashes.</strong> Before it could process 5, 6, 7, 8, 9.</p>
+<p><strong>Consumer restarts.</strong> It asks Kafka: "What's my committed offset for Partition 0?" Kafka says "5."</p>
+<p><strong>Consumer resumes.</strong> It reads from offset 5. Gets messages 5, 6, 7, 8, 9. Processes them. No data lost. No duplicate processing of 0-4 (assuming commit worked).</p>
+<div class="admonition warning">
+<p class="admonition-title">Commit Timing</p>
+<p>If the consumer processes messages 0-4 but crashes BEFORE committing, it never told Kafka "I'm at 5." On restart, it might get offset 0 again (or whatever auto.offset.reset says). It could process 0-4 again. That's at-least-once. Duplicates possible.</p>
+</div>
+<hr />
+<h2 id="brokers-the-server-rooms">Brokers: The Server Rooms<a class="headerlink" href="#brokers-the-server-rooms" title="Permanent link">&para;</a></h2>
+<p>A <strong>broker</strong> is a single Kafka server. One process. One machine (or VM, or container). It runs Kafka.</p>
+<h3 id="what-does-each-broker-actually-do">What Does Each Broker Actually Do?<a class="headerlink" href="#what-does-each-broker-actually-do" title="Permanent link">&para;</a></h3>
+<p>Think of a broker as a server room in our warehouse. It has three main jobs:</p>
+<p><strong>1. Store messages on disk</strong></p>
+<p>Kafka writes messages to log files. Not in memory (well, it uses memory for caching, but durability is on disk). Each partition is a directory. Messages are appended to segment files. When the segment gets big enough, a new one starts. Old segments can be deleted based on retention.</p>
+<p><strong>2. Serve producer requests</strong></p>
+<p>When a producer sends a message, it goes to the broker that leads the target partition. The broker appends the message. Returns an acknowledgment. The broker handles batching, compression, and replication coordination.</p>
+<p><strong>3. Serve consumer requests</strong></p>
+<p>When a consumer asks for messages from offset X, the broker reads from disk (or cache) and returns them. The broker doesn't push. The consumer pulls. The broker just responds to fetch requests.</p>
+<h3 id="the-controller-broker">The Controller Broker<a class="headerlink" href="#the-controller-broker" title="Permanent link">&para;</a></h3>
+<p>One broker in the cluster is elected the <strong>controller</strong>. It's like the warehouse manager. It doesn't do the heavy lifting of storing data. It manages metadata:</p>
+<ul>
+<li>Which broker is the leader for each partition?</li>
+<li>Which brokers are alive?</li>
+<li>When a broker dies, the controller triggers leader election.</li>
+<li>When a new topic is created, the controller assigns partitions to brokers.</li>
+</ul>
+<p>If the controller dies, another broker is elected. The cluster keeps running.</p>
+<h4 id="what-does-the-controller-actually-do">What Does the Controller Actually Do?<a class="headerlink" href="#what-does-the-controller-actually-do" title="Permanent link">&para;</a></h4>
+<p>The controller is the "brain" of the cluster. It holds the authoritative view of cluster state. Every broker knows who the controller is. When something changes, they ask the controller.</p>
+<p><strong>Key responsibilities:</strong></p>
+<ol>
+<li>
+<p><strong>Partition assignment:</strong> When you create a topic, the controller decides which broker gets which partition. It balances load. Partition 0 leader on Broker 1, Partition 1 leader on Broker 2, and so on.</p>
+</li>
+<li>
+<p><strong>Leader election:</strong> When a broker dies, the controller detects it (via ZooKeeper/KRaft heartbeats). For each partition that had a leader on the dead broker, the controller promotes an in-sync replica to leader. It updates metadata. Producers and consumers get the new leader info.</p>
+</li>
+<li>
+<p><strong>Replica assignment:</strong> When you add a broker, the controller can reassign replicas. It manages the reassignment process.</p>
+</li>
+<li>
+<p><strong>Preferred leader election:</strong> Kafka can rebalance leaders to put them on "preferred" brokers (the original assignment). The controller orchestrates this.</p>
+</li>
+</ol>
+<h4 id="how-is-the-controller-elected">How Is the Controller Elected?<a class="headerlink" href="#how-is-the-controller-elected" title="Permanent link">&para;</a></h4>
+<p><strong>With ZooKeeper:</strong> The first broker to start creates an ephemeral node in ZooKeeper called <code>/controller</code>. That broker becomes the controller. If it dies, the node disappears. Other brokers watch that node. When it's gone, they race to create it. The winner becomes the new controller.</p>
+<p><strong>With KRaft:</strong> Kafka uses an internal Raft consensus. Brokers vote. One becomes the "active" controller. The election is built into KRaft—no external ZooKeeper.</p>
+<h4 id="what-happens-when-the-controller-fails">What Happens When the Controller Fails?<a class="headerlink" href="#what-happens-when-the-controller-fails" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p><strong>Detection:</strong> Other brokers (or KRaft) detect the controller is gone. Heartbeats stop. Timeout expires.</p>
+</li>
+<li>
+<p><strong>Election:</strong> A new controller is elected. Usually within a few seconds. With ZooKeeper, brokers race to create the ephemeral node. With KRaft, Raft elects a new leader.</p>
+</li>
+<li>
+<p><strong>State recovery:</strong> The new controller loads cluster state from ZooKeeper (or KRaft log). It knows all topics, partitions, leaders, ISR.</p>
+</li>
+<li>
+<p><strong>Resume:</strong> The cluster continues. In-flight requests might fail. Clients retry. No data loss. Brief unavailability (seconds) for metadata-dependent operations.</p>
+</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Controller and Data</p>
+<p>The controller does NOT store message data. It only manages metadata. Even if the controller is down for a few seconds, producers and consumers can still read/write to partition leaders. They might get stale metadata (wrong leader) and need to refresh.</p>
+</div>
+<hr />
+<h2 id="kafka-networking-model-how-clients-discover-brokers">Kafka Networking Model: How Clients Discover Brokers<a class="headerlink" href="#kafka-networking-model-how-clients-discover-brokers" title="Permanent link">&para;</a></h2>
+<p>When you configure a Kafka client with <code>bootstrap.servers=broker1:9092,broker2:9092</code>, you're not giving it the full list of brokers. You're giving it a starting point. Here's how discovery works.</p>
+<h3 id="bootstrap-servers-explained">Bootstrap Servers Explained<a class="headerlink" href="#bootstrap-servers-explained" title="Permanent link">&para;</a></h3>
+<p><strong>Bootstrap servers</strong> are the initial contact points. The client connects to one of them. It doesn't need to know every broker. It just needs to reach one.</p>
+<p><strong>Step 1: Connect.</strong> The producer or consumer connects to broker1 (or broker2 if broker1 is down).</p>
+<p><strong>Step 2: Metadata request.</strong> The client asks: "What topics exist? What are the partition leaders? Which broker leads partition 0 of topic 'orders'?"</p>
+<p><strong>Step 3: Response.</strong> The broker returns metadata. Topic "orders" has 6 partitions. Partition 0 leader: broker2. Partition 1 leader: broker3. And so on.</p>
+<p><strong>Step 4: Direct connection.</strong> The client now connects directly to the partition leaders. To produce to partition 0, it talks to broker2. To consume from partition 1, it talks to broker3. No need to go through the bootstrap broker for data.</p>
+<h3 id="why-this-matters">Why This Matters<a class="headerlink" href="#why-this-matters" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Broker failure:</strong> If broker1 (bootstrap) dies, the client tries broker2. It gets metadata. It discovers the new leaders. It continues.</li>
+<li><strong>Scaling:</strong> Add broker4. The controller updates metadata. Next metadata refresh, clients learn about broker4. No client config change.</li>
+<li><strong>Partition movement:</strong> Reassign partitions. Leaders change. Clients refresh metadata (on error or periodically). They get new leaders. Transparent.</li>
+</ul>
+<h3 id="metadata-refresh">Metadata Refresh<a class="headerlink" href="#metadata-refresh" title="Permanent link">&para;</a></h3>
+<p>Clients cache metadata. They don't ask every time. When do they refresh? (1) On connection. (2) When they get a "NotLeaderForPartition" error. (3) Periodically (e.g., every 5 minutes via <code>metadata.max.age.ms</code>). Stale metadata can cause temporary routing errors. Clients retry. They get fresh metadata. They succeed.</p>
+<div class="admonition tip">
+<p class="admonition-title">Production Tip</p>
+<p>Always give at least 2–3 bootstrap servers. If one is down, the client can still connect. Use different hosts, not just different ports on the same host.</p>
+</div>
+<hr />
+<h2 id="replication-backup-copies-of-important-documents">Replication: Backup Copies of Important Documents<a class="headerlink" href="#replication-backup-copies-of-important-documents" title="Permanent link">&para;</a></h2>
+<p>What if a broker dies? The data on that broker would be lost. Unless we have copies.</p>
+<h3 id="the-analogy">The Analogy<a class="headerlink" href="#the-analogy" title="Permanent link">&para;</a></h3>
+<p>Imagine you have an important contract. You keep the original in your office. You make two copies. One in a safe. One in a bank vault. If your office burns down, you still have the contract. Replication is the same idea.</p>
+<h3 id="how-replication-works">How Replication Works<a class="headerlink" href="#how-replication-works" title="Permanent link">&para;</a></h3>
+<p>When you create a topic with <code>replication-factor=3</code>, each partition has 3 copies. They live on 3 different brokers.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Topic: &quot;orders&quot;, Partition 0, Replication Factor = 3
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Broker 1: Partition 0 (LEADER)    ← Producers write here. Consumers read from here.
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Broker 2: Partition 0 (FOLLOWER)  ← Copy. Syncs from leader.
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>Broker 3: Partition 0 (FOLLOWER)  ← Copy. Syncs from leader.
+</code></pre></div>
+<p><strong>Leader:</strong> Handles all reads and writes. The source of truth.</p>
+<p><strong>Followers:</strong> Replicate from the leader. They don't serve reads (in normal Kafka). They're backups. If the leader dies, a follower is promoted.</p>
+<h3 id="broker-failure-scenario-step-by-step">Broker Failure Scenario: Step by Step<a class="headerlink" href="#broker-failure-scenario-step-by-step" title="Permanent link">&para;</a></h3>
+<p><strong>Initial state:</strong> Broker 1 is leader for Partition 0. Broker 2 and 3 are followers. All in sync.</p>
+<p><strong>Broker 1 dies.</strong> (Power failure, disk crash, whatever.)</p>
+<p><strong>What happens:</strong></p>
+<ol>
+<li>ZooKeeper (or KRaft) detects Broker 1 is gone. Heartbeats stopped.</li>
+<li>The controller initiates leader election.</li>
+<li>Broker 2 or Broker 3 is chosen as the new leader. (Both have the data. Either can take over.)</li>
+<li>Producers and consumers are notified. They now talk to the new leader.</li>
+<li>The cluster continues. No data loss. Brief pause during failover (usually seconds).</li>
+</ol>
+<p><strong>Broker 1 comes back.</strong> It rejoins the cluster. It might become a follower again for Partition 0. It syncs from the new leader. Eventually it's back in sync.</p>
+<hr />
+<h2 id="isr-in-sync-replicas">ISR: In-Sync Replicas<a class="headerlink" href="#isr-in-sync-replicas" title="Permanent link">&para;</a></h2>
+<p>Not all replicas are equal. Some might be lagging. Maybe a follower had a network hiccup. Maybe it's on a slow disk.</p>
+<h3 id="the-classroom-note-taking-analogy">The Classroom Note-Taking Analogy<a class="headerlink" href="#the-classroom-note-taking-analogy" title="Permanent link">&para;</a></h3>
+<p>Imagine a teacher writes on the board. Students take notes. Some students are caught up. Some are three pages behind. The "in-sync" students have the same content as the teacher. The lagging students don't.</p>
+<p><strong>ISR (In-Sync Replicas)</strong> = the set of replicas that are caught up with the leader. They have all the same messages. When the leader dies, we can only promote someone from the ISR. We can't promote a lagging replica—it might be missing messages.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ISR = [Broker 1 (leader), Broker 2, Broker 3]
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Broker 2 has network issues, falls behind:
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>ISR = [Broker 1 (leader), Broker 3]   // Broker 2 removed from ISR
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Broker 1 dies:
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>New leader = Broker 3 (only in-sync option)
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Why It Matters</p>
+<p>With <code>acks=all</code>, the producer waits for all ISR replicas to acknowledge. If one replica falls behind and is removed from ISR, you only need the remaining in-sync replicas. You're still safe as long as you have at least one replica (plus leader).</p>
+</div>
+<hr />
+<h2 id="consumer-groups-the-pizza-delivery-team">Consumer Groups: The Pizza Delivery Team<a class="headerlink" href="#consumer-groups-the-pizza-delivery-team" title="Permanent link">&para;</a></h2>
+<p>Consumer groups confuse beginners the most. Let's fix that with a clear analogy.</p>
+<h3 id="the-pizza-delivery-team-analogy">The Pizza Delivery Team Analogy<a class="headerlink" href="#the-pizza-delivery-team-analogy" title="Permanent link">&para;</a></h3>
+<p>Imagine a pizza shop. Orders come in. You have a team of delivery drivers. Each order must be delivered by exactly one driver. You don't want two drivers delivering the same pizza. You also don't want orders piling up with no one to deliver.</p>
+<p><strong>Orders = Partitions.</strong> Each order is assigned to one driver.</p>
+<p><strong>Drivers = Consumers.</strong> Each driver handles their assigned orders.</p>
+<p><strong>The team = Consumer Group.</strong> All drivers share the work. No overlap. No gaps.</p>
+<h3 id="rule-one-partition-one-consumer-per-group">Rule: One Partition, One Consumer (per group)<a class="headerlink" href="#rule-one-partition-one-consumer-per-group" title="Permanent link">&para;</a></h3>
+<p>Within a consumer group, each partition is assigned to exactly one consumer. A consumer can have multiple partitions. But a partition has only one consumer in that group.</p>
+<h3 id="scenario-1-2-consumers-3-partitions">Scenario 1: 2 Consumers, 3 Partitions<a class="headerlink" href="#scenario-1-2-consumers-3-partitions" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Topic &quot;orders&quot; has 3 partitions: P0, P1, P2
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Consumer Group: &quot;order-processors&quot;
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Consumer 1 → P0, P1   (one consumer gets 2 partitions)
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>Consumer 2 → P2
+</code></pre></div>
+<p>Consumer 1 does more work. That's okay. Kafka tries to balance, but with 3 partitions and 2 consumers, someone gets 2.</p>
+<h3 id="scenario-2-3-consumers-3-partitions-perfect-balance">Scenario 2: 3 Consumers, 3 Partitions (Perfect Balance)<a class="headerlink" href="#scenario-2-3-consumers-3-partitions-perfect-balance" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Consumer 1 → P0
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Consumer 2 → P1
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Consumer 3 → P2
+</code></pre></div>
+<p>Each consumer has one partition. Ideal. Maximum parallelism.</p>
+<h3 id="scenario-3-5-consumers-3-partitions-extra-consumers-idle">Scenario 3: 5 Consumers, 3 Partitions (Extra Consumers Idle)<a class="headerlink" href="#scenario-3-5-consumers-3-partitions-extra-consumers-idle" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Consumer 1 → P0
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Consumer 2 → P1
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Consumer 3 → P2
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>Consumer 4 → IDLE (no partition)
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>Consumer 5 → IDLE (no partition)
+</code></pre></div>
+<p>You have more consumers than partitions. Two consumers have nothing to do. They just sit there. <strong>Maximum useful consumers = number of partitions.</strong> Remember that.</p>
+<h3 id="scenario-4-consumer-crashes">Scenario 4: Consumer Crashes<a class="headerlink" href="#scenario-4-consumer-crashes" title="Permanent link">&para;</a></h3>
+<p><strong>Before:</strong> C1→P0, C2→P1, C3→P2. All happy.</p>
+<p><strong>C3 crashes.</strong> Stops sending heartbeats. Kafka detects it (after session.timeout).</p>
+<p><strong>Rebalance:</strong> Partitions must be reassigned. C1 and C2 are still alive.</p>
+<p><strong>After:</strong> C1→P0, P2. C2→P1.</p>
+<p>C1 takes over P2. It reads from the last committed offset for P2. Work continues. Brief pause during rebalance.</p>
+<h3 id="scenario-5-new-consumer-joins">Scenario 5: New Consumer Joins<a class="headerlink" href="#scenario-5-new-consumer-joins" title="Permanent link">&para;</a></h3>
+<p><strong>Before:</strong> C1→P0, P1. C2→P2.</p>
+<p><strong>C3 joins the group.</strong> "Hey, I'm here to help!"</p>
+<p><strong>Rebalance:</strong> Kafka redistributes. Now we have 3 consumers for 3 partitions.</p>
+<p><strong>After:</strong> C1→P0. C2→P1. C3→P2.</p>
+<p>C2 gave up P2 to C3. C1 gave up P1 to C2. Everyone has one partition. Better balance.</p>
+<div class="admonition warning">
+<p class="admonition-title">Key Rule</p>
+<p>Maximum useful consumers in a group = Number of partitions. Want to scale consumers? Add more partitions first.</p>
+</div>
+<hr />
+<h2 id="zookeeper-and-kraft-whos-the-boss">ZooKeeper and KRaft: Who's the Boss?<a class="headerlink" href="#zookeeper-and-kraft-whos-the-boss" title="Permanent link">&para;</a></h2>
+<p>A Kafka cluster needs to know: Who's the controller? Which brokers are alive? Where are the partition leaders? This is <strong>metadata</strong>. It needs to be consistent. All brokers must agree.</p>
+<h3 id="zookeeper-legacy">ZooKeeper (Legacy)<a class="headerlink" href="#zookeeper-legacy" title="Permanent link">&para;</a></h3>
+<p>ZooKeeper is a separate service. It's a distributed coordination system. Kafka used it to store cluster metadata. "Broker 1 is the controller." "Partition 0 leader is Broker 2." ZooKeeper is the "boss" that everyone consults.</p>
+<p><strong>Problem:</strong> You need to run ZooKeeper separately. Two systems to operate. ZooKeeper has scalability limits. More components to monitor and maintain.</p>
+<h3 id="kraft-mode-new-kafka-33">KRaft Mode (New, Kafka 3.3+)<a class="headerlink" href="#kraft-mode-new-kafka-33" title="Permanent link">&para;</a></h3>
+<p>Kafka now has built-in consensus. No ZooKeeper. Kafka brokers themselves elect a controller and replicate metadata using the Raft protocol. It's simpler. One less thing to run. Fewer moving parts.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>ZooKeeper</th>
+<th>KRaft</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>External dependency</td>
+<td>Yes (ZooKeeper)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Setup complexity</td>
+<td>More complex</td>
+<td>Simpler</td>
+</tr>
+<tr>
+<td>Scalability</td>
+<td>Limited</td>
+<td>Better</td>
+</tr>
+<tr>
+<td>Metadata storage</td>
+<td>ZooKeeper znodes</td>
+<td>Kafka's internal __cluster_metadata topic</td>
+</tr>
+<tr>
+<td>Future</td>
+<td>Being phased out</td>
+<td>The future of Kafka</td>
+</tr>
+</tbody>
+</table>
+<h3 id="migration-from-zookeeper-to-kraft">Migration from ZooKeeper to KRaft<a class="headerlink" href="#migration-from-zookeeper-to-kraft" title="Permanent link">&para;</a></h3>
+<p>Kafka supports migrating from ZooKeeper to KRaft without downtime. The process is called <strong>ZooKeeper to KRaft migration (ZK to KRaft)</strong>.</p>
+<p><strong>Overview:</strong></p>
+<ol>
+<li>
+<p><strong>Dual-write phase:</strong> Run a KRaft controller quorum alongside your existing ZooKeeper cluster. The KRaft controllers replicate metadata from ZooKeeper. Both systems are in sync.</p>
+</li>
+<li>
+<p><strong>Switch:</strong> Once KRaft has caught up, you switch brokers to use KRaft for metadata. Brokers are reconfigured. They stop talking to ZooKeeper. They talk to KRaft.</p>
+</li>
+<li>
+<p><strong>Decommission ZooKeeper:</strong> After all brokers use KRaft, you shut down ZooKeeper. The cluster runs on KRaft only.</p>
+</li>
+</ol>
+<p><strong>Key points:</strong></p>
+<ul>
+<li><strong>Kafka 3.6+</strong> has production-ready migration tooling.</li>
+<li><strong>Plan carefully.</strong> Test in staging first. Migration involves config changes and rolling restarts.</li>
+<li><strong>Confluent and other vendors</strong> offer guided migration. Check their docs for step-by-step.</li>
+<li><strong>New deployments:</strong> Use KRaft from day one. No need for ZooKeeper.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">KRaft Is the Future</p>
+<p>Apache Kafka is moving to KRaft-only. ZooKeeper support will be deprecated and eventually removed. New projects should use KRaft. Existing ZooKeeper clusters should plan migration.</p>
+</div>
+<hr />
+<h2 id="end-to-end-message-journey-one-message-every-step">End-to-End Message Journey: One Message, Every Step<a class="headerlink" href="#end-to-end-message-journey-one-message-every-step" title="Permanent link">&para;</a></h2>
+<p>Let's trace a single message from producer to consumer. Every detail.</p>
+<p><strong>Message:</strong> <code>{ "orderId": "12345", "amount": 99.99 }</code><br />
+<strong>Topic:</strong> orders<br />
+<strong>Key:</strong> order-12345</p>
+<h3 id="step-1-producer-creates-the-message">Step 1: Producer Creates the Message<a class="headerlink" href="#step-1-producer-creates-the-message" title="Permanent link">&para;</a></h3>
+<p>The Order Service creates a ProducerRecord. Topic: "orders". Key: "order-12345". Value: the JSON.</p>
+<h3 id="step-2-serialization">Step 2: Serialization<a class="headerlink" href="#step-2-serialization" title="Permanent link">&para;</a></h3>
+<p>The producer serializes key and value to bytes. Kafka doesn't care about JSON. It stores bytes. StringSerializer converts "order-12345" to bytes. Same for the value.</p>
+<h3 id="step-3-partition-selection">Step 3: Partition Selection<a class="headerlink" href="#step-3-partition-selection" title="Permanent link">&para;</a></h3>
+<p>The producer (or the broker) determines the partition. <code>hash("order-12345") % 6</code> (assuming 6 partitions). Say the result is 3. Partition 3.</p>
+<h3 id="step-4-batching-optional">Step 4: Batching (Optional)<a class="headerlink" href="#step-4-batching-optional" title="Permanent link">&para;</a></h3>
+<p>The producer might batch this message with others. Wait up to <code>linger.ms</code> (e.g., 5ms). Send a batch to reduce network round-trips.</p>
+<h3 id="step-5-send-to-broker">Step 5: Send to Broker<a class="headerlink" href="#step-5-send-to-broker" title="Permanent link">&para;</a></h3>
+<p>The producer sends the batch to the broker that leads Partition 3. Say that's Broker 2. The request goes to Broker 2.</p>
+<h3 id="step-6-broker-appends">Step 6: Broker Appends<a class="headerlink" href="#step-6-broker-appends" title="Permanent link">&para;</a></h3>
+<p>Broker 2 appends the message to Partition 3's log. The message gets the next offset. Say it's offset 8472.</p>
+<h3 id="step-7-replication">Step 7: Replication<a class="headerlink" href="#step-7-replication" title="Permanent link">&para;</a></h3>
+<p>Broker 2 (leader) replicates to followers. Broker 1 and Broker 3 have Partition 3 as followers. They copy the message. With <code>acks=all</code>, the producer waits for all in-sync replicas to acknowledge.</p>
+<h3 id="step-8-acknowledgment">Step 8: Acknowledgment<a class="headerlink" href="#step-8-acknowledgment" title="Permanent link">&para;</a></h3>
+<p>Broker 2 sends an acknowledgment to the producer. "Message received. Partition 3, Offset 8472." Producer considers it done.</p>
+<h3 id="step-9-consumer-polls">Step 9: Consumer Polls<a class="headerlink" href="#step-9-consumer-polls" title="Permanent link">&para;</a></h3>
+<p>A consumer in group "order-processors" is assigned Partition 3. It polls. "Give me messages from offset 8470." Broker 2 returns messages 8470, 8471, 8472.</p>
+<h3 id="step-10-consumer-processes">Step 10: Consumer Processes<a class="headerlink" href="#step-10-consumer-processes" title="Permanent link">&para;</a></h3>
+<p>The consumer deserializes the bytes. Gets the JSON. Processes it (e.g., send confirmation email). Commits offset 8473. "I've processed through 8472. Next is 8473."</p>
+<p>Done. The message was produced, stored, replicated, and consumed.</p>
+<hr />
+<h2 id="what-happens-when-things-go-wrong">What Happens When Things Go Wrong?<a class="headerlink" href="#what-happens-when-things-go-wrong" title="Permanent link">&para;</a></h2>
+<h3 id="broker-dies">Broker Dies<a class="headerlink" href="#broker-dies" title="Permanent link">&para;</a></h3>
+<p>We covered this. Leader election. Follower promoted. Brief unavailability. No data loss (with replication factor &gt;= 2).</p>
+<h3 id="consumer-crashes">Consumer Crashes<a class="headerlink" href="#consumer-crashes" title="Permanent link">&para;</a></h3>
+<p>The consumer stops sending heartbeats. After <code>session.timeout.ms</code>, it's considered dead. Rebalance. Its partitions are reassigned to other consumers. They resume from last committed offset. Messages between last commit and crash might be processed again (at-least-once) or lost (at-most-once if you committed before processing). Design for idempotency.</p>
+<h3 id="network-partition">Network Partition<a class="headerlink" href="#network-partition" title="Permanent link">&para;</a></h3>
+<p>A broker gets disconnected. Can't reach the rest of the cluster. The controller might think it's dead. Leader election for its partitions. When the network heals, the broker might rejoin as a follower. It syncs. Could have missed some messages while disconnected. Replication handles this—the in-sync replicas have the data.</p>
+<h3 id="disk-full">Disk Full<a class="headerlink" href="#disk-full" title="Permanent link">&para;</a></h3>
+<p>If a broker's disk fills up, it can't append new messages. Producers will fail. Alert on disk space. Add more disk or replace the broker.</p>
+<hr />
+<h2 id="message-storage-how-kafka-keeps-data">Message Storage: How Kafka Keeps Data<a class="headerlink" href="#message-storage-how-kafka-keeps-data" title="Permanent link">&para;</a></h2>
+<p>Kafka stores messages <strong>on disk</strong>. Each partition is a directory. Inside are segment files. Messages are appended. When a segment reaches its size limit (e.g., 1GB), a new segment starts. Old segments are deleted based on retention (e.g., 7 days) or compacted (for log compaction topics).</p>
+<h3 id="retention-policy">Retention Policy<a class="headerlink" href="#retention-policy" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>retention.ms</code></td>
+<td>7 days</td>
+<td>How long to keep messages</td>
+</tr>
+<tr>
+<td><code>retention.bytes</code></td>
+<td>-1 (unlimited)</td>
+<td>Max size of partition data</td>
+</tr>
+<tr>
+<td><code>cleanup.policy</code></td>
+<td><code>delete</code></td>
+<td>Delete old messages, or <code>compact</code> (keep latest per key)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Analogy</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cluster</td>
+<td>Warehouse</td>
+<td>The entire Kafka deployment</td>
+</tr>
+<tr>
+<td>Broker</td>
+<td>Shelving unit / Server room</td>
+<td>Stores data, serves requests</td>
+</tr>
+<tr>
+<td>Topic</td>
+<td>Aisle</td>
+<td>Named category for messages</td>
+</tr>
+<tr>
+<td>Partition</td>
+<td>Shelf section</td>
+<td>Sub-division for parallelism</td>
+</tr>
+<tr>
+<td>Offset</td>
+<td>Box position / Bookmark</td>
+<td>Message position in partition</td>
+</tr>
+<tr>
+<td>Leader</td>
+<td>Primary copy</td>
+<td>Handles reads/writes</td>
+</tr>
+<tr>
+<td>Follower</td>
+<td>Backup copy</td>
+<td>Replicates from leader</td>
+</tr>
+<tr>
+<td>ISR</td>
+<td>In-sync replicas</td>
+<td>Replicas caught up with leader</td>
+</tr>
+<tr>
+<td>Consumer Group</td>
+<td>Delivery team</td>
+<td>Consumers sharing partitions</td>
+</tr>
+<tr>
+<td>ZooKeeper/KRaft</td>
+<td>Boss / Coordinator</td>
+<td>Cluster metadata management</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Create a topic with 3 partitions and replication factor 2.</li>
+<li>Send messages with keys ("A", "B", "C") and observe which partition they go to.</li>
+<li>Start 2 consumers in the same group. See how partitions are distributed.</li>
+<li>Kill one consumer. Watch the other take over its partitions (rebalance).</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../producers-consumers/">Producers &amp; Consumers</a> - Deep dive into sending and receiving messages.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

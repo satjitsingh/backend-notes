@@ -1,0 +1,2713 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/redis/performance-best-practices/">
+      
+      
+        <link rel="prev" href="../real-world-usecases/">
+      
+      
+        <link rel="next" href="../redis-with-springboot/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Performance & Best Practices - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#performance-best-practices" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Performance & Best Practices
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-page-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Page Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-naming-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Naming Conventions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Naming Conventions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-standard-use-colons-as-separators" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Standard: Use colons as separators
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules-for-good-key-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rules for good key names
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slow-commands-to-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slow Commands to Avoid
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avoid-the-keys-command-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoid the KEYS Command in Production
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-pipelines-for-batch-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Pipelines for Batch Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Pipelines for Batch Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-the-right-data-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use the Right Data Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connection Pooling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection Pooling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spring-boot-auto-configured" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Boot (auto-configured)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persistence-rdb-vs-aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      Persistence: RDB vs AOF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Persistence: RDB vs AOF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rdb-redis-database-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      RDB (Redis Database Backup)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aof-append-only-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      AOF (Append-Only File)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdb-vs-aof-trade-off-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      RDB vs AOF: Trade-off Summary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      What to use?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring Redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics-to-watch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Metrics to Watch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful Commands
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latency-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Latency Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Latency Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-causes-of-high-latency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common causes of high latency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-diagnose" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to diagnose
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-cluster-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Cluster Basics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis Cluster Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-redis-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Redis Cluster?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-do-you-need-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      When do you need it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-data-is-distributed-hash-slots" class="md-nav__link">
+    <span class="md-ellipsis">
+      How data is distributed: Hash slots
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-client-routing-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How client routing works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moved-vs-ask-brief-intro" class="md-nav__link">
+    <span class="md-ellipsis">
+      MOVED vs ASK (brief intro)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua-scripting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lua Scripting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lua Scripting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-useful" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it's useful
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simple-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-set-a-password-requirepass" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Set a password (requirepass)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-use-acl-redis-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Use ACL (Redis 6+)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-rename-dangerous-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Rename dangerous commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-bind-to-localhost-or-private-ip-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Bind to localhost (or private IP only)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-use-tls-for-connections-redis-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Use TLS for connections (Redis 6+)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-sentinel-for-high-availability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Sentinel for High Availability
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Checklist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-page-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Page Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-naming-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Naming Conventions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Naming Conventions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-standard-use-colons-as-separators" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Standard: Use colons as separators
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules-for-good-key-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rules for good key names
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slow-commands-to-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slow Commands to Avoid
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avoid-the-keys-command-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoid the KEYS Command in Production
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-pipelines-for-batch-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Pipelines for Batch Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Pipelines for Batch Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-the-right-data-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use the Right Data Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connection Pooling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection Pooling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spring-boot-auto-configured" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Boot (auto-configured)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persistence-rdb-vs-aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      Persistence: RDB vs AOF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Persistence: RDB vs AOF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rdb-redis-database-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      RDB (Redis Database Backup)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aof-append-only-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      AOF (Append-Only File)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdb-vs-aof-trade-off-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      RDB vs AOF: Trade-off Summary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      What to use?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring Redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics-to-watch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Metrics to Watch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful Commands
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latency-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Latency Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Latency Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-causes-of-high-latency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common causes of high latency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-diagnose" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to diagnose
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-cluster-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Cluster Basics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis Cluster Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-redis-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Redis Cluster?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-do-you-need-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      When do you need it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-data-is-distributed-hash-slots" class="md-nav__link">
+    <span class="md-ellipsis">
+      How data is distributed: Hash slots
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-client-routing-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How client routing works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moved-vs-ask-brief-intro" class="md-nav__link">
+    <span class="md-ellipsis">
+      MOVED vs ASK (brief intro)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lua-scripting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lua Scripting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lua Scripting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-its-useful" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it's useful
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simple-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-set-a-password-requirepass" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Set a password (requirepass)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-use-acl-redis-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Use ACL (Redis 6+)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-rename-dangerous-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Rename dangerous commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-bind-to-localhost-or-private-ip-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Bind to localhost (or private IP only)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-use-tls-for-connections-redis-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Use TLS for connections (Redis 6+)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-sentinel-for-high-availability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Sentinel for High Availability
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Checklist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="performance-best-practices">Performance &amp; Best Practices<a class="headerlink" href="#performance-best-practices" title="Permanent link">&para;</a></h1>
+<h2 id="why-this-page-matters">Why This Page Matters<a class="headerlink" href="#why-this-page-matters" title="Permanent link">&para;</a></h2>
+<p>Knowing Redis commands is not enough. Using Redis <em>well</em> in production is what separates a junior developer from a senior one. This page covers the practices that keep Redis fast, reliable, and cost-effective at scale.</p>
+<hr />
+<h2 id="key-naming-conventions">Key Naming Conventions<a class="headerlink" href="#key-naming-conventions" title="Permanent link">&para;</a></h2>
+<p>Your Redis key names matter more than you think. With millions of keys, bad naming makes debugging a nightmare.</p>
+<h3 id="the-standard-use-colons-as-separators">The Standard: Use colons as separators<a class="headerlink" href="#the-standard-use-colons-as-separators" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Good: clear, consistent, readable</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>user:42:profile
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>user:42:session
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>product:101:details
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>order:ORD-A1B2:status
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>cache:api:/products?page<span class="o">=</span><span class="m">1</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Bad: no structure, inconsistent</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>user42profile
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>User_42_Profile
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>userProfile42
+</code></pre></div>
+<h3 id="rules-for-good-key-names">Rules for good key names<a class="headerlink" href="#rules-for-good-key-names" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Good</th>
+<th>Bad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Use colons <code>:</code> as separators</td>
+<td><code>user:42:name</code></td>
+<td><code>user_42_name</code></td>
+</tr>
+<tr>
+<td>Use lowercase</td>
+<td><code>order:status</code></td>
+<td><code>Order:Status</code></td>
+</tr>
+<tr>
+<td>Be specific</td>
+<td><code>cache:product:101</code></td>
+<td><code>p101</code></td>
+</tr>
+<tr>
+<td>Include the entity type</td>
+<td><code>session:token:abc</code></td>
+<td><code>abc</code></td>
+</tr>
+<tr>
+<td>Don't make keys too long</td>
+<td><code>u:42:prof</code> (if millions of keys)</td>
+<td><code>user:profile:data:information:42</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">The trade-off</p>
+<p>Longer keys are more readable but use more memory. For most apps, readability wins. If you have 100 million+ keys, shorter names save significant memory.</p>
+</div>
+<hr />
+<h2 id="slow-commands-to-avoid">Slow Commands to Avoid<a class="headerlink" href="#slow-commands-to-avoid" title="Permanent link">&para;</a></h2>
+<p>Some Redis commands are dangerous at scale. They block Redis (remember: single-threaded) and can freeze your entire app.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Why It's Slow</th>
+<th>What to Use Instead</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>KEYS *</code> or <code>KEYS user:*</code></td>
+<td>Scans every key. O(N). Blocks for seconds with millions of keys.</td>
+<td><code>SCAN</code> (iterative, non-blocking)</td>
+</tr>
+<tr>
+<td><code>SMEMBERS</code> on large sets</td>
+<td>Returns all members. O(N). A set with 1M members = 1M items over the network.</td>
+<td><code>SSCAN</code> for iteration, or <code>SRANDMEMBER</code> for a sample</td>
+</tr>
+<tr>
+<td><code>LRANGE</code> on large lists</td>
+<td>Returns a range. O(S+N) where S is start offset. <code>LRANGE mylist 0 999999</code> = disaster</td>
+<td>Use smaller ranges. Or <code>LTRIM</code> to cap list size</td>
+</tr>
+<tr>
+<td><code>SORT</code></td>
+<td>Sorts in Redis. Can be slow on large datasets.</td>
+<td>Sort in application if possible</td>
+</tr>
+<tr>
+<td><code>FLUSHALL</code> / <code>FLUSHDB</code></td>
+<td>Deletes everything. Blocks until done.</td>
+<td>Avoid in production. Use with extreme care</td>
+</tr>
+<tr>
+<td><code>SAVE</code></td>
+<td>Blocks Redis while saving snapshot to disk</td>
+<td>Use <code>BGSAVE</code> (background) instead</td>
+</tr>
+<tr>
+<td><code>HGETALL</code> on huge hashes</td>
+<td>Returns all fields. O(N).</td>
+<td>Use <code>HSCAN</code> or <code>HGET</code> for specific fields</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">The KEYS command</p>
+<p><code>KEYS *</code> is the #1 cause of Redis outages. Never use it in production. Use <code>SCAN</code> instead.</p>
+</div>
+<hr />
+<h2 id="avoid-the-keys-command-in-production">Avoid the KEYS Command in Production<a class="headerlink" href="#avoid-the-keys-command-in-production" title="Permanent link">&para;</a></h2>
+<p>The <code>KEYS</code> command scans ALL keys in Redis. If you have 10 million keys, it blocks Redis for seconds. During those seconds, no other command can run (Redis is single-threaded). Your entire app freezes.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># NEVER do this in production:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>KEYS<span class="w"> </span>user:*<span class="w">           </span><span class="c1"># Scans ALL keys. Blocks Redis.</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Instead, use SCAN (non-blocking, iterative):</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>SCAN<span class="w"> </span><span class="m">0</span><span class="w"> </span>MATCH<span class="w"> </span>user:*<span class="w"> </span>COUNT<span class="w"> </span><span class="m">100</span>
+</code></pre></div>
+<p><code>SCAN</code> returns a small batch of keys and a cursor. You call it repeatedly to iterate through all keys without blocking.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>SCAN<span class="w"> </span><span class="m">0</span><span class="w"> </span>MATCH<span class="w"> </span>user:*<span class="w"> </span>COUNT<span class="w"> </span><span class="m">100</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Returns: cursor=1750, keys=[user:1, user:2, ...]</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>SCAN<span class="w"> </span><span class="m">1750</span><span class="w"> </span>MATCH<span class="w"> </span>user:*<span class="w"> </span>COUNT<span class="w"> </span><span class="m">100</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Returns: cursor=3200, keys=[user:42, user:43, ...]</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Continue until cursor returns 0 (done)</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Critical Production Rule</p>
+<p>Never use <code>KEYS *</code> in production. It's the single most common cause of Redis outages. Use <code>SCAN</code> instead.</p>
+</div>
+<hr />
+<h2 id="use-pipelines-for-batch-operations">Use Pipelines for Batch Operations<a class="headerlink" href="#use-pipelines-for-batch-operations" title="Permanent link">&para;</a></h2>
+<p>Every Redis command requires a network round trip: send command → wait → receive response. If you need to run 100 commands, that's 100 round trips.</p>
+<p><strong>Pipelining</strong> sends multiple commands at once and gets all responses back in one round trip.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Without pipeline (100 commands):
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  App → Redis: SET key1     → wait → OK
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  App → Redis: SET key2     → wait → OK
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  ...
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  App → Redis: SET key100   → wait → OK
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  Total: 100 round trips. ~100ms if each trip takes 1ms.
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>With pipeline (100 commands):
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  App → Redis: SET key1, SET key2, ... SET key100   → wait → OK, OK, ... OK
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  Total: 1 round trip. ~1ms.
+</code></pre></div>
+<h3 id="java-example">Java Example<a class="headerlink" href="#java-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// Without pipeline: 100 round trips</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="n">redis</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="s">&quot;key:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;value:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">}</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1">// With pipeline: 1 round trip</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">Pipeline</span><span class="w"> </span><span class="n">pipe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">pipelined</span><span class="p">();</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="n">pipe</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="s">&quot;key:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;value:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">}</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="n">pipe</span><span class="p">.</span><span class="na">sync</span><span class="p">();</span><span class="w">  </span><span class="c1">// Execute all at once</span>
+</code></pre></div>
+<p><strong>When to use pipelines:</strong>
+- Loading bulk data
+- Warming cache on startup
+- Any scenario where you run 10+ commands that don't depend on each other's results</p>
+<hr />
+<h2 id="use-the-right-data-structure">Use the Right Data Structure<a class="headerlink" href="#use-the-right-data-structure" title="Permanent link">&para;</a></h2>
+<p>Choosing the wrong data structure wastes memory and makes operations slower.</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Wrong Choice</th>
+<th>Right Choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storing a user profile (name, age, city)</td>
+<td>3 separate String keys</td>
+<td>1 Hash</td>
+<td>Hash is more memory-efficient and logically grouped</td>
+</tr>
+<tr>
+<td>Storing a list of unique tags</td>
+<td>List</td>
+<td>Set</td>
+<td>Set prevents duplicates automatically</td>
+</tr>
+<tr>
+<td>Ranking 1 million players</td>
+<td>Sorted list in app memory</td>
+<td>Sorted Set</td>
+<td>O(log N) operations vs O(N) sorting</td>
+</tr>
+<tr>
+<td>Counting unique visitors</td>
+<td>Set with all user IDs</td>
+<td>HyperLogLog</td>
+<td>HyperLogLog uses 12 KB vs potentially GBs for a Set</td>
+</tr>
+<tr>
+<td>Caching a simple API response</td>
+<td>Hash</td>
+<td>String</td>
+<td>String is simpler for single-value cache</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="connection-pooling">Connection Pooling<a class="headerlink" href="#connection-pooling" title="Permanent link">&para;</a></h2>
+<p>Opening a new connection to Redis for every request is expensive. Use a <strong>connection pool</strong> — a set of pre-opened connections that your app reuses.</p>
+<h3 id="spring-boot-auto-configured">Spring Boot (auto-configured)<a class="headerlink" href="#spring-boot-auto-configured" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Lettuce connection pool (Spring Boot default)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="na">spring.data.redis.lettuce.pool.max-active</span><span class="o">=</span><span class="s">16</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="na">spring.data.redis.lettuce.pool.max-idle</span><span class="o">=</span><span class="s">8</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="na">spring.data.redis.lettuce.pool.min-idle</span><span class="o">=</span><span class="s">2</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="na">spring.data.redis.lettuce.pool.max-wait</span><span class="o">=</span><span class="s">2000ms</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Meaning</th>
+<th>Recommended</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max-active</code></td>
+<td>Max connections open at once</td>
+<td>16-32 for most apps</td>
+</tr>
+<tr>
+<td><code>max-idle</code></td>
+<td>Max idle connections kept alive</td>
+<td>8-16</td>
+</tr>
+<tr>
+<td><code>min-idle</code></td>
+<td>Min connections kept alive even when idle</td>
+<td>2-4</td>
+</tr>
+<tr>
+<td><code>max-wait</code></td>
+<td>How long to wait if all connections are busy</td>
+<td>2000ms</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Sizing</p>
+<p>Start with <code>max-active=16</code>. Monitor. If you see "Cannot get connection" errors, increase it. If you see idle connections wasting resources, decrease it.</p>
+</div>
+<hr />
+<h2 id="persistence-rdb-vs-aof">Persistence: RDB vs AOF<a class="headerlink" href="#persistence-rdb-vs-aof" title="Permanent link">&para;</a></h2>
+<p>Redis is in-memory, but you can configure it to save data to disk for durability.</p>
+<h3 id="rdb-redis-database-backup">RDB (Redis Database Backup)<a class="headerlink" href="#rdb-redis-database-backup" title="Permanent link">&para;</a></h3>
+<p>Takes a <strong>snapshot</strong> of all data at intervals.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a># redis.conf
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>save 900 1        # Snapshot if at least 1 key changed in 900 seconds
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>save 300 10       # Snapshot if at least 10 keys changed in 300 seconds
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>save 60 10000     # Snapshot if at least 10000 keys changed in 60 seconds
+</code></pre></div>
+<p><strong>Pros:</strong> Compact files (binary, compressed). Fast restart—just load the file. Good for backups. Minimal CPU overhead during normal operation.<br />
+<strong>Cons:</strong> You lose everything since the last snapshot. If Redis crashes 5 minutes after the last save, 5 minutes of data is gone. And <code>SAVE</code> blocks Redis (use <code>BGSAVE</code> for background saves).</p>
+<h3 id="aof-append-only-file">AOF (Append-Only File)<a class="headerlink" href="#aof-append-only-file" title="Permanent link">&para;</a></h3>
+<p>Logs <strong>every write command</strong> to a file. On restart, Redis replays the log.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a># redis.conf
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>appendonly yes
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>appendfsync everysec     # Flush to disk every second (default)
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a># appendfsync always     # Flush after every write (safest, slowest)
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a># appendfsync no         # Let OS decide (fastest, most data loss risk)
+</code></pre></div>
+<p><strong>Pros:</strong> Much less data loss. With <code>everysec</code>, you lose at most 1 second. With <code>always</code>, you lose nothing (but it's slow).<br />
+<strong>Cons:</strong> AOF files grow large over time. Redis supports AOF rewrite (compaction), but it adds complexity. Slightly more disk I/O and CPU.</p>
+<h3 id="rdb-vs-aof-trade-off-summary">RDB vs AOF: Trade-off Summary<a class="headerlink" href="#rdb-vs-aof-trade-off-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>RDB</th>
+<th>AOF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data loss on crash</td>
+<td>Minutes (since last snapshot)</td>
+<td>Seconds (with everysec) or zero (with always)</td>
+</tr>
+<tr>
+<td>File size</td>
+<td>Smaller (binary snapshot)</td>
+<td>Larger (text log of commands)</td>
+</tr>
+<tr>
+<td>Restart speed</td>
+<td>Fast (load one file)</td>
+<td>Slower (replay many commands)</td>
+</tr>
+<tr>
+<td>Write performance</td>
+<td>Minimal impact</td>
+<td>Some overhead (disk sync)</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Simple</td>
+<td>More config options</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-to-use">What to use?<a class="headerlink" href="#what-to-use" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pure cache (data can be re-fetched)</td>
+<td>No persistence (or RDB only)</td>
+</tr>
+<tr>
+<td>Session store (some loss is OK)</td>
+<td>RDB</td>
+</tr>
+<tr>
+<td>Important data (minimal loss)</td>
+<td>AOF with <code>everysec</code></td>
+</tr>
+<tr>
+<td>Critical data (zero loss)</td>
+<td>AOF with <code>always</code> + replication</td>
+</tr>
+<tr>
+<td>Best of both</td>
+<td>RDB + AOF together (Redis 4+)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="monitoring-redis">Monitoring Redis<a class="headerlink" href="#monitoring-redis" title="Permanent link">&para;</a></h2>
+<h3 id="key-metrics-to-watch">Key Metrics to Watch<a class="headerlink" href="#key-metrics-to-watch" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What It Tells You</th>
+<th>Warning Sign</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>used_memory</code></td>
+<td>Current RAM usage</td>
+<td>Approaching <code>maxmemory</code></td>
+</tr>
+<tr>
+<td><code>hit_rate</code></td>
+<td>Cache hit ratio</td>
+<td>Below 80%</td>
+</tr>
+<tr>
+<td><code>connected_clients</code></td>
+<td>Number of active connections</td>
+<td>Sudden spike or drop</td>
+</tr>
+<tr>
+<td><code>evicted_keys</code></td>
+<td>Keys removed due to memory pressure</td>
+<td>Growing rapidly</td>
+</tr>
+<tr>
+<td><code>blocked_clients</code></td>
+<td>Clients waiting on blocking operations</td>
+<td>Any number &gt; 0 for extended time</td>
+</tr>
+<tr>
+<td><code>instantaneous_ops_per_sec</code></td>
+<td>Operations per second</td>
+<td>Sudden drop = problem</td>
+</tr>
+<tr>
+<td><code>latency</code></td>
+<td>Command response time</td>
+<td>Above 1ms consistently</td>
+</tr>
+</tbody>
+</table>
+<h3 id="useful-commands">Useful Commands<a class="headerlink" href="#useful-commands" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>INFO<span class="w">                          </span><span class="c1"># Everything about Redis</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>INFO<span class="w"> </span>memory<span class="w">                   </span><span class="c1"># Memory stats</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>INFO<span class="w"> </span>stats<span class="w">                    </span><span class="c1"># Hit/miss ratio, ops/sec</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>INFO<span class="w"> </span>clients<span class="w">                  </span><span class="c1"># Connected clients</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>INFO<span class="w"> </span>keyspace<span class="w">                 </span><span class="c1"># Number of keys per database</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>SLOWLOG<span class="w"> </span>GET<span class="w"> </span><span class="m">10</span><span class="w">                </span><span class="c1"># Last 10 slow commands</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>LATENCY<span class="w"> </span>LATEST<span class="w">                </span><span class="c1"># Latest latency events</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>CLIENT<span class="w"> </span>LIST<span class="w">                   </span><span class="c1"># All connected clients</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>MONITOR<span class="w">                       </span><span class="c1"># Real-time stream of ALL commands (use briefly!)</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">MONITOR</p>
+<p>The <code>MONITOR</code> command shows every command in real time. Very useful for debugging, but it <strong>reduces Redis performance by ~50%</strong>. Never leave it running in production.</p>
+</div>
+<hr />
+<h2 id="latency-troubleshooting">Latency Troubleshooting<a class="headerlink" href="#latency-troubleshooting" title="Permanent link">&para;</a></h2>
+<p>Redis is fast. When it's slow, something is wrong. Here's how to find the cause.</p>
+<h3 id="common-causes-of-high-latency">Common causes of high latency<a class="headerlink" href="#common-causes-of-high-latency" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Big keys:</strong> A single key with millions of elements. <code>SMEMBERS</code> on a 1M-member set blocks Redis for seconds.</li>
+<li><strong>Slow commands:</strong> <code>KEYS *</code>, <code>FLUSHALL</code>, <code>SORT</code> on large data, <code>HGETALL</code> on huge hashes.</li>
+<li><strong>Persistence:</strong> <code>appendfsync always</code> causes every write to wait for disk. Or a <code>BGSAVE</code> snapshot can cause latency spikes.</li>
+<li><strong>Network:</strong> High latency between app and Redis. Or too many connections causing contention.</li>
+<li><strong>Memory pressure:</strong> When Redis is near maxmemory, eviction adds overhead.</li>
+</ol>
+<h3 id="how-to-diagnose">How to diagnose<a class="headerlink" href="#how-to-diagnose" title="Permanent link">&para;</a></h3>
+<p><strong>Step 1: Check slow commands</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>SLOWLOG<span class="w"> </span>GET<span class="w"> </span><span class="m">10</span>
+</code></pre></div>
+<p>Shows the last 10 slow commands. Each entry shows: command, duration (microseconds), timestamp. If you see <code>KEYS</code> or <code>SMEMBERS</code> taking 500ms, that's your culprit.</p>
+<p><strong>Step 2: Check latency history</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>LATENCY<span class="w"> </span>LATEST
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>LATENCY<span class="w"> </span>HISTORY<span class="w"> </span><span class="nb">command</span><span class="w"> </span><span class="m">10</span>
+</code></pre></div>
+<p>Shows recent latency spikes. Helps correlate slowness with specific commands or time periods.</p>
+<p><strong>Step 3: Find big keys</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>redis-cli<span class="w"> </span>--bigkeys
+</code></pre></div>
+<p>Large keys often cause slow operations. Cap their size or split them.</p>
+<p><strong>Step 4: Check persistence</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>INFO<span class="w"> </span>persistence
+</code></pre></div>
+<p>If <code>rdb_last_save_time</code> or AOF writes coincide with latency spikes, persistence might be the cause. Consider <code>appendfsync everysec</code> instead of <code>always</code>, or schedule <code>BGSAVE</code> during low-traffic windows.</p>
+<div class="admonition tip">
+<p class="admonition-title">SLOWLOG configuration</p>
+<p>Set <code>slowlog-log-slower-than 10000</code> (10ms) to log commands slower than 10ms. Adjust based on your latency requirements.</p>
+</div>
+<hr />
+<h2 id="redis-cluster-basics">Redis Cluster Basics<a class="headerlink" href="#redis-cluster-basics" title="Permanent link">&para;</a></h2>
+<p>When a single Redis instance isn't enough—you need more memory or more throughput—<strong>Redis Cluster</strong> scales out.</p>
+<h3 id="what-is-redis-cluster">What is Redis Cluster?<a class="headerlink" href="#what-is-redis-cluster" title="Permanent link">&para;</a></h3>
+<p>Redis Cluster shards your data across multiple Redis nodes. Instead of one server holding everything, you have 6, 12, or more nodes. Data is distributed automatically.</p>
+<h3 id="when-do-you-need-it">When do you need it?<a class="headerlink" href="#when-do-you-need-it" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>More memory than one server can hold.</strong> Single Redis instance has a practical limit (e.g., 64–128 GB). Cluster spreads data across nodes.</li>
+<li><strong>More throughput.</strong> More nodes = more CPU = more commands per second.</li>
+<li><strong>High availability.</strong> Cluster can survive node failures (with replicas).</li>
+</ul>
+<h3 id="how-data-is-distributed-hash-slots">How data is distributed: Hash slots<a class="headerlink" href="#how-data-is-distributed-hash-slots" title="Permanent link">&para;</a></h3>
+<p>Redis Cluster divides the key space into <strong>16,384 hash slots</strong>. Every key belongs to exactly one slot. The slot is computed as:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>slot = CRC16(key) mod 16384
+</code></pre></div>
+<p>Each node is responsible for a subset of slots. When you <code>SET user:42 "data"</code>, Redis computes the slot, finds which node owns it, and routes the command there.</p>
+<h3 id="how-client-routing-works">How client routing works<a class="headerlink" href="#how-client-routing-works" title="Permanent link">&para;</a></h3>
+<p>Your Redis client (e.g., Lettuce, Jedis) talks to any cluster node. When you send a command:</p>
+<ol>
+<li>Client sends to node A.</li>
+<li>If the key's slot is on node A, node A processes it.</li>
+<li>If the key's slot is on node B, node A returns <strong>MOVED</strong> with the correct node. Client updates its routing table and retries to node B.</li>
+<li>For some operations (e.g., during resharding), node A might return <strong>ASK</strong>—temporary redirect. Client sends ASKING and retries.</li>
+</ol>
+<p>Smart clients cache the slot-to-node mapping. After the first MOVED, they route directly. No extra round trips.</p>
+<h3 id="moved-vs-ask-brief-intro">MOVED vs ASK (brief intro)<a class="headerlink" href="#moved-vs-ask-brief-intro" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>MOVED:</strong> The key permanently lives on another node. Update your routing table.</li>
+<li><strong>ASK:</strong> Temporary. The key is being migrated. Send ASKING, then the command. Don't update the routing table.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Cluster complexity</p>
+<p>Redis Cluster adds operational complexity. You need at least 6 nodes (3 masters + 3 replicas) for a proper setup. Start with a single instance or Sentinel. Move to Cluster when you outgrow it.</p>
+</div>
+<hr />
+<h2 id="lua-scripting">Lua Scripting<a class="headerlink" href="#lua-scripting" title="Permanent link">&para;</a></h2>
+<p>Sometimes you need to run multiple Redis commands as one atomic operation. <strong>Lua scripting</strong> lets you do that.</p>
+<h3 id="what-is-it">What is it?<a class="headerlink" href="#what-is-it" title="Permanent link">&para;</a></h3>
+<p>Redis can execute Lua scripts. The script runs on the Redis server. While it runs, no other command is processed. So it's atomic—all or nothing.</p>
+<h3 id="why-its-useful">Why it's useful<a class="headerlink" href="#why-its-useful" title="Permanent link">&para;</a></h3>
+<p><strong>Problem:</strong> You want to "increment a counter and set TTL only if the key is new." That's two commands. Between them, another client could run. Not atomic.</p>
+<p><strong>Solution:</strong> Put both in a Lua script. Redis runs the script as a single unit.</p>
+<h3 id="simple-example">Simple example<a class="headerlink" href="#simple-example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">-- Increment and set 60-second TTL if key is new</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">redis</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="s1">&#39;EXISTS&#39;</span><span class="p">,</span><span class="w"> </span><span class="nv">KEYS</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kr">then</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="nv">redis</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="s1">&#39;SETEX&#39;</span><span class="p">,</span><span class="w"> </span><span class="nv">KEYS</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="kr">return</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="kr">else</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="kr">return</span><span class="w"> </span><span class="nv">redis</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="s1">&#39;INCR&#39;</span><span class="p">,</span><span class="w"> </span><span class="nv">KEYS</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="kr">end</span>
+</code></pre></div>
+<p>Run it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>EVAL<span class="w"> </span><span class="s2">&quot;if redis.call(&#39;EXISTS&#39;, KEYS[1]) == 0 then redis.call(&#39;SETEX&#39;, KEYS[1], 60, 1); return 1 else return redis.call(&#39;INCR&#39;, KEYS[1]) end&quot;</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>rate_limit:user:42
+</code></pre></div>
+<p><strong>Real-world use:</strong> Rate limiting (increment + expire atomically), atomic "check-and-set" for distributed locks, multi-step updates that must succeed or fail together.</p>
+<div class="admonition warning">
+<p class="admonition-title">Script blocking</p>
+<p>Lua scripts block Redis. Keep them short and fast. A slow script blocks all other clients.</p>
+</div>
+<hr />
+<h2 id="security-best-practices">Security Best Practices<a class="headerlink" href="#security-best-practices" title="Permanent link">&para;</a></h2>
+<p>Redis is fast and simple. Out of the box, it has <strong>no authentication</strong> and binds to all interfaces. In production, that's dangerous.</p>
+<h3 id="1-set-a-password-requirepass">1. Set a password (requirepass)<a class="headerlink" href="#1-set-a-password-requirepass" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># redis.conf</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>requirepass<span class="w"> </span>your_strong_password_here
+</code></pre></div>
+<p>Clients must send <code>AUTH your_strong_password_here</code> before running commands. Without it, Redis rejects requests.</p>
+<h3 id="2-use-acl-redis-6">2. Use ACL (Redis 6+)<a class="headerlink" href="#2-use-acl-redis-6" title="Permanent link">&para;</a></h3>
+<p>ACL (Access Control List) lets you create users with specific permissions.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Create a read-only user for reporting</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>ACL<span class="w"> </span>SETUSER<span class="w"> </span>reporter<span class="w"> </span>on<span class="w"> </span>&gt;secret123<span class="w"> </span>+get<span class="w"> </span>+mget<span class="w"> </span>+keys<span class="w"> </span>+scan
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># Create a cache user (no dangerous commands)</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>ACL<span class="w"> </span>SETUSER<span class="w"> </span>cacheapp<span class="w"> </span>on<span class="w"> </span>&gt;secret456<span class="w"> </span>+get<span class="w"> </span>+set<span class="w"> </span>+del<span class="w"> </span>+exists<span class="w"> </span>-@dangerous
+</code></pre></div>
+<h3 id="3-rename-dangerous-commands">3. Rename dangerous commands<a class="headerlink" href="#3-rename-dangerous-commands" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># redis.conf</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>rename-command<span class="w"> </span>FLUSHALL<span class="w"> </span><span class="s2">&quot;&quot;</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>rename-command<span class="w"> </span>FLUSHDB<span class="w"> </span><span class="s2">&quot;&quot;</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>rename-command<span class="w"> </span>KEYS<span class="w"> </span><span class="s2">&quot;&quot;</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>rename-command<span class="w"> </span>CONFIG<span class="w"> </span><span class="s2">&quot;config_placeholder_xyz&quot;</span>
+</code></pre></div>
+<p>This disables or obfuscates commands that could take down your Redis. Use empty string <code>""</code> to fully disable.</p>
+<h3 id="4-bind-to-localhost-or-private-ip-only">4. Bind to localhost (or private IP only)<a class="headerlink" href="#4-bind-to-localhost-or-private-ip-only" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># redis.conf</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nb">bind</span><span class="w"> </span><span class="m">127</span>.0.0.1
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="c1"># Or for remote: bind 10.0.0.5  (your private IP only)</span>
+</code></pre></div>
+<p>Don't expose Redis to the public internet. If your app and Redis are on the same server, bind to 127.0.0.1. If they're on different servers, use a private network and bind to that IP.</p>
+<h3 id="5-use-tls-for-connections-redis-6">5. Use TLS for connections (Redis 6+)<a class="headerlink" href="#5-use-tls-for-connections-redis-6" title="Permanent link">&para;</a></h3>
+<p>If Redis is on a different network segment, encrypt traffic:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># redis.conf</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>tls-port<span class="w"> </span><span class="m">6379</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>tls-cert-file<span class="w"> </span>/path/to/redis.crt
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>tls-key-file<span class="w"> </span>/path/to/redis.key
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>tls-ca-cert-file<span class="w"> </span>/path/to/ca.crt
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Default Redis is insecure</p>
+<p>A Redis instance with no password, bound to 0.0.0.0, is an open door. Attackers scan for such instances and use them for crypto mining or data theft. Always secure Redis in production.</p>
+</div>
+<hr />
+<h2 id="redis-sentinel-for-high-availability">Redis Sentinel for High Availability<a class="headerlink" href="#redis-sentinel-for-high-availability" title="Permanent link">&para;</a></h2>
+<p>In production, you never run a single Redis instance. If it goes down, your app is dead.</p>
+<p><strong>Redis Sentinel</strong> provides automatic failover.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>┌──────────┐     ┌──────────┐     ┌──────────┐
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>│ Sentinel │     │ Sentinel │     │ Sentinel │
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>│    1     │     │    2     │     │    3     │
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>└────┬─────┘     └────┬─────┘     └────┬─────┘
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>     │                │                │
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>     │         Monitoring              │
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>     ▼                ▼                ▼
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>┌──────────┐     ┌──────────┐     ┌──────────┐
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>│  Master  │────▶│ Replica 1│     │ Replica 2│
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>│ (writes) │     │ (reads)  │     │ (reads)  │
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>└──────────┘     └──────────┘     └──────────┘
+</code></pre></div>
+<ul>
+<li>Sentinels <strong>monitor</strong> the master.</li>
+<li>If the master goes down, sentinels <strong>vote</strong> to elect a replica as the new master.</li>
+<li>Your app is notified of the switch. Automatic. No manual intervention.</li>
+</ul>
+<hr />
+<h2 id="production-checklist">Production Checklist<a class="headerlink" href="#production-checklist" title="Permanent link">&para;</a></h2>
+<p>Before going to production with Redis, check these:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>✅ maxmemory is set (don&#39;t let Redis eat all RAM)
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>✅ maxmemory-policy is set (allkeys-lru for caching)
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>✅ Persistence is configured (RDB, AOF, or both)
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>✅ Sentinel or Cluster is set up (high availability)
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>✅ Connection pooling is configured
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>✅ KEYS command is not used (use SCAN)
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>✅ Slow commands avoided (no SMEMBERS on huge sets, no LRANGE 0 -1 on big lists)
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>✅ All cache keys have TTL
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>✅ Key names follow a consistent convention
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>✅ Monitoring is in place (INFO, SLOWLOG, LATENCY, alerts)
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>✅ Backups are configured (RDB snapshots)
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>✅ Redis version is up to date
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>✅ Security: requirepass or ACL, bind to private IP, rename dangerous commands
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a>✅ Network security (Redis not exposed to the internet)
+</code></pre></div>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consistent key naming (<code>entity:id:field</code>)</td>
+<td>Debugging and maintenance</td>
+</tr>
+<tr>
+<td>Never use <code>KEYS</code> in production</td>
+<td>Blocks Redis completely</td>
+</tr>
+<tr>
+<td>Avoid slow commands (SMEMBERS, LRANGE on big data)</td>
+<td>Prevents latency spikes</td>
+</tr>
+<tr>
+<td>Use pipelines for bulk operations</td>
+<td>100x faster than individual commands</td>
+</tr>
+<tr>
+<td>Choose the right data structure</td>
+<td>Memory and performance efficiency</td>
+</tr>
+<tr>
+<td>Connection pooling</td>
+<td>Avoid connection overhead</td>
+</tr>
+<tr>
+<td>Set <code>maxmemory</code> + eviction policy</td>
+<td>Prevent OOM crashes</td>
+</tr>
+<tr>
+<td>Configure persistence (RDB/AOF)</td>
+<td>Data durability</td>
+</tr>
+<tr>
+<td>Use Sentinel for HA, Cluster for scale</td>
+<td>High availability and throughput</td>
+</tr>
+<tr>
+<td>Lua scripts for atomic multi-step ops</td>
+<td>Consistency without race conditions</td>
+</tr>
+<tr>
+<td>Secure Redis (password, ACL, bind)</td>
+<td>Prevent unauthorized access</td>
+</tr>
+<tr>
+<td>Monitor metrics (SLOWLOG, LATENCY)</td>
+<td>Catch problems early</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Run <code>INFO memory</code> and note your Redis memory usage.</li>
+<li>Use <code>SCAN</code> to find all keys matching <code>user:*</code> (don't use <code>KEYS</code>!).</li>
+<li>Pipeline 50 <code>SET</code> commands. Compare the time vs running them individually.</li>
+<li>Run <code>SLOWLOG GET 5</code> and see if any commands are slow.</li>
+<li>Set <code>maxmemory 10mb</code> and fill Redis. Observe eviction behavior.</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../redis-with-springboot/">Redis with Spring Boot</a> — Build real applications with Redis.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

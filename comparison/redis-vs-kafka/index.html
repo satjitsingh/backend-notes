@@ -1,0 +1,2871 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/comparison/redis-vs-kafka/">
+      
+      
+        <link rel="prev" href="../../projects/kafka-notification-system/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Redis vs Kafka - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#redis-vs-kafka-the-definitive-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Redis vs Kafka
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-confusion-why-do-beginners-mix-them-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Confusion: Why Do Beginners Mix Them Up?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-answer-for-the-impatient" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Answer (For the Impatient)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-a-food-delivery-app-where-redis-fits-and-where-kafka-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building a Food Delivery App: Where Redis Fits and Where Kafka Fits
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building a Food Delivery App: Where Redis Fits and Where Kafka Fits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-user-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      The User Journey
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-redis-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Redis Fits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-kafka-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Kafka Fits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-architecture-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Architecture Together
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-pubsub-vs-kafka-the-chat-application-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Pub/Sub vs Kafka: The Chat Application Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis Pub/Sub vs Kafka: The Chat Application Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-group-chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario: Group Chat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-pubsub" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Pub/Sub
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#side-by-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      Side-by-Side
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-use-redis-as-a-message-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I Use Redis AS a Message Queue?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Can I Use Redis AS a Message Queue?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redis-streams-vs-kafka-detailed-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Streams vs Kafka: Detailed Comparison
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-interview-question-when-would-you-use-redis-vs-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Interview Question: When Would You Use Redis vs Kafka?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-framework-yesno-questions-to-choose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Framework: Yes/No Questions to Choose
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision Framework: Yes/No Questions to Choose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#more-scenarios-expand-your-decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      More Scenarios: Expand Your Decision Tree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-architecture-examples-both-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Architecture Examples: Both Together
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-World Architecture Examples: Both Together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-e-commerce" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: E-Commerce
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-rate-limiting-event-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Rate Limiting + Event Logging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-social-feed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Social Feed
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-patterns-using-both-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Patterns: Using Both Together
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Patterns: Using Both Together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pattern-1-e-commerce-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: E-Commerce Platform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-2-social-media-feed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Social Media Feed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-3-fintech-payments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Fintech / Payments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mock-interview-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mock Interview Scenario
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mock Interview Scenario">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Answer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detailed Comparison
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#messagedata-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message/Data Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use What?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="When to Use What?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-redis-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Redis When:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-kafka-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Kafka When:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-not-to-use-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to Use Redis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-not-to-use-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to Use Kafka
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interview Cheat Sheet
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-confusion-why-do-beginners-mix-them-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Confusion: Why Do Beginners Mix Them Up?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-answer-for-the-impatient" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Answer (For the Impatient)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-a-food-delivery-app-where-redis-fits-and-where-kafka-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building a Food Delivery App: Where Redis Fits and Where Kafka Fits
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building a Food Delivery App: Where Redis Fits and Where Kafka Fits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-user-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      The User Journey
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-redis-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Redis Fits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-kafka-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Kafka Fits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-architecture-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Architecture Together
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis-pubsub-vs-kafka-the-chat-application-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Pub/Sub vs Kafka: The Chat Application Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis Pub/Sub vs Kafka: The Chat Application Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-group-chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario: Group Chat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-pubsub" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Pub/Sub
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#side-by-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      Side-by-Side
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-use-redis-as-a-message-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I Use Redis AS a Message Queue?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Can I Use Redis AS a Message Queue?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redis-streams-vs-kafka-detailed-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis Streams vs Kafka: Detailed Comparison
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-interview-question-when-would-you-use-redis-vs-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Interview Question: When Would You Use Redis vs Kafka?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-framework-yesno-questions-to-choose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Framework: Yes/No Questions to Choose
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision Framework: Yes/No Questions to Choose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#more-scenarios-expand-your-decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      More Scenarios: Expand Your Decision Tree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-architecture-examples-both-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Architecture Examples: Both Together
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-World Architecture Examples: Both Together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-e-commerce" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: E-Commerce
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-rate-limiting-event-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Rate Limiting + Event Logging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-social-feed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Social Feed
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-patterns-using-both-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Patterns: Using Both Together
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Patterns: Using Both Together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pattern-1-e-commerce-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: E-Commerce Platform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-2-social-media-feed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Social Media Feed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pattern-3-fintech-payments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Fintech / Payments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mock-interview-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mock Interview Scenario
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mock Interview Scenario">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Answer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detailed Comparison
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#messagedata-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message/Data Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use What?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="When to Use What?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-redis-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Redis When:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-kafka-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Kafka When:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-not-to-use-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to Use Redis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-not-to-use-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to Use Kafka
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interview Cheat Sheet
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="redis-vs-kafka-the-definitive-guide">Redis vs Kafka: The Definitive Guide<a class="headerlink" href="#redis-vs-kafka-the-definitive-guide" title="Permanent link">&para;</a></h1>
+<h2 id="the-confusion-why-do-beginners-mix-them-up">The Confusion: Why Do Beginners Mix Them Up?<a class="headerlink" href="#the-confusion-why-do-beginners-mix-them-up" title="Permanent link">&para;</a></h2>
+<p>You're learning backend development. You hear "Redis" and "Kafka" in the same breath. Both are used in distributed systems. Both can move data between services. Both show up in architecture diagrams. So they must be similar, right?</p>
+<p><strong>Wrong.</strong> They solve fundamentally different problems. Redis is a <strong>data store</strong> that happens to have messaging features. Kafka is a <strong>messaging and event streaming platform</strong> that happens to store data. Confusing them is like confusing a refrigerator (stores food, keeps it cold) with a conveyor belt (moves items from one place to another). Both are in a kitchen, but they do different jobs.</p>
+<p>This page will clear that up. By the end, you'll know exactly when to reach for Redis, when to reach for Kafka, and when to use both together.</p>
+<hr />
+<h2 id="quick-answer-for-the-impatient">Quick Answer (For the Impatient)<a class="headerlink" href="#quick-answer-for-the-impatient" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Redis</th>
+<th>Kafka</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>What is it?</strong></td>
+<td>In-memory data store</td>
+<td>Distributed event streaming platform</td>
+</tr>
+<tr>
+<td><strong>Primary use</strong></td>
+<td>Caching, sessions, real-time data</td>
+<td>Event streaming, messaging, data pipelines</td>
+</tr>
+<tr>
+<td><strong>Speed</strong></td>
+<td>Sub-millisecond (RAM)</td>
+<td>Low-latency (disk, but optimized)</td>
+</tr>
+<tr>
+<td><strong>Data storage</strong></td>
+<td>RAM (limited by memory)</td>
+<td>Disk (can store terabytes)</td>
+</tr>
+<tr>
+<td><strong>Message retention</strong></td>
+<td>Optional (TTL-based)</td>
+<td>Configurable (days/weeks/forever)</td>
+</tr>
+<tr>
+<td><strong>Best analogy</strong></td>
+<td>A sticky note on your desk</td>
+<td>A post office that keeps copies of all letters</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="building-a-food-delivery-app-where-redis-fits-and-where-kafka-fits">Building a Food Delivery App: Where Redis Fits and Where Kafka Fits<a class="headerlink" href="#building-a-food-delivery-app-where-redis-fits-and-where-kafka-fits" title="Permanent link">&para;</a></h2>
+<p>Let's build <strong>QuickBite</strong>, a food delivery app. We'll see Redis and Kafka in the same system, doing different jobs.</p>
+<h3 id="the-user-journey">The User Journey<a class="headerlink" href="#the-user-journey" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>User opens the app</strong> → Sees restaurant list, menu, prices</li>
+<li><strong>User browses</strong> → Checks restaurant ratings, reviews, delivery time estimates</li>
+<li><strong>User places order</strong> → Order goes to kitchen, payment processes, rider gets assigned</li>
+<li><strong>User tracks order</strong> → Real-time updates: "Preparing", "Out for delivery", "2 min away"</li>
+<li><strong>Order delivered</strong> → User gets notification, can rate the experience</li>
+</ol>
+<h3 id="where-redis-fits">Where Redis Fits<a class="headerlink" href="#where-redis-fits" title="Permanent link">&para;</a></h3>
+<p><strong>Restaurant list and menu</strong> — These change rarely. Thousands of users browse the same restaurants. Every request hitting the database would kill it. <strong>Redis caches</strong> the restaurant list, menu items, and prices. First request: DB. Next 10,000 requests: Redis. Sub-millisecond response.</p>
+<p><strong>User session</strong> — User logs in. They're browsing, adding to cart. Which server handles their next request? Doesn't matter. <strong>Redis stores the session</strong> so any server can serve them. Cart survives server restarts.</p>
+<p><strong>Real-time delivery tracking</strong> — "Where is my rider?" The rider's location updates every few seconds. <strong>Redis pub/sub or Redis Streams</strong> can broadcast location updates to the user's app. Or: store the latest location in Redis (key = riderId, value = lat/long). App polls or uses WebSocket. Redis is fast enough for real-time.</p>
+<p><strong>Rate limiting</strong> — "Max 10 requests per minute per user." <strong>Redis INCR</strong> with a TTL. Simple, atomic, fast.</p>
+<p><strong>Leaderboard</strong> — "Top 10 restaurants by rating this week." <strong>Redis Sorted Sets</strong>. Add score, get range. O(log N). Perfect for rankings.</p>
+<h3 id="where-kafka-fits">Where Kafka Fits<a class="headerlink" href="#where-kafka-fits" title="Permanent link">&para;</a></h3>
+<p><strong>Order placed</strong> — User clicks "Place Order." This event triggers: charge payment, notify restaurant, assign rider, update inventory, send confirmation. <strong>Kafka</strong>: One event "ORDER_PLACED" published. Payment service consumes it. Kitchen service consumes it. Rider service consumes it. Notification service consumes it. Each does its job. Decoupled. If payment is slow, the order is still recorded. Payment will catch up.</p>
+<p><strong>Order status updates</strong> — "Preparing" → "Out for delivery" → "Delivered." Each status change is an event. <strong>Kafka</strong> stores the full history. Audit trail. Analytics. "How long does it take from order to delivery?" Replay the events.</p>
+<p><strong>Delivery assignment</strong> — "Rider R123 assigned to order O456." Event goes to Kafka. Rider app consumes it. User app consumes it. Analytics consumes it. One event, many consumers.</p>
+<p><strong>Payment failure</strong> — Payment service publishes "PAYMENT_FAILED." Order service consumes it, updates order status. Notification service consumes it, alerts user. No tight coupling.</p>
+<h3 id="the-architecture-together">The Architecture Together<a class="headerlink" href="#the-architecture-together" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>    User App                    API Gateway
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>        │                            │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        │  GET /restaurants          │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        │ ──────────────────────────▶│
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        │                            │  Check Redis cache
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        │                            │ ──────────────────▶ Redis (cache)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        │  JSON response             │ ◀──────────────────
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        │ ◀─────────────────────────│
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        │                            │
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        │  POST /orders              │
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        │ ──────────────────────────▶│
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        │                            │  Save to DB
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        │                            │  Publish to Kafka
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        │                            │ ──────────────────▶ Kafka (orders)
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        │  Order created             │
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        │ ◀─────────────────────────│
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        │                            │
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        │  GET /session/cart         │
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        │ ──────────────────────────▶│
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        │                            │  Read session from Redis
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        │                            │ ──────────────────▶ Redis (sessions)
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        │  Cart data                 │
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>        │ ◀─────────────────────────│
+</code></pre></div>
+<p><strong>Summary:</strong> Redis = fast data access (cache, session, real-time state). Kafka = reliable event flow (order lifecycle, payment, notifications).</p>
+<hr />
+<h2 id="redis-pubsub-vs-kafka-the-chat-application-example">Redis Pub/Sub vs Kafka: The Chat Application Example<a class="headerlink" href="#redis-pubsub-vs-kafka-the-chat-application-example" title="Permanent link">&para;</a></h2>
+<p>Both Redis and Kafka can send messages from one publisher to many subscribers. But they work very differently. Let's see with a <strong>chat application</strong>.</p>
+<h3 id="scenario-group-chat">Scenario: Group Chat<a class="headerlink" href="#scenario-group-chat" title="Permanent link">&para;</a></h3>
+<p>Users A, B, C are in a chat room. User A sends a message. B and C should receive it.</p>
+<h3 id="redis-pubsub">Redis Pub/Sub<a class="headerlink" href="#redis-pubsub" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>    User A (Publisher)          Redis Channel &quot;room:123&quot;          User B (Subscriber)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>         │                              │                              │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>         │  PUBLISH &quot;room:123&quot; &quot;Hello&quot;  │                              │
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>         │ ───────────────────────────▶│                              │
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>         │                              │  Message delivered           │
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>         │                              │ ────────────────────────────▶│
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>         │                              │                              │
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>         │                              │  User C (Subscriber)          │
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>         │                              │ ────────────────────────────▶│
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>         │                              │                              │
+</code></pre></div>
+<p><strong>What happens if User B is offline?</strong> The message is gone. Redis Pub/Sub is <strong>fire-and-forget</strong>. No storage. When B comes back, they never see "Hello."</p>
+<p><strong>What happens if B is slow?</strong> Redis doesn't wait. It pushes the message. If B's connection is slow, Redis might drop it. No backpressure.</p>
+<p><strong>When Redis Pub/Sub is fine:</strong> Live scores, live dashboards, presence notifications ("User X is typing"). If you miss a message, it's okay. The next one will have the current state.</p>
+<h3 id="kafka">Kafka<a class="headerlink" href="#kafka" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>    User A (Producer)           Kafka Topic &quot;chat-messages&quot;       User B (Consumer)
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>         │                              │                              │
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>         │  Produce &quot;Hello&quot;              │                              │
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>         │ ────────────────────────────▶│                              │
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>         │                              │  Message stored (persisted)  │
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>         │                              │  B consumes when ready       │
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>         │                              │ ────────────────────────────▶│
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>         │                              │                              │
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>         │                              │  User B was offline?          │
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>         │                              │  B comes back, reads from     │
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>         │                              │  last offset. Gets &quot;Hello&quot;!   │
+</code></pre></div>
+<p><strong>What happens if User B is offline?</strong> The message sits in Kafka. When B comes back, they consume from their last offset. They get "Hello" and every message they missed.</p>
+<p><strong>What happens if B is slow?</strong> Kafka keeps the messages. B can catch up. No loss.</p>
+<p><strong>When Kafka is right:</strong> Chat history, order events, audit logs. You need guaranteed delivery and replay.</p>
+<h3 id="side-by-side">Side-by-Side<a class="headerlink" href="#side-by-side" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Redis Pub/Sub</th>
+<th>Kafka</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Message storage</td>
+<td>No. Fire and forget.</td>
+<td>Yes. Persisted to disk.</td>
+</tr>
+<tr>
+<td>Offline consumer</td>
+<td>Misses messages.</td>
+<td>Catches up when back.</td>
+</tr>
+<tr>
+<td>Replay</td>
+<td>No.</td>
+<td>Yes. Reset offset, re-read.</td>
+</tr>
+<tr>
+<td>Throughput</td>
+<td>High (in-memory).</td>
+<td>Very high (distributed).</td>
+</tr>
+<tr>
+<td>Ordering</td>
+<td>Per channel.</td>
+<td>Per partition.</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Live updates, presence.</td>
+<td>Events, audit, reliability.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"Redis Pub/Sub is fire-and-forget. Kafka is a durable log. If I need guaranteed delivery—like order processing or chat history—I choose Kafka. If I need real-time broadcasting where missing a message is acceptable—like live scores or 'user is typing'—Redis Pub/Sub is fine."</p>
+</div>
+<hr />
+<h2 id="can-i-use-redis-as-a-message-queue">Can I Use Redis AS a Message Queue?<a class="headerlink" href="#can-i-use-redis-as-a-message-queue" title="Permanent link">&para;</a></h2>
+<p>Yes. <strong>Redis Streams</strong> (added in Redis 5.0) give you a Kafka-like log. Messages are stored. Consumers track their position (like Kafka offsets). Multiple consumer groups. Replay.</p>
+<h3 id="redis-streams-vs-kafka-detailed-comparison">Redis Streams vs Kafka: Detailed Comparison<a class="headerlink" href="#redis-streams-vs-kafka-detailed-comparison" title="Permanent link">&para;</a></h3>
+<p>This is a common interview question. Both support consumer groups, message acknowledgment, and replay. But they differ in scale, persistence, and operational complexity.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Redis Streams</th>
+<th>Kafka</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Storage</strong></td>
+<td>RAM (optional AOF/RDB persistence)</td>
+<td>Disk (always persisted)</td>
+</tr>
+<tr>
+<td><strong>Scale</strong></td>
+<td>Single node or Redis Cluster (sharded)</td>
+<td>Distributed, many brokers</td>
+</tr>
+<tr>
+<td><strong>Throughput</strong></td>
+<td>~100K msg/sec (single node)</td>
+<td>Millions msg/sec (cluster)</td>
+</tr>
+<tr>
+<td><strong>Retention</strong></td>
+<td>MAXLEN (trim by count) or time-based</td>
+<td>retention.ms, retention.bytes (days/weeks)</td>
+</tr>
+<tr>
+<td><strong>Consumer groups</strong></td>
+<td>Yes (XREADGROUP)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Message ID</strong></td>
+<td>Auto-generated (timestamp-seq)</td>
+<td>Offset (per partition)</td>
+</tr>
+<tr>
+<td><strong>Replay</strong></td>
+<td>Yes (read from ID)</td>
+<td>Yes (reset offset)</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>Per stream (single partition)</td>
+<td>Per partition</td>
+</tr>
+<tr>
+<td><strong>Persistence guarantee</strong></td>
+<td>Optional. Default: in-memory only</td>
+<td>Always. Writes go to disk</td>
+</tr>
+<tr>
+<td><strong>Operations</strong></td>
+<td>Simpler. One process (or Cluster)</td>
+<td>More complex. Brokers, ZooKeeper/KRaft</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Task queues, low-volume events, already have Redis</td>
+<td>High volume, multi-team, enterprise</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to use Redis Streams:</strong> You need message queue semantics but your volume is modest (thousands, not millions per second). You already have Redis. You want simpler operations than Kafka. Good for: task queues, notification fan-out, event sourcing in smaller systems. Single team. Single region.</p>
+<p><strong>When to use Kafka:</strong> High throughput. Multiple teams. Long retention (days/weeks). Complex pipelines. Event sourcing at scale. Cross-datacenter. Enterprise compliance. When you need durability and can't afford to lose messages.</p>
+<div class="admonition tip">
+<p class="admonition-title">Interview Answer</p>
+<p>"Redis Streams and Kafka both support consumer groups and replay. Redis Streams is in-memory first, simpler to run, good for thousands of messages per second. Kafka is disk-based, scales to millions, and is built for enterprise event streaming. I'd use Redis Streams when we already have Redis and need a lightweight queue. Kafka when we need durability, high throughput, or multi-team event pipelines."</p>
+</div>
+<hr />
+<h2 id="the-interview-question-when-would-you-use-redis-vs-kafka">The Interview Question: When Would You Use Redis vs Kafka?<a class="headerlink" href="#the-interview-question-when-would-you-use-redis-vs-kafka" title="Permanent link">&para;</a></h2>
+<p><strong>Question:</strong> "In what scenarios would you choose Redis over Kafka, and vice versa?"</p>
+<p><strong>Model answer:</strong></p>
+<p>"I'd use <strong>Redis</strong> when I need fast, low-latency access to data. Caching API responses, storing user sessions, rate limiting with atomic counters, leaderboards with sorted sets, or real-time presence. Redis lives in RAM, so reads and writes are sub-millisecond. It's perfect for state that needs to be read quickly and doesn't need to be persisted forever—or when persistence is optional.</p>
+<p>"I'd use <strong>Kafka</strong> when I need reliable, ordered event streaming between services. Order processing, payment events, audit logs, notification fan-out, or data pipelines. Kafka persists messages to disk and supports consumer groups, so multiple services can process the same events independently. If a consumer is down, messages queue up. No loss. I can replay events for debugging or new consumers. Kafka scales horizontally with partitions and brokers.</p>
+<p>"They're complementary. In an e-commerce app, I might use Redis for caching product data and session storage, and Kafka for order events, payment events, and inventory updates. Redis handles the 'read path' fast. Kafka handles the 'write path' and event flow reliably."</p>
+<hr />
+<h2 id="decision-framework-yesno-questions-to-choose">Decision Framework: Yes/No Questions to Choose<a class="headerlink" href="#decision-framework-yesno-questions-to-choose" title="Permanent link">&para;</a></h2>
+<p>Work through these questions. They'll point you to the right tool.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Do I need to store data temporarily for fast access?
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  → YES → Redis (cache, session, rate limit)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Do I need to send events between microservices?
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  → YES → Kafka
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Do I need message replay or an audit trail?
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  → YES → Kafka (or Redis Streams for smaller scale)
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>Do I need sub-millisecond response times?
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  → YES → Redis
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>Do I need to process millions of events per second?
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>  → YES → Kafka
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>Do I need a leaderboard, ranked data, or sorted sets?
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>  → YES → Redis
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>Do I need to decouple producers and consumers?
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>  → YES → Kafka
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>Do I need both caching AND event streaming?
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>  → YES → Use both! Redis + Kafka together.
+</code></pre></div>
+<h3 id="more-scenarios-expand-your-decision-tree">More Scenarios: Expand Your Decision Tree<a class="headerlink" href="#more-scenarios-expand-your-decision-tree" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Redis?</th>
+<th>Kafka?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User session for 10K users</td>
+<td>Yes</td>
+<td>No</td>
+<td>Fast lookup, TTL. Kafka is overkill.</td>
+</tr>
+<tr>
+<td>Order events for audit</td>
+<td>No</td>
+<td>Yes</td>
+<td>Need replay, durability. Redis doesn't persist like Kafka.</td>
+</tr>
+<tr>
+<td>Real-time leaderboard</td>
+<td>Yes</td>
+<td>No</td>
+<td>Sorted Sets. Sub-ms reads. Kafka isn't a query engine.</td>
+</tr>
+<tr>
+<td>CDC from database to data lake</td>
+<td>No</td>
+<td>Yes</td>
+<td>Event log, replay, high throughput.</td>
+</tr>
+<tr>
+<td>Rate limit per user</td>
+<td>Yes</td>
+<td>No</td>
+<td>INCR + TTL. Atomic. Fast.</td>
+</tr>
+<tr>
+<td>Chat history (must not lose messages)</td>
+<td>No</td>
+<td>Yes</td>
+<td>Kafka persists. Redis Pub/Sub loses messages.</td>
+</tr>
+<tr>
+<td>"User is typing" indicator</td>
+<td>Yes (Pub/Sub)</td>
+<td>No</td>
+<td>Fire-and-forget is fine. Low latency.</td>
+</tr>
+<tr>
+<td>Inventory updates across 50 services</td>
+<td>No</td>
+<td>Yes</td>
+<td>Fan-out, durability, replay.</td>
+</tr>
+<tr>
+<td>Feature flags</td>
+<td>Yes</td>
+<td>No</td>
+<td>Fast reads. Simple key-value.</td>
+</tr>
+<tr>
+<td>Log aggregation from 1000 servers</td>
+<td>No</td>
+<td>Yes</td>
+<td>High throughput, retention, multiple consumers.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Gray Areas</p>
+<p>Some use cases could use either. Example: task queue. Redis Streams works for small scale. Kafka works for large scale. The decision depends on volume, team size, and existing infrastructure.</p>
+</div>
+<hr />
+<h2 id="real-world-architecture-examples-both-together">Real-World Architecture Examples: Both Together<a class="headerlink" href="#real-world-architecture-examples-both-together" title="Permanent link">&para;</a></h2>
+<h3 id="example-1-e-commerce">Example 1: E-Commerce<a class="headerlink" href="#example-1-e-commerce" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>1. User views product page → Redis cache serves product data (fast)
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>2. User places order → Kafka event: &quot;ORDER_PLACED&quot;
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>3. Payment service reads from Kafka → processes payment
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>4. After payment → Kafka event: &quot;PAYMENT_SUCCESS&quot;
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>5. Inventory service reads event → updates stock in DB
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>6. Cache service reads event → invalidates Redis cache for product
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>7. Next user sees updated stock → served from refreshed Redis cache
+</code></pre></div>
+<h3 id="example-2-rate-limiting-event-logging">Example 2: Rate Limiting + Event Logging<a class="headerlink" href="#example-2-rate-limiting-event-logging" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>API Request arrives
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    │
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    ├──▶ Check Redis: &quot;Has this user exceeded 100 requests/min?&quot;
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    │    ├── Yes → Return 429 Too Many Requests
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    │    └── No  → INCR counter, process request
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    │
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    └──▶ Send to Kafka: Log the API request for analytics
+</code></pre></div>
+<h3 id="example-3-social-feed">Example 3: Social Feed<a class="headerlink" href="#example-3-social-feed" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>- User posts: Event to Kafka → Fan-out service writes to followers&#39; Redis feeds (sorted sets)
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>- User reads feed: Redis (fast, pre-computed)
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>- New follower: Kafka event → Fan-out service updates Redis feeds
+</code></pre></div>
+<hr />
+<h2 id="architecture-patterns-using-both-together">Architecture Patterns: Using Both Together<a class="headerlink" href="#architecture-patterns-using-both-together" title="Permanent link">&para;</a></h2>
+<p>Here are three full architecture patterns. Each shows where Redis and Kafka fit. Use these as templates for design discussions.</p>
+<h3 id="pattern-1-e-commerce-platform">Pattern 1: E-Commerce Platform<a class="headerlink" href="#pattern-1-e-commerce-platform" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>│   Web App   │────▶│  API GW     │────▶│   Redis     │  Cache: products, categories
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>└─────────────┘     └──────┬──────┘     └─────────────┘  Session: user cart, login
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>                           │
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>                           │  POST /order
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>                           ▼
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>                    ┌─────────────┐     ┌─────────────┐
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>                    │ Order Svc   │────▶│   Kafka     │  Topic: orders
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>                    └─────────────┘     └──────┬─────┘
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>                           │                    │
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>                           │                    ├──▶ Payment Svc (consume)
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>                           │                    ├──▶ Inventory Svc (consume)
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>                           │                    └──▶ Notification Svc (consume)
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>                           ▼
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>                    ┌─────────────┐
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>                    │  Database   │  Source of truth
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>                    └─────────────┘
+</code></pre></div>
+<p><strong>Redis:</strong> Product cache, category cache, user session, cart. Rate limiting on API.
+<strong>Kafka:</strong> Order placed, payment completed, inventory updated. Each service consumes independently. Audit trail. Replay for debugging.</p>
+<h3 id="pattern-2-social-media-feed">Pattern 2: Social Media Feed<a class="headerlink" href="#pattern-2-social-media-feed" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>│  Mobile App │────▶│  Feed API   │────▶│   Redis     │  feed:user:{id} (Sorted Set)
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>└─────────────┘     └──────┬──────┘     └─────────────┘  Online users (Set)
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>                           │
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>         ┌─────────────────┼─────────────────┐
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>         │                 │                 │
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>         ▼                 ▼                 ▼
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>   ┌──────────┐     ┌──────────┐     ┌──────────┐
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>   │  Kafka   │     │  Kafka   │     │  Kafka   │  Topics: posts, likes, follows
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>   │  posts   │     │  likes   │     │  follows │
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>   └────┬─────┘     └────┬─────┘     └────┬─────┘
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>        │                │                │
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>        └────────────────┼────────────────┘
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>                         ▼
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>                  ┌─────────────┐
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>                  │ Fan-out Svc │  Consumes events, writes to Redis feeds
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>                  └─────────────┘
+</code></pre></div>
+<p><strong>Redis:</strong> Pre-computed feeds per user (Sorted Set by timestamp). "Who's online" (Set). Real-time "user typing" (Pub/Sub).
+<strong>Kafka:</strong> New post, like, follow, unfollow. Fan-out service consumes and updates Redis. Search indexer consumes for Elasticsearch. Analytics consumes for dashboards.</p>
+<h3 id="pattern-3-fintech-payments">Pattern 3: Fintech / Payments<a class="headerlink" href="#pattern-3-fintech-payments" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>│  Banking App│────▶│  Payment GW │────▶│   Redis     │  Rate limit, idempotency keys
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>└─────────────┘     └──────┬──────┘     └─────────────┘  Lock: prevent double-spend
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>                           │
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>                           │  Initiate payment
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>                           ▼
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>                    ┌─────────────┐     ┌─────────────┐
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>                    │ Payment Svc │────▶│   Kafka     │  Topic: payments (ordered by user)
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>                    └─────────────┘     └──────┬─────┘
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>                           │                    │
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>                           │                    ├──▶ Fraud detection (consume)
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>                           │                    ├──▶ Ledger service (consume)
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>                           │                    └──▶ Notification (consume)
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>                           ▼
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>                    ┌─────────────┐
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>                    │  Database   │  Transactions, balances
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>                    └─────────────┘
+</code></pre></div>
+<p><strong>Redis:</strong> Rate limit per user. Idempotency key store (prevent duplicate payments). Distributed lock for balance updates. Cache for account summary.
+<strong>Kafka:</strong> Payment initiated, payment completed, payment failed. Ordered by user ID (partition key) for consistency. Audit. Replay for reconciliation.</p>
+<hr />
+<h2 id="mock-interview-scenario">Mock Interview Scenario<a class="headerlink" href="#mock-interview-scenario" title="Permanent link">&para;</a></h2>
+<p><strong>Question:</strong> "Design a ride-sharing app like Uber. Where does Redis fit? Where does Kafka fit? Walk me through a ride from request to completion."</p>
+<h3 id="model-answer">Model Answer<a class="headerlink" href="#model-answer" title="Permanent link">&para;</a></h3>
+<p><strong>Redis fits in these places:</strong></p>
+<ol>
+<li>
+<p><strong>Driver location cache:</strong> When a rider requests a ride, we need nearby drivers. We store driver locations in Redis (Geospatial or Sorted Set by lat/long). Fast lookup. Updated every few seconds by driver app.</p>
+</li>
+<li>
+<p><strong>Session and auth:</strong> Rider and driver sessions. JWT or session ID in Redis. TTL for expiry.</p>
+</li>
+<li>
+<p><strong>Rate limiting:</strong> Prevent abuse. INCR per user with TTL. "Max 10 ride requests per minute."</p>
+</li>
+<li>
+<p><strong>Real-time ETA:</strong> Store current ETA in Redis. Rider app polls or uses WebSocket. Redis is fast enough for sub-second updates.</p>
+</li>
+<li>
+<p><strong>Surge pricing state:</strong> Current surge multiplier per zone. Stored in Redis. API reads it for price calculation.</p>
+</li>
+</ol>
+<p><strong>Kafka fits in these places:</strong></p>
+<ol>
+<li>
+<p><strong>Ride requested:</strong> Event "RIDE_REQUESTED" with rider ID, pickup, dropoff. Dispatch service consumes. Finds drivers. Sends to Kafka "RIDE_ASSIGNED". Driver app consumes. Decoupled. If dispatch is slow, the event waits. No loss.</p>
+</li>
+<li>
+<p><strong>Ride lifecycle:</strong> RIDE_ASSIGNED → DRIVER_ARRIVED → RIDE_STARTED → RIDE_ENDED. Each event to Kafka. Multiple consumers: billing (for payment), analytics (for metrics), notification (for rider/driver alerts). Audit trail. "Why was this ride $25?" Replay the events.</p>
+</li>
+<li>
+<p><strong>Payment events:</strong> Payment initiated, payment completed. Kafka. Billing service consumes. Ledger updates. Idempotency via Redis, but the event flow is Kafka.</p>
+</li>
+<li>
+<p><strong>Driver availability:</strong> Driver goes online/offline. Event to Kafka. Dispatch service updates its view. Location updates could go to Kafka too for analytics (every 10 seconds), but real-time location is Redis for speed.</p>
+</li>
+</ol>
+<p><strong>Flow summary:</strong>
+- Rider opens app → Redis: session, cached zones.
+- Rider requests ride → Kafka: RIDE_REQUESTED. Redis: rate limit check.
+- Dispatch finds driver → Kafka: RIDE_ASSIGNED. Redis: update driver availability.
+- Driver en route → Redis: driver location (real-time). Kafka: DRIVER_ARRIVED when close.
+- Ride ends → Kafka: RIDE_ENDED. Billing consumes. Payment. Redis: clear session data if needed.</p>
+<p><strong>One-liner:</strong> "Redis for fast state—locations, sessions, rate limits. Kafka for events—ride lifecycle, payments, analytics. Redis is the read path. Kafka is the event backbone."</p>
+<hr />
+<h2 id="detailed-comparison">Detailed Comparison<a class="headerlink" href="#detailed-comparison" title="Permanent link">&para;</a></h2>
+<h3 id="data-storage">Data Storage<a class="headerlink" href="#data-storage" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Redis:
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  ┌───────────┐
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>  │    RAM    │  ← Fast but limited and expensive
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  └───────────┘
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>Kafka:
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>  ┌───────────┐
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>  │   Disk    │  ← Slower but huge capacity and cheap
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>  └───────────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Redis</th>
+<th>Kafka</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storage medium</td>
+<td>RAM</td>
+<td>Disk (sequential I/O)</td>
+</tr>
+<tr>
+<td>Capacity</td>
+<td>Limited by RAM (GBs)</td>
+<td>Limited by disk (TBs)</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Expensive (RAM costs more)</td>
+<td>Cheaper (disk is cheap)</td>
+</tr>
+<tr>
+<td>Persistence</td>
+<td>Optional (RDB/AOF)</td>
+<td>Always persisted</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="messagedata-model">Message/Data Model<a class="headerlink" href="#messagedata-model" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Redis</th>
+<th>Kafka</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data model</td>
+<td>Key-value (+ Lists, Sets, Hashes, Streams)</td>
+<td>Log of events (topic → partitions)</td>
+</tr>
+<tr>
+<td>Message retention</td>
+<td>Until TTL expires or manually deleted</td>
+<td>Retained for configured duration</td>
+</tr>
+<tr>
+<td>Replay</td>
+<td>Not possible (data gone after read/expire)</td>
+<td>Yes (re-read any past message)</td>
+</tr>
+<tr>
+<td>Consumer tracking</td>
+<td>N/A (Pub/Sub) or Streams (consumer groups)</td>
+<td>Offset-based</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Redis</th>
+<th>Kafka</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read latency</td>
+<td>&lt; 1ms</td>
+<td>5-50ms</td>
+</tr>
+<tr>
+<td>Write latency</td>
+<td>&lt; 1ms</td>
+<td>5-20ms</td>
+</tr>
+<tr>
+<td>Throughput</td>
+<td>~100K ops/sec (single thread)</td>
+<td>Millions of msgs/sec (distributed)</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Low-latency reads/writes</td>
+<td>High-throughput streaming</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="scaling">Scaling<a class="headerlink" href="#scaling" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Redis</th>
+<th>Kafka</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Horizontal scaling</td>
+<td>Redis Cluster (hash slots)</td>
+<td>Add brokers + partitions</td>
+</tr>
+<tr>
+<td>Replication</td>
+<td>Master-Replica</td>
+<td>Leader-Follower per partition</td>
+</tr>
+<tr>
+<td>High availability</td>
+<td>Redis Sentinel</td>
+<td>Built-in (ISR, leader election)</td>
+</tr>
+<tr>
+<td>Consumer scaling</td>
+<td>N/A (Pub/Sub)</td>
+<td>Add consumers to group (up to partition count)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="when-to-use-what">When to Use What?<a class="headerlink" href="#when-to-use-what" title="Permanent link">&para;</a></h2>
+<h3 id="use-redis-when">Use Redis When:<a class="headerlink" href="#use-redis-when" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Why Redis?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Caching API responses</strong></td>
+<td>Sub-millisecond reads from RAM</td>
+</tr>
+<tr>
+<td><strong>Session storage</strong></td>
+<td>Fast access, TTL auto-expiry</td>
+</tr>
+<tr>
+<td><strong>Rate limiting</strong></td>
+<td>Atomic counters (INCR)</td>
+</tr>
+<tr>
+<td><strong>Leaderboards</strong></td>
+<td>Sorted Sets</td>
+</tr>
+<tr>
+<td><strong>Real-time counters</strong></td>
+<td>Atomic operations</td>
+</tr>
+<tr>
+<td><strong>Temporary data</strong></td>
+<td>TTL-based auto-cleanup</td>
+</tr>
+<tr>
+<td><strong>Distributed locks</strong></td>
+<td>SET NX with expiry</td>
+</tr>
+</tbody>
+</table>
+<h3 id="use-kafka-when">Use Kafka When:<a class="headerlink" href="#use-kafka-when" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Why Kafka?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Microservice communication</strong></td>
+<td>Decouples services</td>
+</tr>
+<tr>
+<td><strong>Event sourcing</strong></td>
+<td>Complete event log</td>
+</tr>
+<tr>
+<td><strong>Log aggregation</strong></td>
+<td>Collects logs from many servers</td>
+</tr>
+<tr>
+<td><strong>Data pipelines</strong></td>
+<td>Moves data between systems</td>
+</tr>
+<tr>
+<td><strong>Order processing</strong></td>
+<td>Reliable, ordered event processing</td>
+</tr>
+<tr>
+<td><strong>Real-time analytics</strong></td>
+<td>Stream processing</td>
+</tr>
+<tr>
+<td><strong>Audit trail</strong></td>
+<td>Immutable event log</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="when-not-to-use-redis">When NOT to Use Redis<a class="headerlink" href="#when-not-to-use-redis" title="Permanent link">&para;</a></h2>
+<p>Redis is great. But it's not for everything. Avoid Redis when:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Why Not Redis?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Large datasets (100s of GB)</strong></td>
+<td>Redis is in-memory. RAM is expensive. Use a database or Kafka for bulk data.</td>
+</tr>
+<tr>
+<td><strong>Complex queries (JOINs, aggregations)</strong></td>
+<td>Redis has no SQL. No JOINs. For analytics, use a database or OLAP store.</td>
+</tr>
+<tr>
+<td><strong>Primary database for critical data</strong></td>
+<td>Redis can persist, but it's not ACID. Use PostgreSQL/MySQL for source of truth.</td>
+</tr>
+<tr>
+<td><strong>Full-text search</strong></td>
+<td>Redis has limited search. Use Elasticsearch.</td>
+</tr>
+<tr>
+<td><strong>Guaranteed message delivery</strong></td>
+<td>Redis Pub/Sub is fire-and-forget. Redis Streams can persist, but Kafka is built for this.</td>
+</tr>
+<tr>
+<td><strong>Multi-datacenter replication</strong></td>
+<td>Redis Cluster is single-cluster. Cross-DC is complex. Kafka has mirroring.</td>
+</tr>
+<tr>
+<td><strong>Storing files or blobs</strong></td>
+<td>Redis is for small values. Use object storage (S3) for large files.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Redis Is Not a Database</p>
+<p>Don't use Redis as your only data store for business-critical data. Use it as a cache, session store, or real-time layer. Your database is the source of truth.</p>
+</div>
+<hr />
+<h2 id="when-not-to-use-kafka">When NOT to Use Kafka<a class="headerlink" href="#when-not-to-use-kafka" title="Permanent link">&para;</a></h2>
+<p>Kafka is powerful. But it adds complexity. Avoid Kafka when:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Why Not Kafka?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Simple request-response</strong></td>
+<td>User clicks, API returns. No need for events. Use HTTP + database.</td>
+</tr>
+<tr>
+<td><strong>Small system (single app, low traffic)</strong></td>
+<td>Kafka is overkill. Redis, or even in-memory queues, might suffice.</td>
+</tr>
+<tr>
+<td><strong>Low throughput (&lt; 100 msg/sec)</strong></td>
+<td>Kafka's strength is scale. For tiny volumes, a database or Redis is simpler.</td>
+</tr>
+<tr>
+<td><strong>Need sub-millisecond latency</strong></td>
+<td>Kafka writes to disk. Typically 5–20ms. For sub-ms, use Redis.</td>
+</tr>
+<tr>
+<td><strong>Tight request-response coupling</strong></td>
+<td>"Send order, wait for confirmation." Kafka is async. Use sync APIs or RPC.</td>
+</tr>
+<tr>
+<td><strong>No ops team for Kafka</strong></td>
+<td>Kafka needs tuning, monitoring, brokers. If you can't operate it, use managed Kafka or a simpler queue.</td>
+</tr>
+<tr>
+<td><strong>Simple task queue (one producer, one consumer)</strong></td>
+<td>Redis List or Streams is simpler. Kafka shines with multiple consumers and replay.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Start Simple</p>
+<p>If you're building an MVP or a small app, start with Redis or a database. Add Kafka when you have multiple services, event-driven needs, or scale that justifies it.</p>
+</div>
+<hr />
+<h2 id="interview-cheat-sheet">Interview Cheat Sheet<a class="headerlink" href="#interview-cheat-sheet" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"Redis or Kafka for caching?"</td>
+<td><strong>Redis</strong> — it's designed for caching</td>
+</tr>
+<tr>
+<td>"Redis or Kafka for messaging?"</td>
+<td><strong>Kafka</strong> — durable, replayable, scalable</td>
+</tr>
+<tr>
+<td>"Can you use both?"</td>
+<td><strong>Yes</strong> — Redis for caching, Kafka for events</td>
+</tr>
+<tr>
+<td>"Redis Pub/Sub vs Kafka?"</td>
+<td>Redis = fire-and-forget; Kafka = durable log</td>
+</tr>
+<tr>
+<td>"Which is faster?"</td>
+<td>Redis for reads; Kafka for throughput</td>
+</tr>
+<tr>
+<td>"Which scales better?"</td>
+<td>Kafka for data volume; Redis for read latency</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>┌────────────────────────────────────────────────────┐
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>│              Redis vs Kafka Summary                │
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>├──────────────────┬─────────────────────────────────┤
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>│                  │                                 │
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>│     REDIS        │          KAFKA                  │
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>│                  │                                 │
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>│  • In-memory     │  • Disk-based                   │
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>│  • Key-value     │  • Event log                    │
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>│  • Cache/Session │  • Messaging/Streaming          │
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>│  • Sub-ms reads  │  • High throughput              │
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>│  • TTL expiry    │  • Configurable retention       │
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>│  • No replay     │  • Replay possible               │
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>│  • Pub/Sub (basic)│  • Pub/Sub (durable)           │
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>│                  │                                 │
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>│  Use together for best results!                    │
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>└──────────────────┴─────────────────────────────────┘
+</code></pre></div>
+<hr />
+<p><strong>Congratulations!</strong> You've completed the entire learning path. Go back to the <a href="../../redis/redis-interview-questions/">Interview Questions</a> pages for a quick revision before your interview. Good luck!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

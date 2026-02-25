@@ -1,0 +1,2355 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Redis and Apache Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/kafka/kafka-basics/">
+      
+      
+        <link rel="prev" href="../../redis/redis-interview-questions/">
+      
+      
+        <link rel="next" href="../kafka-architecture/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Kafka Basics - Redis & Kafka - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-basics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Redis & Kafka - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kafka Basics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Redis &amp; Kafka - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Redis & Kafka - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Redis & Kafka - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-apache-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Apache Kafka?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-newspaper-analogy-understanding-kafka-through-a-familiar-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Newspaper Analogy: Understanding Kafka Through a Familiar World
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Newspaper Analogy: Understanding Kafka Through a Familiar World">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reporters-write-stories-producers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reporters Write Stories (Producers)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-newspaper-office-receives-and-stores-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Newspaper Office Receives and Stores (Kafka)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subscribers-read-the-news-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subscribers Read the News (Consumers)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-kafka-solves-a-beforeafter-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem Kafka Solves: A Before/After Story
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Problem Kafka Solves: A Before/After Story">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-before-a-tangled-mess" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Before: A Tangled Mess
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-after-kafka-as-the-central-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      The After: Kafka as the Central Hub
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Concepts Explained
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Concepts Explained">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#event-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event (Message)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#producer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Producer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-kafka-is-different-from-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka is Different from a Database
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-kafka-is-different-from-an-api-call" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka is Different from an API Call
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-is-kafka-used-real-company-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where is Kafka Used? Real Company Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where is Kafka Used? Real Company Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uber" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uber
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#netflix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Netflix
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkedin" class="md-nav__link">
+    <span class="md-ellipsis">
+      LinkedIn
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing Kafka
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-docker-compose-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Docker Compose (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-first-kafka-experience-a-guided-tutorial" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your First Kafka Experience: A Guided Tutorial
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Your First Kafka Experience: A Guided Tutorial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-find-your-kafka-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Find Your Kafka Container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Create a Topic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-list-topics-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: List Topics (Verify)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-start-a-consumer-terminal-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Start a Consumer (Terminal 1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-send-messages-terminal-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Send Messages (Terminal 2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-the-retention-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: The Retention Test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-kafka-commands-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Kafka Commands Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Kafka Commands Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a topic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      List topics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#describe-a-topic-see-partitions-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Describe a topic (see partitions, config)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#produce-messages-send" class="md-nav__link">
+    <span class="md-ellipsis">
+      Produce messages (send)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consume-messages-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consume messages (read)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes-beginners-make" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes Beginners Make
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-vs-traditional-message-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka vs Traditional Message Queue
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-apache-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Apache Kafka?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-newspaper-analogy-understanding-kafka-through-a-familiar-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Newspaper Analogy: Understanding Kafka Through a Familiar World
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Newspaper Analogy: Understanding Kafka Through a Familiar World">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reporters-write-stories-producers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reporters Write Stories (Producers)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-newspaper-office-receives-and-stores-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Newspaper Office Receives and Stores (Kafka)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subscribers-read-the-news-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subscribers Read the News (Consumers)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-kafka-solves-a-beforeafter-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem Kafka Solves: A Before/After Story
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Problem Kafka Solves: A Before/After Story">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-before-a-tangled-mess" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Before: A Tangled Mess
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-after-kafka-as-the-central-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      The After: Kafka as the Central Hub
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-concepts-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Concepts Explained
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Concepts Explained">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#event-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event (Message)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#producer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Producer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consumer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Broker
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-kafka-is-different-from-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka is Different from a Database
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-kafka-is-different-from-an-api-call" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Kafka is Different from an API Call
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-is-kafka-used-real-company-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where is Kafka Used? Real Company Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where is Kafka Used? Real Company Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uber" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uber
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#netflix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Netflix
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linkedin" class="md-nav__link">
+    <span class="md-ellipsis">
+      LinkedIn
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing Kafka
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-docker-compose-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Docker Compose (Recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-first-kafka-experience-a-guided-tutorial" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your First Kafka Experience: A Guided Tutorial
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Your First Kafka Experience: A Guided Tutorial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-find-your-kafka-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Find Your Kafka Container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Create a Topic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-list-topics-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: List Topics (Verify)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-start-a-consumer-terminal-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Start a Consumer (Terminal 1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-send-messages-terminal-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Send Messages (Terminal 2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-the-retention-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: The Retention Test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-kafka-commands-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Kafka Commands Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Kafka Commands Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a topic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      List topics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#describe-a-topic-see-partitions-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Describe a topic (see partitions, config)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#produce-messages-send" class="md-nav__link">
+    <span class="md-ellipsis">
+      Produce messages (send)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consume-messages-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consume messages (read)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes-beginners-make" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes Beginners Make
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-vs-traditional-message-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka vs Traditional Message Queue
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exercise
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="kafka-basics">Kafka Basics<a class="headerlink" href="#kafka-basics" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-apache-kafka">What is Apache Kafka?<a class="headerlink" href="#what-is-apache-kafka" title="Permanent link">&para;</a></h2>
+<p><strong>Apache Kafka</strong> is a distributed event streaming platform. That's a mouthful. Let's break it down.</p>
+<p>Think of it as a super-powered messaging system that can handle millions of messages per second. But it's not just a simple message queue. Kafka stores messages on disk. It keeps them for days or weeks. Multiple applications can read the same messages independently, at their own pace. And when you're done, you can go back and read old messages again. That's the "streaming" part.</p>
+<p>Why does this matter? In the old days, when you had an application that needed to send data to another application, they'd talk directly to each other. Like a phone call. If the other guy wasn't ready to pick up, the call failed. Kafka changes that. It's like leaving a voicemail. Except the voicemail never gets deleted. And anyone who needs to listen can listen whenever they want.</p>
+<p>Kafka was created at LinkedIn in 2011. They had a problem: hundreds of systems needed to share data. User clicks, page views, search queries, profile updates. Connecting everything directly would have been a mess. So they built Kafka as a central nervous system. A single place where all events flow. Today, Kafka powers the data pipelines of Uber, Netflix, Airbnb, and thousands of other companies.</p>
+<hr />
+<h2 id="the-newspaper-analogy-understanding-kafka-through-a-familiar-world">The Newspaper Analogy: Understanding Kafka Through a Familiar World<a class="headerlink" href="#the-newspaper-analogy-understanding-kafka-through-a-familiar-world" title="Permanent link">&para;</a></h2>
+<p>Let's use a real-world analogy that will help everything click. Imagine a <strong>massive newspaper company</strong>.</p>
+<h3 id="reporters-write-stories-producers">Reporters Write Stories (Producers)<a class="headerlink" href="#reporters-write-stories-producers" title="Permanent link">&para;</a></h3>
+<p>Reporters are out in the field. They witness events. A football match. A political debate. A stock market crash. They write their stories and send them to the newspaper office. They don't care who reads them or when. They just deliver the news. In Kafka, these reporters are <strong>producers</strong>. Applications that create events and send them to Kafka.</p>
+<h3 id="the-newspaper-office-receives-and-stores-kafka">The Newspaper Office Receives and Stores (Kafka)<a class="headerlink" href="#the-newspaper-office-receives-and-stores-kafka" title="Permanent link">&para;</a></h3>
+<p>The newspaper office receives stories from every reporter. It doesn't throw them away after printing once. It organizes them by section: Sports, Politics, Business, Entertainment. Each section has its own filing cabinet. When a story arrives, it goes into the right cabinet. The office keeps copies for weeks. If someone wants to read yesterday's sports section, they can. In Kafka, the office is the <strong>Kafka cluster</strong>. The sections are <strong>topics</strong>. The filing cabinets are <strong>partitions</strong>.</p>
+<h3 id="subscribers-read-the-news-consumers">Subscribers Read the News (Consumers)<a class="headerlink" href="#subscribers-read-the-news-consumers" title="Permanent link">&para;</a></h3>
+<p>People subscribe to the newspaper. Some read only Sports. Some read only Business. Some read everything. They read at their own pace. One person might read the morning edition at 7 AM. Another at 10 AM. The newspaper doesn't care. It's already printed. It's waiting. In Kafka, these readers are <strong>consumers</strong>. Applications that read messages from topics. They can read at any time. They can read old messages. Multiple consumers can read the same news independently.</p>
+<div class="admonition info">
+<p class="admonition-title">The Key Insight</p>
+<p>The newspaper doesn't deliver the paper to your door and then burn the original. It keeps the master copy. Anyone who subscribes can get a copy. That's the fundamental difference between Kafka and traditional message queues.</p>
+</div>
+<hr />
+<h2 id="the-problem-kafka-solves-a-beforeafter-story">The Problem Kafka Solves: A Before/After Story<a class="headerlink" href="#the-problem-kafka-solves-a-beforeafter-story" title="Permanent link">&para;</a></h2>
+<p>Let's walk through a real scenario. Imagine you run an <strong>e-commerce company</strong> called ShopFast.</p>
+<h3 id="the-before-a-tangled-mess">The Before: A Tangled Mess<a class="headerlink" href="#the-before-a-tangled-mess" title="Permanent link">&para;</a></h3>
+<p>You have an Order Service. When someone places an order, it needs to:
+1. Charge the customer (Payment Service)
+2. Reserve inventory (Inventory Service)
+3. Send confirmation email (Email Service)
+4. Update analytics dashboard (Analytics Service)
+5. Trigger loyalty points (Loyalty Service)</p>
+<p>So your Order Service makes five API calls. Direct. One after another.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Order Service → Payment Service (wait for response)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Order Service → Inventory Service (wait for response)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Order Service → Email Service (wait for response)
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Order Service → Analytics Service (wait for response)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Order Service → Loyalty Service (wait for response)
+</code></pre></div>
+<p><strong>What happens when Email Service is down?</strong> The entire order fails. Even though payment went through and inventory was reserved. Customer sees an error. You lose the sale.</p>
+<p><strong>What happens when you add a new service?</strong> Say you want to add a Fraud Detection Service. You have to modify the Order Service. Add another API call. Deploy it. Every time you add a consumer of order data, you touch the producer. That's fragile.</p>
+<p><strong>What happens when Analytics Service is slow?</strong> It blocks the whole flow. Order Service waits. Customer waits. Timeout.</p>
+<h3 id="the-after-kafka-as-the-central-hub">The After: Kafka as the Central Hub<a class="headerlink" href="#the-after-kafka-as-the-central-hub" title="Permanent link">&para;</a></h3>
+<p>Now you introduce Kafka. The Order Service does one thing: it publishes an event. "Order #12345 was placed." That's it. It doesn't care who reads it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Order Service → Kafka (topic: &quot;orders&quot;) → Done!
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Kafka holds the message. Meanwhile:
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Payment Service subscribes to &quot;orders&quot; → reads → charges customer
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Inventory Service subscribes to &quot;orders&quot; → reads → reserves stock
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  Email Service subscribes to &quot;orders&quot; → reads → sends confirmation
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  Analytics Service subscribes to &quot;orders&quot; → reads → updates dashboard
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  Loyalty Service subscribes to &quot;orders&quot; → reads → adds points
+</code></pre></div>
+<p><strong>Email Service is down?</strong> No problem. The message sits in Kafka. When Email Service comes back online, it reads from where it left off. It catches up. No data lost.</p>
+<p><strong>Want to add Fraud Detection?</strong> Just build a new consumer. Subscribe to "orders". No changes to Order Service. No redeployment of existing services. That's <strong>decoupling</strong>.</p>
+<p><strong>Analytics is slow?</strong> Doesn't matter. It reads at its own pace. Order Service doesn't wait. Payment doesn't wait. Everyone is independent.</p>
+<div class="admonition tip">
+<p class="admonition-title">Why Should You Care?</p>
+<p>Decoupling means your system can evolve. Add new features without breaking old ones. Scale services independently. Fail in isolation. Kafka is the backbone that makes this possible.</p>
+</div>
+<hr />
+<h2 id="key-concepts-explained">Key Concepts Explained<a class="headerlink" href="#key-concepts-explained" title="Permanent link">&para;</a></h2>
+<h3 id="event-message">Event (Message)<a class="headerlink" href="#event-message" title="Permanent link">&para;</a></h3>
+<p>An <strong>event</strong> is a record of something that happened. It's immutable. It's a fact. "User X placed order Y at time Z." That's it. You can't change it. You can only add new events.</p>
+<p>Think about it this way: when you check your bank statement, you see a list of transactions. Each transaction is an event. "On Feb 25, you spent $50 at Coffee Shop." That happened. It's recorded. You can't edit it. You can only add new transactions.</p>
+<p>In Kafka, an event is typically a key-value pair with optional metadata. Here's a real example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;eventType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ORDER_PLACED&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;userId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;67890&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2500</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-25T10:00:00&quot;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="producer">Producer<a class="headerlink" href="#producer" title="Permanent link">&para;</a></h3>
+<p>A <strong>producer</strong> is any application that sends messages to Kafka. It creates events and publishes them to topics.</p>
+<p>Real-world example: Your mobile app's backend. When a user adds an item to cart, it produces a "cart_updated" event. When they checkout, it produces an "order_placed" event. The producer doesn't wait for anyone to process it. It fires and forgets (well, it gets an acknowledgment from Kafka, but it doesn't wait for consumers).</p>
+<h3 id="consumer">Consumer<a class="headerlink" href="#consumer" title="Permanent link">&para;</a></h3>
+<p>A <strong>consumer</strong> is any application that reads messages from Kafka. It subscribes to one or more topics and processes messages.</p>
+<p>Real-world example: Your email service. It subscribes to the "orders" topic. Every time a new order event is published, it reads it and sends a confirmation email. It might be slow. It might process 10 messages per second while the producer sends 1000 per second. It doesn't matter. Kafka buffers. The consumer catches up eventually.</p>
+<h3 id="topic">Topic<a class="headerlink" href="#topic" title="Permanent link">&para;</a></h3>
+<p>A <strong>topic</strong> is a category or channel for messages. Think of it as a named stream. All order events go to the "orders" topic. All payment events go to the "payments" topic.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Topic: &quot;orders&quot;        → Order placed, order cancelled, order shipped
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Topic: &quot;payments&quot;      → Payment received, payment failed, refund issued
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Topic: &quot;notifications&quot; → Email sent, SMS sent, push notification sent
+</code></pre></div>
+<p>Producers write to topics. Consumers read from topics. You create topics before you use them. You can have as many as you need.</p>
+<h3 id="broker">Broker<a class="headerlink" href="#broker" title="Permanent link">&para;</a></h3>
+<p>A <strong>broker</strong> is a Kafka server. One physical (or virtual) machine running Kafka. A Kafka cluster typically has multiple brokers—three, five, ten. That's for reliability. If one broker dies, the others keep running.</p>
+<p>Think of brokers as the actual filing cabinets in our newspaper office. Each broker holds some of the data. Together, they form the complete storage system.</p>
+<hr />
+<h2 id="how-kafka-is-different-from-a-database">How Kafka is Different from a Database<a class="headerlink" href="#how-kafka-is-different-from-a-database" title="Permanent link">&para;</a></h2>
+<p>This confuses beginners. "Why not just use a database? Can't I insert a row and have other services read it?"</p>
+<p><strong>Databases are for storing state.</strong> You query them. "What's the current balance of user 123?" You get the latest value. You update. You delete. Databases are optimized for random access and updates.</p>
+<p><strong>Kafka is for streaming events.</strong> You append. You never update or delete (well, Kafka has log compaction, but that's advanced). You read sequentially. Kafka is optimized for high-throughput writes and sequential reads. Millions of messages per second.</p>
+<p>Think about it this way: A database is like a filing cabinet where you can pull out any file, edit it, and put it back. Kafka is like a conveyor belt. Things move in one direction. You can read from any point on the belt, but you don't go back and change what's already passed.</p>
+<div class="admonition example">
+<p class="admonition-title">When to Use Which</p>
+<p>Use a database when you need to answer "What is the current state?" Use Kafka when you need to answer "What happened?" and "What happened next?" Event sourcing, real-time analytics, and log aggregation are Kafka territory. User profiles, order history lookups, and inventory counts are database territory.</p>
+</div>
+<hr />
+<h2 id="how-kafka-is-different-from-an-api-call">How Kafka is Different from an API Call<a class="headerlink" href="#how-kafka-is-different-from-an-api-call" title="Permanent link">&para;</a></h2>
+<p>When Service A calls Service B via REST API, it's a <strong>synchronous request-response</strong>. A sends a request. B processes it. B sends a response. A waits. If B is slow, A waits. If B is down, A fails.</p>
+<p>When Service A produces to Kafka and Service B consumes, it's <strong>asynchronous</strong>. A sends a message. Kafka acknowledges. A moves on. B reads whenever it's ready. A and B never talk directly. They're decoupled.</p>
+<p><strong>API calls are like phone calls.</strong> You need both parties to be available at the same time. <strong>Kafka is like email.</strong> You send. The recipient reads when they can. You don't need to be online at the same time.</p>
+<hr />
+<h2 id="where-is-kafka-used-real-company-examples">Where is Kafka Used? Real Company Examples<a class="headerlink" href="#where-is-kafka-used-real-company-examples" title="Permanent link">&para;</a></h2>
+<h3 id="uber">Uber<a class="headerlink" href="#uber" title="Permanent link">&para;</a></h3>
+<p>Uber has millions of rides. Every ride generates events: ride requested, driver assigned, ride started, ride ended, payment processed. These events flow through Kafka. The ride-matching service uses them. The pricing service uses them. The fraud detection system uses them. The analytics team uses them. Kafka is the central pipeline. Without it, connecting every service to every other service would be impossible.</p>
+<h3 id="netflix">Netflix<a class="headerlink" href="#netflix" title="Permanent link">&para;</a></h3>
+<p>Netflix uses Kafka for real-time activity streams. Every play, pause, and rewind. Every recommendation click. Every search. This data flows through Kafka to multiple systems. The recommendation engine uses it to improve suggestions. The content team uses it to understand what's popular. The billing system uses it for usage-based plans. One event stream, many consumers.</p>
+<h3 id="linkedin">LinkedIn<a class="headerlink" href="#linkedin" title="Permanent link">&para;</a></h3>
+<p>LinkedIn invented Kafka. They use it for activity tracking. Every profile view, connection request, job application, and content feed update. They process billions of events per day. Kafka handles the ingestion. Downstream systems process at their own pace.</p>
+<div class="admonition info">
+<p class="admonition-title">The Pattern</p>
+<p>Kafka shines when you have one source of truth (the event stream) and many consumers (different services with different needs). Write once, read many times.</p>
+</div>
+<hr />
+<h2 id="installing-kafka">Installing Kafka<a class="headerlink" href="#installing-kafka" title="Permanent link">&para;</a></h2>
+<h3 id="using-docker-compose-recommended">Using Docker Compose (Recommended)<a class="headerlink" href="#using-docker-compose-recommended" title="Permanent link">&para;</a></h3>
+<p>The easiest way to run Kafka locally is with Docker. Create a <code>docker-compose.yml</code> file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3&#39;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">zookeeper</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confluentinc/cp-zookeeper:7.5.0</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="nt">ZOOKEEPER_CLIENT_PORT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2181</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confluentinc/cp-kafka:7.5.0</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zookeeper</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;9092:9092&quot;</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">      </span><span class="nt">KAFKA_BROKER_ID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">      </span><span class="nt">KAFKA_ZOOKEEPER_CONNECT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zookeeper:2181</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">      </span><span class="nt">KAFKA_ADVERTISED_LISTENERS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PLAINTEXT://localhost:9092</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">      </span><span class="nt">KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</code></pre></div>
+<p>Run it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<h3 id="troubleshooting-tips">Troubleshooting Tips<a class="headerlink" href="#troubleshooting-tips" title="Permanent link">&para;</a></h3>
+<p><strong>"Connection refused" when connecting to localhost:9092</strong></p>
+<ul>
+<li>Wait 30-60 seconds after starting. Kafka takes time to start.</li>
+<li>Check Kafka is running: <code>docker ps</code> (both zookeeper and kafka containers should be "Up")</li>
+<li>On Windows, ensure Docker Desktop has enough memory (4GB minimum)</li>
+</ul>
+<p><strong>"Topic does not exist"</strong></p>
+<ul>
+<li>Kafka doesn't auto-create topics by default in some configs. Create the topic manually first (see commands below).</li>
+</ul>
+<p><strong>Port 9092 already in use</strong></p>
+<ul>
+<li>Another Kafka instance might be running. Stop it or change the port in docker-compose: <code>"9093:9092"</code> and use 9093 in your commands.</li>
+</ul>
+<p><strong>Zookeeper connection errors</strong></p>
+<ul>
+<li>Ensure Zookeeper starts before Kafka. The <code>depends_on</code> helps, but Kafka might start before Zookeeper is ready. Use <code>docker-compose up -d</code> and wait a minute before using Kafka.</li>
+</ul>
+<hr />
+<h2 id="your-first-kafka-experience-a-guided-tutorial">Your First Kafka Experience: A Guided Tutorial<a class="headerlink" href="#your-first-kafka-experience-a-guided-tutorial" title="Permanent link">&para;</a></h2>
+<p>Let's walk through your first Kafka interaction step by step. You'll create a topic, send messages, and read them.</p>
+<h3 id="step-1-find-your-kafka-container">Step 1: Find Your Kafka Container<a class="headerlink" href="#step-1-find-your-kafka-container" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>ps
+</code></pre></div>
+<p>Look for the container running <code>cp-kafka</code>. Note the container ID or name (e.g., <code>backend-kafka-1</code>). <strong>Replace <code>&lt;kafka-container&gt;</code> in the commands below with your actual container name.</strong></p>
+<h3 id="step-2-create-a-topic">Step 2: Create a Topic<a class="headerlink" href="#step-2-create-a-topic" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;kafka-container&gt;<span class="w"> </span>kafka-topics<span class="w"> </span>--create<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>--topic<span class="w"> </span>my-first-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span>--partitions<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span>--replication-factor<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+<p><strong>Expected output:</strong> <code>Created topic my-first-topic.</code></p>
+<p><strong>What this does:</strong> You're telling Kafka to create a new category called "my-first-topic". One partition (we'll learn about partitions later). One replica (fine for local dev).</p>
+<h3 id="step-3-list-topics-verify">Step 3: List Topics (Verify)<a class="headerlink" href="#step-3-list-topics-verify" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;kafka-container&gt;<span class="w"> </span>kafka-topics<span class="w"> </span>--list<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<p><strong>Expected output:</strong> You should see <code>my-first-topic</code> in the list.</p>
+<h3 id="step-4-start-a-consumer-terminal-1">Step 4: Start a Consumer (Terminal 1)<a class="headerlink" href="#step-4-start-a-consumer-terminal-1" title="Permanent link">&para;</a></h3>
+<p>Open a terminal. Run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;kafka-container&gt;<span class="w"> </span>kafka-console-consumer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span>--topic<span class="w"> </span>my-first-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span>--from-beginning
+</code></pre></div>
+<p><strong>What this does:</strong> This starts a consumer that reads from the beginning of the topic. It will block and wait for messages. Leave it running.</p>
+<h3 id="step-5-send-messages-terminal-2">Step 5: Send Messages (Terminal 2)<a class="headerlink" href="#step-5-send-messages-terminal-2" title="Permanent link">&para;</a></h3>
+<p>Open a <strong>second</strong> terminal. Run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;kafka-container&gt;<span class="w"> </span>kafka-console-producer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--topic<span class="w"> </span>my-first-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<p>You'll see a <code>&gt;</code> prompt. Type a message and press Enter:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&gt; Hello Kafka!
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>&gt; This is my first message
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>&gt; Learning event streaming
+</code></pre></div>
+<p><strong>Expected output:</strong> In Terminal 1 (the consumer), you should see each message appear as you type it in Terminal 2. That's real-time streaming!</p>
+<h3 id="step-6-the-retention-test">Step 6: The Retention Test<a class="headerlink" href="#step-6-the-retention-test" title="Permanent link">&para;</a></h3>
+<p>Stop the consumer (Ctrl+C in Terminal 1). Send 3 more messages in Terminal 2:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>&gt; Message after consumer stopped
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>&gt; Kafka still stores these
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&gt; Consumer will see them when it restarts
+</code></pre></div>
+<p>Now restart the consumer with <code>--from-beginning</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;kafka-container&gt;<span class="w"> </span>kafka-console-consumer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span>--topic<span class="w"> </span>my-first-topic<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span>--from-beginning
+</code></pre></div>
+<p><strong>Expected output:</strong> You should see ALL messages. The old ones and the new ones. Kafka didn't delete them when the consumer stopped. That's retention. That's the power of Kafka.</p>
+<hr />
+<h2 id="basic-kafka-commands-reference">Basic Kafka Commands Reference<a class="headerlink" href="#basic-kafka-commands-reference" title="Permanent link">&para;</a></h2>
+<h3 id="create-a-topic">Create a topic<a class="headerlink" href="#create-a-topic" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kafka-topics<span class="w"> </span>--create<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span>--partitions<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span>--replication-factor<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+<h3 id="list-topics">List topics<a class="headerlink" href="#list-topics" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kafka-topics<span class="w"> </span>--list<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<h3 id="describe-a-topic-see-partitions-config">Describe a topic (see partitions, config)<a class="headerlink" href="#describe-a-topic-see-partitions-config" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kafka-topics<span class="w"> </span>--describe<span class="w"> </span>--topic<span class="w"> </span>orders<span class="w"> </span>--bootstrap-server<span class="w"> </span>localhost:9092
+</code></pre></div>
+<h3 id="produce-messages-send">Produce messages (send)<a class="headerlink" href="#produce-messages-send" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kafka-console-producer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>&gt;<span class="w"> </span>Order<span class="w"> </span><span class="m">1</span><span class="w"> </span>placed
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>&gt;<span class="w"> </span>Order<span class="w"> </span><span class="m">2</span><span class="w"> </span>placed
+</code></pre></div>
+<h3 id="consume-messages-read">Consume messages (read)<a class="headerlink" href="#consume-messages-read" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>kafka-console-consumer<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--topic<span class="w"> </span>orders<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span>--bootstrap-server<span class="w"> </span>localhost:9092<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span>--from-beginning
+</code></pre></div>
+<hr />
+<h2 id="common-mistakes-beginners-make">Common Mistakes Beginners Make<a class="headerlink" href="#common-mistakes-beginners-make" title="Permanent link">&para;</a></h2>
+<p><strong>Mistake 1: Expecting Kafka to work like a queue</strong></p>
+<p>Kafka is not a traditional queue. Messages aren't deleted after consumption. Multiple consumers can read the same message. If you want "one consumer reads, message gone" behavior, use a single consumer group and understand that Kafka still retains the data.</p>
+<p><strong>Mistake 2: Creating too many topics</strong></p>
+<p>Topics are cheap, but each topic has overhead. Don't create a topic per user or per order. Create topics for logical event types: orders, payments, user-events. Use keys to distinguish within a topic.</p>
+<p><strong>Mistake 3: Not setting retention</strong></p>
+<p>By default, Kafka keeps messages for 7 days. For a development topic with test data, you might want 1 hour. For audit logs, you might want 90 days. Set <code>retention.ms</code> when creating topics.</p>
+<p><strong>Mistake 4: Trying to use Kafka for request-response</strong></p>
+<p>Kafka is for fire-and-forget event streaming. If you need to send a request and get a response (e.g., "Is this user valid?"), use an API. Kafka is for "something happened, whoever cares can react."</p>
+<p><strong>Mistake 5: Starting the consumer before the producer</strong></p>
+<p>This is fine! Actually, it's the opposite. Beginners often think the producer must run first. In Kafka, you can start the consumer first. It will wait. When the producer sends, the consumer will receive. Order doesn't matter.</p>
+<hr />
+<h2 id="kafka-vs-traditional-message-queue">Kafka vs Traditional Message Queue<a class="headerlink" href="#kafka-vs-traditional-message-queue" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Kafka</th>
+<th>RabbitMQ / ActiveMQ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Message retention</td>
+<td>Keeps messages (configurable days)</td>
+<td>Deletes after consumption</td>
+</tr>
+<tr>
+<td>Consumer model</td>
+<td>Pull (consumer asks for messages)</td>
+<td>Push (broker sends to consumer)</td>
+</tr>
+<tr>
+<td>Throughput</td>
+<td>Very high (millions/sec)</td>
+<td>Moderate (thousands/sec)</td>
+</tr>
+<tr>
+<td>Replay</td>
+<td>Can re-read old messages</td>
+<td>Cannot (already deleted)</td>
+</tr>
+<tr>
+<td>Ordering</td>
+<td>Ordered within a partition</td>
+<td>Ordered within a queue</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Event streaming, logs, analytics</td>
+<td>Task queues, RPC</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Interview Insight</p>
+<p>"Kafka is designed for <strong>high-throughput event streaming</strong> with replay capability. Traditional queues are better for <strong>task distribution</strong> with guaranteed delivery."</p>
+</div>
+<hr />
+<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kafka</td>
+<td>Distributed event streaming platform</td>
+</tr>
+<tr>
+<td>Producer</td>
+<td>Sends messages to Kafka</td>
+</tr>
+<tr>
+<td>Consumer</td>
+<td>Reads messages from Kafka</td>
+</tr>
+<tr>
+<td>Topic</td>
+<td>A named stream of messages</td>
+</tr>
+<tr>
+<td>Broker</td>
+<td>A Kafka server instance</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>A record of something that happened</td>
+</tr>
+<tr>
+<td>Key Difference</td>
+<td>Kafka retains messages; queues delete after reading</td>
+</tr>
+<tr>
+<td>Default Port</td>
+<td>9092</td>
+</tr>
+<tr>
+<td>Why Kafka</td>
+<td>Decoupling, scalability, fault tolerance, replay</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Run Kafka using Docker Compose.</li>
+<li>Create a topic called <code>my-events</code>.</li>
+<li>Open two terminals: one for producer, one for consumer.</li>
+<li>Send 5 messages and watch them appear in the consumer.</li>
+<li>Stop the consumer, send 3 more messages, restart the consumer. Do you see all messages?</li>
+</ol>
+<hr />
+<p><strong>Next up:</strong> <a href="../kafka-architecture/">Kafka Architecture</a> - Understand how Kafka is built internally.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
