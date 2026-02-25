@@ -1,0 +1,79 @@
+site_name: Redis & Kafka - Beginner to Interview Ready
+site_description: Learn Redis and Apache Kafka from scratch with simple examples
+# site_url: https://yourusername.github.io/redis-kafka-notes/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Redis:
+      - Redis Basics: redis/redis-basics.md
+      - Data Structures: redis/data-structures.md
+      - TTL & Expiration: redis/ttl-expiration.md
+      - Memory & Eviction Policies: redis/memory-eviction.md
+      - Caching Explained: redis/caching-explained.md
+      - Caching Patterns: redis/caching-patterns.md
+      - Real-World Use Cases: redis/real-world-usecases.md
+      - Performance & Best Practices: redis/performance-best-practices.md
+      - Redis with Spring Boot: redis/redis-with-springboot.md
+      - Common Mistakes: redis/common-mistakes.md
+      - Interview Questions: redis/redis-interview-questions.md
+  - Kafka:
+      - Kafka Basics: kafka/kafka-basics.md
+      - Architecture Overview: kafka/kafka-architecture.md
+      - Topics, Partitions & Offsets: kafka/topics-partitions-offsets.md
+      - Producers & Consumers: kafka/producers-consumers.md
+      - Consumer Groups Explained: kafka/consumer-groups.md
+      - Scaling Kafka: kafka/kafka-scaling.md
+      - Fault Tolerance & Replication: kafka/fault-tolerance-replication.md
+      - Message Delivery Semantics: kafka/delivery-semantics.md
+      - Real-World Use Cases: kafka/kafka-usecases.md
+      - Performance & Best Practices: kafka/performance-best-practices.md
+      - Kafka with Spring Boot: kafka/kafka-with-springboot.md
+      - Common Mistakes: kafka/common-mistakes.md
+      - Interview Questions: kafka/kafka-interview-questions.md
+  - Projects:
+      - Redis API Caching: projects/redis-api-caching.md
+      - Redis Session Storage: projects/redis-session-storage.md
+      - Kafka Order Processing: projects/kafka-order-processing.md
+      - Kafka Notification System: projects/kafka-notification-system.md
+  - Comparison:
+      - Redis vs Kafka: comparison/redis-vs-kafka.md
