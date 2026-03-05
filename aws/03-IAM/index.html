@@ -1,0 +1,6041 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Java, Spring Boot, AWS, Redis & Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/aws/03-IAM/">
+      
+      
+        <link rel="prev" href="../02-AWS-Global-Infrastructure/">
+      
+      
+        <link rel="next" href="../04-Shared-Responsibility-and-Billing/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>IAM - Backend Engineering - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#iam-identity-and-access-management" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Backend Engineering - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Backend Engineering - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Backend Engineering - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              IAM
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../java21/00-README/" class="md-tabs__link">
+          
+  
+  Java 21
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../springboot/00-README/" class="md-tabs__link">
+          
+  
+  Spring Boot
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-Cloud-Basics/" class="md-tabs__link">
+          
+  
+  AWS
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redis/redis-basics/" class="md-tabs__link">
+          
+  
+  Redis
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/kafka-basics/" class="md-tabs__link">
+          
+  
+  Kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../projects/redis-api-caching/" class="md-tabs__link">
+          
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../comparison/redis-vs-kafka/" class="md-tabs__link">
+          
+  
+  Comparison
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Backend Engineering - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Backend Engineering - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Backend Engineering - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Java 21
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Java 21
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/00-README/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/01-How-Java-Works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How Java Works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/02-Syntax-Fundamentals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syntax & Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/03-OOP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OOP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/04-Collections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/05-Generics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/06-Exceptions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exception Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/07-Concurrency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concurrency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/08-Streams-FP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Streams & FP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/09-GC-Memory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GC & Memory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/10-JVM-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JVM Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/11-File-IO/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    File I/O
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/12-Networking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/13-JDBC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JDBC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/14-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/15-Modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/16-Performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/17-Testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/18-Security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/19-Java21-Features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java 21 Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/99-Summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Spring Boot
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Spring Boot
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/00-README/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Prerequisites
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Prerequisites
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/01-Prerequisites-Java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/02-Prerequisites-OOP-SOLID/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OOP & SOLID
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/03-Prerequisites-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/04-Prerequisites-HTTP-REST/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP & REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/05-Prerequisites-Web-Fundamentals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/06-Prerequisites-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/07-Prerequisites-DI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dependency Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/08-Prerequisites-Build-Tools/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/09-Prerequisites-JSON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON & Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/10-Prerequisites-Testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Spring Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Spring Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/11-Spring-Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/12-IoC-DI-DeepDive/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IoC & DI Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/13-Spring-vs-SpringBoot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring vs Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/14-SpringBoot-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Boot Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core Mechanics
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Core Mechanics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/15-Auto-Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Auto-Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/16-Starters-Context/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starters & Context
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/17-Bean-Lifecycle/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bean Lifecycle
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/18-Configuration-Profiles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration & Profiles
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Building APIs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            Building APIs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/19-REST-Design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REST Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/20-Controllers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Controllers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/21-Validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Validation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/22-Exception-Handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exception Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/23-DTO-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DTO Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Data Layer
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Data Layer
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/24-Spring-Data-JPA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Data JPA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/25-Hibernate-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hibernate Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/26-Transactions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transactions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/27-N%2B1-Problem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    N+1 Problem
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/28-Query-Optimization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Optimization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/29-Spring-Security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/30-JWT-Auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JWT Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_8" id="__nav_3_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Production
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            Production
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/31-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/32-Logging-Monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/33-Microservices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Microservices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/34-Event-Driven/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event-Driven Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/35-Testing-Spring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing Spring Apps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/36-Performance-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/37-Docker-Deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker & Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/99-Summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    AWS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            AWS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-Cloud-Basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloud Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-AWS-Global-Infrastructure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Global Infrastructure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    IAM
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    IAM
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-iam-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. IAM Users
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. IAM Users">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-iam-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. IAM Groups
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. IAM Groups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-iam-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. IAM Roles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. IAM Roles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-iam-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. IAM Policies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. IAM Policies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-policy-evaluation-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Policy Evaluation Logic
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Policy Evaluation Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-least-privilege-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Least Privilege Principle
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Least Privilege Principle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-assume-role-sts" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Assume Role (STS)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Assume Role (STS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-iam-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. IAM Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. IAM Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas-the-complete-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas — The Complete Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-Shared-Responsibility-and-Billing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shared Responsibility & Billing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Core Services
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core Services
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-EC2-Deep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EC2 Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-Storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage (S3, EBS, EFS)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-Load-Balancing-and-Scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Load Balancing & Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Networking
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-VPC-Core/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VPC Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-VPC-Security-and-Connectivity/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VPC Security & Connectivity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Databases
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Databases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-RDS-and-Aurora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RDS & Aurora
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-DynamoDB-and-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DynamoDB & Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Serverless
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Serverless
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-Lambda-Deep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lambda Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-Messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging (SQS, SNS)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Containers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Containers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-ECS-and-Fargate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ECS & Fargate
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-EKS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EKS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    DevOps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-Infrastructure-as-Code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-CICD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-Monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-Design-Thinking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Thinking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_10" id="__nav_4_10_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Quick Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            Quick Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-AWS-Cheat-Sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS Cheat Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-Top-50-Interview-Questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Top 50 Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-System-Design-Scenarios/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Design Scenarios
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-iam-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. IAM Users
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. IAM Users">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-iam-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. IAM Groups
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. IAM Groups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-iam-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. IAM Roles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. IAM Roles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-iam-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. IAM Policies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. IAM Policies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-policy-evaluation-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Policy Evaluation Logic
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Policy Evaluation Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-least-privilege-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Least Privilege Principle
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Least Privilege Principle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-assume-role-sts" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Assume Role (STS)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Assume Role (STS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-iam-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. IAM Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. IAM Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-it-matters-in-production_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why it matters in production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-ideas-the-complete-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Ideas — The Complete Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-analogy_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Analogy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-view_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture View
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-step-by-step-lab_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hands-On (Step-by-step Lab)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-mistakes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Mistakes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tips_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pro Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="iam-identity-and-access-management">IAM (Identity and Access Management)<a class="headerlink" href="#iam-identity-and-access-management" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>IAM is one of the MOST asked topics in AWS DevOps interviews. Know it inside out.</p>
+</blockquote>
+<hr />
+<h2 id="1-iam-users">1. IAM Users<a class="headerlink" href="#1-iam-users" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it">What is it?<a class="headerlink" href="#what-is-it" title="Permanent link">&para;</a></h3>
+<p>An IAM User is an identity that represents a person or application.
+Each user has a unique name and credentials (password or access keys).
+Users are created inside your AWS account. By default, a new user has <strong>zero permissions</strong>.</p>
+<h3 id="why-it-matters-in-production">Why it matters in production<a class="headerlink" href="#why-it-matters-in-production" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Every person and service accessing AWS should have its own IAM User (or Role).</li>
+<li>Without proper user management, you can't track who did what.</li>
+<li>Root account should NEVER be used for daily work.</li>
+</ul>
+<h3 id="core-ideas">Core Ideas<a class="headerlink" href="#core-ideas" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A user can have <strong>console access</strong> (password) and/or <strong>programmatic access</strong> (access key + secret key).</li>
+<li>Access keys = for CLI/SDK. Password = for AWS Console.</li>
+<li>Each user can have <strong>at most 2 access keys</strong> (for rotation).</li>
+<li>New user = NO permissions until you attach a policy.</li>
+<li><strong>Root user</strong> = the email account that created the AWS account. Has God-mode access. Lock it down.</li>
+</ul>
+<h3 id="quick-analogy">Quick Analogy<a class="headerlink" href="#quick-analogy" title="Permanent link">&para;</a></h3>
+<p>IAM User = An employee badge. The badge gets you in the building, but each badge has different door access.</p>
+<h3 id="architecture-view">Architecture View<a class="headerlink" href="#architecture-view" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>AWS Account
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── Root User (God mode — lock it away)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── IAM User: alice (admin access)
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── IAM User: bob (read-only access)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── IAM User: ci-bot (programmatic access only)
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└── IAM User: developer1 (custom policy)
+</code></pre></div>
+<h3 id="hands-on-step-by-step-lab">Hands-On (Step-by-step Lab)<a class="headerlink" href="#hands-on-step-by-step-lab" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Go to <strong>IAM → Users → Create User</strong>.</li>
+<li>Name it <code>test-user</code>.</li>
+<li>Enable <strong>Console access</strong> → Set a password.</li>
+<li>Do NOT attach any policy yet.</li>
+<li>Log in as <code>test-user</code> → Try to access EC2 → <strong>Access Denied</strong>.</li>
+<li>Go back to root → Attach <code>AmazonEC2ReadOnlyAccess</code> policy to <code>test-user</code>.</li>
+<li>Log in again → Now EC2 listing works but you can't create/delete anything.</li>
+</ol>
+<h3 id="common-mistakes">Common Mistakes<a class="headerlink" href="#common-mistakes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>❌ Using root account for daily tasks.</li>
+<li>❌ Sharing access keys between team members.</li>
+<li>❌ Creating a user with <code>AdministratorAccess</code> for everyone.</li>
+<li>❌ Not rotating access keys regularly.</li>
+<li>❌ Hardcoding access keys in application code.</li>
+</ul>
+<h3 id="pro-tips">Pro Tips<a class="headerlink" href="#pro-tips" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ Enable <strong>MFA</strong> on every IAM user, especially admins.</li>
+<li>✅ Use <strong>IAM Roles</strong> for applications instead of embedding access keys.</li>
+<li>✅ Delete access keys that haven't been used in 90 days.</li>
+<li>✅ In interviews: "We create individual IAM users per person, enforce MFA, and use roles for EC2/Lambda instead of long-lived keys."</li>
+</ul>
+<hr />
+<h2 id="2-iam-groups">2. IAM Groups<a class="headerlink" href="#2-iam-groups" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_1">What is it?<a class="headerlink" href="#what-is-it_1" title="Permanent link">&para;</a></h3>
+<p>A Group is a collection of IAM Users.
+You attach policies to the group, and all users in that group inherit those permissions.
+Groups make permission management easier — manage 1 group instead of 50 users.</p>
+<h3 id="why-it-matters-in-production_1">Why it matters in production<a class="headerlink" href="#why-it-matters-in-production_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>In real companies, you have teams: Developers, DevOps, QA, Admins.</li>
+<li>Instead of attaching policies to each user, attach to the group.</li>
+<li>When someone joins/leaves a team, just add/remove them from the group.</li>
+</ul>
+<h3 id="core-ideas_1">Core Ideas<a class="headerlink" href="#core-ideas_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A user can belong to <strong>multiple groups</strong>.</li>
+<li>Groups <strong>cannot be nested</strong> (no group inside a group).</li>
+<li>Groups are <strong>only for users</strong> — you cannot add roles or other groups.</li>
+<li>A group is NOT an identity — you can't log in as a group.</li>
+<li><strong>Maximum 10 groups per user</strong> (default limit).</li>
+</ul>
+<h3 id="quick-analogy_1">Quick Analogy<a class="headerlink" href="#quick-analogy_1" title="Permanent link">&para;</a></h3>
+<p>Group = A department in an office.
+Join the "Engineering" department → you get access to the engineering floor, tools, and repositories. Leave the department → access revoked.</p>
+<h3 id="architecture-view_1">Architecture View<a class="headerlink" href="#architecture-view_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>IAM Groups
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── Group: Admins
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│   ├── Policy: AdministratorAccess
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   └── Members: alice, bob
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>├── Group: Developers
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│   ├── Policy: AmazonEC2FullAccess
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│   ├── Policy: AmazonS3FullAccess
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│   └── Members: charlie, dave, eve
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>├── Group: ReadOnly
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│   ├── Policy: ReadOnlyAccess
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│   └── Members: intern1, intern2
+</code></pre></div>
+<h3 id="hands-on-step-by-step-lab_1">Hands-On (Step-by-step Lab)<a class="headerlink" href="#hands-on-step-by-step-lab_1" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Go to <strong>IAM → User Groups → Create Group</strong>.</li>
+<li>Name it <code>Developers</code>.</li>
+<li>Attach <code>AmazonEC2FullAccess</code> and <code>AmazonS3ReadOnlyAccess</code>.</li>
+<li>Add your <code>test-user</code> to this group.</li>
+<li>Log in as <code>test-user</code> → Verify EC2 full access and S3 read-only.</li>
+<li>Remove <code>test-user</code> from the group → Permissions gone instantly.</li>
+</ol>
+<h3 id="common-mistakes_1">Common Mistakes<a class="headerlink" href="#common-mistakes_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>❌ Attaching policies directly to users instead of using groups.</li>
+<li>❌ Creating one mega-group with all permissions.</li>
+<li>❌ Trying to nest groups (not supported in AWS).</li>
+<li>❌ Not reviewing group memberships regularly.</li>
+</ul>
+<h3 id="pro-tips_1">Pro Tips<a class="headerlink" href="#pro-tips_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ Create groups that mirror your org structure: <code>Admins</code>, <code>Developers</code>, <code>QA</code>, <code>Billing</code>.</li>
+<li>✅ Use groups as the <strong>primary</strong> way to assign permissions to users.</li>
+<li>✅ Combine with SCPs (Service Control Policies) in AWS Organizations for org-wide guardrails.</li>
+<li>✅ In interviews: "We manage permissions through groups, not individual users. This keeps things scalable and auditable."</li>
+</ul>
+<hr />
+<h2 id="3-iam-roles">3. IAM Roles<a class="headerlink" href="#3-iam-roles" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_2">What is it?<a class="headerlink" href="#what-is-it_2" title="Permanent link">&para;</a></h3>
+<p>A Role is an identity with permissions, but <strong>nobody logs in as a role</strong>.
+Instead, roles are <strong>assumed</strong> temporarily by users, services, or applications.
+When something assumes a role, it gets temporary credentials that expire automatically.</p>
+<h3 id="why-it-matters-in-production_2">Why it matters in production<a class="headerlink" href="#why-it-matters-in-production_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>EC2 instances, Lambda functions, and ECS tasks use Roles — never hardcoded keys.</li>
+<li>Cross-account access uses Roles.</li>
+<li>Roles are THE way services talk to each other securely in AWS.</li>
+</ul>
+<h3 id="core-ideas_2">Core Ideas<a class="headerlink" href="#core-ideas_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Roles have <strong>no permanent credentials</strong> — they generate temporary ones via STS.</li>
+<li><strong>Trust Policy</strong> — Who can assume this role (EC2, Lambda, another account, a user).</li>
+<li><strong>Permission Policy</strong> — What the role can do once assumed (S3 access, DynamoDB, etc.).</li>
+<li>An EC2 instance can have <strong>one IAM Role</strong> attached (via Instance Profile).</li>
+<li>Temporary credentials auto-expire (default 1 hour, configurable up to 12 hours).</li>
+</ul>
+<h3 id="quick-analogy_2">Quick Analogy<a class="headerlink" href="#quick-analogy_2" title="Permanent link">&para;</a></h3>
+<p>Role = A contractor badge.
+You don't own it permanently. You check it out at the front desk, use it for a few hours, and return it. While you have it, you can access specific areas.</p>
+<h3 id="architecture-view_2">Architecture View<a class="headerlink" href="#architecture-view_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>┌──────────────┐         ┌───────────────┐
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>│  EC2 Instance│──assumes──▶│  IAM Role:    │
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│  (no keys!)  │         │  S3-ReadRole   │
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>└──────────────┘         │  - Trust: EC2  │
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                         │  - Perm: S3 Get│
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>                         └───────────────┘
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>                                │
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>                                ▼
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>                         ┌───────────────┐
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>                         │  STS returns   │
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>                         │  temp creds    │
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>                         │  (expires 1hr) │
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>                         └───────────────┘
+</code></pre></div>
+<h3 id="hands-on-step-by-step-lab_2">Hands-On (Step-by-step Lab)<a class="headerlink" href="#hands-on-step-by-step-lab_2" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Go to <strong>IAM → Roles → Create Role</strong>.</li>
+<li>Trusted entity: <strong>AWS Service → EC2</strong>.</li>
+<li>Attach policy: <code>AmazonS3ReadOnlyAccess</code>.</li>
+<li>Name it <code>EC2-S3-ReadOnly</code>.</li>
+<li>Launch an EC2 instance → Attach this role (under IAM Instance Profile).</li>
+<li>SSH into the EC2 → Run <code>aws s3 ls</code> → Works! No access keys configured.</li>
+<li>Try <code>aws s3 rm s3://bucket/file</code> → <strong>Access Denied</strong> (read-only role).</li>
+</ol>
+<h3 id="common-mistakes_2">Common Mistakes<a class="headerlink" href="#common-mistakes_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>❌ Using access keys on EC2 instead of roles.</li>
+<li>❌ Creating overly permissive roles (<code>*</code> on everything).</li>
+<li>❌ Forgetting the Trust Policy — the role exists but nothing can assume it.</li>
+<li>❌ Not understanding that role credentials are temporary.</li>
+</ul>
+<h3 id="pro-tips_2">Pro Tips<a class="headerlink" href="#pro-tips_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ <strong>ALWAYS</strong> use roles for AWS services. Never embed keys.</li>
+<li>✅ Use <strong>instance profiles</strong> for EC2, <strong>execution roles</strong> for Lambda, <strong>task roles</strong> for ECS.</li>
+<li>✅ For cross-account: Create role in Account B, let Account A assume it.</li>
+<li>✅ In interviews: "We never use long-lived credentials. EC2 uses instance profiles with IAM roles. Lambda uses execution roles. All temporary, all auditable via CloudTrail."</li>
+</ul>
+<hr />
+<h2 id="4-iam-policies">4. IAM Policies<a class="headerlink" href="#4-iam-policies" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_3">What is it?<a class="headerlink" href="#what-is-it_3" title="Permanent link">&para;</a></h3>
+<p>A Policy is a JSON document that defines permissions.
+It says: "Allow or Deny this action on this resource under these conditions."
+Policies are attached to Users, Groups, or Roles.</p>
+<h3 id="why-it-matters-in-production_3">Why it matters in production<a class="headerlink" href="#why-it-matters-in-production_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Policies are the actual rules that control who can do what.</li>
+<li>A misconfigured policy can expose your entire AWS account.</li>
+<li>Writing good policies is a core DevOps skill.</li>
+</ul>
+<h3 id="core-ideas_3">Core Ideas<a class="headerlink" href="#core-ideas_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Policy structure (VERY IMPORTANT):</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::my-bucket/*&quot;</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Effect</strong> — <code>Allow</code> or <code>Deny</code>.</li>
+<li><strong>Action</strong> — What operation (e.g., <code>s3:GetObject</code>, <code>ec2:StartInstances</code>).</li>
+<li><strong>Resource</strong> — Which resource (specified by ARN).</li>
+<li><strong>Condition</strong> (optional) — When this applies (IP range, time, MFA, etc.).</li>
+</ul>
+<p><strong>Types of policies:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AWS Managed</strong></td>
+<td>Pre-built by AWS. Example: <code>AmazonS3ReadOnlyAccess</code></td>
+</tr>
+<tr>
+<td><strong>Customer Managed</strong></td>
+<td>You create and manage them. Reusable across your account.</td>
+</tr>
+<tr>
+<td><strong>Inline</strong></td>
+<td>Embedded directly into a user/group/role. Not reusable.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quick-analogy_3">Quick Analogy<a class="headerlink" href="#quick-analogy_3" title="Permanent link">&para;</a></h3>
+<p>Policy = A permission slip.
+It says exactly what you're allowed to do, where, and under what conditions.
+"Alice can read files from the Documents folder, but only during office hours."</p>
+<h3 id="architecture-view_3">Architecture View<a class="headerlink" href="#architecture-view_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>IAM User: alice
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>├── Attached: Group Policy (from &quot;Developers&quot; group)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>│   └── Allow: ec2:*, s3:Get*
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>├── Attached: Managed Policy (AmazonRDSReadOnlyAccess)
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>│   └── Allow: rds:Describe*
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>└── Inline Policy
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    └── Deny: s3:DeleteBucket (explicit deny — overrides everything)
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>Final permissions = UNION of all Allow - any explicit Deny wins
+</code></pre></div>
+<h3 id="hands-on-step-by-step-lab_3">Hands-On (Step-by-step Lab)<a class="headerlink" href="#hands-on-step-by-step-lab_3" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Go to <strong>IAM → Policies → Create Policy</strong>.</li>
+<li>Use the <strong>JSON editor</strong> and write:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">],</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="s2">&quot;arn:aws:s3:::my-test-bucket&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="s2">&quot;arn:aws:s3:::my-test-bucket/*&quot;</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="p">]</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="p">}</span>
+</code></pre></div></li>
+<li>Name it <code>S3-ReadOnly-MyBucket</code>.</li>
+<li>Attach it to a user → Test by listing and reading from that bucket.</li>
+<li>Try deleting a file → <strong>Access Denied</strong>.</li>
+</ol>
+<h3 id="common-mistakes_3">Common Mistakes<a class="headerlink" href="#common-mistakes_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>❌ Using <code>"Resource": "*"</code> — gives access to ALL resources.</li>
+<li>❌ Using <code>"Action": "*"</code> — gives ALL actions. Way too permissive.</li>
+<li>❌ Forgetting the <code>Version</code> field — old version may behave differently.</li>
+<li>❌ Not using conditions — miss easy security wins (IP restriction, MFA required).</li>
+<li>❌ Using inline policies instead of managed policies (harder to maintain).</li>
+</ul>
+<h3 id="pro-tips_3">Pro Tips<a class="headerlink" href="#pro-tips_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ Start with zero permissions. Add only what's needed.</li>
+<li>✅ Use the <strong>IAM Policy Simulator</strong> to test policies before deploying.</li>
+<li>✅ Use <strong>conditions</strong> for extra security: require MFA, restrict to VPC, limit by IP.</li>
+<li>✅ Prefer <strong>Customer Managed Policies</strong> over inline — reusable and version-tracked.</li>
+<li>✅ In interviews: "We write least-privilege policies with specific resource ARNs and conditions. We test them with the IAM Policy Simulator."</li>
+</ul>
+<hr />
+<h2 id="5-policy-evaluation-logic">5. Policy Evaluation Logic<a class="headerlink" href="#5-policy-evaluation-logic" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_4">What is it?<a class="headerlink" href="#what-is-it_4" title="Permanent link">&para;</a></h3>
+<p>When a request is made, AWS evaluates all applicable policies to decide: Allow or Deny.
+There is a specific order of evaluation. Understanding it is critical for troubleshooting.
+The golden rule: <strong>Explicit Deny ALWAYS wins.</strong></p>
+<h3 id="why-it-matters-in-production_4">Why it matters in production<a class="headerlink" href="#why-it-matters-in-production_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>When something isn't working, you need to understand WHY AWS denied it.</li>
+<li>Policy evaluation logic is a common interview question.</li>
+<li>Misconfigured policies cause outages when legitimate requests are denied.</li>
+</ul>
+<h3 id="core-ideas_4">Core Ideas<a class="headerlink" href="#core-ideas_4" title="Permanent link">&para;</a></h3>
+<p><strong>Evaluation order:</strong>
+1. <strong>Explicit Deny?</strong> → If ANY policy says Deny → <strong>DENIED</strong>. Full stop.
+2. <strong>SCP (Org level)?</strong> → Does the Organization allow it? If not → Denied.
+3. <strong>Resource-based policy?</strong> → Does the resource (e.g., S3 bucket policy) allow it?
+4. <strong>Identity-based policy?</strong> → Does the user/role/group policy allow it?
+5. <strong>Permission boundary?</strong> → Does the boundary allow it?
+6. <strong>Session policy?</strong> → Does the session policy allow it?
+7. <strong>If nothing explicitly allows → DENIED</strong> (implicit deny).</p>
+<p><strong>The flow chart in your head:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Request comes in
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>      │
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>      ▼
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Any EXPLICIT DENY? ──YES──▶ DENIED ❌
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>      │ NO
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>      ▼
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>Any ALLOW? ──YES──▶ ALLOWED ✅
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>      │ NO
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>      ▼
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>DENIED ❌ (implicit deny — default)
+</code></pre></div></p>
+<h3 id="quick-analogy_4">Quick Analogy<a class="headerlink" href="#quick-analogy_4" title="Permanent link">&para;</a></h3>
+<p>Think of a nightclub:
+- Bouncer 1 (Explicit Deny) = Blacklist. If you're on it, you're NOT getting in. Period.
+- Bouncer 2 (Allow) = Guest list. If you're on it, you can enter.
+- Default = No list = No entry.</p>
+<h3 id="architecture-view_4">Architecture View<a class="headerlink" href="#architecture-view_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>User: bob → calls s3:DeleteObject on my-bucket
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Evaluation:
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  1. Any SCP deny?          → No
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  2. Any explicit deny?     → bob&#39;s inline policy says Deny s3:Delete* → DENIED ❌
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>     (Even if group policy says Allow s3:*)
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>Result: DENIED — explicit deny wins over allow
+</code></pre></div>
+<h3 id="hands-on-step-by-step-lab_4">Hands-On (Step-by-step Lab)<a class="headerlink" href="#hands-on-step-by-step-lab_4" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Create a user with <code>AmazonS3FullAccess</code> (group or managed policy).</li>
+<li>Add an <strong>inline policy</strong> to that user:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Deny&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:DeleteObject&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="p">}</span>
+</code></pre></div></li>
+<li>Log in as that user → Try to delete an S3 object → <strong>Denied</strong>.</li>
+<li>The user has S3 Full Access, but the explicit Deny wins.</li>
+<li>Use the <strong>IAM Policy Simulator</strong> → Test the same scenario → See the Deny result.</li>
+</ol>
+<h3 id="common-mistakes_4">Common Mistakes<a class="headerlink" href="#common-mistakes_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>❌ Thinking Allow overrides Deny — it NEVER does.</li>
+<li>❌ Forgetting implicit deny — if nothing says Allow, it's denied.</li>
+<li>❌ Not considering SCPs when using AWS Organizations.</li>
+<li>❌ Not checking Permission Boundaries on users/roles.</li>
+</ul>
+<h3 id="pro-tips_4">Pro Tips<a class="headerlink" href="#pro-tips_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ Remember: <strong>Deny → Allow → Deny (implicit)</strong>. Explicit Deny always wins.</li>
+<li>✅ Use the <strong>IAM Policy Simulator</strong> to debug access issues.</li>
+<li>✅ Use <strong>CloudTrail</strong> to see which policy denied a request.</li>
+<li>✅ In interviews: "AWS uses a deny-by-default model. Explicit denies always override allows. I use the IAM Policy Simulator and CloudTrail to debug access issues."</li>
+</ul>
+<hr />
+<h2 id="6-least-privilege-principle">6. Least Privilege Principle<a class="headerlink" href="#6-least-privilege-principle" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_5">What is it?<a class="headerlink" href="#what-is-it_5" title="Permanent link">&para;</a></h3>
+<p>Give users and services the <strong>minimum permissions</strong> they need to do their job. Nothing more.
+If a developer only needs to read S3, don't give them S3 full access.
+This is the #1 security rule in IAM.</p>
+<h3 id="why-it-matters-in-production_5">Why it matters in production<a class="headerlink" href="#why-it-matters-in-production_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Over-permissioned accounts are the #1 cause of security breaches.</li>
+<li>If a compromised key has admin access, the attacker owns your account.</li>
+<li>Least privilege limits the blast radius of any compromise.</li>
+</ul>
+<h3 id="core-ideas_5">Core Ideas<a class="headerlink" href="#core-ideas_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Start with <strong>zero permissions</strong> → Add only what's needed.</li>
+<li>Use <strong>specific resource ARNs</strong> instead of <code>"Resource": "*"</code>.</li>
+<li>Use <strong>specific actions</strong> instead of <code>"Action": "*"</code> or <code>"Action": "s3:*"</code>.</li>
+<li>Review permissions regularly — remove unused ones.</li>
+<li>Use <strong>IAM Access Analyzer</strong> to find unused permissions.</li>
+<li>Use <strong>CloudTrail</strong> to see what APIs are actually being called.</li>
+</ul>
+<h3 id="quick-analogy_5">Quick Analogy<a class="headerlink" href="#quick-analogy_5" title="Permanent link">&para;</a></h3>
+<p>Least privilege = Hotel key card.
+Your card opens YOUR room only. Not the whole hotel. If you lose it, the damage is limited to your room.</p>
+<h3 id="architecture-view_5">Architecture View<a class="headerlink" href="#architecture-view_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>BAD (Over-privileged):
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  Role: App-Role
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  Policy: { &quot;Effect&quot;: &quot;Allow&quot;, &quot;Action&quot;: &quot;*&quot;, &quot;Resource&quot;: &quot;*&quot; }
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  → If compromised, attacker can do ANYTHING
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>GOOD (Least privilege):
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>  Role: App-Role
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>  Policy: {
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    &quot;Effect&quot;: &quot;Allow&quot;,
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    &quot;Action&quot;: [&quot;s3:GetObject&quot;, &quot;s3:PutObject&quot;],
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    &quot;Resource&quot;: &quot;arn:aws:s3:::app-data-bucket/*&quot;
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>  }
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>  → If compromised, attacker can only read/write to one bucket
+</code></pre></div>
+<h3 id="hands-on-step-by-step-lab_5">Hands-On (Step-by-step Lab)<a class="headerlink" href="#hands-on-step-by-step-lab_5" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Go to <strong>IAM → Access Analyzer → Generate Policy</strong>.</li>
+<li>Select a role → It analyzes CloudTrail logs (last 90 days).</li>
+<li>It generates a policy with only the permissions that were actually used.</li>
+<li>Compare this with the current policy → See how much can be removed.</li>
+<li>Replace the old policy with the generated one.</li>
+<li>Test that the application still works.</li>
+</ol>
+<h3 id="common-mistakes_5">Common Mistakes<a class="headerlink" href="#common-mistakes_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>❌ Starting with <code>AdministratorAccess</code> and "planning to restrict later" — you won't.</li>
+<li>❌ Using wildcard <code>*</code> for actions or resources.</li>
+<li>❌ Not reviewing permissions after project changes.</li>
+<li>❌ Copy-pasting policies from Stack Overflow without understanding them.</li>
+</ul>
+<h3 id="pro-tips_5">Pro Tips<a class="headerlink" href="#pro-tips_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ Use <strong>IAM Access Analyzer</strong> to auto-generate least-privilege policies.</li>
+<li>✅ Start with AWS Managed Policies → then replace with custom tighter policies.</li>
+<li>✅ Set up <strong>permission boundaries</strong> for developers — they can create roles but can't exceed the boundary.</li>
+<li>✅ In interviews: "We follow least privilege strictly. We use IAM Access Analyzer to right-size policies based on actual CloudTrail usage."</li>
+</ul>
+<hr />
+<h2 id="7-assume-role-sts">7. Assume Role (STS)<a class="headerlink" href="#7-assume-role-sts" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_6">What is it?<a class="headerlink" href="#what-is-it_6" title="Permanent link">&para;</a></h3>
+<p>Assume Role means temporarily switching to another IAM Role using AWS STS (Security Token Service).
+You give up your current permissions and get the role's permissions temporarily.
+This is how cross-account access, service access, and federated login work.</p>
+<h3 id="why-it-matters-in-production_6">Why it matters in production<a class="headerlink" href="#why-it-matters-in-production_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Cross-account access: Dev account assumes a role in Prod account.</li>
+<li>CI/CD pipelines assume deployment roles.</li>
+<li>Federated users (SSO, SAML) assume roles to get AWS access.</li>
+<li>It's the backbone of secure, temporary access in AWS.</li>
+</ul>
+<h3 id="core-ideas_6">Core Ideas<a class="headerlink" href="#core-ideas_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>sts:AssumeRole</code> → Returns temporary credentials (access key, secret key, session token).</li>
+<li>Credentials expire (default 1 hour, max 12 hours).</li>
+<li>The role must have a <strong>Trust Policy</strong> that allows the caller to assume it.</li>
+<li>The caller must have <strong>permission to call <code>sts:AssumeRole</code></strong>.</li>
+<li><strong>Two sides:</strong> Trust Policy (who can assume) + Permission Policy (what they can do).</li>
+</ul>
+<h3 id="quick-analogy_6">Quick Analogy<a class="headerlink" href="#quick-analogy_6" title="Permanent link">&para;</a></h3>
+<p>Assume Role = Checking out a costume at a costume shop.
+You walk in as yourself (User A). You put on the costume (Role B). Now you look and act like Role B. When time's up, you return the costume and go back to being yourself.</p>
+<h3 id="architecture-view_6">Architecture View<a class="headerlink" href="#architecture-view_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Account A (Dev)                    Account B (Prod)
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>┌──────────────┐                  ┌──────────────────┐
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>│ IAM User:    │                  │ IAM Role:         │
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>│ deploy-user  │──AssumeRole───▶  │ ProdDeployRole    │
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>│              │                  │                   │
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>│ Needs:       │                  │ Trust: Account A  │
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>│ sts:Assume   │                  │ Perm: S3, EC2     │
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>│ Role perm    │                  │ Expires: 1 hour   │
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>└──────────────┘                  └──────────────────┘
+</code></pre></div>
+<h3 id="hands-on-step-by-step-lab_6">Hands-On (Step-by-step Lab)<a class="headerlink" href="#hands-on-step-by-step-lab_6" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Create a Role</strong> in your account:</li>
+<li>Trust: Your own account (for testing).</li>
+<li>Permissions: <code>AmazonS3ReadOnlyAccess</code>.</li>
+<li>Name: <code>S3ReadRole</code>.</li>
+<li><strong>From CLI</strong> (as your IAM user):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>aws<span class="w"> </span>sts<span class="w"> </span>assume-role<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span>--role-arn<span class="w"> </span>arn:aws:iam::123456789012:role/S3ReadRole<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span>--role-session-name<span class="w"> </span>test-session
+</code></pre></div></li>
+<li>Copy the temporary credentials from the output.</li>
+<li>Export them:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>...
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>...
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SESSION_TOKEN</span><span class="o">=</span>...
+</code></pre></div></li>
+<li>Run <code>aws s3 ls</code> → Works with the role's permissions.</li>
+<li>Run <code>aws ec2 describe-instances</code> → <strong>Denied</strong> (role only has S3 access).</li>
+</ol>
+<h3 id="common-mistakes_6">Common Mistakes<a class="headerlink" href="#common-mistakes_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>❌ Forgetting the Trust Policy — role exists but can't be assumed.</li>
+<li>❌ Not including <code>AWS_SESSION_TOKEN</code> — temp credentials require all three parts.</li>
+<li>❌ Setting session duration too long — reduces security.</li>
+<li>❌ Confusing the role's permission policy with its trust policy.</li>
+</ul>
+<h3 id="pro-tips_6">Pro Tips<a class="headerlink" href="#pro-tips_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ Use <strong>external ID</strong> in trust policies for third-party cross-account access (prevents confused deputy).</li>
+<li>✅ Use <strong>role chaining</strong> carefully — each hop reduces max session duration to 1 hour.</li>
+<li>✅ Require <strong>MFA</strong> for assume role in production accounts.</li>
+<li>✅ In interviews: "We use STS AssumeRole for all cross-account access. CI/CD pipelines assume a deployment role in the target account with scoped permissions and MFA conditions."</li>
+</ul>
+<hr />
+<h2 id="8-iam-best-practices">8. IAM Best Practices<a class="headerlink" href="#8-iam-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_7">What is it?<a class="headerlink" href="#what-is-it_7" title="Permanent link">&para;</a></h3>
+<p>A checklist of security rules you should follow in every AWS account.
+These come directly from AWS recommendations and real-world lessons.
+Follow ALL of these in production.</p>
+<h3 id="why-it-matters-in-production_7">Why it matters in production<a class="headerlink" href="#why-it-matters-in-production_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>IAM misconfigurations are the #1 cause of AWS breaches.</li>
+<li>Interviewers expect you to know these by heart.</li>
+<li>These practices form the baseline of any AWS security audit.</li>
+</ul>
+<h3 id="core-ideas-the-complete-checklist">Core Ideas — The Complete Checklist<a class="headerlink" href="#core-ideas-the-complete-checklist" title="Permanent link">&para;</a></h3>
+<p><strong>Account Level:</strong>
+- ✅ <strong>Lock the root account</strong> — Enable MFA, delete root access keys, never use root for daily tasks.
+- ✅ <strong>Enable CloudTrail</strong> — Log every API call for audit.
+- ✅ <strong>Enable AWS Config</strong> — Track configuration changes.</p>
+<p><strong>User Management:</strong>
+- ✅ <strong>One user per person</strong> — Never share credentials.
+- ✅ <strong>Enforce MFA</strong> — For all users, especially admins.
+- ✅ <strong>Use Groups</strong> — Assign permissions via groups, not directly to users.
+- ✅ <strong>Regular access reviews</strong> — Remove unused users and permissions quarterly.
+- ✅ <strong>Rotate access keys</strong> — Every 90 days. Use IAM Credential Report to track.</p>
+<p><strong>Permissions:</strong>
+- ✅ <strong>Least privilege</strong> — Minimum permissions needed. No wildcards.
+- ✅ <strong>Use IAM Roles for services</strong> — EC2, Lambda, ECS should use roles, not keys.
+- ✅ <strong>Permission Boundaries</strong> — Limit what developers can grant.
+- ✅ <strong>Use Conditions</strong> — Restrict by IP, MFA, time, VPC endpoint.</p>
+<p><strong>Monitoring:</strong>
+- ✅ <strong>IAM Access Analyzer</strong> — Find resources shared externally.
+- ✅ <strong>IAM Credential Report</strong> — CSV of all users and their credential status.
+- ✅ <strong>CloudTrail + CloudWatch Alarms</strong> — Alert on suspicious IAM activities.</p>
+<p><strong>Advanced:</strong>
+- ✅ <strong>Use AWS Organizations + SCPs</strong> — Enforce guardrails across all accounts.
+- ✅ <strong>Use AWS SSO (IAM Identity Center)</strong> — Centralized login for multiple accounts.
+- ✅ <strong>Use secrets manager</strong> — Never hardcode secrets in code.</p>
+<h3 id="quick-analogy_7">Quick Analogy<a class="headerlink" href="#quick-analogy_7" title="Permanent link">&para;</a></h3>
+<p>IAM Best Practices = Fire safety rules in a building.
+Smoke detectors (CloudTrail), fire exits (MFA), locked doors (least privilege), regular drills (access reviews). You need ALL of them, not just one.</p>
+<h3 id="architecture-view_7">Architecture View<a class="headerlink" href="#architecture-view_7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>AWS Account — Secure Setup
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>├── Root: MFA ✅ | No access keys ✅ | Not used daily ✅
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>├── CloudTrail: Enabled ✅ | All regions ✅
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>├── Groups:
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>│   ├── Admins (MFA enforced, limited membership)
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>│   ├── Developers (scoped policies)
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>│   └── ReadOnly (for auditors)
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>├── Roles:
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>│   ├── EC2-AppRole (instance profile)
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>│   ├── Lambda-ExecRole (execution role)
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>│   └── CrossAccount-DeployRole (trust: CI/CD account)
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>├── Policies: All least-privilege, no wildcards
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>├── Monitoring: Access Analyzer + Credential Report + CloudWatch Alerts
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>└── Organizations: SCPs blocking dangerous actions
+</code></pre></div>
+<h3 id="hands-on-step-by-step-lab_7">Hands-On (Step-by-step Lab)<a class="headerlink" href="#hands-on-step-by-step-lab_7" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Go to <strong>IAM → Credential Report</strong> → Download → Review all users.</li>
+<li>Check: Who has MFA? Who has old access keys? Who never logged in?</li>
+<li>Go to <strong>IAM → Access Analyzer</strong> → Look for resources shared publicly.</li>
+<li>Go to <strong>IAM → Account Settings</strong> → Set a <strong>password policy</strong> (min 14 chars, require symbols, expire in 90 days).</li>
+<li>Go to <strong>CloudTrail</strong> → Ensure it's enabled for all Regions.</li>
+<li>Create a <strong>CloudWatch Alarm</strong> for root account login.</li>
+</ol>
+<h3 id="common-mistakes_7">Common Mistakes<a class="headerlink" href="#common-mistakes_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>❌ Root account used daily with no MFA.</li>
+<li>❌ Access keys in GitHub repos (this happens more than you'd think).</li>
+<li>❌ Everyone has <code>AdministratorAccess</code>.</li>
+<li>❌ No CloudTrail enabled — can't audit anything.</li>
+<li>❌ Never reviewing permissions — old employees still have access.</li>
+</ul>
+<h3 id="pro-tips_7">Pro Tips<a class="headerlink" href="#pro-tips_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ Run <strong>IAM Credential Report</strong> monthly.</li>
+<li>✅ Use <strong>AWS Config rules</strong> to auto-detect non-compliant IAM configs.</li>
+<li>✅ Use <strong>SCPs</strong> to prevent anyone from disabling CloudTrail or leaving a Region.</li>
+<li>✅ In interviews: "Our IAM strategy follows least privilege with mandatory MFA, role-based access via groups, no long-lived credentials for services, and continuous monitoring via Access Analyzer and CloudTrail."</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

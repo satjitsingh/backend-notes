@@ -1,0 +1,5589 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Java, Spring Boot, AWS, Redis & Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/springboot/28-Query-Optimization/">
+      
+      
+        <link rel="prev" href="../27-N%2B1-Problem/">
+      
+      
+        <link rel="next" href="../29-Spring-Security/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Query Optimization - Backend Engineering - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-28-query-optimization-connection-pooling" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Backend Engineering - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Backend Engineering - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Backend Engineering - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Query Optimization
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../java21/00-README/" class="md-tabs__link">
+          
+  
+  Java 21
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-README/" class="md-tabs__link">
+          
+  
+  Spring Boot
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../aws/01-Cloud-Basics/" class="md-tabs__link">
+          
+  
+  AWS
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redis/redis-basics/" class="md-tabs__link">
+          
+  
+  Redis
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/kafka-basics/" class="md-tabs__link">
+          
+  
+  Kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../projects/redis-api-caching/" class="md-tabs__link">
+          
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../comparison/redis-vs-kafka/" class="md-tabs__link">
+          
+  
+  Comparison
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Backend Engineering - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Backend Engineering - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Backend Engineering - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Java 21
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Java 21
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/00-README/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/01-How-Java-Works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How Java Works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/02-Syntax-Fundamentals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syntax & Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/03-OOP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OOP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/04-Collections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/05-Generics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/06-Exceptions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exception Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/07-Concurrency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concurrency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/08-Streams-FP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Streams & FP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/09-GC-Memory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GC & Memory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/10-JVM-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JVM Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/11-File-IO/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    File I/O
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/12-Networking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/13-JDBC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JDBC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/14-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/15-Modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/16-Performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/17-Testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/18-Security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/19-Java21-Features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java 21 Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/99-Summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Spring Boot
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Spring Boot
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-README/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Prerequisites
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Prerequisites
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-Prerequisites-Java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-Prerequisites-OOP-SOLID/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OOP & SOLID
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-Prerequisites-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-Prerequisites-HTTP-REST/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP & REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-Prerequisites-Web-Fundamentals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-Prerequisites-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-Prerequisites-DI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dependency Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-Prerequisites-Build-Tools/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-Prerequisites-JSON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON & Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-Prerequisites-Testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Spring Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Spring Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-Spring-Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-IoC-DI-DeepDive/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IoC & DI Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-Spring-vs-SpringBoot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring vs Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-SpringBoot-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Boot Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Core Mechanics
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Core Mechanics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-Auto-Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Auto-Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-Starters-Context/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starters & Context
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-Bean-Lifecycle/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bean Lifecycle
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-Configuration-Profiles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration & Profiles
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Building APIs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            Building APIs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-REST-Design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REST Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-Controllers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Controllers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-Validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Validation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-Exception-Handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exception Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-DTO-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DTO Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Data Layer
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Data Layer
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-Spring-Data-JPA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Data JPA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-Hibernate-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hibernate Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-Transactions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transactions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-N%2B1-Problem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    N+1 Problem
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Query Optimization
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Query Optimization
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-chapter-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Chapter Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-1-intuition-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 1 — Intuition Builder
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 1 — Intuition Builder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-1-why-does-speed-even-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 1: Why Does Speed Even Matter?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-2-what-is-a-query-plain-english-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 2: What Is a Query? (Plain English First)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-3-the-book-index-your-best-friend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 3: The Book Index — Your Best Friend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-4-the-taxi-stand-connection-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 4: The Taxi Stand — Connection Pooling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-5-the-notepad-of-recent-answers-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 5: The Notepad of Recent Answers — Caching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-6-ordering-the-whole-menu-vs-just-what-you-want" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 6: Ordering the Whole Menu vs. Just What You Want
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-7-counting-every-car-vs-spotting-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 7: Counting Every Car vs. Spotting One
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-8-one-trip-vs-many-trips-to-the-kitchen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 8: One Trip vs. Many Trips to the Kitchen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-9-the-slow-vs-fast-library-visual-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 9: The Slow vs. Fast Library — Visual Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-2-professional-developer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 2 — Professional Developer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 2 — Professional Developer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection-pooling-with-hikaricp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connection Pooling with HikariCP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection Pooling with HikariCP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-hikaricp-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic HikariCP Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pool-sizing-why-smaller-is-often-faster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pool Sizing — Why Smaller Is Often Faster
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-logging-see-what-your-queries-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Logging — See What Your Queries Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#projections-fetch-only-what-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      Projections — Fetch Only What You Need
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Projections — Fetch Only What You Need">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interface-projections" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface projections
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#class-based-projections-dto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class-based projections (DTO)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pagination-never-load-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pagination — Never Load Everything
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists-vs-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXISTS vs COUNT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#native-queries-when-jpql-isnt-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      Native Queries — When JPQL Isn't Enough
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Index Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b-tree-index-typical-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      B-Tree index (typical default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-to-add-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where to add indexes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explain-analyze-see-how-the-database-executes" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXPLAIN ANALYZE — See How the Database Executes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-3-advanced-engineering-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 3 — Advanced Engineering Depth
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 3 — Advanced Engineering Depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#read-replicas-scaling-reads" class="md-nav__link">
+    <span class="md-ellipsis">
+      Read Replicas — Scaling Reads
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caching-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching Layers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-index-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Index Strategies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#materialized-views-for-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Materialized Views for Analytics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-4-interview-mastery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 4 — Interview Mastery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 4 — Interview Mastery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-how-do-you-optimize-database-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: How do you optimize database queries?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-why-is-a-smaller-connection-pool-often-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: Why is a smaller connection pool often better?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-explain-caching-levels-in-a-springhibernate-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: Explain caching levels in a Spring/Hibernate app.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-how-would-you-implement-read-replicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: How would you implement read replicas?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-app-is-slow-under-load-how-do-you-diagnose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: App is slow under load — how do you diagnose?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-Spring-Security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-JWT-Auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JWT Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_8" id="__nav_3_8_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Production
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            Production
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../31-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../32-Logging-Monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../33-Microservices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Microservices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../34-Event-Driven/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event-Driven Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../35-Testing-Spring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing Spring Apps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../36-Performance-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../37-Docker-Deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker & Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../99-Summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AWS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            AWS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Cloud-Basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloud Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-AWS-Global-Infrastructure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Global Infrastructure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/03-IAM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IAM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/04-Shared-Responsibility-and-Billing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shared Responsibility & Billing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core Services
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core Services
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-EC2-Deep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EC2 Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-Storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage (S3, EBS, EFS)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/03-Load-Balancing-and-Scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Load Balancing & Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Networking
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-VPC-Core/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VPC Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-VPC-Security-and-Connectivity/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VPC Security & Connectivity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Databases
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Databases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-RDS-and-Aurora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RDS & Aurora
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-DynamoDB-and-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DynamoDB & Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Serverless
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Serverless
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Lambda-Deep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lambda Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-Messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging (SQS, SNS)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Containers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Containers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-ECS-and-Fargate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ECS & Fargate
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-EKS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EKS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DevOps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Infrastructure-as-Code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-CICD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Design-Thinking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Thinking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Quick Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            Quick Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-AWS-Cheat-Sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS Cheat Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-Top-50-Interview-Questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Top 50 Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/03-System-Design-Scenarios/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Design Scenarios
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-chapter-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Chapter Matters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-1-intuition-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 1 — Intuition Builder
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 1 — Intuition Builder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-1-why-does-speed-even-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 1: Why Does Speed Even Matter?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-2-what-is-a-query-plain-english-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 2: What Is a Query? (Plain English First)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-3-the-book-index-your-best-friend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 3: The Book Index — Your Best Friend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-4-the-taxi-stand-connection-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 4: The Taxi Stand — Connection Pooling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-5-the-notepad-of-recent-answers-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 5: The Notepad of Recent Answers — Caching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-6-ordering-the-whole-menu-vs-just-what-you-want" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 6: Ordering the Whole Menu vs. Just What You Want
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-7-counting-every-car-vs-spotting-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 7: Counting Every Car vs. Spotting One
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-8-one-trip-vs-many-trips-to-the-kitchen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 8: One Trip vs. Many Trips to the Kitchen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-9-the-slow-vs-fast-library-visual-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part 9: The Slow vs. Fast Library — Visual Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-2-professional-developer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 2 — Professional Developer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 2 — Professional Developer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection-pooling-with-hikaricp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connection Pooling with HikariCP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connection Pooling with HikariCP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-hikaricp-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic HikariCP Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pool-sizing-why-smaller-is-often-faster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pool Sizing — Why Smaller Is Often Faster
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-logging-see-what-your-queries-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Logging — See What Your Queries Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#projections-fetch-only-what-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      Projections — Fetch Only What You Need
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Projections — Fetch Only What You Need">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interface-projections" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface projections
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#class-based-projections-dto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class-based projections (DTO)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pagination-never-load-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pagination — Never Load Everything
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists-vs-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXISTS vs COUNT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#native-queries-when-jpql-isnt-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      Native Queries — When JPQL Isn't Enough
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Index Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Index Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b-tree-index-typical-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      B-Tree index (typical default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-to-add-indexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where to add indexes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explain-analyze-see-how-the-database-executes" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXPLAIN ANALYZE — See How the Database Executes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-3-advanced-engineering-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 3 — Advanced Engineering Depth
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 3 — Advanced Engineering Depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#read-replicas-scaling-reads" class="md-nav__link">
+    <span class="md-ellipsis">
+      Read Replicas — Scaling Reads
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caching-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching Layers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-index-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Index Strategies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#materialized-views-for-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Materialized Views for Analytics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-4-interview-mastery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 4 — Interview Mastery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 4 — Interview Mastery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-how-do-you-optimize-database-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1: How do you optimize database queries?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-why-is-a-smaller-connection-pool-often-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2: Why is a smaller connection pool often better?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-explain-caching-levels-in-a-springhibernate-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3: Explain caching levels in a Spring/Hibernate app.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-how-would-you-implement-read-replicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4: How would you implement read replicas?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-app-is-slow-under-load-how-do-you-diagnose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5: App is slow under load — how do you diagnose?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="chapter-28-query-optimization-connection-pooling">Chapter 28: Query Optimization &amp; Connection Pooling<a class="headerlink" href="#chapter-28-query-optimization-connection-pooling" title="Permanent link">&para;</a></h1>
+<p><a href="../00-README/">← Back to Index</a> | <a href="../27-N%2B1-Problem/">Previous: N+1 Problem</a> | <a href="../29-Spring-Security/">Next: Spring Security →</a></p>
+<hr />
+<h2 id="why-this-chapter-matters">Why This Chapter Matters<a class="headerlink" href="#why-this-chapter-matters" title="Permanent link">&para;</a></h2>
+<p>Your application code can be perfect, your architecture can be flawless, but if your database queries are slow, <strong>everything is slow</strong>. The database is the #1 bottleneck in most web applications.</p>
+<p>Think about it: every page load, every API call, every background job — they all talk to the database. A query that takes 1 second instead of 10 milliseconds doesn't just slow down one request. Under 100 concurrent users, that's 100 seconds of combined wait time, connection pool exhaustion, and cascading failures.</p>
+<p><strong>This chapter teaches you:</strong>
+- How to make your queries lightning fast
+- How connection pooling works and why it's critical
+- How to detect and fix performance bottlenecks
+- How to configure databases for production scale
+- How to ace performance-related interview questions</p>
+<p><strong>Without query optimization:</strong>
+- Your app is slow under load (and you don't know why)
+- Database connections get exhausted
+- Users see timeout errors
+- Server resources are wasted
+- You fail performance interview questions</p>
+<p><strong>With proper optimization:</strong>
+- Queries execute in milliseconds
+- Connection pool is properly sized
+- Application scales gracefully under load
+- You can diagnose any database performance issue
+- You excel in system design discussions</p>
+<hr />
+<h2 id="layer-1-intuition-builder">Layer 1 — Intuition Builder<a class="headerlink" href="#layer-1-intuition-builder" title="Permanent link">&para;</a></h2>
+<p>Imagine you're learning how to make a library super fast. Not a regular library — one where thousands of kids ask questions every minute. Let's build the intuition one piece at a time.</p>
+<hr />
+<h3 id="part-1-why-does-speed-even-matter">Part 1: Why Does Speed Even Matter?<a class="headerlink" href="#part-1-why-does-speed-even-matter" title="Permanent link">&para;</a></h3>
+<p><strong>Imagine a library with 1 million books.</strong></p>
+<p>When someone asks "Do you have a book about dinosaurs?", what happens?</p>
+<ul>
+<li><strong>The slow way:</strong> The librarian walks through every single shelf, looking at every book, one by one. It might take hours.</li>
+<li><strong>The fast way:</strong> The librarian checks a special list (an index) at the front desk. "Dinosaurs? That's in aisle 7, shelf 3." Two seconds.</li>
+</ul>
+<p><strong>The database is your library.</strong> Every time your app loads a page, it asks the database questions. If each question takes too long, your app feels like a snail. If each question is answered in milliseconds, your app feels like a rocket.</p>
+<hr />
+<h3 id="part-2-what-is-a-query-plain-english-first">Part 2: What Is a Query? (Plain English First)<a class="headerlink" href="#part-2-what-is-a-query-plain-english-first" title="Permanent link">&para;</a></h3>
+<p>A <strong>query</strong> is simply a question you ask the database.</p>
+<ul>
+<li>"Show me all users named Alice" → That's a query.</li>
+<li>"How many orders were placed today?" → That's a query.</li>
+<li>"Give me the product with ID 42" → That's a query.</li>
+</ul>
+<p>Every time your app does something — showing a list, saving data, displaying a profile — it sends one or more queries to the database. The faster those queries run, the faster your app feels.</p>
+<hr />
+<h3 id="part-3-the-book-index-your-best-friend">Part 3: The Book Index — Your Best Friend<a class="headerlink" href="#part-3-the-book-index-your-best-friend" title="Permanent link">&para;</a></h3>
+<p><strong>Think of the index at the back of a textbook.</strong></p>
+<p>You have a 1,000-page science book. Your friend asks: "Where does it talk about photosynthesis?"</p>
+<p><strong>Without an index:</strong>
+- You start at page 1
+- You read every page until you find it
+- Maybe you find it on page 734
+- You had to look at 734 pages!</p>
+<p><strong>With an index:</strong>
+- You flip to the back
+- You find "Photosynthesis — page 734"
+- You go straight to page 734
+- You only had to do 2 lookups!</p>
+<p><strong>In a database, an index works the same way.</strong> It's a special list that helps the database find rows super fast without reading every single row. We'll learn more about B-Tree indexes later — for now, just remember: <strong>indexes are like the index in a book. They make finding things lightning fast.</strong></p>
+<hr />
+<h3 id="part-4-the-taxi-stand-connection-pooling">Part 4: The Taxi Stand — Connection Pooling<a class="headerlink" href="#part-4-the-taxi-stand-connection-pooling" title="Permanent link">&para;</a></h3>
+<p><strong>Imagine two ways to get a taxi at an airport:</strong></p>
+<p><strong>Option A — Call a taxi each time:</strong>
+- You arrive → Call taxi company → Wait 15 minutes → Taxi arrives → You ride
+- Your friend arrives → Call taxi company → Wait 15 minutes → Taxi arrives → Your friend rides
+- Every person waits 15 minutes. Ouch!</p>
+<p><strong>Option B — Taxi stand (a row of taxis always waiting):</strong>
+- 10 taxis are always parked at the stand
+- You arrive → Grab a taxi immediately → Ride → Taxi returns to the stand
+- Your friend arrives → Grabs that same taxi (now back at the stand) → Ride → Taxi returns
+- Almost no waiting! Taxis are reused!</p>
+<p><strong>Connection pooling is the taxi stand for your database.</strong> Instead of creating a new "connection" (like a phone line to the database) every time your app wants to ask a question, you keep a small pool of connections ready. Your app borrows one, asks its question, and returns it. The next request uses the same connection. No waiting!</p>
+<p><strong>Why does creating a connection take time?</strong> The database has to: introduce itself over the network, check your username and password, and set up a little workspace. That takes 50–200 milliseconds. Reusing a connection? Less than 1 millisecond.</p>
+<hr />
+<h3 id="part-5-the-notepad-of-recent-answers-caching">Part 5: The Notepad of Recent Answers — Caching<a class="headerlink" href="#part-5-the-notepad-of-recent-answers-caching" title="Permanent link">&para;</a></h3>
+<p><strong>Imagine you're a waiter. Customers keep asking: "What's the soup of the day?"</strong></p>
+<p><strong>Without a notepad:</strong>
+- Customer 1 asks → You walk to the kitchen, ask the chef, come back → "Tomato soup"
+- Customer 2 asks → You walk to the kitchen again, ask the chef again, come back → "Tomato soup"
+- Customer 3 asks → Same walk, same question, same answer
+- You're exhausted and the kitchen is annoyed!</p>
+<p><strong>With a notepad:</strong>
+- Customer 1 asks → You walk to the kitchen, ask the chef, write "Tomato soup" on your notepad, tell the customer
+- Customer 2 asks → You check your notepad → "Tomato soup" — no trip to the kitchen!
+- Customer 3 asks → Same thing — instant answer!</p>
+<p><strong>Caching is that notepad.</strong> When your app asks the database a question and gets an answer, it can save that answer in a "cache" (a fast storage area). The next time someone asks the same question, the app checks the cache first. If the answer is there and still fresh, it doesn't need to bother the database. Faster for everyone!</p>
+<hr />
+<h3 id="part-6-ordering-the-whole-menu-vs-just-what-you-want">Part 6: Ordering the Whole Menu vs. Just What You Want<a class="headerlink" href="#part-6-ordering-the-whole-menu-vs-just-what-you-want" title="Permanent link">&para;</a></h3>
+<p><strong>Imagine going to a restaurant.</strong></p>
+<p><strong>Bad way:</strong> "Bring me everything on the menu!" The kitchen prepares 200 dishes. You only eat the salad. What a waste of time and food!</p>
+<p><strong>Good way:</strong> "I'll have the Caesar salad and water, please." The kitchen makes only what you need. Fast and efficient.</p>
+<p><strong>Fetching only what you need from the database is the same idea.</strong> If you only need a user's name and email, don't ask the database for their entire profile (address, phone, bio, 20 other fields). Ask only for name and email. Less data = faster response. This is called <strong>projection</strong> — you "project" only the columns you need.</p>
+<hr />
+<h3 id="part-7-counting-every-car-vs-spotting-one">Part 7: Counting Every Car vs. Spotting One<a class="headerlink" href="#part-7-counting-every-car-vs-spotting-one" title="Permanent link">&para;</a></h3>
+<p><strong>Someone asks: "Is there a red car in this parking lot?"</strong></p>
+<p><strong>Silly way:</strong> You count every red car. "One red car... two red cars... three red cars..." You count all 47 red cars, then say "Yes, there is." You did way more work than needed!</p>
+<p><strong>Smart way:</strong> You look around. You spot one red car. You immediately say "Yes!" and stop. You didn't need to count them all.</p>
+<p><strong>In databases:</strong> When you only need to know "does this exist?" (like "Is this email already taken?"), use <strong>EXISTS</strong> — it stops at the first match. Don't use <strong>COUNT</strong> — that counts every single matching row, which is slow when there are millions of rows.</p>
+<hr />
+<h3 id="part-8-one-trip-vs-many-trips-to-the-kitchen">Part 8: One Trip vs. Many Trips to the Kitchen<a class="headerlink" href="#part-8-one-trip-vs-many-trips-to-the-kitchen" title="Permanent link">&para;</a></h3>
+<p><strong>Imagine a waiter taking orders for a table of 10.</strong></p>
+<p><strong>Bad way:</strong> The waiter goes to the kitchen 10 times — once per person. Ten trips!</p>
+<p><strong>Good way:</strong> The waiter writes down all 10 orders, goes to the kitchen once, and brings everything back. One trip!</p>
+<p><strong>Batch operations work the same way.</strong> Instead of sending 1,000 separate "save this user" requests to the database, you bundle them into groups of 50 and send 20 batch requests. Far fewer trips = much faster.</p>
+<hr />
+<h3 id="part-9-the-slow-vs-fast-library-visual-summary">Part 9: The Slow vs. Fast Library — Visual Summary<a class="headerlink" href="#part-9-the-slow-vs-fast-library-visual-summary" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                    THE DATABASE LIBRARY                               │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─────────────────────────────────────────────────────────────────────┤
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│                                                                       │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  📚 Problem 1: NO INDEX (Full table scan)                           │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  Librarian searches every shelf to find one book.                     │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  Fix: Add an index! (Like the index at the back of a textbook)      │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│                                                                       │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  🚕 Problem 2: NO TAXI STAND (No connection pool)                   │
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  Every person calls a new taxi and waits 15 minutes.                  │
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  Fix: Use a connection pool! (Keep taxis ready at the stand)          │
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│                                                                       │
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  📋 Problem 3: NO NOTEPAD (No caching)                               │
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│  Same question asked 100 times = 100 trips to the kitchen.            │
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│  Fix: Cache answers! (@Cacheable, Redis)                              │
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│                                                                       │
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│  📖 Problem 4: ORDERING THE WHOLE MENU (Over-fetching)              │
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│  Asking for all 20 fields when you need only 3.                      │
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│  Fix: Use projections! (Fetch only what you need)                     │
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│                                                                       │
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│  🔢 Problem 5: COUNTING INSTEAD OF EXISTS                            │
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│  Counting millions of rows just to say &quot;yes, one exists.&quot;             │
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│  Fix: Use EXISTS! (Stop at the first match)                          │
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│                                                                       │
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│  🛤️ Problem 6: TOO MANY TRIPS (No batching)                         │
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│  1000 separate database trips instead of 20 batch trips.              │
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>│  Fix: Batch your operations! (batch_size = 50)                       │
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>│                                                                       │
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>└─────────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<hr />
+<h2 id="layer-2-professional-developer">Layer 2 — Professional Developer<a class="headerlink" href="#layer-2-professional-developer" title="Permanent link">&para;</a></h2>
+<p>Now we build on that intuition with real configuration, code, and practices. We always explain <strong>why</strong> before <strong>how</strong>.</p>
+<hr />
+<h3 id="connection-pooling-with-hikaricp">Connection Pooling with HikariCP<a class="headerlink" href="#connection-pooling-with-hikaricp" title="Permanent link">&para;</a></h3>
+<p><strong>HikariCP</strong> (光, Japanese for "light") is Spring Boot's default connection pool. It's fast, reliable, and widely used in production.</p>
+<p><strong>Why connection pooling?</strong> Creating a database connection costs 50–200ms (network handshake, auth, session setup). A pool keeps connections ready — borrowing one costs &lt;1ms. Under load, the difference is massive.</p>
+<h4 id="basic-hikaricp-configuration">Basic HikariCP Configuration<a class="headerlink" href="#basic-hikaricp-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># application.yml</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">datasource</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql://localhost:5432/mydb</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DB_USERNAME}</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DB_PASSWORD}</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">driver-class-name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">org.postgresql.Driver</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">hikari</span><span class="p">:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="c1"># === POOL SIZE ===</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">maximum-pool-size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w">        </span><span class="c1"># Never exceed 10 connections (see sizing below)</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="nt">minimum-idle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">              </span><span class="c1"># Keep at least 5 connections ready when idle</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="c1"># === TIMEOUTS (all in milliseconds) ===</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="nt">connection-timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span><span class="w">    </span><span class="c1"># Max wait for a connection: 30 seconds</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="nt">idle-timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600000</span><span class="w">         </span><span class="c1"># Close idle connections after 10 minutes</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span><span class="nt">max-lifetime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1800000</span><span class="w">        </span><span class="c1"># Recycle connections after 30 minutes</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">      </span><span class="c1"># === HEALTH &amp; SAFETY ===</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">      </span><span class="nt">connection-test-query</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SELECT 1</span><span class="w">           </span><span class="c1"># Simple ping to verify connection</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">      </span><span class="nt">leak-detection-threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60000</span><span class="w">            </span><span class="c1"># Warn if connection held &gt; 60s</span>
+</code></pre></div>
+<p><strong>HikariCP settings explained:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>maximum-pool-size</code></td>
+<td>10</td>
+<td>Pool never grows beyond this. Like "max 10 taxi spots."</td>
+</tr>
+<tr>
+<td><code>minimum-idle</code></td>
+<td>5</td>
+<td>Always keep at least 5 connections ready.</td>
+</tr>
+<tr>
+<td><code>connection-timeout</code></td>
+<td>30000</td>
+<td>If no free connection in 30s, throw an error.</td>
+</tr>
+<tr>
+<td><code>idle-timeout</code></td>
+<td>600000</td>
+<td>Close connections idle for 10 minutes to free resources.</td>
+</tr>
+<tr>
+<td><code>max-lifetime</code></td>
+<td>1800000</td>
+<td>Recycle connections after 30 min to avoid stale ones.</td>
+</tr>
+<tr>
+<td><code>leak-detection-threshold</code></td>
+<td>60000</td>
+<td>Log a warning if code holds a connection for 60s.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pool-sizing-why-smaller-is-often-faster">Pool Sizing — Why Smaller Is Often Faster<a class="headerlink" href="#pool-sizing-why-smaller-is-often-faster" title="Permanent link">&para;</a></h4>
+<p><strong>Common mistake:</strong> Using a pool of 100 or 200 connections.</p>
+<p><strong>Why smaller is better:</strong> A database server has limited CPU cores. With 4 cores, it can truly run only ~4 queries in parallel. Extra connections cause context switching, memory use, and lock contention.</p>
+<p><strong>PostgreSQL-style sizing:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>connections ≈ (CPU_cores × 2) + effective_spindle_count
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Example: 4-core server with SSD
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  → (4 × 2) + 1 ≈ 10 connections
+</code></pre></div>
+<p><strong>Guidelines:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Suggested pool size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small API (single server)</td>
+<td>5–10</td>
+</tr>
+<tr>
+<td>Medium app (2–3 servers)</td>
+<td>10–15 per server</td>
+</tr>
+<tr>
+<td>Large app (10+ servers)</td>
+<td>5–10 per server</td>
+</tr>
+<tr>
+<td>Batch jobs</td>
+<td>20–30</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb:</strong> If 3 app servers each use <code>maximum-pool-size: 20</code>, the DB can see 60 connections. Leave headroom for admin and other clients.</p>
+<hr />
+<h3 id="query-logging-see-what-your-queries-do">Query Logging — See What Your Queries Do<a class="headerlink" href="#query-logging-see-what-your-queries-do" title="Permanent link">&para;</a></h3>
+<p><strong>Why:</strong> You can't optimize what you can't see. Logging shows which queries run, how often, and how long they take.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># application.yml — development only (verbose!)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">jpa</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">show-sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                    </span><span class="c1"># Log SQL to console (simple but noisy)</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">hibernate</span><span class="p">:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span><span class="nt">format_sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># Pretty-print SQL for readability</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="nt">use_sql_comments</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># Add hints in logs</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="c1"># Better: use a logging framework for control</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="nt">logging</span><span class="p">:</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="nt">level</span><span class="p">:</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="nt">org.hibernate.SQL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEBUG</span><span class="w">         </span><span class="c1"># Log all SQL</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="nt">org.hibernate.type.descriptor.sql.BasicBinder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TRACE</span><span class="w">  </span><span class="c1"># Log parameters</span>
+</code></pre></div>
+<p><strong>Production-safe slow query detection:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">jpa</span><span class="p">:</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">      </span><span class="nt">hibernate</span><span class="p">:</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="nt">session</span><span class="p">:</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">          </span><span class="c1"># Log queries slower than 1 second</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">          </span><span class="nt">events</span><span class="p">:</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">            </span><span class="nt">log</span><span class="p">:</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">              </span><span class="nt">LOG_QUERIES_SLOWER_THAN_MS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+</code></pre></div>
+<p><strong>Or use Datasource Proxy / P6Spy for detailed query timing.</strong> In short: enable logging in dev to understand behavior; in prod, focus on slow-query alerts.</p>
+<hr />
+<h3 id="projections-fetch-only-what-you-need">Projections — Fetch Only What You Need<a class="headerlink" href="#projections-fetch-only-what-you-need" title="Permanent link">&para;</a></h3>
+<p><strong>Why:</strong> Loading full entities pulls all columns and triggers lazy loading. Projections fetch only the columns you need — less data, fewer joins, faster responses.</p>
+<h4 id="interface-projections">Interface projections<a class="headerlink" href="#interface-projections" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// Define an interface — Spring generates implementation at runtime</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">UserSummary</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="n">Long</span><span class="w"> </span><span class="nf">getId</span><span class="p">();</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="nf">getName</span><span class="p">();</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="nf">getEmail</span><span class="p">();</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nd">@Repository</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">UserRepository</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">JpaRepository</span><span class="o">&lt;</span><span class="n">User</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="c1">// Returns only id, name, email — not the full User entity</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">UserSummary</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findByActiveTrue</span><span class="p">();</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="p">}</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="c1">// Generated SQL: SELECT id, name, email FROM users WHERE active = true</span>
+</code></pre></div>
+<h4 id="class-based-projections-dto">Class-based projections (DTO)<a class="headerlink" href="#class-based-projections-dto" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// Use a constructor — good when you need logic or multiple constructors</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">record</span> <span class="nc">UserSummaryDto</span><span class="p">(</span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">email</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nd">@Repository</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">UserRepository</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">JpaRepository</span><span class="o">&lt;</span><span class="n">User</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nd">@Query</span><span class="p">(</span><span class="s">&quot;SELECT new com.example.dto.UserSummaryDto(u.id, u.name, u.email) &quot;</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">           </span><span class="s">&quot;FROM User u WHERE u.active = true&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">UserSummaryDto</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findActiveUserSummaries</span><span class="p">();</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Comparison:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Columns fetched</th>
+<th>Typical use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full <code>User</code> entity</td>
+<td>All (~20+)</td>
+<td>When you need full object graph</td>
+</tr>
+<tr>
+<td><code>UserSummary</code> interface</td>
+<td>3</td>
+<td>Read-only list views</td>
+</tr>
+<tr>
+<td><code>UserSummaryDto</code> class</td>
+<td>3</td>
+<td>DTOs, APIs, custom logic</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="pagination-never-load-everything">Pagination — Never Load Everything<a class="headerlink" href="#pagination-never-load-everything" title="Permanent link">&para;</a></h3>
+<p><strong>Why:</strong> <code>findAll()</code> loads all rows into memory. With millions of rows, this leads to OOM and slow responses.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// ❌ BAD — loads all rows into memory</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userRepository</span><span class="p">.</span><span class="na">findAll</span><span class="p">();</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">// ✅ GOOD — loads one page at a time</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">Page</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userRepository</span><span class="p">.</span><span class="na">findAll</span><span class="p">(</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="n">PageRequest</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="n">Sort</span><span class="p">.</span><span class="na">by</span><span class="p">(</span><span class="s">&quot;createdAt&quot;</span><span class="p">).</span><span class="na">descending</span><span class="p">())</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">);</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1">// Use the result</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="n">page</span><span class="p">.</span><span class="na">getContent</span><span class="p">();</span><span class="w">        </span><span class="c1">// The 20 users</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="n">page</span><span class="p">.</span><span class="na">getTotalElements</span><span class="p">();</span><span class="w">  </span><span class="c1">// Total count (e.g. 1,000,000)</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="n">page</span><span class="p">.</span><span class="na">getTotalPages</span><span class="p">();</span><span class="w">     </span><span class="c1">// e.g. 50,000</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="n">page</span><span class="p">.</span><span class="na">hasNext</span><span class="p">();</span><span class="w">           </span><span class="c1">// More pages?</span>
+</code></pre></div>
+<hr />
+<h3 id="exists-vs-count">EXISTS vs COUNT<a class="headerlink" href="#exists-vs-count" title="Permanent link">&para;</a></h3>
+<p><strong>Why:</strong> For "does this exist?" you only need one row. COUNT scans all matching rows; EXISTS stops at the first.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// ❌ BAD — counts all matching rows</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nd">@Query</span><span class="p">(</span><span class="s">&quot;SELECT COUNT(u) &gt; 0 FROM User u WHERE u.email = :email&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="kt">boolean</span><span class="w"> </span><span class="nf">emailExistsBad</span><span class="p">(</span><span class="nd">@Param</span><span class="p">(</span><span class="s">&quot;email&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">email</span><span class="p">);</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1">// ✅ GOOD — stops at first match</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="kt">boolean</span><span class="w"> </span><span class="nf">existsByEmail</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">email</span><span class="p">);</span><span class="w">  </span><span class="c1">// Spring Data generates EXISTS</span>
+</code></pre></div>
+<p><strong>Performance:</strong> On a large table, EXISTS can be orders of magnitude faster than COUNT.</p>
+<hr />
+<h3 id="batch-operations">Batch Operations<a class="headerlink" href="#batch-operations" title="Permanent link">&para;</a></h3>
+<p><strong>Why:</strong> One INSERT per row means one network round-trip per row. Batching groups many statements into fewer round-trips.</p>
+<p><strong>Enable batching:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">jpa</span><span class="p">:</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">      </span><span class="nt">hibernate</span><span class="p">:</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">        </span><span class="nt">jdbc</span><span class="p">:</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">          </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w">           </span><span class="c1"># Group up to 50 statements</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">        </span><span class="nt">order_inserts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">        </span><span class="c1"># Batch INSERTs by entity</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">        </span><span class="nt">order_updates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">        </span><span class="c1"># Batch UPDATEs by entity</span>
+</code></pre></div>
+<p><strong>Bulk insert example:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nd">@Service</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nd">@Transactional</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">UserImportService</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">UserRepository</span><span class="w"> </span><span class="n">userRepository</span><span class="p">;</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="c1">// ❌ BAD — one query per user</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">importBad</span><span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="w"> </span><span class="n">users</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">User</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">users</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">            </span><span class="n">userRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">        </span><span class="c1">// 1000 users ≈ 1000 queries</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">    </span><span class="c1">// ✅ GOOD — batched</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">importGood</span><span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="w"> </span><span class="n">users</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">batchSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="na">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">batchSize</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">min</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">batchSize</span><span class="p">,</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="na">size</span><span class="p">());</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="w">            </span><span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="na">subList</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">);</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="w">            </span><span class="n">userRepository</span><span class="p">.</span><span class="na">saveAll</span><span class="p">(</span><span class="n">batch</span><span class="p">);</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="w">            </span><span class="n">userRepository</span><span class="p">.</span><span class="na">flush</span><span class="p">();</span><span class="w">  </span><span class="c1">// Send batch to DB</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="w">        </span><span class="c1">// 1000 users ≈ 20 batched queries</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Bulk UPDATE/DELETE with JPQL:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nd">@Modifying</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nd">@Query</span><span class="p">(</span><span class="s">&quot;UPDATE User u SET u.status = :status WHERE u.id IN :ids&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kt">int</span><span class="w"> </span><span class="nf">updateStatus</span><span class="p">(</span><span class="nd">@Param</span><span class="p">(</span><span class="s">&quot;ids&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ids</span><span class="p">,</span><span class="w"> </span><span class="nd">@Param</span><span class="p">(</span><span class="s">&quot;status&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">UserStatus</span><span class="w"> </span><span class="n">status</span><span class="p">);</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="nd">@Modifying</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="nd">@Query</span><span class="p">(</span><span class="s">&quot;DELETE FROM User u WHERE u.lastLoginDate &lt; :cutoff&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="kt">int</span><span class="w"> </span><span class="nf">deleteInactive</span><span class="p">(</span><span class="nd">@Param</span><span class="p">(</span><span class="s">&quot;cutoff&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">cutoff</span><span class="p">);</span>
+</code></pre></div>
+<hr />
+<h3 id="native-queries-when-jpql-isnt-enough">Native Queries — When JPQL Isn't Enough<a class="headerlink" href="#native-queries-when-jpql-isnt-enough" title="Permanent link">&para;</a></h3>
+<p><strong>Why:</strong> Use native SQL when you need DB-specific features: window functions, CTEs, JSON, full-text search, or when JPQL produces inefficient SQL.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nd">@Query</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;&quot;</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="s">    WITH monthly_stats AS (</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="s">        SELECT</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="s">            DATE_TRUNC(&#39;month&#39;, created_at) AS month,</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="s">            COUNT(*) AS order_count,</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="s">            SUM(total_amount) AS revenue</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="s">        FROM orders</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="s">        WHERE created_at &gt;= :startDate</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="s">        GROUP BY DATE_TRUNC(&#39;month&#39;, created_at)</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="s">    )</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="s">    SELECT * FROM monthly_stats ORDER BY month DESC</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="s">    &quot;&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">nativeQuery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">[]&gt;</span><span class="w"> </span><span class="nf">getMonthlyReport</span><span class="p">(</span><span class="nd">@Param</span><span class="p">(</span><span class="s">&quot;startDate&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">startDate</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>When to use:</strong> Complex analytics, window functions, CTEs, DB-specific features.<br />
+<strong>When not to use:</strong> Simple CRUD or when database portability matters.</p>
+<hr />
+<h3 id="index-optimization">Index Optimization<a class="headerlink" href="#index-optimization" title="Permanent link">&para;</a></h3>
+<p><strong>Why:</strong> Without indexes, the database does a full table scan (read every row). With indexes, it can jump directly to matching rows.</p>
+<h4 id="b-tree-index-typical-default">B-Tree index (typical default)<a class="headerlink" href="#b-tree-index-typical-default" title="Permanent link">&para;</a></h4>
+<p>A B-Tree index is like a sorted tree: the DB navigates from root to leaf to find values in O(log n) steps instead of scanning all rows.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Without index: Scan 10,000,000 rows → seconds
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>With B-Tree index: ~log2(10,000,000) ≈ 24 steps → milliseconds
+</code></pre></div>
+<h4 id="where-to-add-indexes">Where to add indexes<a class="headerlink" href="#where-to-add-indexes" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">-- WHERE columns</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_users_email</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">email</span><span class="p">);</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1">-- Foreign keys used in JOINs</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_orders_user_id</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">user_id</span><span class="p">);</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1">-- ORDER BY columns (for sorts)</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_orders_created_at</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">created_at</span><span class="w"> </span><span class="k">DESC</span><span class="p">);</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="c1">-- Composite index — column order matters (most selective first)</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_orders_status_date</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">);</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="c1">-- Good for: WHERE status = &#39;PENDING&#39; AND created_at &gt; &#39;2024-01-01&#39;</span>
+</code></pre></div>
+<p><strong>JPA-defined indexes:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nd">@Entity</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nd">@Table</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;users&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">indexes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="nd">@Index</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;idx_user_email&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">columnList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;email&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">unique</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">),</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="nd">@Index</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;idx_user_status_created&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">columnList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;status, created_at&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">})</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">User</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="nd">@Id</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="nd">@GeneratedValue</span><span class="p">(</span><span class="n">strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GenerationType</span><span class="p">.</span><span class="na">IDENTITY</span><span class="p">)</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">email</span><span class="p">;</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">    </span><span class="nd">@Enumerated</span><span class="p">(</span><span class="n">EnumType</span><span class="p">.</span><span class="na">STRING</span><span class="p">)</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">UserStatus</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">LocalDateTime</span><span class="w"> </span><span class="n">createdAt</span><span class="p">;</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Trade-off:</strong> Indexes speed reads but slow writes (INSERT/UPDATE/DELETE) because indexes must be updated. Index only columns you filter, join, or sort on.</p>
+<hr />
+<h3 id="explain-analyze-see-how-the-database-executes">EXPLAIN ANALYZE — See How the Database Executes<a class="headerlink" href="#explain-analyze-see-how-the-database-executes" title="Permanent link">&para;</a></h3>
+<p><strong>Why:</strong> EXPLAIN ANALYZE shows the real execution plan and timings so you can see full table scans, missing indexes, and costly operations.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">-- PostgreSQL</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;alice@example.com&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Without index (Seq Scan):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Seq Scan on users (cost=0.00..195234.00 rows=1 width=120)
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>  Filter: (email = &#39;alice@example.com&#39;)
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>  Rows Removed by Filter: 9999999
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  Execution Time: 847.233 ms       ← SLOW
+</code></pre></div>
+<p><strong>With index (Index Scan):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Index Scan using idx_user_email on users (cost=0.43..8.45 rows=1 width=120)
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>  Index Cond: (email = &#39;alice@example.com&#39;)
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>  Execution Time: 0.031 ms         ← ~27,000× faster
+</code></pre></div>
+<p><strong>Terms to look for:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+<th>Typical action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seq Scan</td>
+<td>Full table scan</td>
+<td>Add index</td>
+</tr>
+<tr>
+<td>Index Scan</td>
+<td>Uses index</td>
+<td>Usually fine</td>
+</tr>
+<tr>
+<td>Index Only Scan</td>
+<td>All data from index</td>
+<td>Best when possible</td>
+</tr>
+<tr>
+<td>Nested Loop</td>
+<td>Loop join</td>
+<td>OK for small sets</td>
+</tr>
+<tr>
+<td>Hash Join</td>
+<td>Hash-based join</td>
+<td>Often good for large sets</td>
+</tr>
+<tr>
+<td>Sort</td>
+<td>In-memory sort</td>
+<td>Consider index on ORDER BY</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="layer-3-advanced-engineering-depth">Layer 3 — Advanced Engineering Depth<a class="headerlink" href="#layer-3-advanced-engineering-depth" title="Permanent link">&para;</a></h2>
+<hr />
+<h3 id="read-replicas-scaling-reads">Read Replicas — Scaling Reads<a class="headerlink" href="#read-replicas-scaling-reads" title="Permanent link">&para;</a></h3>
+<p><strong>When:</strong> Read-heavy workloads overwhelm a single database. Splitting reads to replicas spreads the load.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>                    ┌──────────────────┐
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>                    │   Application    │
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>                    └────────┬─────────┘
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>                             │
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>              ┌──────────────┴──────────────┐
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>         WRITES                         READS
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>              │                              │
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>              ▼                    ┌────────┴────────┐
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>    ┌──────────────┐                ▼                 ▼
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>    │   PRIMARY    │ ──sync──▶ REPLICA 1      REPLICA 2
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>    │  (Master)    │           (Read-only)    (Read-only)
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>    └──────────────┘
+</code></pre></div>
+<p><strong>Implementation with AbstractRoutingDataSource:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1">// Route based on transaction type</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ReadWriteRoutingDataSource</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AbstractRoutingDataSource</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="nf">determineCurrentLookupKey</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">TransactionSynchronizationManager</span><span class="p">.</span><span class="na">isCurrentTransactionReadOnly</span><span class="p">()</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">            </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;replica&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&quot;primary&quot;</span><span class="p">;</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="p">}</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="c1">// Usage: read-only methods go to replica</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="nd">@Transactional</span><span class="p">(</span><span class="n">readOnly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="kd">public</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="nf">getUser</span><span class="p">(</span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">userRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">).</span><span class="na">orElseThrow</span><span class="p">();</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="p">}</span>
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a>
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="nd">@Transactional</span><span class="w">  </span><span class="c1">// Writes go to primary</span>
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="kd">public</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="nf">createUser</span><span class="p">(</span><span class="n">UserRequest</span><span class="w"> </span><span class="n">req</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">userRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">User</span><span class="p">(</span><span class="n">req</span><span class="p">));</span>
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Replication lag:</strong> Replicas can be slightly behind. For read-after-write consistency, read from the primary right after a write.</p>
+<hr />
+<h3 id="caching-layers">Caching Layers<a class="headerlink" href="#caching-layers" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Scope</th>
+<th>Automatic?</th>
+<th>Typical use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>First-Level</strong></td>
+<td>Single Hibernate session/transaction</td>
+<td>Yes</td>
+<td>Avoid duplicate loads in same transaction</td>
+</tr>
+<tr>
+<td><strong>Second-Level</strong></td>
+<td>Application-wide (e.g. Ehcache, Infinispan)</td>
+<td>No (config)</td>
+<td>Shared entity cache</td>
+</tr>
+<tr>
+<td><strong>Query Cache</strong></td>
+<td>Per query</td>
+<td>No (opt-in)</td>
+<td>Specific read-heavy queries</td>
+</tr>
+<tr>
+<td><strong>Application</strong></td>
+<td>Service methods (@Cacheable)</td>
+<td>No</td>
+<td>Method result caching</td>
+</tr>
+</tbody>
+</table>
+<p><strong>First-Level Cache (automatic):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nd">@Transactional</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">demo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="n">User</span><span class="w"> </span><span class="n">u1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="mi">1L</span><span class="p">).</span><span class="na">orElseThrow</span><span class="p">();</span><span class="w">  </span><span class="c1">// DB hit</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">    </span><span class="n">User</span><span class="w"> </span><span class="n">u2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="mi">1L</span><span class="p">).</span><span class="na">orElseThrow</span><span class="p">();</span><span class="w">  </span><span class="c1">// From cache, no DB</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span><span class="k">assert</span><span class="w"> </span><span class="n">u1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">u2</span><span class="p">;</span><span class="w">  </span><span class="c1">// Same instance</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Application cache with @Cacheable:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nd">@Service</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ProductService</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="nd">@Cacheable</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#id&quot;</span><span class="p">)</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Product</span><span class="w"> </span><span class="nf">getProduct</span><span class="p">(</span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">productRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">).</span><span class="na">orElseThrow</span><span class="p">();</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">    </span><span class="nd">@CacheEvict</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#product.id&quot;</span><span class="p">)</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Product</span><span class="w"> </span><span class="nf">updateProduct</span><span class="p">(</span><span class="n">Product</span><span class="w"> </span><span class="n">product</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">productRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">product</span><span class="p">);</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="w">    </span><span class="nd">@CacheEvict</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">allEntries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">clearCache</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Redis backend:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">cache</span><span class="p">:</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">redis</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="nt">redis</span><span class="p">:</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">      </span><span class="nt">time-to-live</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600000</span><span class="w">  </span><span class="c1"># 1 hour</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">  </span><span class="nt">redis</span><span class="p">:</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6379</span>
+</code></pre></div>
+<p><strong>When to cache:</strong> Read-heavy, rarely changing data.<br />
+<strong>When not to cache:</strong> Frequently updated data, user-specific data, data that must be real-time.</p>
+<hr />
+<h3 id="advanced-index-strategies">Advanced Index Strategies<a class="headerlink" href="#advanced-index-strategies" title="Permanent link">&para;</a></h3>
+<p><strong>Composite index column order:</strong> Put the most selective column first. An index <code>(status, created_at)</code> helps <code>WHERE status = ? AND created_at &gt; ?</code>; <code>(created_at, status)</code> is less useful for that pattern.</p>
+<p><strong>Partial indexes (e.g. PostgreSQL):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1">-- Index only active users</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_users_active_email</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">email</span><span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ACTIVE&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Covering index:</strong> Include all columns needed by the query so the DB can satisfy it from the index alone (Index Only Scan).</p>
+<hr />
+<h3 id="materialized-views-for-analytics">Materialized Views for Analytics<a class="headerlink" href="#materialized-views-for-analytics" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">daily_revenue</span><span class="w"> </span><span class="k">AS</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="k">SELECT</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="nb">DATE</span><span class="p">(</span><span class="n">created_at</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sale_date</span><span class="p">,</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">order_count</span><span class="p">,</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">total_amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">daily_revenue</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="nb">DATE</span><span class="p">(</span><span class="n">created_at</span><span class="p">);</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="c1">-- Refresh on schedule (e.g. cron)</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="n">REFRESH</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">CONCURRENTLY</span><span class="w"> </span><span class="n">daily_revenue</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>View</th>
+<th>Materialized View</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stored</td>
+<td>No (computed each time)</td>
+<td>Yes (on disk)</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>Slower</td>
+<td>Faster</td>
+</tr>
+<tr>
+<td>Freshness</td>
+<td>Always current</td>
+<td>Stale until refreshed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="layer-4-interview-mastery">Layer 4 — Interview Mastery<a class="headerlink" href="#layer-4-interview-mastery" title="Permanent link">&para;</a></h2>
+<h3 id="q1-how-do-you-optimize-database-queries">Q1: How do you optimize database queries?<a class="headerlink" href="#q1-how-do-you-optimize-database-queries" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong> Measure first with query logging and Hibernate stats. Then:</p>
+<ol>
+<li>Fix N+1 (JOIN FETCH, @EntityGraph, @BatchSize).</li>
+<li>Add indexes on WHERE, JOIN, ORDER BY — avoid over-indexing.</li>
+<li>Use projections instead of loading full entities.</li>
+<li>Paginate instead of loading everything.</li>
+<li>Use EXISTS instead of COUNT when checking existence.</li>
+<li>Batch inserts/updates (batch_size, bulk JPQL).</li>
+<li>Cache read-heavy data with @Cacheable.</li>
+<li>Consider read replicas for read-heavy workloads.</li>
+</ol>
+<hr />
+<h3 id="q2-why-is-a-smaller-connection-pool-often-better">Q2: Why is a smaller connection pool often better?<a class="headerlink" href="#q2-why-is-a-smaller-connection-pool-often-better" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong> The database has limited CPU. With 4 cores it can run ~4 queries in parallel. Extra connections add context switching, memory use, and lock contention. A pool of 10 can outperform 100. Common formula: <code>(CPU_cores × 2) + disk_spindles</code>, e.g. ~10 for a 4-core SSD server.</p>
+<hr />
+<h3 id="q3-explain-caching-levels-in-a-springhibernate-app">Q3: Explain caching levels in a Spring/Hibernate app.<a class="headerlink" href="#q3-explain-caching-levels-in-a-springhibernate-app" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong></p>
+<ul>
+<li><strong>First-Level:</strong> Per-session, automatic. Same entity loaded twice in one transaction returns the same instance.</li>
+<li><strong>Second-Level:</strong> Shared across transactions. Requires provider (Ehcache, Infinispan); entities marked with @Cache.</li>
+<li><strong>Query Cache:</strong> Caches query results; invalidated when involved entities change.</li>
+<li><strong>Application Cache:</strong> @Cacheable on service methods, backed by Redis/Caffeine. Most flexible for method-level caching.</li>
+</ul>
+<hr />
+<h3 id="q4-how-would-you-implement-read-replicas">Q4: How would you implement read replicas?<a class="headerlink" href="#q4-how-would-you-implement-read-replicas" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong> Use <code>AbstractRoutingDataSource</code>. Configure primary and replica <code>HikariDataSource</code> beans. The router checks <code>TransactionSynchronizationManager.isCurrentTransactionReadOnly()</code> — read-only → replica, otherwise → primary. Use <code>@Transactional(readOnly = true)</code> for read methods. Handle replication lag (e.g. read-your-own-writes for critical paths).</p>
+<hr />
+<h3 id="q5-app-is-slow-under-load-how-do-you-diagnose">Q5: App is slow under load — how do you diagnose?<a class="headerlink" href="#q5-app-is-slow-under-load-how-do-you-diagnose" title="Permanent link">&para;</a></h3>
+<p><strong>Answer:</strong> Check connection pool first (e.g. <code>hikaricp.connections.pending</code>). Enable slow query logging. Look for N+1 (collection fetch count). Run EXPLAIN ANALYZE on slow queries. Check for missing indexes (e.g. <code>seq_scan</code> stats). Review batching for bulk ops. Consider caching and read replicas. Most issues come from N+1 and missing indexes.</p>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>┌─────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>│            QUERY OPTIMIZATION — KEY TAKEAWAYS                    │
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>├─────────────────────────────────────────────────────────────────┤
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>│                                                                   │
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>│  1. CONNECTION POOLING — Use HikariCP, size ~10, monitor it       │
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>│  2. SMALLER pools can be FASTER — avoid 100+ connections        │
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>│  3. FETCH ONLY WHAT YOU NEED — projections, not SELECT *        │
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>│  4. INDEX wisely — WHERE, JOIN, ORDER BY; avoid over-indexing    │
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>│  5. BATCH bulk operations — 50x faster than one-by-one           │
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>│  6. PAGINATE — never load all rows into memory                   │
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>│  7. EXISTS for existence checks — not COUNT                     │
+<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>│  8. CACHE read-heavy data — @Cacheable + Redis                   │
+<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>│  9. READ REPLICAS for read-heavy apps                            │
+<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>│ 10. MEASURE FIRST — EXPLAIN, stats, slow query logs              │
+<a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a>│                                                                   │
+<a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a>└─────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<hr />
+<p><a href="../00-README/">← Back to Index</a> | <a href="../27-N%2B1-Problem/">Previous: N+1 Problem</a> | <a href="../29-Spring-Security/">Next: Spring Security →</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

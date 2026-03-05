@@ -2,122 +2,450 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-AWS-Cheat-Sheet/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-Cloud-Basics/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-Design-Thinking/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-EC2-Deep/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-ECS-and-Fargate/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-Infrastructure-as-Code/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-Lambda-Deep/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-Monitoring/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-RDS-and-Aurora/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/01-VPC-Core/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/02-AWS-Global-Infrastructure/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/02-CICD/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/02-DynamoDB-and-Caching/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/02-EKS/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/02-Messaging/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/02-Storage/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/02-Top-50-Interview-Questions/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/02-VPC-Security-and-Connectivity/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/03-IAM/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/03-Load-Balancing-and-Scaling/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/03-System-Design-Scenarios/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/aws/04-Shared-Responsibility-and-Billing/</loc>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/comparison/redis-vs-kafka/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/00-README/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/01-How-Java-Works/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/02-Syntax-Fundamentals/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/03-OOP/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/04-Collections/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/05-Generics/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/06-Exceptions/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/07-Concurrency/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/08-Streams-FP/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/09-GC-Memory/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/10-JVM-Internals/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/11-File-IO/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/12-Networking/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/13-JDBC/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/14-Design-Patterns/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/15-Modules/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/16-Performance/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/17-Testing/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/18-Security/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/19-Java21-Features/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/java21/99-Summary/</loc>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/common-mistakes/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/consumer-groups/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/delivery-semantics/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/fault-tolerance-replication/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/kafka-architecture/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/kafka-basics/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/kafka-interview-questions/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/kafka-scaling/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/kafka-usecases/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/kafka-with-springboot/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/performance-best-practices/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/producers-consumers/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/kafka/topics-partitions-offsets/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/projects/kafka-notification-system/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/projects/kafka-order-processing/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/projects/redis-api-caching/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/projects/redis-session-storage/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/caching-explained/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/caching-patterns/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/common-mistakes/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/data-structures/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/memory-eviction/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/performance-best-practices/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/real-world-usecases/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/redis-basics/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/redis-interview-questions/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/redis-with-springboot/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
     </url>
     <url>
          <loc>https://satjitsingh.github.io/backend-notes/redis/ttl-expiration/</loc>
-         <lastmod>2026-02-25</lastmod>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/00-README/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/01-Prerequisites-Java/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/02-Prerequisites-OOP-SOLID/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/03-Prerequisites-Design-Patterns/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/04-Prerequisites-HTTP-REST/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/05-Prerequisites-Web-Fundamentals/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/06-Prerequisites-Databases/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/07-Prerequisites-DI/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/08-Prerequisites-Build-Tools/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/09-Prerequisites-JSON/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/10-Prerequisites-Testing/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/11-Spring-Introduction/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/12-IoC-DI-DeepDive/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/13-Spring-vs-SpringBoot/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/14-SpringBoot-Architecture/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/15-Auto-Configuration/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/16-Starters-Context/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/17-Bean-Lifecycle/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/18-Configuration-Profiles/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/19-REST-Design/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/20-Controllers/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/21-Validation/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/22-Exception-Handling/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/23-DTO-Patterns/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/24-Spring-Data-JPA/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/25-Hibernate-Internals/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/26-Transactions/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/27-N%2B1-Problem/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/28-Query-Optimization/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/29-Spring-Security/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/30-JWT-Auth/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/31-Caching/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/32-Logging-Monitoring/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/33-Microservices/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/34-Event-Driven/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/35-Testing-Spring/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/36-Performance-Internals/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/37-Docker-Deployment/</loc>
+         <lastmod>2026-03-05</lastmod>
+    </url>
+    <url>
+         <loc>https://satjitsingh.github.io/backend-notes/springboot/99-Summary/</loc>
+         <lastmod>2026-03-05</lastmod>
     </url>
 </urlset>
