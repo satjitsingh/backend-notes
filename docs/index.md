@@ -1,108 +1,109 @@
-# Redis & Kafka - Beginner to Interview Ready
+---
+hide:
+  - navigation
+  - toc
+---
 
-Welcome! This site will teach you **Redis** and **Apache Kafka** from absolute zero.
+# What do you want to learn today?
 
-No prior knowledge needed. Just follow the learning path below.
+Pick a topic below and start your journey from zero to interview-ready.
 
 ---
 
-## What You Will Learn
+<div class="grid cards" markdown>
 
-| Topic | What It Covers |
-|-------|---------------|
-| **Redis** | In-memory database, caching, data structures, Spring Boot integration |
-| **Kafka** | Event streaming, producers, consumers, scaling, Spring Boot integration |
-| **Projects** | Hands-on mini projects to solidify your learning |
-| **Interview Prep** | Top questions asked in real interviews |
+-   :material-language-java:{ .lg .middle } **Java 21**
 
----
+    ---
 
-## How to Use This Site
+    Complete engineering guide — from how the JVM works to virtual threads and pattern matching. Covers OOP, collections, concurrency, streams, and more.
 
-1. **Follow the order** - Pages are arranged from easy to hard.
-2. **Read the Quick Summary** - Every page has one. Use it for last-minute revision.
-3. **Try the exercises** - Small tasks at the end of each page.
-4. **Build the projects** - Apply what you learned.
-5. **Revise with interview questions** - Be ready for your next interview.
+    **20 chapters** — beginner to senior level
 
-!!! tip "Interview Day?"
-    Jump straight to the **Interview Questions** page for each topic. Each answer is designed to be revised in under 2 minutes.
+    [:octicons-arrow-right-24: Start Learning Java](java21/00-README.md)
 
----
+-   :material-leaf:{ .lg .middle } **Spring Boot**
 
-## Learning Path
+    ---
 
-### Phase 1: Redis (Week 1-3)
+    From prerequisites to production-grade architecture — IoC/DI, REST APIs, JPA, security, microservices, Docker deployment.
 
-```
-Redis Basics ──▶ Data Structures ──▶ TTL & Expiration ──▶ Memory & Eviction
-                                                                │
-                                                                ▼
-Interview Prep ◀── Common Mistakes ◀── Spring Boot ◀── Performance & Best Practices
-       ▲                                                        │
-       │                                                        ▼
-       └──────── Real-World Use Cases ◀── Caching Patterns ◀── Caching Explained
-```
+    **37 chapters** — prerequisites to production
 
-1. [Redis Basics](redis/redis-basics.md) - What is Redis? Why use it?
-2. [Data Structures](redis/data-structures.md) - Strings, Lists, Sets, Hashes, Sorted Sets
-3. [TTL & Expiration](redis/ttl-expiration.md) - How data auto-expires
-4. [Memory & Eviction Policies](redis/memory-eviction.md) - What happens when Redis is full
-5. [Caching Explained](redis/caching-explained.md) - Why caching matters
-6. [Caching Patterns](redis/caching-patterns.md) - Cache-Aside, Write-Through, etc.
-7. [Real-World Use Cases](redis/real-world-usecases.md) - Sessions, leaderboards, rate limiting, locks
-8. [Performance & Best Practices](redis/performance-best-practices.md) - Production-grade Redis
-9. [Redis with Spring Boot](redis/redis-with-springboot.md) - Build real code
-10. [Common Mistakes](redis/common-mistakes.md) - Avoid the pitfalls every beginner hits
-11. [Redis Interview Questions](redis/redis-interview-questions.md) - Get interview ready
+    [:octicons-arrow-right-24: Start Learning Spring Boot](springboot/00-README.md)
 
-### Phase 2: Kafka (Week 4-6)
+-   :material-aws:{ .lg .middle } **AWS**
 
-```
-Kafka Basics ──▶ Architecture ──▶ Topics, Partitions & Offsets
-                                          │
-                                          ▼
-                            Producers & Consumers ──▶ Consumer Groups
-                                                          │
-                                                          ▼
-Interview Prep ◀── Common Mistakes ◀── Spring Boot ◀── Scaling
-       ▲                                                  │
-       └── Use Cases ◀── Delivery Semantics ◀── Fault Tolerance & Replication
-```
+    ---
 
-1. [Kafka Basics](kafka/kafka-basics.md) - What is Kafka? Why use it?
-2. [Architecture Overview](kafka/kafka-architecture.md) - Brokers, Clusters, ZooKeeper/KRaft
-3. [Topics, Partitions & Offsets](kafka/topics-partitions-offsets.md) - The foundation of Kafka
-4. [Producers & Consumers](kafka/producers-consumers.md) - Sending and receiving messages
-5. [Consumer Groups Explained](kafka/consumer-groups.md) - Sharing work across consumers
-6. [Scaling Kafka](kafka/kafka-scaling.md) - Handle millions of messages
-7. [Fault Tolerance & Replication](kafka/fault-tolerance-replication.md) - Leaders, followers, ISR
-8. [Message Delivery Semantics](kafka/delivery-semantics.md) - At-most/least/exactly-once
-9. [Real-World Use Cases](kafka/kafka-usecases.md) - Where Kafka is used in the real world
-10. [Performance & Best Practices](kafka/performance-best-practices.md) - Production-grade Kafka
-11. [Kafka with Spring Boot](kafka/kafka-with-springboot.md) - Build real code
-12. [Common Mistakes](kafka/common-mistakes.md) - Avoid the pitfalls every beginner hits
-13. [Kafka Interview Questions](kafka/kafka-interview-questions.md) - Get interview ready
+    Cloud fundamentals, EC2, S3, VPC, Lambda, containers, CI/CD, monitoring — everything you need for AWS interviews and real-world work.
 
-### Phase 3: Projects (Week 5)
+    **22 topics** — across 10 phases
 
-1. [Redis API Caching](projects/redis-api-caching.md)
-2. [Redis Session Storage](projects/redis-session-storage.md)
-3. [Kafka Order Processing](projects/kafka-order-processing.md)
-4. [Kafka Notification System](projects/kafka-notification-system.md)
+    [:octicons-arrow-right-24: Start Learning AWS](aws/01-Cloud-Basics.md)
 
-### Phase 4: Compare
+-   :material-database-outline:{ .lg .middle } **Redis**
 
-1. [Redis vs Kafka](comparison/redis-vs-kafka.md) - When to use what
+    ---
+
+    Master in-memory caching, data structures, eviction policies, and Spring Boot integration.
+
+    **11 lessons** — from basics to interview prep
+
+    [:octicons-arrow-right-24: Start Learning Redis](redis/redis-basics.md)
+
+-   :material-lightning-bolt-outline:{ .lg .middle } **Apache Kafka**
+
+    ---
+
+    Learn event streaming, producers & consumers, partitions, scaling, and Spring Boot integration.
+
+    **13 lessons** — from basics to interview prep
+
+    [:octicons-arrow-right-24: Start Learning Kafka](kafka/kafka-basics.md)
+
+-   :material-scale-balance:{ .lg .middle } **Redis vs Kafka**
+
+    ---
+
+    Confused about when to use Redis vs Kafka? This side-by-side comparison breaks it down clearly.
+
+    **1 guide** — know when to use what
+
+    [:octicons-arrow-right-24: Compare Now](comparison/redis-vs-kafka.md)
+
+</div>
 
 ---
 
-## Prerequisites
+<div class="grid cards" markdown>
 
-- Basic Java / Spring Boot knowledge
-- A computer with Java 17+ installed
-- Willingness to learn!
+-   :material-code-braces:{ .lg .middle } **Hands-on Projects**
+
+    ---
+
+    Build real mini-projects — API caching, session storage, order processing, and notifications.
+
+    **4 projects** — Redis + Kafka
+
+    [:octicons-arrow-right-24: View Projects](projects/redis-api-caching.md)
+
+-   :material-frequently-asked-questions:{ .lg .middle } **Interview Day?**
+
+    ---
+
+    Jump straight to interview prep:
+
+    - [:octicons-arrow-right-24: Redis Interview Questions](redis/redis-interview-questions.md)
+    - [:octicons-arrow-right-24: Kafka Interview Questions](kafka/kafka-interview-questions.md)
+    - [:octicons-arrow-right-24: AWS Top 50 Questions](aws/02-Top-50-Interview-Questions.md)
+
+</div>
 
 ---
 
-> **"The best time to learn was yesterday. The next best time is now."**
+<div style="text-align: center; margin-top: 2rem; opacity: 0.7;" markdown>
+
+*"The best time to learn was yesterday. The next best time is now."*
+
+</div>

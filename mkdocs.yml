@@ -1,7 +1,6 @@
-site_name: Redis & Kafka - Beginner to Interview Ready
-site_description: Learn Redis and Apache Kafka from scratch with simple examples
-# site_url: https://yourusername.github.io/redis-kafka-notes/
-
+site_name: Backend Engineering - Beginner to Interview Ready
+site_description: Learn Java, Spring Boot, AWS, Redis & Kafka from scratch with simple examples
+site_url: https://satjitsingh.github.io/backend-notes/
 theme:
   name: material
   palette:
@@ -18,13 +17,17 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
-    - navigation.expand
     - navigation.top
     - search.highlight
     - content.code.copy
   icon:
     repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - admonition
@@ -36,6 +39,9 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - tables
   - attr_list
   - md_in_html
@@ -44,6 +50,112 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+
+  - Java 21:
+      - Guide Overview: java21/00-README.md
+      - How Java Works: java21/01-How-Java-Works.md
+      - Syntax & Fundamentals: java21/02-Syntax-Fundamentals.md
+      - OOP: java21/03-OOP.md
+      - Collections: java21/04-Collections.md
+      - Generics: java21/05-Generics.md
+      - Exception Handling: java21/06-Exceptions.md
+      - Concurrency: java21/07-Concurrency.md
+      - Streams & FP: java21/08-Streams-FP.md
+      - GC & Memory: java21/09-GC-Memory.md
+      - JVM Internals: java21/10-JVM-Internals.md
+      - File I/O: java21/11-File-IO.md
+      - Networking: java21/12-Networking.md
+      - JDBC: java21/13-JDBC.md
+      - Design Patterns: java21/14-Design-Patterns.md
+      - Modules: java21/15-Modules.md
+      - Performance: java21/16-Performance.md
+      - Testing: java21/17-Testing.md
+      - Security: java21/18-Security.md
+      - Java 21 Features: java21/19-Java21-Features.md
+      - Summary: java21/99-Summary.md
+
+  - Spring Boot:
+      - Guide Overview: springboot/00-README.md
+      - Prerequisites:
+          - Java Foundations: springboot/01-Prerequisites-Java.md
+          - OOP & SOLID: springboot/02-Prerequisites-OOP-SOLID.md
+          - Design Patterns: springboot/03-Prerequisites-Design-Patterns.md
+          - HTTP & REST: springboot/04-Prerequisites-HTTP-REST.md
+          - Web Fundamentals: springboot/05-Prerequisites-Web-Fundamentals.md
+          - Databases: springboot/06-Prerequisites-Databases.md
+          - Dependency Injection: springboot/07-Prerequisites-DI.md
+          - Build Tools: springboot/08-Prerequisites-Build-Tools.md
+          - JSON & Serialization: springboot/09-Prerequisites-JSON.md
+          - Testing Fundamentals: springboot/10-Prerequisites-Testing.md
+      - Spring Foundations:
+          - Spring Introduction: springboot/11-Spring-Introduction.md
+          - IoC & DI Deep Dive: springboot/12-IoC-DI-DeepDive.md
+          - Spring vs Spring Boot: springboot/13-Spring-vs-SpringBoot.md
+          - Spring Boot Architecture: springboot/14-SpringBoot-Architecture.md
+      - Core Mechanics:
+          - Auto-Configuration: springboot/15-Auto-Configuration.md
+          - Starters & Context: springboot/16-Starters-Context.md
+          - Bean Lifecycle: springboot/17-Bean-Lifecycle.md
+          - Configuration & Profiles: springboot/18-Configuration-Profiles.md
+      - Building APIs:
+          - REST Design: springboot/19-REST-Design.md
+          - Controllers: springboot/20-Controllers.md
+          - Validation: springboot/21-Validation.md
+          - Exception Handling: springboot/22-Exception-Handling.md
+          - DTO Patterns: springboot/23-DTO-Patterns.md
+      - Data Layer:
+          - Spring Data JPA: springboot/24-Spring-Data-JPA.md
+          - Hibernate Internals: springboot/25-Hibernate-Internals.md
+          - Transactions: springboot/26-Transactions.md
+          - N+1 Problem: springboot/27-N+1-Problem.md
+          - Query Optimization: springboot/28-Query-Optimization.md
+      - Security:
+          - Spring Security: springboot/29-Spring-Security.md
+          - JWT Authentication: springboot/30-JWT-Auth.md
+      - Production:
+          - Caching: springboot/31-Caching.md
+          - Logging & Monitoring: springboot/32-Logging-Monitoring.md
+          - Microservices: springboot/33-Microservices.md
+          - Event-Driven Architecture: springboot/34-Event-Driven.md
+          - Testing Spring Apps: springboot/35-Testing-Spring.md
+          - Performance Internals: springboot/36-Performance-Internals.md
+          - Docker & Deployment: springboot/37-Docker-Deployment.md
+      - Summary: springboot/99-Summary.md
+
+  - AWS:
+      - Foundations:
+          - Cloud Basics: aws/01-Cloud-Basics.md
+          - Global Infrastructure: aws/02-AWS-Global-Infrastructure.md
+          - IAM: aws/03-IAM.md
+          - Shared Responsibility & Billing: aws/04-Shared-Responsibility-and-Billing.md
+      - Core Services:
+          - EC2 Deep Dive: aws/01-EC2-Deep.md
+          - Storage (S3, EBS, EFS): aws/02-Storage.md
+          - Load Balancing & Scaling: aws/03-Load-Balancing-and-Scaling.md
+      - Networking:
+          - VPC Core: aws/01-VPC-Core.md
+          - VPC Security & Connectivity: aws/02-VPC-Security-and-Connectivity.md
+      - Databases:
+          - RDS & Aurora: aws/01-RDS-and-Aurora.md
+          - DynamoDB & Caching: aws/02-DynamoDB-and-Caching.md
+      - Serverless:
+          - Lambda Deep Dive: aws/01-Lambda-Deep.md
+          - Messaging (SQS, SNS): aws/02-Messaging.md
+      - Containers:
+          - ECS & Fargate: aws/01-ECS-and-Fargate.md
+          - EKS: aws/02-EKS.md
+      - DevOps:
+          - Infrastructure as Code: aws/01-Infrastructure-as-Code.md
+          - CI/CD: aws/02-CICD.md
+      - Observability:
+          - Monitoring: aws/01-Monitoring.md
+      - Architecture:
+          - Design Thinking: aws/01-Design-Thinking.md
+      - Quick Reference:
+          - AWS Cheat Sheet: aws/01-AWS-Cheat-Sheet.md
+          - Top 50 Interview Questions: aws/02-Top-50-Interview-Questions.md
+          - System Design Scenarios: aws/03-System-Design-Scenarios.md
+
   - Redis:
       - Redis Basics: redis/redis-basics.md
       - Data Structures: redis/data-structures.md
@@ -56,6 +168,7 @@ nav:
       - Redis with Spring Boot: redis/redis-with-springboot.md
       - Common Mistakes: redis/common-mistakes.md
       - Interview Questions: redis/redis-interview-questions.md
+
   - Kafka:
       - Kafka Basics: kafka/kafka-basics.md
       - Architecture Overview: kafka/kafka-architecture.md
@@ -70,10 +183,12 @@ nav:
       - Kafka with Spring Boot: kafka/kafka-with-springboot.md
       - Common Mistakes: kafka/common-mistakes.md
       - Interview Questions: kafka/kafka-interview-questions.md
+
   - Projects:
       - Redis API Caching: projects/redis-api-caching.md
       - Redis Session Storage: projects/redis-session-storage.md
       - Kafka Order Processing: projects/kafka-order-processing.md
       - Kafka Notification System: projects/kafka-notification-system.md
+
   - Comparison:
       - Redis vs Kafka: comparison/redis-vs-kafka.md
