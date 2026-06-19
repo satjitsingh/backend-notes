@@ -1,0 +1,5663 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Java, Spring Boot, AWS, Redis & Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/system-design/33-Real-World-Architectures-and-Engineering-Blogs/">
+      
+      
+        <link rel="prev" href="../32-Networking-and-Communication/">
+      
+      
+        <link rel="next" href="../../projects/redis-api-caching/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Real-World Architectures & Blogs - Backend Engineering - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#33-real-world-architectures-engineering-blogs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Backend Engineering - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Backend Engineering - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Backend Engineering - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Real-World Architectures & Blogs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../java21/00-README/" class="md-tabs__link">
+          
+  
+  Java 21
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../springboot/00-README/" class="md-tabs__link">
+          
+  
+  Spring Boot
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../aws/01-Cloud-Basics/" class="md-tabs__link">
+          
+  
+  AWS
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redis/redis-basics/" class="md-tabs__link">
+          
+  
+  Redis
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/kafka-basics/" class="md-tabs__link">
+          
+  
+  Kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  System Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../projects/redis-api-caching/" class="md-tabs__link">
+          
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../comparison/redis-vs-kafka/" class="md-tabs__link">
+          
+  
+  Comparison
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Backend Engineering - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Backend Engineering - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Backend Engineering - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Java 21
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Java 21
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/00-README/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/01-How-Java-Works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How Java Works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/02-Syntax-Fundamentals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syntax & Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/03-OOP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OOP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/04-Collections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/05-Generics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/06-Exceptions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exception Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/07-Concurrency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concurrency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/08-Streams-FP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Streams & FP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/09-GC-Memory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GC & Memory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/10-JVM-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JVM Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/11-File-IO/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    File I/O
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/12-Networking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/13-JDBC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JDBC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/14-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/15-Modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/16-Performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/17-Testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/18-Security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/19-Java21-Features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java 21 Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/99-Summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Spring Boot
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Spring Boot
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/00-README/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Prerequisites
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Prerequisites
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/01-Prerequisites-Java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/02-Prerequisites-OOP-SOLID/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OOP & SOLID
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/03-Prerequisites-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/04-Prerequisites-HTTP-REST/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP & REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/05-Prerequisites-Web-Fundamentals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/06-Prerequisites-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/07-Prerequisites-DI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dependency Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/08-Prerequisites-Build-Tools/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/09-Prerequisites-JSON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON & Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/10-Prerequisites-Testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Spring Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Spring Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/11-Spring-Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/12-IoC-DI-DeepDive/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IoC & DI Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/13-Spring-vs-SpringBoot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring vs Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/14-SpringBoot-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Boot Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core Mechanics
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Core Mechanics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/15-Auto-Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Auto-Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/16-Starters-Context/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starters & Context
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/17-Bean-Lifecycle/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bean Lifecycle
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/18-Configuration-Profiles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration & Profiles
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Building APIs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            Building APIs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/19-REST-Design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REST Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/20-Controllers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Controllers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/21-Validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Validation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/22-Exception-Handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exception Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/23-DTO-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DTO Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Data Layer
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Data Layer
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/24-Spring-Data-JPA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Data JPA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/25-Hibernate-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hibernate Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/26-Transactions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transactions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/27-N%2B1-Problem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    N+1 Problem
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/28-Query-Optimization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Optimization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/29-Spring-Security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/30-JWT-Auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JWT Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_8" id="__nav_3_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Production
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            Production
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/31-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/32-Logging-Monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/33-Microservices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Microservices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/34-Event-Driven/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event-Driven Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/35-Testing-Spring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing Spring Apps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/36-Performance-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/37-Docker-Deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker & Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/99-Summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AWS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            AWS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Cloud-Basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloud Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-AWS-Global-Infrastructure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Global Infrastructure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/03-IAM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IAM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/04-Shared-Responsibility-and-Billing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shared Responsibility & Billing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core Services
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core Services
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-EC2-Deep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EC2 Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-Storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage (S3, EBS, EFS)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/03-Load-Balancing-and-Scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Load Balancing & Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Networking
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-VPC-Core/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VPC Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-VPC-Security-and-Connectivity/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VPC Security & Connectivity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Databases
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Databases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-RDS-and-Aurora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RDS & Aurora
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-DynamoDB-and-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DynamoDB & Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Serverless
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Serverless
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Lambda-Deep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lambda Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-Messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging (SQS, SNS)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Containers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Containers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-ECS-and-Fargate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ECS & Fargate
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-EKS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EKS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DevOps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Infrastructure-as-Code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-CICD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Design-Thinking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Thinking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Quick Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            Quick Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-AWS-Cheat-Sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS Cheat Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-Top-50-Interview-Questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Top 50 Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/03-System-Design-Scenarios/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Design Scenarios
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    System Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            System Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-Introduction-to-System-Design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to System Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-Scalability-and-Performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scalability & Performance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-Latency-and-Throughput/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Latency & Throughput
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Structure, Uptime & Data Copies
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structure, Uptime & Data Copies
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-Architectural-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architectural Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-Availability-and-Availability-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Availability & Availability Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-Replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Distributed Systems Theory
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4">
+            <span class="md-nav__icon md-icon"></span>
+            Distributed Systems Theory
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-Consistency-and-Consistency-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consistency & Consistency Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-CAP-Theorem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CAP Theorem
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-PACELC-Theorem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PACELC Theorem
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Data Storage Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5">
+            <span class="md-nav__icon md-icon"></span>
+            Data Storage Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-Database-and-Storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database & Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-Relational-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Relational Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-Database-Isolation-Levels/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Isolation Levels
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Scaling Beyond One Machine
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6">
+            <span class="md-nav__icon md-icon"></span>
+            Scaling Beyond One Machine
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-Scaling-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-Sharding-and-Partitioning/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sharding & Partitioning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-Non-Relational-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Non-Relational Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_7" id="__nav_7_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Choosing & Performance Multipliers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_7">
+            <span class="md-nav__icon md-icon"></span>
+            Choosing & Performance Multipliers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-Choosing-the-Right-Database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choosing the Right Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-Asynchronous-Processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Asynchronous Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_8" id="__nav_7_8_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Messaging & Architectural Styles
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_8">
+            <span class="md-nav__icon md-icon"></span>
+            Messaging & Architectural Styles
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-Message-Queues-Kafka-RabbitMQ/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Queues (Kafka, RabbitMQ)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-Monolithic-vs-Microservices-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monolithic vs Microservices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-Event-Driven-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event-Driven Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_9" id="__nav_7_9_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    How Clients Talk to the System
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9">
+            <span class="md-nav__icon md-icon"></span>
+            How Clients Talk to the System
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-API-Gateway-and-Backend-for-Frontend/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Gateway & BFF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-REST-GraphQL-gRPC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REST, GraphQL & gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-Long-Polling-WebSockets-SSE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Long Polling, WebSockets & SSE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_10" id="__nav_7_10_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Code Craft & Robustness
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_10">
+            <span class="md-nav__icon md-icon"></span>
+            Code Craft & Robustness
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-Resiliency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resiliency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-Designing-for-Resiliency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Designing for Resiliency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_11" id="__nav_7_11_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Building Blocks & Essentials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_11">
+            <span class="md-nav__icon md-icon"></span>
+            Building Blocks & Essentials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-Load-Balancers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Load Balancers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-Circuit-Breakers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Breakers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-System-Essentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Essentials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_12" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7_12" id="__nav_7_12_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Specialized Topics & Capstone
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_12_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7_12">
+            <span class="md-nav__icon md-icon"></span>
+            Specialized Topics & Capstone
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../31-Consistent-Hashing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consistent Hashing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../32-Networking-and-Communication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking & Communication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Real-World Architectures & Blogs
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Architectures & Blogs
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it Works Under the Hood
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How it Works Under the Hood">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-repeatable-method-for-designing-any-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      A repeatable method for designing any system
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-famous-systems-combine-the-blocks-mini-case-studies" class="md-nav__link">
+    <span class="md-ellipsis">
+      How famous systems combine the blocks (mini case studies)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-read-engineering-blogs-lifelong-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to read engineering blogs (lifelong learning)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-do-we-need-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why do we need it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-fintech-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World / Fintech Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trade-offs-pros-cons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trade-offs (Pros &amp; Cons)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#youve-completed-the-system-design-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎉 You've completed the System Design roadmap
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it Works Under the Hood
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How it Works Under the Hood">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-repeatable-method-for-designing-any-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      A repeatable method for designing any system
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-famous-systems-combine-the-blocks-mini-case-studies" class="md-nav__link">
+    <span class="md-ellipsis">
+      How famous systems combine the blocks (mini case studies)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-read-engineering-blogs-lifelong-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to read engineering blogs (lifelong learning)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-do-we-need-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why do we need it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-fintech-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World / Fintech Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trade-offs-pros-cons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trade-offs (Pros &amp; Cons)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#youve-completed-the-system-design-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎉 You've completed the System Design roadmap
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="33-real-world-architectures-engineering-blogs">33. Real-World Architectures &amp; Engineering Blogs<a class="headerlink" href="#33-real-world-architectures-engineering-blogs" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>The capstone. Across 32 chapters we learned the building blocks in isolation. This final chapter is about <em>synthesis</em> — how real famous systems combine these blocks under real constraints, how to "design a system" when asked, and how to keep learning from the engineers who operate the largest systems on earth. This is where knowledge becomes <em>judgment</em>.</p>
+</blockquote>
+<hr />
+<h2 id="what-is-it">What is it?<a class="headerlink" href="#what-is-it" title="Permanent link">&para;</a></h2>
+<p><strong>This chapter is about studying complete, real-world system architectures — and learning to combine everything you've learned into coherent designs of your own.</strong></p>
+<p>Until now, each chapter examined one concept (caching, sharding, circuit breakers). But no real system is "a caching problem" or "a sharding problem" — every real system is a <em>combination</em> of dozens of these decisions, each made under specific constraints, each trading off against the others. The skill that separates a senior engineer from someone who has merely <em>memorized</em> the concepts is <strong>synthesis</strong>: looking at a problem and assembling the right blocks into a working whole.</p>
+<p>Two things this chapter covers:
+1. <strong>A repeatable method for designing/analyzing a system</strong> (the synthesis skill — useful for real work <em>and</em> interviews).
+2. <strong>How to study real architectures and engineering blogs</strong> to keep growing — because the field evolves constantly and the best lessons come from teams operating systems at massive scale.</p>
+<p>The mindset shift:</p>
+<blockquote>
+<p>Knowing the concepts is necessary but not sufficient. <strong>The expertise is in the <em>combination and the trade-offs</em></strong> — knowing that <em>this</em> system, with <em>these</em> requirements, needs <em>this</em> particular set of choices, and being able to defend <em>why</em> (and what you sacrificed). There's no single correct architecture, only the one best-justified for the context (Chapter 1's founding truth, now the closing one).</p>
+</blockquote>
+<hr />
+<h2 id="how-it-works-under-the-hood">How it Works Under the Hood<a class="headerlink" href="#how-it-works-under-the-hood" title="Permanent link">&para;</a></h2>
+<h3 id="a-repeatable-method-for-designing-any-system">A repeatable method for designing any system<a class="headerlink" href="#a-repeatable-method-for-designing-any-system" title="Permanent link">&para;</a></h3>
+<p>When asked to "design X" (in an interview or a real design doc), follow this structured flow — it's the synthesis of the entire roadmap, and it mirrors the process from Chapter 1:</p>
+<p><strong>1. Clarify requirements (functional + non-functional).</strong> What does it do? How many users, requests/sec, data size? Read/write ratio? Consistency needs? Availability target? <em>(Chapter 1.)</em> Never design before you understand the problem.</p>
+<p><strong>2. Estimate scale (back-of-the-envelope).</strong> Turn words into numbers: RPS, storage/year, bandwidth, memory for caching. <em>(Chapter 1.)</em> The numbers drive the design.</p>
+<p><strong>3. Define the API and data model.</strong> What are the core operations and entities? What does the data look like?</p>
+<p><strong>4. Sketch the high-level architecture.</strong> The familiar skeleton: clients → load balancer → app servers → cache + database, plus queues/services as needed. <em>(Chapters 2, 28.)</em></p>
+<p><strong>5. Deep-dive the components, applying the concepts:</strong>
+- <em>Database:</em> SQL vs NoSQL? <em>(Chapters 11, 15, 16.)</em> Strong vs eventual consistency? <em>(Chapters 7–9.)</em>
+- <em>Scale reads:</em> caching + read replicas. <em>(Chapters 13, 17.)</em>
+- <em>Scale writes:</em> sharding (+ consistent hashing). <em>(Chapters 14, 31.)</em>
+- <em>Decouple &amp; handle spikes:</em> queues + async + events. <em>(Chapters 18, 19, 21.)</em>
+- <em>Communication:</em> REST/GraphQL/gRPC, API gateway. <em>(Chapters 22, 23.)</em>
+- <em>Real-time:</em> SSE/WebSockets. <em>(Chapter 24.)</em></p>
+<p><strong>6. Address resiliency &amp; failure.</strong> Redundancy, circuit breakers, timeouts, graceful degradation, multi-AZ. <em>(Chapters 5, 26, 27, 29.)</em></p>
+<p><strong>7. Identify bottlenecks and iterate.</strong> "What breaks at 10×?" Fix it, then ask again. <em>(Chapter 2.)</em></p>
+<p><strong>8. State the trade-offs explicitly.</strong> What did you optimize for, and what did you sacrifice? <em>(Every chapter.)</em> This step is what demonstrates seniority.</p>
+<blockquote>
+<p>This flow <em>is</em> the roadmap in action. Every chapter you read maps onto a step here. Mastery is running this flow fluidly, choosing the right block at each decision point, and articulating the trade-offs.</p>
+</blockquote>
+<h3 id="how-famous-systems-combine-the-blocks-mini-case-studies">How famous systems combine the blocks (mini case studies)<a class="headerlink" href="#how-famous-systems-combine-the-blocks-mini-case-studies" title="Permanent link">&para;</a></h3>
+<p>Seeing the synthesis in real systems makes it click. Patterns recur:</p>
+<p><strong>A URL shortener (the classic starter):</strong> read-heavy (clicks ≫ creates), so → heavy <strong>caching</strong> + <strong>read replicas</strong>; needs unique short codes → <strong>unique ID generation</strong> (Chapter 30); simple lookups by key → could even be <strong>key-value</strong> (Chapter 15); globally fast → <strong>CDN/geo-routing</strong> (Chapters 3, 28). Small system, but touches 5+ concepts.</p>
+<p><strong>A social media feed (e.g., Twitter/X):</strong> massive <strong>fan-out</strong> problem (a celebrity's post goes to millions) → <strong>async processing</strong> + <strong>queues</strong> (Chapters 18, 19); eventual consistency is fine for feeds → <strong>AP/eventual</strong> (Chapters 7, 8); huge scale → <strong>sharding</strong> + <strong>caching</strong>; real-time updates → <strong>WebSockets/SSE</strong> (Chapter 24). The famous "fan-out on write vs read" decision is a pure trade-off analysis.</p>
+<p><strong>A ride-sharing app (e.g., Uber):</strong> real-time location → <strong>WebSockets</strong> + geo-indexing; matching riders/drivers → <strong>event-driven</strong> (Chapter 21); payments → <strong>strong consistency</strong> ledger (Chapters 11, 12); massive scale → <strong>microservices</strong> + <strong>sharding by geography</strong>.</p>
+<p><strong>A payment system (our running example, e.g., Stripe/PayPal):</strong> the whole roadmap — <strong>ACID relational ledger</strong> (Chapters 11, 12), <strong>strong consistency / PC-EC</strong> (Chapters 7–9), <strong>idempotency</strong> everywhere (Chapter 30), <strong>sagas</strong> for cross-service money flows (Chapter 14), <strong>event-driven</strong> for reactions (Chapter 21), <strong>circuit breakers</strong> for resilience (Chapter 29), <strong>observability + audit</strong> via event sourcing (Chapters 21, 27), and <strong>TLS everywhere</strong> (Chapter 32).</p>
+<blockquote>
+<p>Notice: the <em>same blocks</em> recur, combined differently per the requirements. A feed favors availability and accepts staleness; a payment system favors consistency and pays latency. <strong>Same toolkit, different trade-offs — driven by requirements.</strong> That's the entire game.</p>
+</blockquote>
+<h3 id="how-to-read-engineering-blogs-lifelong-learning">How to read engineering blogs (lifelong learning)<a class="headerlink" href="#how-to-read-engineering-blogs-lifelong-learning" title="Permanent link">&para;</a></h3>
+<p>The field moves fast; the best, most current lessons come from the teams running systems at scale. Make a habit of reading their <strong>engineering blogs</strong>:
+- <strong>Netflix</strong> (resiliency, chaos engineering, microservices), <strong>Uber</strong> (scale, data platforms), <strong>Stripe</strong> (payments, idempotency, APIs), <strong>Airbnb</strong>, <strong>Discord</strong> (scaling chat/storage), <strong>Cloudflare</strong> (networking/edge), <strong>Meta/Google/Amazon</strong> (foundational papers).
+- <strong>Foundational papers:</strong> Google's <em>MapReduce</em>, <em>Bigtable</em>, <em>Spanner</em>; Amazon's <em>Dynamo</em> (the origin of much NoSQL/consistent-hashing thinking, Chapters 15, 31).
+- <strong>The canonical book:</strong> <em>Designing Data-Intensive Applications</em> by Martin Kleppmann — the single best deep reference for almost everything in this roadmap.</p>
+<p>How to read them actively: for each architecture, ask <em>"what were their requirements? which blocks did they use? what trade-offs did they make, and why? what would I have done differently?"</em> Reading passively teaches facts; reading <em>actively</em> with the design method builds judgment.</p>
+<hr />
+<h2 id="why-do-we-need-it">Why do we need it?<a class="headerlink" href="#why-do-we-need-it" title="Permanent link">&para;</a></h2>
+<p>We need this synthesis skill because <strong>real engineering is never about one concept in isolation — it's about combining many under real constraints, and justifying the trade-offs:</strong></p>
+<ol>
+<li>
+<p><strong>Real systems are combinations.</strong> No production system is a pure textbook example. The value you provide as an engineer is assembling the right blocks for <em>your</em> specific problem — which requires fluency in all of them <em>and</em> the judgment to combine them.</p>
+</li>
+<li>
+<p><strong>Trade-off articulation is the senior skill.</strong> Anyone can say "use a cache." A senior engineer says "use a write-through cache here because we need read-after-write consistency, accepting slower writes, but eventual consistency is fine for the feed so that uses cache-aside." The <em>reasoning about trade-offs</em> is what's valued — in interviews and in real architecture reviews.</p>
+</li>
+<li>
+<p><strong>Learning from real systems accelerates growth.</strong> The teams operating the largest systems have already hit the walls you'll hit. Their blogs and papers are a shortcut to hard-won lessons — far faster than rediscovering them through your own outages.</p>
+</li>
+<li>
+<p><strong>The field never stops evolving.</strong> New databases, patterns, and tools appear constantly. The <em>concepts</em> in this roadmap are durable, but staying current requires ongoing reading. The design method gives you a framework to evaluate anything new: "what trade-off does this make?"</p>
+</li>
+</ol>
+<p><strong>When to apply this:</strong> every time you design a feature or system, review an architecture, prepare for an interview, or evaluate a new technology. The design method and trade-off thinking are your permanent tools.</p>
+<hr />
+<h2 id="real-world-fintech-example">Real-World / Fintech Example<a class="headerlink" href="#real-world-fintech-example" title="Permanent link">&para;</a></h2>
+<p>Let's close by assembling the <em>complete</em> architecture of our <strong>digital wallet / payments app</strong> — the synthesis of all 33 chapters into one coherent design, with every trade-off deliberate.</p>
+<p><strong>Requirements (Chapter 1):</strong> 50M users; 80,000 payments/sec peak; ~10:1 read:write; payments must be strongly consistent, durable, never double-charged; 99.99% availability on the payment path; sub-500ms p99; regulatory audit trail.</p>
+<p><strong>The assembled architecture:</strong>
+- <strong>Edge:</strong> clients → <strong>DNS geo-routing</strong> to nearest region (Ch.3, 28, 32) → <strong>redundant L7 load balancers</strong> (Ch.28) → <strong>API Gateway</strong> doing auth (JWT), rate limiting, routing (Ch.22, 30), with <strong>BFFs</strong> for mobile/web (Ch.22) speaking <strong>GraphQL</strong> for reads and <strong>REST/gRPC</strong> for money writes (Ch.23).
+- <strong>Compute:</strong> <strong>stateless</strong> Spring Boot services (Ch.2), <strong>microservices</strong> for independently-scaling capabilities (payments, fraud, notifications) but a <strong>consolidated strongly-consistent ledger core</strong> (Ch.20), communicating via <strong>gRPC</strong> synchronously and <strong>Kafka events</strong> asynchronously (Ch.19, 21).
+- <strong>Data:</strong> <strong>PostgreSQL</strong> ACID ledger (Ch.11), <strong>sharded by <code>account_id</code></strong> with <strong>consistent hashing</strong> for write scale (Ch.14, 31), <strong>read replicas</strong> + <strong>Redis cache</strong> (consistent-hashed cluster) for the read flood (Ch.13, 17, 31); <strong>Cassandra</strong> for the fraud-event firehose (Ch.10, 15); <strong>event-sourced</strong> ledger for the audit trail (Ch.21).
+- <strong>Consistency choices (Ch.7–9):</strong> ledger is <strong>PC/EC</strong> (strong, pays latency); balance <em>display</em>, history, insights are <strong>EL/eventual</strong> with <strong>read-your-writes</strong> to avoid surprising users. Money authorization <em>never</em> trusts the cache (Ch.17).
+- <strong>Async (Ch.18):</strong> only the debit/credit is synchronous; notifications, analytics, fraud-scoring, projections happen off the critical path via Kafka — with <strong>idempotent</strong> consumers (Ch.18, 30) and <strong>sagas</strong> for cross-shard transfers (Ch.14).
+- <strong>Resilience (Ch.5, 26, 27, 29):</strong> multi-AZ redundancy, <strong>circuit breakers</strong> + timeouts + bulkheads + fallbacks on every dependency, graceful degradation by feature tier (money never degrades), validated by <strong>chaos engineering</strong>.
+- <strong>Cross-cutting (Ch.30, 32):</strong> idempotency keys on every payment, <strong>TLS everywhere</strong>, Snowflake transaction IDs, full <strong>observability</strong> (metrics/logs/traces), secrets in Vault.</p>
+<p><strong>The trade-offs, stated plainly (the senior move):</strong>
+- We <strong>chose strong consistency for the ledger and paid latency + reduced availability during partitions</strong> (PC/EC) — because for money, correctness beats everything.
+- We <strong>accepted eventual consistency and added idempotency/saga complexity</strong> for everything around the money — to get scale, low latency, and resilience.
+- We <strong>took on microservices' operational complexity</strong> (gateway, tracing, circuit breakers) — justified by team size and independent scaling — but <strong>kept the money core consolidated</strong> to preserve easy ACID.
+- We <strong>invested heavily in resiliency and observability</strong> (expensive) — because the cost of a payments outage is catastrophic.</p>
+<blockquote>
+<p>This is the capstone lesson: a real architecture is <strong>dozens of deliberate trade-offs, each justified by requirements, combined into a coherent whole.</strong> No single block is impressive alone; the <em>synthesis</em> — and the ability to explain <em>why each choice was made and what it cost</em> — is the expertise this entire roadmap was building toward.</p>
+</blockquote>
+<p><strong>Now study the real ones.</strong> Read Stripe's blog on idempotency and API design; read the Amazon <em>Dynamo</em> paper to see consistent hashing and eventual consistency born; read Netflix on chaos engineering; read <em>Designing Data-Intensive Applications</em> cover to cover. For each, run the design method and ask "what trade-offs, and why?" That active habit turns this roadmap's knowledge into lifelong, growing judgment.</p>
+<hr />
+<h2 id="trade-offs-pros-cons">Trade-offs (Pros &amp; Cons)<a class="headerlink" href="#trade-offs-pros-cons" title="Permanent link">&para;</a></h2>
+<p>Here the "trade-off" is about the <em>approach to system design itself</em>:</p>
+<p><strong>Pros of the synthesis/trade-off mindset</strong>
+- <strong>Produces appropriate designs</strong> — right-sized for actual requirements, neither over- nor under-engineered (Ch.1).
+- <strong>Communicates expertise</strong> — articulating trade-offs is what's valued in reviews and interviews.
+- <strong>Adapts to anything</strong> — the design method evaluates any new system or technology.
+- <strong>Learns from the best</strong> — engineering blogs/papers compress others' hard-won lessons.</p>
+<p><strong>Cons / cautions</strong>
+- <strong>Requires broad <em>and</em> deep knowledge</strong> — you must understand all the blocks to combine them well (this roadmap is the foundation, not the finish).
+- <strong>Judgment takes experience</strong> — knowing <em>which</em> trade-off is right for a context comes from practice and from studying real systems; it can't be fully memorized.
+- <strong>Analysis paralysis risk</strong> — with so many options, you can over-deliberate; remember Chapter 1's "start simple, scale when it hurts."
+- <strong>The field evolves</strong> — requires ongoing learning; today's best practice may shift.</p>
+<blockquote>
+<p><strong>Staff-engineer takeaway:</strong> Real-world architecture is <strong>synthesis</strong> — combining the roadmap's building blocks into a coherent whole, each choice justified by requirements, every trade-off made <em>deliberately and explicitly</em>. Use the <strong>design method</strong> (clarify → estimate → API/data → high-level → deep-dive → resiliency → bottlenecks → trade-offs) for any system, in work or interviews. Internalize that the <em>same toolkit</em> produces <em>different architectures</em> depending on requirements (a feed optimizes availability; a payment system optimizes consistency). And never stop learning: <strong>read engineering blogs and papers actively</strong> (Stripe, Netflix, the Dynamo paper, <em>Designing Data-Intensive Applications</em>), always asking "what trade-offs, and why?" That habit converts knowledge into the judgment that defines a great systems engineer.</p>
+</blockquote>
+<hr />
+<h2 id="youve-completed-the-system-design-roadmap">🎉 You've completed the System Design roadmap<a class="headerlink" href="#youve-completed-the-system-design-roadmap" title="Permanent link">&para;</a></h2>
+<p>Across 33 chapters and 11 batches, you've gone from "what is system design?" to assembling a complete, production-grade payments architecture and defending every trade-off in it. The concepts are durable; the judgment grows with practice. Revisit the <a href="../">README</a> for the full map, re-run the design method on real problems, and keep reading from the engineers who build at scale.</p>
+<blockquote>
+<p><strong>The one idea to carry forever:</strong> <em>There is no perfect design — only the best-justified set of trade-offs for your specific requirements.</em> Start simple, measure, scale when it hurts, design for failure, and always know what each choice costs you.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
