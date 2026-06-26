@@ -10,13 +10,11 @@
       
       
       
-        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/redis/ttl-expiration/">
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/interview-prep/LTIMindtree-Cheat-Sheet/">
       
       
-        <link rel="prev" href="../data-structures/">
+        <link rel="prev" href="../LTIMindtree-Interview/">
       
-      
-        <link rel="next" href="../memory-eviction/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +22,7 @@
     
     
       
-        <title>TTL & Expiration - Backend Engineering - Beginner to Interview Ready</title>
+        <title>LTIMindtree Cheat Sheet - Backend Engineering - Beginner to Interview Ready</title>
       
     
     
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ttl-expiration" class="md-skip">
+        <a href="#ltimindtree-1-page-cheat-sheet-last-minute-revision" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TTL & Expiration
+              LTIMindtree Cheat Sheet
             
           </span>
         </div>
@@ -281,13 +279,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../redis-basics/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../redis/redis-basics/" class="md-tabs__link">
           
   
   Redis
@@ -373,11 +369,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../interview-prep/LTIMindtree-Interview/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../LTIMindtree-Interview/" class="md-tabs__link">
           
   
   Interview Preparation
@@ -3130,30 +3128,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -3164,7 +3157,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Redis
@@ -3178,7 +3171,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../redis-basics/" class="md-nav__link">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3199,7 +3192,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data-structures/" class="md-nav__link">
+      <a href="../../redis/data-structures/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3217,30 +3210,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    TTL & Expiration
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3249,485 +3222,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-does-data-need-to-expire" class="md-nav__link">
-    <span class="md-ellipsis">
-      Why Does Data Need to Expire?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-ttl" class="md-nav__link">
-    <span class="md-ellipsis">
-      What is TTL?
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="What is TTL?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#real-life-analogy-parking-meter" class="md-nav__link">
-    <span class="md-ellipsis">
-      Real-Life Analogy: Parking Meter
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#core-ttl-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      Core TTL Commands
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Core TTL Commands">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#expire-set-a-timer-on-an-existing-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      EXPIRE — Set a timer on an existing key
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ttl-check-how-much-time-is-left" class="md-nav__link">
-    <span class="md-ellipsis">
-      TTL — Check how much time is left
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pttl-same-as-ttl-but-in-milliseconds" class="md-nav__link">
-    <span class="md-ellipsis">
-      PTTL — Same as TTL, but in milliseconds
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setex-set-value-expiry-in-one-command" class="md-nav__link">
-    <span class="md-ellipsis">
-      SETEX — Set value + expiry in one command
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#psetex-same-as-setex-but-milliseconds" class="md-nav__link">
-    <span class="md-ellipsis">
-      PSETEX — Same as SETEX, but milliseconds
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#set-with-expx-options-the-modern-way" class="md-nav__link">
-    <span class="md-ellipsis">
-      SET with EX/PX options — The modern way
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#persist-remove-the-expiry-make-it-live-forever" class="md-nav__link">
-    <span class="md-ellipsis">
-      PERSIST — Remove the expiry (make it live forever)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#expireat-set-expiry-at-a-specific-unix-timestamp" class="md-nav__link">
-    <span class="md-ellipsis">
-      EXPIREAT — Set expiry at a specific Unix timestamp
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-redis-handles-expiration-internally" class="md-nav__link">
-    <span class="md-ellipsis">
-      How Redis Handles Expiration Internally
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How Redis Handles Expiration Internally">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#strategy-1-lazy-deletion-passive" class="md-nav__link">
-    <span class="md-ellipsis">
-      Strategy 1: Lazy Deletion (Passive)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#strategy-2-active-cleanup-periodic" class="md-nav__link">
-    <span class="md-ellipsis">
-      Strategy 2: Active Cleanup (Periodic)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#real-world-ttl-scenarios" class="md-nav__link">
-    <span class="md-ellipsis">
-      Real-World TTL Scenarios
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Real-World TTL Scenarios">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#scenario-1-otp-verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 1: OTP Verification
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scenario-2-rate-limiting-sliding-window" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 2: Rate Limiting (Sliding Window)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scenario-3-user-session" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 3: User Session
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scenario-4-distributed-lock" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 4: Distributed Lock
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scenario-5-flash-sale-banner" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 5: Flash Sale Banner
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ttl-recommendations-by-data-type" class="md-nav__link">
-    <span class="md-ellipsis">
-      TTL Recommendations by Data Type
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-ttl-pitfalls" class="md-nav__link">
-    <span class="md-ellipsis">
-      Common TTL Pitfalls
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common TTL Pitfalls">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-1-forgetting-to-set-ttl" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 1: Forgetting to set TTL
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-2-all-keys-expire-at-the-same-time" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 2: All keys expire at the same time
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-3-extending-ttl-on-every-read" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 3: Extending TTL on every read
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-4-using-ttl-as-the-only-invalidation-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 4: Using TTL as the only invalidation strategy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-5-ttl-on-complex-data-structures" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 5: TTL on complex data structures
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-6-relying-on-exact-expiry-timing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 6: Relying on exact expiry timing
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ttl-in-spring-boot" class="md-nav__link">
-    <span class="md-ellipsis">
-      TTL in Spring Boot
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TTL in Spring Boot">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#how-cacheable-and-rediscacheconfiguration-handle-ttl" class="md-nav__link">
-    <span class="md-ellipsis">
-      How @Cacheable and RedisCacheConfiguration Handle TTL
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#per-cache-ttl-configuration-in-java" class="md-nav__link">
-    <span class="md-ellipsis">
-      Per-Cache TTL Configuration in Java
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ttl-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      TTL Patterns
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TTL Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sliding-window-ttl-extend-on-every-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sliding Window TTL (Extend on Every Access)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fixed-window-ttl-dont-extend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Fixed Window TTL (Don't Extend)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#lazy-refresh-refresh-in-background-before-expiry" class="md-nav__link">
-    <span class="md-ellipsis">
-      Lazy Refresh (Refresh in Background Before Expiry)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#monitoring-ttl" class="md-nav__link">
-    <span class="md-ellipsis">
-      Monitoring TTL
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Monitoring TTL">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#finding-keys-without-ttl" class="md-nav__link">
-    <span class="md-ellipsis">
-      Finding Keys Without TTL
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#auditing-ttl-values-in-production" class="md-nav__link">
-    <span class="md-ellipsis">
-      Auditing TTL Values in Production
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-expiry-events" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Expiry Events
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Key Expiry Events">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#keyspace-notifications" class="md-nav__link">
-    <span class="md-ellipsis">
-      Keyspace Notifications
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#subscribing-to-expiry-events" class="md-nav__link">
-    <span class="md-ellipsis">
-      Subscribing to Expiry Events
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#use-case-session-cleanup-callback" class="md-nav__link">
-    <span class="md-ellipsis">
-      Use Case: Session Cleanup Callback
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick Summary
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#exercise" class="md-nav__link">
-    <span class="md-ellipsis">
-      Exercise
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -3740,7 +3234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../memory-eviction/" class="md-nav__link">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3761,7 +3255,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../caching-explained/" class="md-nav__link">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3782,7 +3276,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../caching-patterns/" class="md-nav__link">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3803,7 +3297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../real-world-usecases/" class="md-nav__link">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3824,7 +3318,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../performance-best-practices/" class="md-nav__link">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3845,7 +3339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../redis-with-springboot/" class="md-nav__link">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3866,7 +3360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../common-mistakes/" class="md-nav__link">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3887,7 +3381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../redis-interview-questions/" class="md-nav__link">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5720,25 +5214,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
         
           
-          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -5749,7 +5248,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_10">
             <span class="md-nav__icon md-icon"></span>
             Interview Preparation
@@ -5763,7 +5262,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../interview-prep/LTIMindtree-Interview/" class="md-nav__link">
+      <a href="../LTIMindtree-Interview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5781,10 +5280,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../interview-prep/LTIMindtree-Cheat-Sheet/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    LTIMindtree Cheat Sheet
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -5793,6 +5312,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#your-4-power-stories-lead-with-these" class="md-nav__link">
+    <span class="md-ellipsis">
+      YOUR 4 POWER STORIES (lead with these)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      CORE JAVA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      CONCURRENCY
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      SPRING / SPRING BOOT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hibernate-jpa-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      HIBERNATE / JPA / SQL
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#microservices-be-honest-modular-monolith-experience-but-i-understand" class="md-nav__link">
+    <span class="md-ellipsis">
+      MICROSERVICES ⚠️ (be honest: "modular monolith experience, but I understand…")
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coding-think-aloud-brute-force-optimize-complexity-edge-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      CODING (think aloud → brute force → optimize → complexity → edge cases)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hr-keep-short-honest-positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      HR (keep short, honest, positive)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -5832,459 +5443,72 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-does-data-need-to-expire" class="md-nav__link">
+  <a href="#your-4-power-stories-lead-with-these" class="md-nav__link">
     <span class="md-ellipsis">
-      Why Does Data Need to Expire?
+      YOUR 4 POWER STORIES (lead with these)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-is-ttl" class="md-nav__link">
+  <a href="#core-java" class="md-nav__link">
     <span class="md-ellipsis">
-      What is TTL?
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="What is TTL?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#real-life-analogy-parking-meter" class="md-nav__link">
-    <span class="md-ellipsis">
-      Real-Life Analogy: Parking Meter
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#core-ttl-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      Core TTL Commands
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Core TTL Commands">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#expire-set-a-timer-on-an-existing-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      EXPIRE — Set a timer on an existing key
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ttl-check-how-much-time-is-left" class="md-nav__link">
-    <span class="md-ellipsis">
-      TTL — Check how much time is left
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pttl-same-as-ttl-but-in-milliseconds" class="md-nav__link">
-    <span class="md-ellipsis">
-      PTTL — Same as TTL, but in milliseconds
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setex-set-value-expiry-in-one-command" class="md-nav__link">
-    <span class="md-ellipsis">
-      SETEX — Set value + expiry in one command
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#psetex-same-as-setex-but-milliseconds" class="md-nav__link">
-    <span class="md-ellipsis">
-      PSETEX — Same as SETEX, but milliseconds
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#set-with-expx-options-the-modern-way" class="md-nav__link">
-    <span class="md-ellipsis">
-      SET with EX/PX options — The modern way
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#persist-remove-the-expiry-make-it-live-forever" class="md-nav__link">
-    <span class="md-ellipsis">
-      PERSIST — Remove the expiry (make it live forever)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#expireat-set-expiry-at-a-specific-unix-timestamp" class="md-nav__link">
-    <span class="md-ellipsis">
-      EXPIREAT — Set expiry at a specific Unix timestamp
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-redis-handles-expiration-internally" class="md-nav__link">
-    <span class="md-ellipsis">
-      How Redis Handles Expiration Internally
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How Redis Handles Expiration Internally">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#strategy-1-lazy-deletion-passive" class="md-nav__link">
-    <span class="md-ellipsis">
-      Strategy 1: Lazy Deletion (Passive)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#strategy-2-active-cleanup-periodic" class="md-nav__link">
-    <span class="md-ellipsis">
-      Strategy 2: Active Cleanup (Periodic)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#real-world-ttl-scenarios" class="md-nav__link">
-    <span class="md-ellipsis">
-      Real-World TTL Scenarios
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Real-World TTL Scenarios">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#scenario-1-otp-verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 1: OTP Verification
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scenario-2-rate-limiting-sliding-window" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 2: Rate Limiting (Sliding Window)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scenario-3-user-session" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 3: User Session
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scenario-4-distributed-lock" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 4: Distributed Lock
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#scenario-5-flash-sale-banner" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario 5: Flash Sale Banner
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ttl-recommendations-by-data-type" class="md-nav__link">
-    <span class="md-ellipsis">
-      TTL Recommendations by Data Type
+      CORE JAVA
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-ttl-pitfalls" class="md-nav__link">
+  <a href="#concurrency" class="md-nav__link">
     <span class="md-ellipsis">
-      Common TTL Pitfalls
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common TTL Pitfalls">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-1-forgetting-to-set-ttl" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 1: Forgetting to set TTL
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-2-all-keys-expire-at-the-same-time" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 2: All keys expire at the same time
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-3-extending-ttl-on-every-read" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 3: Extending TTL on every read
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-4-using-ttl-as-the-only-invalidation-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 4: Using TTL as the only invalidation strategy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-5-ttl-on-complex-data-structures" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 5: TTL on complex data structures
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pitfall-6-relying-on-exact-expiry-timing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pitfall 6: Relying on exact expiry timing
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ttl-in-spring-boot" class="md-nav__link">
-    <span class="md-ellipsis">
-      TTL in Spring Boot
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TTL in Spring Boot">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#how-cacheable-and-rediscacheconfiguration-handle-ttl" class="md-nav__link">
-    <span class="md-ellipsis">
-      How @Cacheable and RedisCacheConfiguration Handle TTL
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#per-cache-ttl-configuration-in-java" class="md-nav__link">
-    <span class="md-ellipsis">
-      Per-Cache TTL Configuration in Java
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ttl-patterns" class="md-nav__link">
-    <span class="md-ellipsis">
-      TTL Patterns
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="TTL Patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sliding-window-ttl-extend-on-every-access" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sliding Window TTL (Extend on Every Access)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fixed-window-ttl-dont-extend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Fixed Window TTL (Don't Extend)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#lazy-refresh-refresh-in-background-before-expiry" class="md-nav__link">
-    <span class="md-ellipsis">
-      Lazy Refresh (Refresh in Background Before Expiry)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#monitoring-ttl" class="md-nav__link">
-    <span class="md-ellipsis">
-      Monitoring TTL
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Monitoring TTL">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#finding-keys-without-ttl" class="md-nav__link">
-    <span class="md-ellipsis">
-      Finding Keys Without TTL
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#auditing-ttl-values-in-production" class="md-nav__link">
-    <span class="md-ellipsis">
-      Auditing TTL Values in Production
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-expiry-events" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Expiry Events
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Key Expiry Events">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#keyspace-notifications" class="md-nav__link">
-    <span class="md-ellipsis">
-      Keyspace Notifications
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#subscribing-to-expiry-events" class="md-nav__link">
-    <span class="md-ellipsis">
-      Subscribing to Expiry Events
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#use-case-session-cleanup-callback" class="md-nav__link">
-    <span class="md-ellipsis">
-      Use Case: Session Cleanup Callback
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick Summary
+      CONCURRENCY
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#exercise" class="md-nav__link">
+  <a href="#spring-spring-boot" class="md-nav__link">
     <span class="md-ellipsis">
-      Exercise
+      SPRING / SPRING BOOT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hibernate-jpa-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      HIBERNATE / JPA / SQL
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#microservices-be-honest-modular-monolith-experience-but-i-understand" class="md-nav__link">
+    <span class="md-ellipsis">
+      MICROSERVICES ⚠️ (be honest: "modular monolith experience, but I understand…")
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coding-think-aloud-brute-force-optimize-complexity-edge-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      CODING (think aloud → brute force → optimize → complexity → edge cases)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hr-keep-short-honest-positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      HR (keep short, honest, positive)
     </span>
   </a>
   
@@ -6305,479 +5529,121 @@
                   
 
 
-<h1 id="ttl-expiration">TTL &amp; Expiration<a class="headerlink" href="#ttl-expiration" title="Permanent link">&para;</a></h1>
-<h2 id="why-does-data-need-to-expire">Why Does Data Need to Expire?<a class="headerlink" href="#why-does-data-need-to-expire" title="Permanent link">&para;</a></h2>
-<p>Not all data should live forever. Think about it:</p>
-<ul>
-<li>An <strong>OTP</strong> sent to your phone is valid for 5 minutes. After that, it should disappear.</li>
-<li>A <strong>session token</strong> should expire after 30 minutes of inactivity. Otherwise, anyone who finds your laptop open can use your account forever.</li>
-<li>A <strong>cached product listing</strong> should refresh every 15 minutes so users see the latest prices.</li>
-<li>A <strong>rate limit counter</strong> ("user has made 8 of 10 allowed requests this minute") should reset every minute.</li>
-</ul>
-<p>If you had to manually track all these timers and delete data yourself, your code would be a mess. Redis solves this with <strong>TTL (Time To Live)</strong> — you tell Redis "keep this data for X seconds, then delete it automatically." Redis handles the countdown for you.</p>
+<h1 id="ltimindtree-1-page-cheat-sheet-last-minute-revision">LTIMindtree — 1-Page Cheat Sheet (Last-Minute Revision)<a class="headerlink" href="#ltimindtree-1-page-cheat-sheet-last-minute-revision" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Glance through this 30 min before the call. One-liners + the "plain-terms" hook for each. Full detail is in <code>LTIMindtree_Interview_Prep.md</code>.</p>
+</blockquote>
 <hr />
-<h2 id="what-is-ttl">What is TTL?<a class="headerlink" href="#what-is-ttl" title="Permanent link">&para;</a></h2>
-<p><strong>TTL = Time To Live.</strong> It's a countdown timer attached to a key. When the timer hits zero, Redis automatically deletes the key. Gone. No trace. No cleanup code needed on your side.</p>
-<h3 id="real-life-analogy-parking-meter">Real-Life Analogy: Parking Meter<a class="headerlink" href="#real-life-analogy-parking-meter" title="Permanent link">&para;</a></h3>
-<p>Think of a parking meter. You insert a coin and get 60 minutes. The meter counts down. When it hits zero, your parking "expires" — you get a ticket. You don't have to remember to move your car at exactly the right time; the meter enforces the deadline.</p>
-<p>Redis TTL works the same way. You set a key with a value and a timer. Redis counts down. When the timer hits zero, the key is deleted. You don't have to remember to delete it yourself.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SET parking:car42 &quot;occupied&quot;
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>EXPIRE parking:car42 3600     ← 60 minutes. After that, automatically deleted.
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Time passes... 59 minutes later:
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>TTL parking:car42              ← Returns: 60 (seconds remaining)
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Time passes... 1 more minute:
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>GET parking:car42              ← Returns: (nil) — it&#39;s gone!
-</code></pre></div>
-<hr />
-<h2 id="core-ttl-commands">Core TTL Commands<a class="headerlink" href="#core-ttl-commands" title="Permanent link">&para;</a></h2>
-<h3 id="expire-set-a-timer-on-an-existing-key">EXPIRE — Set a timer on an existing key<a class="headerlink" href="#expire-set-a-timer-on-an-existing-key" title="Permanent link">&para;</a></h3>
-<p>You already have a key. Now you want to add a countdown.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SET<span class="w"> </span>user:session:abc<span class="w"> </span><span class="s2">&quot;user_data_here&quot;</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>EXPIRE<span class="w"> </span>user:session:abc<span class="w"> </span><span class="m">1800</span>
-</code></pre></div>
-<p>This says: "The key <code>user:session:abc</code> should be deleted in 1800 seconds (30 minutes)."</p>
-<div class="admonition info">
-<p class="admonition-title">When to use EXPIRE</p>
-<p>Use <code>EXPIRE</code> when you've already stored a key (maybe with <code>SET</code>, <code>HSET</code>, <code>LPUSH</code>, etc.) and want to add a timer after the fact.</p>
-</div>
-<h3 id="ttl-check-how-much-time-is-left">TTL — Check how much time is left<a class="headerlink" href="#ttl-check-how-much-time-is-left" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>TTL<span class="w"> </span>user:session:abc
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># (integer) 1750    ← 1750 seconds remaining</span>
-</code></pre></div>
-<p>What TTL returns:</p>
+<h2 id="your-4-power-stories-lead-with-these">YOUR 4 POWER STORIES (lead with these)<a class="headerlink" href="#your-4-power-stories-lead-with-these" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Return Value</th>
-<th>Meaning</th>
+<th>Story</th>
+<th>One-liner</th>
+<th>Numbers</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Positive number</td>
-<td>Seconds remaining before expiry</td>
+<td><strong>Batch optimization</strong></td>
+<td>Bulk DB ops + Java multithreading on a billing batch job</td>
+<td>45+ min → <strong>&lt;2 min (95%↓)</strong></td>
 </tr>
 <tr>
-<td><code>-1</code></td>
-<td>Key exists but has <strong>no expiry</strong> (lives forever)</td>
+<td><strong>AOP refactor</strong></td>
+<td>AspectJ → Spring AOP, fixed N+1 query patterns</td>
+<td><strong>+60% ORM throughput</strong></td>
 </tr>
 <tr>
-<td><code>-2</code></td>
-<td>Key does <strong>not exist</strong> (already expired or never created)</td>
+<td><strong>Monitoring framework</strong></td>
+<td>Shell + cron proactive alerting</td>
+<td><strong>MTTR −80%</strong></td>
+</tr>
+<tr>
+<td><strong>Modernization</strong></td>
+<td>Java 6/Hibernate 3 → Java 21/Jakarta migration</td>
+<td>Killed tech debt</td>
 </tr>
 </tbody>
 </table>
-<p>This is useful for debugging. "Why is this cache returning nil? Oh, TTL says -2. It expired."</p>
-<h3 id="pttl-same-as-ttl-but-in-milliseconds">PTTL — Same as TTL, but in milliseconds<a class="headerlink" href="#pttl-same-as-ttl-but-in-milliseconds" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>PTTL<span class="w"> </span>user:session:abc
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># (integer) 1750432    ← 1,750,432 milliseconds remaining</span>
-</code></pre></div>
-<p>Use this when you need precision — for example, rate limiting where you care about exact millisecond timing.</p>
-<h3 id="setex-set-value-expiry-in-one-command">SETEX — Set value + expiry in one command<a class="headerlink" href="#setex-set-value-expiry-in-one-command" title="Permanent link">&para;</a></h3>
-<p>Instead of doing <code>SET</code> and then <code>EXPIRE</code> separately (two commands, two network round trips), combine them:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>SETEX<span class="w"> </span>otp:9876543210<span class="w"> </span><span class="m">300</span><span class="w"> </span><span class="s2">&quot;482910&quot;</span>
-</code></pre></div>
-<p>This does three things at once:</p>
-<ol>
-<li>Creates the key <code>otp:9876543210</code></li>
-<li>Sets its value to <code>"482910"</code></li>
-<li>Sets it to expire in 300 seconds (5 minutes)</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">Why SETEX is better than SET + EXPIRE</p>
-<p>With <code>SET</code> followed by <code>EXPIRE</code>, there's a tiny window between the two commands where the key exists <strong>without</strong> an expiry. If your app crashes between <code>SET</code> and <code>EXPIRE</code>, the key lives forever. With <code>SETEX</code>, it's atomic — either both happen or neither happens. Always prefer <code>SETEX</code> for data that must expire.</p>
-</div>
-<h3 id="psetex-same-as-setex-but-milliseconds">PSETEX — Same as SETEX, but milliseconds<a class="headerlink" href="#psetex-same-as-setex-but-milliseconds" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>PSETEX<span class="w"> </span>flash:sale:banner<span class="w"> </span><span class="m">30000</span><span class="w"> </span><span class="s2">&quot;50% OFF!&quot;</span>
-</code></pre></div>
-<p>Expires in 30,000 milliseconds (30 seconds). Good for very short-lived data.</p>
-<h3 id="set-with-expx-options-the-modern-way">SET with EX/PX options — The modern way<a class="headerlink" href="#set-with-expx-options-the-modern-way" title="Permanent link">&para;</a></h3>
-<p>In newer Redis versions, <code>SET</code> itself supports expiry flags:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>SET<span class="w"> </span>otp:9876543210<span class="w"> </span><span class="s2">&quot;482910&quot;</span><span class="w"> </span>EX<span class="w"> </span><span class="m">300</span><span class="w">         </span><span class="c1"># Expires in 300 seconds</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>SET<span class="w"> </span>otp:9876543210<span class="w"> </span><span class="s2">&quot;482910&quot;</span><span class="w"> </span>PX<span class="w"> </span><span class="m">300000</span><span class="w">      </span><span class="c1"># Expires in 300,000 milliseconds</span>
-</code></pre></div>
-<p>You can also use <code>NX</code> (only set if key doesn't exist) and <code>XX</code> (only set if key already exists):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>SET<span class="w"> </span>lock:order:123<span class="w"> </span><span class="s2">&quot;server-1&quot;</span><span class="w"> </span>EX<span class="w"> </span><span class="m">10</span><span class="w"> </span>NX
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># Sets the key ONLY if it doesn&#39;t exist. Expires in 10 seconds.</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># This is how you build a distributed lock!</span>
-</code></pre></div>
-<h3 id="persist-remove-the-expiry-make-it-live-forever">PERSIST — Remove the expiry (make it live forever)<a class="headerlink" href="#persist-remove-the-expiry-make-it-live-forever" title="Permanent link">&para;</a></h3>
-<p>Changed your mind? Want to keep the key?</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>SET<span class="w"> </span>temp<span class="w"> </span><span class="s2">&quot;data&quot;</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>EXPIRE<span class="w"> </span>temp<span class="w"> </span><span class="m">60</span><span class="w">       </span><span class="c1"># Will expire in 60 seconds</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>PERSIST<span class="w"> </span>temp<span class="w">         </span><span class="c1"># Cancel the expiry! Now it lives forever.</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>TTL<span class="w"> </span>temp<span class="w">             </span><span class="c1"># Returns -1 (no expiry)</span>
-</code></pre></div>
-<h3 id="expireat-set-expiry-at-a-specific-unix-timestamp">EXPIREAT — Set expiry at a specific Unix timestamp<a class="headerlink" href="#expireat-set-expiry-at-a-specific-unix-timestamp" title="Permanent link">&para;</a></h3>
-<p>Instead of "expire in 300 seconds," you say "expire at exactly this moment in time."</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>EXPIREAT<span class="w"> </span>event:ticket:99<span class="w"> </span><span class="m">1740500000</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># Expires at Unix timestamp 1740500000 (a specific date/time)</span>
-</code></pre></div>
-<p>This is useful for things like "this coupon is valid until midnight on March 1st."</p>
+<p><strong>30-sec project pitch:</strong> "Enterprise billing &amp; charging platform at Amdocs — Java 8–21, Spring Boot, Hibernate, Oracle. I own billing components end-to-end: design, perf tuning, P1 support, data-integrity tooling."</p>
 <hr />
-<h2 id="how-redis-handles-expiration-internally">How Redis Handles Expiration Internally<a class="headerlink" href="#how-redis-handles-expiration-internally" title="Permanent link">&para;</a></h2>
-<p>This is important to understand — and it comes up in interviews.</p>
-<p>Redis doesn't set a real "timer" for every single key. If you have 10 million keys with TTL, Redis doesn't maintain 10 million countdown timers. That would be too expensive. Instead, Redis uses two strategies:</p>
-<h3 id="strategy-1-lazy-deletion-passive">Strategy 1: Lazy Deletion (Passive)<a class="headerlink" href="#strategy-1-lazy-deletion-passive" title="Permanent link">&para;</a></h3>
-<p>When someone tries to access a key, Redis checks: "Has this key expired?" If yes, Redis deletes it right then and returns <code>(nil)</code>. If no one ever accesses the key again, it just sits there taking up memory — until Strategy 2 kicks in.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Client: GET expired:key
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Redis thinks: &quot;Let me check... this key expired 5 minutes ago.&quot;
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Redis: *deletes key* → returns (nil) to client
-</code></pre></div>
-<h3 id="strategy-2-active-cleanup-periodic">Strategy 2: Active Cleanup (Periodic)<a class="headerlink" href="#strategy-2-active-cleanup-periodic" title="Permanent link">&para;</a></h3>
-<p>Every 100 milliseconds, Redis runs a cleanup cycle:</p>
-<ol>
-<li>Randomly pick 20 keys that have TTL set.</li>
-<li>Delete the ones that have expired.</li>
-<li>If more than 25% of the sampled keys were expired, repeat immediately.</li>
-</ol>
-<p>This means expired keys might linger in memory for a short time after they expire. But Redis catches up quickly.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>┌───────────────────────────────────────────────┐
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>│          How Redis Expires Keys               │
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>│                                               │
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>│  1. Lazy: Check on access → delete if expired │
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>│  2. Active: Every 100ms, sample &amp; delete      │
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>│                                               │
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>│  Result: Most expired keys are cleaned up     │
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>│  within a few hundred milliseconds            │
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>└───────────────────────────────────────────────┘
-</code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">Interview Insight</p>
-<p>If an interviewer asks "How does Redis handle key expiration?", say: "Redis uses two strategies. Lazy deletion — it checks the TTL when a key is accessed and deletes it if expired. And active expiration — every 100ms, Redis randomly samples keys with TTL and deletes the expired ones. This combination keeps memory usage under control without the overhead of per-key timers."</p>
-</div>
-<hr />
-<h2 id="real-world-ttl-scenarios">Real-World TTL Scenarios<a class="headerlink" href="#real-world-ttl-scenarios" title="Permanent link">&para;</a></h2>
-<h3 id="scenario-1-otp-verification">Scenario 1: OTP Verification<a class="headerlink" href="#scenario-1-otp-verification" title="Permanent link">&para;</a></h3>
-<p>When a user requests a login OTP, you generate a random code and store it in Redis with a 5-minute TTL.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>SETEX<span class="w"> </span>otp:9876543210<span class="w"> </span><span class="m">300</span><span class="w"> </span><span class="s2">&quot;482910&quot;</span>
-</code></pre></div>
-<p>When the user submits the OTP:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">String</span><span class="w"> </span><span class="n">storedOtp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;otp:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">phoneNumber</span><span class="p">);</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">storedOtp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;OTP expired. Request a new one.&quot;</span><span class="p">;</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="p">}</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">storedOtp</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">submittedOtp</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Wrong OTP.&quot;</span><span class="p">;</span>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="p">}</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="n">redis</span><span class="p">.</span><span class="na">del</span><span class="p">(</span><span class="s">&quot;otp:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">phoneNumber</span><span class="p">);</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="k">return</span><span class="w"> </span><span class="s">&quot;Verified!&quot;</span><span class="p">;</span>
-</code></pre></div>
-<p>If the user doesn't enter the OTP within 5 minutes, it's gone. No cleanup code needed.</p>
-<h3 id="scenario-2-rate-limiting-sliding-window">Scenario 2: Rate Limiting (Sliding Window)<a class="headerlink" href="#scenario-2-rate-limiting-sliding-window" title="Permanent link">&para;</a></h3>
-<p>You want to allow 100 API requests per user per minute.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># When a request comes in:</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>INCR<span class="w"> </span>rate:user:42<span class="w">          </span><span class="c1"># Increment counter</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>TTL<span class="w"> </span>rate:user:42<span class="w">           </span><span class="c1"># Check if timer exists</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># If TTL is -1 (no expiry), this is the first request:</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>EXPIRE<span class="w"> </span>rate:user:42<span class="w"> </span><span class="m">60</span><span class="w">     </span><span class="c1"># Set 60-second window</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="c1"># If counter &gt; 100:</span>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1"># Reject the request with 429 Too Many Requests</span>
-</code></pre></div>
-<p>Better approach using <code>SETEX</code> pattern:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">String</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rate:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">userId</span><span class="p">;</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">Long</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">incr</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="n">redis</span><span class="p">.</span><span class="na">expire</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">);</span><span class="w">  </span><span class="c1">// First request, start the window</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">}</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RateLimitExceededException</span><span class="p">();</span>
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="p">}</span>
-</code></pre></div>
-<p>After 60 seconds, the key auto-deletes. Counter resets. Fresh window starts.</p>
-<h3 id="scenario-3-user-session">Scenario 3: User Session<a class="headerlink" href="#scenario-3-user-session" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>SETEX<span class="w"> </span>session:token:abc123def<span class="w"> </span><span class="m">1800</span><span class="w"> </span><span class="s1">&#39;{&quot;userId&quot;:42,&quot;role&quot;:&quot;admin&quot;}&#39;</span>
-</code></pre></div>
+<h2 id="core-java">CORE JAVA<a class="headerlink" href="#core-java" title="Permanent link">&para;</a></h2>
 <ul>
-<li>User logs in. Session stored with 30-minute TTL.</li>
-<li>Every time the user does something, you <strong>extend</strong> the session:</li>
+<li><strong>Stream pipeline</strong> = source → intermediate (lazy: <code>map</code>/<code>filter</code>) → terminal (eager: <code>collect</code>). <em>Plain terms: a recipe; nothing cooks until the final "serve" step.</em></li>
+<li><strong><code>map</code> vs <code>flatMap</code></strong>: transform 1→1 vs flatten nested.</li>
+<li><strong>HashMap</strong> = array of buckets; <code>hashCode</code>→bucket, <code>equals</code>→exact match; collision→linkedlist→<strong>tree after 8</strong>; resize at <strong>0.75</strong>. <em>Plain terms: labeled drawers; hashCode picks the drawer, equals finds the item.</em></li>
+<li><strong>equals+hashCode</strong>: always override together or map breaks.</li>
+<li><strong><code>==</code> vs equals</strong>: reference vs value.</li>
+<li><strong>final/finally/finalize</strong>: constant / always-runs block / dead GC hook.</li>
+<li><strong>Checked vs unchecked</strong>: compile-time recoverable vs runtime bug.</li>
+<li><strong>Java 21</strong>: records, sealed, pattern matching, <strong>virtual threads</strong> (millions of cheap threads for I/O). <em>Plain terms: virtual threads = hire 10,000 cheap temp workers instead of 200 expensive full-timers.</em></li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>EXPIRE<span class="w"> </span>session:token:abc123def<span class="w"> </span><span class="m">1800</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># Resets the 30-minute timer. Like feeding a parking meter.</span>
-</code></pre></div>
+<h2 id="concurrency">CONCURRENCY<a class="headerlink" href="#concurrency" title="Permanent link">&para;</a></h2>
 <ul>
-<li>If the user goes inactive for 30 minutes, the session auto-expires. They have to log in again.</li>
+<li><strong>Runnable vs Callable</strong>: no return vs returns value/throws.</li>
+<li><strong>ExecutorService &gt; new Thread()</strong>: reuse, bounded, managed.</li>
+<li><strong>Thread-safe</strong>: immutability, <code>synchronized</code>/<code>ReentrantLock</code>, <code>Atomic*</code>, <code>ConcurrentHashMap</code>.</li>
+<li><strong>volatile</strong> = visibility only (NOT atomic). <strong>synchronized</strong> = visibility + atomicity.</li>
+<li><strong>Deadlock</strong> = circular lock wait; fix with lock ordering. <em>Plain terms: two people each holding the tool the other needs.</em></li>
 </ul>
-<h3 id="scenario-4-distributed-lock">Scenario 4: Distributed Lock<a class="headerlink" href="#scenario-4-distributed-lock" title="Permanent link">&para;</a></h3>
-<p>You need to ensure only one server processes a job at a time.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>SET<span class="w"> </span>lock:email:job<span class="w"> </span><span class="s2">&quot;server-1&quot;</span><span class="w"> </span>EX<span class="w"> </span><span class="m">30</span><span class="w"> </span>NX
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1"># NX = only set if key doesn&#39;t exist</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># EX 30 = expire in 30 seconds (safety net)</span>
-</code></pre></div>
-<p>If <code>server-1</code> crashes, the lock automatically expires in 30 seconds. Another server can take over. Without TTL, the lock would be stuck forever (deadlock).</p>
-<h3 id="scenario-5-flash-sale-banner">Scenario 5: Flash Sale Banner<a class="headerlink" href="#scenario-5-flash-sale-banner" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>PSETEX<span class="w"> </span>banner:flash:sale<span class="w"> </span><span class="m">7200000</span><span class="w"> </span><span class="s1">&#39;{&quot;text&quot;:&quot;70% OFF!&quot;,&quot;color&quot;:&quot;red&quot;}&#39;</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1"># 7,200,000 ms = 2 hours</span>
-</code></pre></div>
-<p>The banner shows for exactly 2 hours, then disappears. Marketing doesn't need to remember to remove it.</p>
+<h2 id="spring-spring-boot">SPRING / SPRING BOOT<a class="headerlink" href="#spring-spring-boot" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Boot</strong> = Spring + auto-config + starters + embedded server. <em>Plain terms: furnished apartment vs empty flat.</em></li>
+<li><strong>Auto-config</strong>: classpath + <code>@ConditionalOn...</code> → beans created automatically.</li>
+<li><strong>DI/IoC</strong>: container wires dependencies; <strong>constructor injection</strong> preferred. <em>Plain terms: don't build your own engine — it's delivered ready-fitted.</em></li>
+<li><strong>@Component/@Service/@Repository/@Controller</strong>: same thing, different layer label; <code>@Repository</code> translates DB exceptions.</li>
+<li><strong>@Controller vs @RestController</strong>: view name vs JSON body (<code>@ResponseBody</code>).</li>
+<li><strong>@Transactional</strong>: proxy begins/commits/rolls-back; rollback only on <strong>unchecked</strong> by default (<code>rollbackFor</code> for checked). Fails on <strong>private/self-invocation</strong>. <em>Plain terms: all-or-nothing wrapper around DB work.</em></li>
+<li><strong>Propagation</strong>: REQUIRED (join/create) vs REQUIRES_NEW (suspend+new).</li>
+<li><strong>AOP</strong> = cross-cutting (logging/tx) via proxies; AspectJ = compile-time weaving. <em>Plain terms: a wrapper around methods that adds behavior without touching their code.</em></li>
+<li><strong>Global exceptions</strong>: <code>@RestControllerAdvice</code> + <code>@ExceptionHandler</code>.</li>
+</ul>
+<h2 id="hibernate-jpa-sql">HIBERNATE / JPA / SQL<a class="headerlink" href="#hibernate-jpa-sql" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>JPA</strong> = spec, <strong>Hibernate</strong> = implementation.</li>
+<li><strong>N+1</strong> = 1 query for parents + 1 per child. Fix: <strong>JOIN FETCH</strong>, <code>@EntityGraph</code>, <code>@BatchSize</code>. <em>Plain terms: grabbing 1 grocery per trip instead of one big trip.</em></li>
+<li><strong>Lazy vs Eager</strong>: load-on-access vs load-now. ToMany=lazy, ToOne=eager by default.</li>
+<li><strong>LazyInitializationException</strong>: accessed lazy data after session closed.</li>
+<li><strong>L1 cache</strong> = per-session (default); <strong>L2</strong> = shared across sessions.</li>
+<li><strong>save/persist/merge</strong>: returns id / void-new / reattach detached.</li>
+<li><strong>Optimize SQL</strong>: EXPLAIN PLAN, indexes, no SELECT *, avoid func on indexed col, bulk DML.</li>
+<li><strong>2nd highest salary</strong>: <code>DENSE_RANK() OVER (ORDER BY salary DESC)</code> then <code>=2</code>.</li>
+<li><strong>WHERE vs HAVING</strong>: before grouping vs after aggregation.</li>
+<li><strong>DELETE/TRUNCATE/DROP</strong>: rows(rollback) / all-fast(no rollback) / table gone.</li>
+<li><strong>ACID</strong>: Atomicity, Consistency, Isolation, Durability.</li>
+<li><strong>CDC</strong> = capture row changes (insert/update/delete) for audit/sync.</li>
+</ul>
+<h2 id="microservices-be-honest-modular-monolith-experience-but-i-understand">MICROSERVICES ⚠️ (be honest: "modular monolith experience, but I understand…")<a class="headerlink" href="#microservices-be-honest-modular-monolith-experience-but-i-understand" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Micro vs mono</strong>: independent deploy/scale vs simple but coupled.</li>
+<li><strong>Comms</strong>: REST/gRPC (sync) vs Kafka/RabbitMQ (async events).</li>
+<li><strong>Saga</strong> = distributed tx via local txns + <strong>compensating</strong> undo; choreography (events) vs orchestration (coordinator). <em>Plain terms: no global undo button, so each step has its own "reverse" step.</em></li>
+<li><strong>Circuit breaker</strong> (Resilience4j): stop calling a failing service, fail fast, retry later. <em>Plain terms: a fuse that trips to protect the system.</em></li>
+<li><strong>Distributed tracing</strong>: correlation/trace ID across services (Zipkin/Jaeger).</li>
+<li><strong>API Gateway</strong> = single entry (routing/auth); <strong>Eureka</strong> = service discovery.</li>
+<li><strong>Scalable REST API</strong>: stateless + horizontal scale, caching, pagination, idempotency, versioning.</li>
+<li><strong>Kafka</strong>: topics → partitions (ordering+parallelism) → consumer groups; order only within a partition.</li>
+<li><strong>JWT</strong>: signed stateless token, validated per request (no server session).</li>
+</ul>
+<h2 id="coding-think-aloud-brute-force-optimize-complexity-edge-cases">CODING (think aloud → brute force → optimize → complexity → edge cases)<a class="headerlink" href="#coding-think-aloud-brute-force-optimize-complexity-edge-cases" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Reverse/palindrome: <code>new StringBuilder(s).reverse()</code>.</li>
+<li>Freq/first-unique: <code>groupingBy(c-&gt;c, LinkedHashMap::new, counting())</code>.</li>
+<li>Dedup keep order: <code>.distinct()</code>.</li>
+<li>Two-sum: HashSet, O(n).</li>
+<li>Sort map by value: <code>Map.Entry.comparingByValue(reverseOrder())</code>.</li>
+</ul>
+<h2 id="hr-keep-short-honest-positive">HR (keep short, honest, positive)<a class="headerlink" href="#hr-keep-short-honest-positive" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Why leave Amdocs?</strong> Growth + modern distributed/cloud exposure (never bad-mouth).</li>
+<li><strong>Notice period?</strong> State honestly, mention negotiability.</li>
+<li><strong>Salary?</strong> "Fair market-aligned hike, open to discussion."</li>
+<li><strong>Strength</strong>: backend perf + ownership (quantified). <strong>Weakness</strong>: real + improving.</li>
+<li><strong>Ask them</strong>: team's biggest challenge, success in 6 months, growth path.</li>
+</ul>
 <hr />
-<h2 id="ttl-recommendations-by-data-type">TTL Recommendations by Data Type<a class="headerlink" href="#ttl-recommendations-by-data-type" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Data Type</th>
-<th>Suggested TTL</th>
-<th>Why</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OTP</td>
-<td>3-5 minutes</td>
-<td>Security. Must expire quickly.</td>
-</tr>
-<tr>
-<td>User session</td>
-<td>15-30 minutes</td>
-<td>Standard session timeout</td>
-</tr>
-<tr>
-<td>API cache (product list)</td>
-<td>5-15 minutes</td>
-<td>Data changes occasionally</td>
-</tr>
-<tr>
-<td>API cache (config)</td>
-<td>1-24 hours</td>
-<td>Rarely changes</td>
-</tr>
-<tr>
-<td>Rate limit counter</td>
-<td>1 minute</td>
-<td>Reset window</td>
-</tr>
-<tr>
-<td>Distributed lock</td>
-<td>10-60 seconds</td>
-<td>Safety net for crashes</td>
-</tr>
-<tr>
-<td>Real-time stock price</td>
-<td>5-10 seconds</td>
-<td>Changes constantly</td>
-</tr>
-<tr>
-<td>Static page content</td>
-<td>1-6 hours</td>
-<td>Very rarely changes</td>
-</tr>
-<tr>
-<td>Temporary calculation result</td>
-<td>5-30 minutes</td>
-<td>Saves re-computation</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition warning">
-<p class="admonition-title">Don't set TTL too high</p>
-<p>A TTL of 24 hours for frequently changing data means users might see stale data for up to 24 hours. Choose TTL based on how often the underlying data changes AND how much staleness your users can tolerate.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Don't set TTL too low</p>
-<p>A TTL of 5 seconds for a cache that takes 200ms to rebuild means you're rebuilding it 12 times per minute. If the data doesn't change that fast, you're wasting resources. Find the sweet spot.</p>
-</div>
-<hr />
-<h2 id="common-ttl-pitfalls">Common TTL Pitfalls<a class="headerlink" href="#common-ttl-pitfalls" title="Permanent link">&para;</a></h2>
-<h3 id="pitfall-1-forgetting-to-set-ttl">Pitfall 1: Forgetting to set TTL<a class="headerlink" href="#pitfall-1-forgetting-to-set-ttl" title="Permanent link">&para;</a></h3>
-<p>You cache a user's profile but forget <code>EXPIRE</code>. The profile data changes, but the cache never expires. User sees stale data forever.</p>
-<p><strong>Fix:</strong> Always use <code>SETEX</code> or <code>SET ... EX</code> instead of plain <code>SET</code> for cache data.</p>
-<h3 id="pitfall-2-all-keys-expire-at-the-same-time">Pitfall 2: All keys expire at the same time<a class="headerlink" href="#pitfall-2-all-keys-expire-at-the-same-time" title="Permanent link">&para;</a></h3>
-<p>You load 10,000 products into cache with <code>TTL = 3600</code>. They were all loaded at the same time, so they all expire at the same time. Suddenly, 10,000 requests hit the database simultaneously.</p>
-<p><strong>Fix:</strong> Add random jitter: <code>TTL = 3600 + random(0, 300)</code>. Each key expires at a slightly different time.</p>
-<h3 id="pitfall-3-extending-ttl-on-every-read">Pitfall 3: Extending TTL on every read<a class="headerlink" href="#pitfall-3-extending-ttl-on-every-read" title="Permanent link">&para;</a></h3>
-<p>If you reset TTL every time someone reads a key, popular data never expires. Sounds good, right? But if the underlying data changes and you rely on TTL for freshness, the cache will be stale indefinitely.</p>
-<p><strong>Fix:</strong> Only extend TTL for session-like data (where continued activity should extend the lifetime). For cache data, let it expire naturally.</p>
-<h3 id="pitfall-4-using-ttl-as-the-only-invalidation-strategy">Pitfall 4: Using TTL as the only invalidation strategy<a class="headerlink" href="#pitfall-4-using-ttl-as-the-only-invalidation-strategy" title="Permanent link">&para;</a></h3>
-<p>TTL is a safety net, not a precision tool. If a product price changes from 500 to 400, waiting for TTL to expire means some users see 500 and some see 400.</p>
-<p><strong>Fix:</strong> Use event-based invalidation (delete cache on update) + TTL as a backup.</p>
-<h3 id="pitfall-5-ttl-on-complex-data-structures">Pitfall 5: TTL on complex data structures<a class="headerlink" href="#pitfall-5-ttl-on-complex-data-structures" title="Permanent link">&para;</a></h3>
-<p>You use <code>HSET</code> to add fields to a hash, then <code>EXPIRE</code> on the key. Later you use <code>HINCRBY</code> to increment a field. In Redis, some commands like <code>HINCRBY</code> do not reset the TTL. But <code>EXPIRE</code> on an existing key replaces the TTL. If you forget to set TTL after creating a new hash key, it lives forever.</p>
-<p><strong>Fix:</strong> Use a wrapper that always sets TTL when creating keys. Or use <code>SET</code> with <code>EX</code> for simple values. For hashes, call <code>EXPIRE</code> right after the initial <code>HSET</code>.</p>
-<h3 id="pitfall-6-relying-on-exact-expiry-timing">Pitfall 6: Relying on exact expiry timing<a class="headerlink" href="#pitfall-6-relying-on-exact-expiry-timing" title="Permanent link">&para;</a></h3>
-<p>Redis does not guarantee that a key is deleted at exactly the second TTL hits zero. Lazy deletion means it might linger until someone accesses it. Active cleanup runs every 100ms and samples randomly. For critical "expire at exactly midnight" use cases, you need application-level checks.</p>
-<p><strong>Fix:</strong> For time-sensitive expiry (e.g., coupon valid until date X), check the expiry in your application logic. Use Redis TTL as a hint, not the sole authority.</p>
-<hr />
-<h2 id="ttl-in-spring-boot">TTL in Spring Boot<a class="headerlink" href="#ttl-in-spring-boot" title="Permanent link">&para;</a></h2>
-<p>Spring Boot's caching abstraction works with Redis through <code>RedisCacheManager</code>. By default, cached entries do not expire. You must configure TTL explicitly.</p>
-<h3 id="how-cacheable-and-rediscacheconfiguration-handle-ttl">How @Cacheable and RedisCacheConfiguration Handle TTL<a class="headerlink" href="#how-cacheable-and-rediscacheconfiguration-handle-ttl" title="Permanent link">&para;</a></h3>
-<p>When you use <code>@Cacheable</code>, Spring stores the result in the configured cache. For Redis, that means a key-value pair. TTL is controlled by <code>RedisCacheConfiguration</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nd">@Bean</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kd">public</span><span class="w"> </span><span class="n">RedisCacheManager</span><span class="w"> </span><span class="nf">cacheManager</span><span class="p">(</span><span class="n">RedisConnectionFactory</span><span class="w"> </span><span class="n">factory</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="n">RedisCacheConfiguration</span><span class="w"> </span><span class="n">defaultConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RedisCacheConfiguration</span><span class="p">.</span><span class="na">defaultCacheConfig</span><span class="p">()</span>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">        </span><span class="p">.</span><span class="na">entryTtl</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMinutes</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w">  </span><span class="c1">// Default TTL for all caches</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">        </span><span class="p">.</span><span class="na">serializeKeysWith</span><span class="p">(</span><span class="n">RedisSerializationContext</span><span class="p">.</span><span class="na">SerializationPair</span><span class="p">.</span><span class="na">fromSerializer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">StringRedisSerializer</span><span class="p">()))</span>
-<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">        </span><span class="p">.</span><span class="na">serializeValuesWith</span><span class="p">(</span><span class="n">RedisSerializationContext</span><span class="p">.</span><span class="na">SerializationPair</span><span class="p">.</span><span class="na">fromSerializer</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">GenericJackson2JsonRedisSerializer</span><span class="p">()));</span>
-<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>
-<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">    </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">RedisCacheConfiguration</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cacheConfigs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
-<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">    </span><span class="n">cacheConfigs</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">defaultConfig</span><span class="p">.</span><span class="na">entryTtl</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMinutes</span><span class="p">(</span><span class="mi">5</span><span class="p">)));</span>
-<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">    </span><span class="n">cacheConfigs</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;config&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">defaultConfig</span><span class="p">.</span><span class="na">entryTtl</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofHours</span><span class="p">(</span><span class="mi">24</span><span class="p">)));</span>
-<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>
-<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">RedisCacheManager</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="n">factory</span><span class="p">)</span>
-<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">        </span><span class="p">.</span><span class="na">cacheDefaults</span><span class="p">(</span><span class="n">defaultConfig</span><span class="p">)</span>
-<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">        </span><span class="p">.</span><span class="na">withInitialCacheConfigurations</span><span class="p">(</span><span class="n">cacheConfigs</span><span class="p">)</span>
-<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
-<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="p">}</span>
-</code></pre></div>
-<h3 id="per-cache-ttl-configuration-in-java">Per-Cache TTL Configuration in Java<a class="headerlink" href="#per-cache-ttl-configuration-in-java" title="Permanent link">&para;</a></h3>
-<p>You can set different TTLs per cache name. Products might need 5 minutes. Config might need 24 hours.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">cacheConfigs</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;products&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">defaultConfig</span><span class="p">.</span><span class="na">entryTtl</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMinutes</span><span class="p">(</span><span class="mi">5</span><span class="p">)));</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">cacheConfigs</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;sessions&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">defaultConfig</span><span class="p">.</span><span class="na">entryTtl</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMinutes</span><span class="p">(</span><span class="mi">30</span><span class="p">)));</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="n">cacheConfigs</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;config&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">defaultConfig</span><span class="p">.</span><span class="na">entryTtl</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofHours</span><span class="p">(</span><span class="mi">24</span><span class="p">)));</span>
-</code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">Spring Cache TTL</p>
-<p>If you don't set <code>entryTtl</code>, Redis keys created by Spring Cache never expire. Always configure TTL for production caches.</p>
-</div>
-<hr />
-<h2 id="ttl-patterns">TTL Patterns<a class="headerlink" href="#ttl-patterns" title="Permanent link">&para;</a></h2>
-<p>Different use cases need different TTL behavior. Here are three common patterns.</p>
-<h3 id="sliding-window-ttl-extend-on-every-access">Sliding Window TTL (Extend on Every Access)<a class="headerlink" href="#sliding-window-ttl-extend-on-every-access" title="Permanent link">&para;</a></h3>
-<p>The TTL resets every time someone reads or writes the key. Good for sessions. "If the user is active, keep the session alive."</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Every request: extend the session</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>EXPIRE<span class="w"> </span>session:token:abc123<span class="w"> </span><span class="m">1800</span>
-</code></pre></div>
-<p>In code: on every authenticated request, call <code>EXPIRE</code> with the same duration. Inactive users lose their session. Active users stay logged in.</p>
-<div class="admonition info">
-<p class="admonition-title">Use case</p>
-<p>User sessions, API rate limit windows (sliding), "last seen" timestamps.</p>
-</div>
-<h3 id="fixed-window-ttl-dont-extend">Fixed Window TTL (Don't Extend)<a class="headerlink" href="#fixed-window-ttl-dont-extend" title="Permanent link">&para;</a></h3>
-<p>The TTL is set once and never changes. Good for OTPs, one-time codes, flash sale banners.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>SETEX<span class="w"> </span>otp:9876543210<span class="w"> </span><span class="m">300</span><span class="w"> </span><span class="s2">&quot;482910&quot;</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="c1"># No EXPIRE on read. Key dies in 5 minutes no matter what.</span>
-</code></pre></div>
-<div class="admonition info">
-<p class="admonition-title">Use case</p>
-<p>OTP verification, rate limits (fixed window), temporary tokens, flash sales.</p>
-</div>
-<h3 id="lazy-refresh-refresh-in-background-before-expiry">Lazy Refresh (Refresh in Background Before Expiry)<a class="headerlink" href="#lazy-refresh-refresh-in-background-before-expiry" title="Permanent link">&para;</a></h3>
-<p>When a key is about to expire, refresh it in the background. The user gets the cached value immediately. A background thread or async task fetches fresh data and updates the cache. Reduces latency spikes when TTL expires.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1">// Pseudocode: if TTL &lt; 60 seconds, trigger async refresh</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kt">long</span><span class="w"> </span><span class="n">ttl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">ttl</span><span class="p">(</span><span class="s">&quot;product:42&quot;</span><span class="p">);</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ttl</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ttl</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">    </span><span class="n">executor</span><span class="p">.</span><span class="na">submit</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">        </span><span class="n">Product</span><span class="w"> </span><span class="n">fresh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">database</span><span class="p">.</span><span class="na">getProduct</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
-<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">        </span><span class="n">redis</span><span class="p">.</span><span class="na">setex</span><span class="p">(</span><span class="s">&quot;product:42&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span><span class="w"> </span><span class="n">serialize</span><span class="p">(</span><span class="n">fresh</span><span class="p">));</span>
-<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">    </span><span class="p">});</span>
-<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="p">}</span>
-<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="k">return</span><span class="w"> </span><span class="n">redis</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;product:42&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// Return current (maybe stale) value</span>
-</code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">When to use</p>
-<p>High-traffic caches where you want to avoid cache stampede when TTL expires. The user gets fast response; freshness improves in the background.</p>
-</div>
-<hr />
-<h2 id="monitoring-ttl">Monitoring TTL<a class="headerlink" href="#monitoring-ttl" title="Permanent link">&para;</a></h2>
-<p>In production, you need to know: Do any keys have no TTL? Are TTLs too long or too short?</p>
-<h3 id="finding-keys-without-ttl">Finding Keys Without TTL<a class="headerlink" href="#finding-keys-without-ttl" title="Permanent link">&para;</a></h3>
-<p>Use <code>OBJECT IDLETIME</code> to see how long a key has been idle. Keys with no TTL have <code>TTL</code> returning <code>-1</code>. To find them:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Scan keys and check TTL (use with caution on large datasets)</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>redis-cli<span class="w"> </span>--scan<span class="w"> </span>--pattern<span class="w"> </span><span class="s2">&quot;cache:*&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>key<span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span><span class="nv">ttl</span><span class="o">=</span><span class="k">$(</span>redis-cli<span class="w"> </span>TTL<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$key</span><span class="s2">&quot;</span><span class="k">)</span>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$ttl</span><span class="s2">&quot;</span><span class="w"> </span>-eq<span class="w"> </span>-1<span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;No TTL: </span><span class="nv">$key</span><span class="s2">&quot;</span>
-<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">  </span><span class="k">fi</span>
-<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="k">done</span>
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">SCAN is not instant</p>
-<p>On large datasets, scanning all keys can be slow. Run during low traffic. Consider sampling.</p>
-</div>
-<h3 id="auditing-ttl-values-in-production">Auditing TTL Values in Production<a class="headerlink" href="#auditing-ttl-values-in-production" title="Permanent link">&para;</a></h3>
-<p>Log TTL distribution for important key patterns. For example, track how many <code>session:*</code> keys have TTL &lt; 600 (10 min) vs &gt; 1800 (30 min). This helps you tune session timeouts.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># Example: count keys by TTL bucket</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>redis-cli<span class="w"> </span>--scan<span class="w"> </span>--pattern<span class="w"> </span><span class="s2">&quot;session:*&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1000<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>key<span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">  </span>redis-cli<span class="w"> </span>TTL<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$key</span><span class="s2">&quot;</span>
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="k">done</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c
-</code></pre></div>
-<hr />
-<h2 id="key-expiry-events">Key Expiry Events<a class="headerlink" href="#key-expiry-events" title="Permanent link">&para;</a></h2>
-<p>Redis can notify you when a key expires. Useful for cleanup callbacks, analytics, or triggering downstream actions.</p>
-<h3 id="keyspace-notifications">Keyspace Notifications<a class="headerlink" href="#keyspace-notifications" title="Permanent link">&para;</a></h3>
-<p>Enable keyspace notifications in <code>redis.conf</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>notify-keyspace-events Ex
-</code></pre></div>
-<p><code>Ex</code> means: notify on key <strong>e</strong>xpiry events. (Use <code>A</code> for all events, but that's noisy.)</p>
-<h3 id="subscribing-to-expiry-events">Subscribing to Expiry Events<a class="headerlink" href="#subscribing-to-expiry-events" title="Permanent link">&para;</a></h3>
-<p>Expiry events are published to a special channel:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>__keyevent@0__:expired
-</code></pre></div>
-<p>The message is the key name that expired. You subscribe with a Redis client:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1">// Subscribe to expiry events</span>
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="n">redisTemplate</span><span class="p">.</span><span class="na">execute</span><span class="p">((</span><span class="n">RedisCallback</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">    </span><span class="n">connection</span><span class="p">.</span><span class="na">subscribe</span><span class="p">((</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">pattern</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">expiredKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="na">getBody</span><span class="p">());</span>
-<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Key expired: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">expiredKey</span><span class="p">);</span>
-<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">        </span><span class="c1">// e.g., session cleanup: remove from local session store</span>
-<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="s">&quot;__keyevent@0__:expired&quot;</span><span class="p">.</span><span class="na">getBytes</span><span class="p">());</span>
-<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
-<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="p">});</span>
-</code></pre></div>
-<h3 id="use-case-session-cleanup-callback">Use Case: Session Cleanup Callback<a class="headerlink" href="#use-case-session-cleanup-callback" title="Permanent link">&para;</a></h3>
-<p>When a session key expires, you might need to clean up related state: invalidate local caches, update "active users" count, or notify other services. Subscribe to <code>__keyevent@0__:expired</code> and filter for <code>session:*</code> keys. Run your cleanup logic when you receive the event.</p>
-<div class="admonition warning">
-<p class="admonition-title">Events are best-effort</p>
-<p>Redis sends expiry events asynchronously. If the subscriber is down, events can be lost. Don't use this as the only source of truth for critical logic.</p>
-</div>
-<hr />
-<h2 id="quick-summary">Quick Summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Concept</th>
-<th>Explanation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>TTL</td>
-<td>Countdown timer. Key auto-deletes when it hits zero</td>
-</tr>
-<tr>
-<td>EXPIRE</td>
-<td>Add a TTL to an existing key</td>
-</tr>
-<tr>
-<td>SETEX</td>
-<td>Set value + TTL in one atomic command</td>
-</tr>
-<tr>
-<td>TTL command</td>
-<td>Check remaining seconds (-1 = no expiry, -2 = key gone)</td>
-</tr>
-<tr>
-<td>PERSIST</td>
-<td>Remove TTL, make key permanent</td>
-</tr>
-<tr>
-<td>Lazy deletion</td>
-<td>Redis checks on access, deletes if expired</td>
-</tr>
-<tr>
-<td>Active cleanup</td>
-<td>Redis samples and deletes expired keys every 100ms</td>
-</tr>
-<tr>
-<td>Best practice</td>
-<td>Use SETEX, add TTL jitter, combine TTL with event invalidation</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Store an OTP with a 2-minute TTL. Check the remaining time every 30 seconds until it expires.</li>
-<li>Build a rate limiter: Allow yourself 5 <code>GET</code> requests in 30 seconds. Use <code>INCR</code> and <code>EXPIRE</code>.</li>
-<li>Create a key, set TTL to 60 seconds, then use <code>PERSIST</code> to cancel it. Verify with <code>TTL</code>.</li>
-<li>Create 3 keys with the same TTL. Why is this a potential problem in production? How would you fix it?</li>
-</ol>
-<hr />
-<p><strong>Next up:</strong> <a href="../memory-eviction/">Memory &amp; Eviction Policies</a> — What happens when Redis runs out of memory?</p>
+<p><strong>Mindset:</strong> Real quantified wins + honesty about gaps. Lead with your stories. You've got this.</p>
 
 
 

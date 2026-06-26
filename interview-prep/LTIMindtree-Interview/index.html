@@ -1,0 +1,5977 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn Java, Spring Boot, AWS, Redis & Kafka from scratch with simple examples">
+      
+      
+      
+        <link rel="canonical" href="https://satjitsingh.github.io/backend-notes/interview-prep/LTIMindtree-Interview/">
+      
+      
+        <link rel="prev" href="../../comparison/redis-vs-kafka/">
+      
+      
+        <link rel="next" href="../LTIMindtree-Cheat-Sheet/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>LTIMindtree Interview - Backend Engineering - Beginner to Interview Ready</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ltimindtree-interview-prep-satjit-singh-4-years-exp-java-backend" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Backend Engineering - Beginner to Interview Ready" class="md-header__button md-logo" aria-label="Backend Engineering - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Backend Engineering - Beginner to Interview Ready
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LTIMindtree Interview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../java21/00-README/" class="md-tabs__link">
+          
+  
+  Java 21
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../springboot/00-README/" class="md-tabs__link">
+          
+  
+  Spring Boot
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../aws/01-Cloud-Basics/" class="md-tabs__link">
+          
+  
+  AWS
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redis/redis-basics/" class="md-tabs__link">
+          
+  
+  Redis
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/kafka-basics/" class="md-tabs__link">
+          
+  
+  Kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../system-design/" class="md-tabs__link">
+          
+  
+  System Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../projects/redis-api-caching/" class="md-tabs__link">
+          
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../comparison/redis-vs-kafka/" class="md-tabs__link">
+          
+  
+  Comparison
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  Interview Preparation
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Backend Engineering - Beginner to Interview Ready" class="md-nav__button md-logo" aria-label="Backend Engineering - Beginner to Interview Ready" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Backend Engineering - Beginner to Interview Ready
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Java 21
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Java 21
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/00-README/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/01-How-Java-Works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How Java Works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/02-Syntax-Fundamentals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Syntax & Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/03-OOP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OOP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/04-Collections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Collections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/05-Generics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/06-Exceptions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exception Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/07-Concurrency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concurrency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/08-Streams-FP/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Streams & FP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/09-GC-Memory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GC & Memory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/10-JVM-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JVM Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/11-File-IO/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    File I/O
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/12-Networking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/13-JDBC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JDBC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/14-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/15-Modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/16-Performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/17-Testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/18-Security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/19-Java21-Features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java 21 Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java21/99-Summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Spring Boot
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Spring Boot
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/00-README/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Prerequisites
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Prerequisites
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/01-Prerequisites-Java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/02-Prerequisites-OOP-SOLID/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OOP & SOLID
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/03-Prerequisites-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/04-Prerequisites-HTTP-REST/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTP & REST
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/05-Prerequisites-Web-Fundamentals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/06-Prerequisites-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/07-Prerequisites-DI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dependency Injection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/08-Prerequisites-Build-Tools/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/09-Prerequisites-JSON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JSON & Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/10-Prerequisites-Testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing Fundamentals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Spring Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Spring Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/11-Spring-Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/12-IoC-DI-DeepDive/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IoC & DI Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/13-Spring-vs-SpringBoot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring vs Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/14-SpringBoot-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Boot Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core Mechanics
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Core Mechanics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/15-Auto-Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Auto-Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/16-Starters-Context/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starters & Context
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/17-Bean-Lifecycle/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bean Lifecycle
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/18-Configuration-Profiles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration & Profiles
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Building APIs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            Building APIs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/19-REST-Design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REST Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/20-Controllers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Controllers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/21-Validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Validation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/22-Exception-Handling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exception Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/23-DTO-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DTO Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Data Layer
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Data Layer
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/24-Spring-Data-JPA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Data JPA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/25-Hibernate-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hibernate Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/26-Transactions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transactions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/27-N%2B1-Problem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    N+1 Problem
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/28-Query-Optimization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Query Optimization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/29-Spring-Security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spring Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/30-JWT-Auth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JWT Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_8" id="__nav_3_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Production
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            Production
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/31-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/32-Logging-Monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Logging & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/33-Microservices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Microservices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/34-Event-Driven/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event-Driven Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/35-Testing-Spring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing Spring Apps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/36-Performance-Internals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance Internals
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/37-Docker-Deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker & Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../springboot/99-Summary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AWS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            AWS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Cloud-Basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloud Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-AWS-Global-Infrastructure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Global Infrastructure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/03-IAM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IAM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/04-Shared-Responsibility-and-Billing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shared Responsibility & Billing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core Services
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core Services
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-EC2-Deep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EC2 Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-Storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage (S3, EBS, EFS)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/03-Load-Balancing-and-Scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Load Balancing & Scaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Networking
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-VPC-Core/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VPC Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-VPC-Security-and-Connectivity/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VPC Security & Connectivity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Databases
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Databases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-RDS-and-Aurora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RDS & Aurora
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-DynamoDB-and-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DynamoDB & Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Serverless
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Serverless
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Lambda-Deep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lambda Deep Dive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-Messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging (SQS, SNS)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Containers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Containers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-ECS-and-Fargate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ECS & Fargate
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-EKS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EKS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DevOps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Infrastructure-as-Code/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Infrastructure as Code
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-CICD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            Observability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-Design-Thinking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Thinking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Quick Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            Quick Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/01-AWS-Cheat-Sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS Cheat Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/02-Top-50-Interview-Questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Top 50 Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../aws/03-System-Design-Scenarios/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Design Scenarios
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Redis
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Redis
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/data-structures/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Structures
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/ttl-expiration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TTL & Expiration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/memory-eviction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory & Eviction Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-explained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/caching-patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/real-world-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redis/redis-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/topics-partitions-offsets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Topics, Partitions & Offsets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/producers-consumers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Producers & Consumers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/consumer-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consumer Groups Explained
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-scaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/fault-tolerance-replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fault Tolerance & Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/delivery-semantics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Delivery Semantics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-usecases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Use Cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/performance-best-practices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance & Best Practices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-with-springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Spring Boot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/common-mistakes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Common Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-interview-questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    System Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            System Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/01-Introduction-to-System-Design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to System Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/02-Scalability-and-Performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scalability & Performance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/03-Latency-and-Throughput/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Latency & Throughput
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structure, Uptime & Data Copies
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structure, Uptime & Data Copies
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/04-Architectural-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architectural Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/05-Availability-and-Availability-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Availability & Availability Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/06-Replication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Replication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Distributed Systems Theory
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4">
+            <span class="md-nav__icon md-icon"></span>
+            Distributed Systems Theory
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/07-Consistency-and-Consistency-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consistency & Consistency Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/08-CAP-Theorem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CAP Theorem
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/09-PACELC-Theorem/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PACELC Theorem
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Data Storage Foundations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5">
+            <span class="md-nav__icon md-icon"></span>
+            Data Storage Foundations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/10-Database-and-Storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database & Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/11-Relational-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Relational Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/12-Database-Isolation-Levels/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Isolation Levels
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Scaling Beyond One Machine
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6">
+            <span class="md-nav__icon md-icon"></span>
+            Scaling Beyond One Machine
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/13-Scaling-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scaling Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/14-Sharding-and-Partitioning/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sharding & Partitioning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/15-Non-Relational-Databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Non-Relational Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_7" id="__nav_7_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Choosing & Performance Multipliers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_7">
+            <span class="md-nav__icon md-icon"></span>
+            Choosing & Performance Multipliers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/16-Choosing-the-Right-Database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choosing the Right Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/17-Caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/18-Asynchronous-Processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Asynchronous Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_8" id="__nav_7_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Messaging & Architectural Styles
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_8">
+            <span class="md-nav__icon md-icon"></span>
+            Messaging & Architectural Styles
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/19-Message-Queues-Kafka-RabbitMQ/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Message Queues (Kafka, RabbitMQ)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/20-Monolithic-vs-Microservices-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monolithic vs Microservices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/21-Event-Driven-Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Event-Driven Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_9" id="__nav_7_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    How Clients Talk to the System
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_9">
+            <span class="md-nav__icon md-icon"></span>
+            How Clients Talk to the System
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/22-API-Gateway-and-Backend-for-Frontend/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Gateway & BFF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/23-REST-GraphQL-gRPC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REST, GraphQL & gRPC
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/24-Long-Polling-WebSockets-SSE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Long Polling, WebSockets & SSE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_10" id="__nav_7_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Code Craft & Robustness
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_10">
+            <span class="md-nav__icon md-icon"></span>
+            Code Craft & Robustness
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/25-Design-Patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/26-Resiliency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resiliency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/27-Designing-for-Resiliency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Designing for Resiliency
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_11" id="__nav_7_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Building Blocks & Essentials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_11">
+            <span class="md-nav__icon md-icon"></span>
+            Building Blocks & Essentials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/28-Load-Balancers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Load Balancers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/29-Circuit-Breakers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Breakers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/30-System-Essentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Essentials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_12" id="__nav_7_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Specialized Topics & Capstone
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_12">
+            <span class="md-nav__icon md-icon"></span>
+            Specialized Topics & Capstone
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/31-Consistent-Hashing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Consistent Hashing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/32-Networking-and-Communication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking & Communication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/33-Real-World-Architectures-and-Engineering-Blogs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-World Architectures & Blogs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Projects
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Projects
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-api-caching/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis API Caching
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/redis-session-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis Session Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-order-processing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Order Processing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/kafka-notification-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka Notification System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Comparison
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../comparison/redis-vs-kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Redis vs Kafka
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Interview Preparation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Interview Preparation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    LTIMindtree Interview
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    LTIMindtree Interview
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to use this document
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-ltimindtree-interview-process-what-to-expect" class="md-nav__link">
+    <span class="md-ellipsis">
+      The LTIMindtree interview process (what to expect)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LTIMindtree-Cheat-Sheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LTIMindtree Cheat Sheet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to use this document
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-ltimindtree-interview-process-what-to-expect" class="md-nav__link">
+    <span class="md-ellipsis">
+      The LTIMindtree interview process (what to expect)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="ltimindtree-interview-prep-satjit-singh-4-years-exp-java-backend">LTIMindtree Interview Prep — Satjit Singh (~4 Years Exp, Java Backend)<a class="headerlink" href="#ltimindtree-interview-prep-satjit-singh-4-years-exp-java-backend" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Role target:</strong> Java Developer / Senior Java Backend Developer
+<strong>Based on:</strong> Your Amdocs experience (Java 8–21, Spring Boot, Hibernate/JPA, Oracle/PL-SQL, multithreading, batch processing, AOP, CDC, shell automation) + real LTIMindtree interview experiences for 4-year candidates.</p>
+</blockquote>
+<hr />
+<h2 id="how-to-use-this-document">How to use this document<a class="headerlink" href="#how-to-use-this-document" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Each question has <strong>[Approach]</strong> (how to think / what the interviewer wants) and <strong>[Answer]</strong> (what you actually say, tailored to your resume).</li>
+<li><strong>💡 In plain terms</strong> = a simple, everyday-language explanation / analogy so the concept <em>clicks</em> — use it to truly understand, and to explain clearly under pressure.</li>
+<li><strong>🔎 Why it matters / Deeper</strong> = extra depth so you can handle the follow-up drill-down.</li>
+<li>Questions are arranged in <strong>flows</strong> — the likely follow-up chain is shown with <code>↳</code>.</li>
+<li>Sections marked <strong>⚠️ STUDY AREA</strong> are topics NOT directly on your resume (e.g. microservices, Kafka, JWT). LTIMindtree <em>will</em> ask these. Be honest — say "I haven't used X in production, but here's my understanding" — and study the model answers.</li>
+<li>Golden rule from every LTIMindtree experience: <strong>project clarity + ownership beats memorized theory.</strong> Lead with your real work.</li>
+<li><strong>Companion file:</strong> <code>LTIMindtree_CheatSheet.md</code> — a 1-page quick-revision sheet to glance at 30 min before the call.</li>
+</ul>
+<hr />
+<h2 id="the-ltimindtree-interview-process-what-to-expect">The LTIMindtree interview process (what to expect)<a class="headerlink" href="#the-ltimindtree-interview-process-what-to-expect" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Online assessment</strong> (sometimes skipped for lateral/referral): aptitude, logical reasoning, basic coding.</li>
+<li><strong>Technical Round 1:</strong> Core Java, Java 8 features, Spring Boot, Hibernate, SQL, one coding problem.</li>
+<li><strong>Technical Round 2 (Techno-Managerial):</strong> Project architecture deep-dive, design decisions, P1 handling, microservices, behavioral.</li>
+<li><strong>HR Round:</strong> background, notice period, salary, adaptability.</li>
+</ol>
+<p>Total: usually under 2 weeks. Now the questions.</p>
+<hr />
+<h1 id="section-a-project-architecture-your-strongest-section-own-it">SECTION A — Project &amp; Architecture (Your strongest section — own it)<a class="headerlink" href="#section-a-project-architecture-your-strongest-section-own-it" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>This is where 4-year candidates win or lose at LTIMindtree. Have ONE crisp architecture story and 3–4 deep-dive achievements ready.</p>
+</blockquote>
+<h3 id="a1-walk-me-through-your-current-project-end-to-end">A1. "Walk me through your current project, end to end."<a class="headerlink" href="#a1-walk-me-through-your-current-project-end-to-end" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> Give a 60–90 sec structured overview: business context → tech stack → your ownership → scale. Don't dump everything; leave threads for them to pull. Keep client names vague.
+<strong>[Answer]</strong> "I work on a large-scale enterprise <strong>billing and charging platform</strong> at Amdocs — it processes high volumes of customer billing data, recurring and non-recurring charges, and must guarantee revenue accuracy across multiple regions. My stack is <strong>Java (8 through 21), Spring Boot, Hibernate/JPA on Oracle</strong>, with PL/SQL and shell scripting for data and ops automation. I own several business-critical billing components end to end — persistence layer up through processing logic. My work splits into two themes: keeping the platform performant at scale (e.g., a batch pipeline I cut from 45+ minutes to under 2), and modernizing the core (a Java 6/Hibernate 3 → Java 21/Jakarta migration)."
+- ↳ <em>"What exactly is your role and responsibilities?"</em> → "End-to-end backend ownership of billing components: design, development, performance tuning, code review, production support for P1s, and the data-integrity tooling around deployments."
+- ↳ <em>"What's the scale — data volume, users, throughput?"</em> → Give concrete-ish numbers honestly: "batch jobs over large record volumes; the optimization took one job from 45+ min to under 2 min." Don't invent precise figures you can't defend.
+- ↳ <em>"Draw the architecture."</em> → Be ready to sketch: ingestion → processing/charging engine → persistence (Oracle) → validation/reporting. Mention batch + online flows.</p>
+<h3 id="a2-whats-the-biggest-technical-challenge-you-faced-and-how-did-you-solve-it">A2. "What's the biggest technical challenge you faced and how did you solve it?"<a class="headerlink" href="#a2-whats-the-biggest-technical-challenge-you-faced-and-how-did-you-solve-it" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> Use STAR. Pick the batch optimization — it's quantified and shows depth.
+<strong>[Answer]</strong> "A high-volume billing batch job was taking 45+ minutes and risked breaching processing windows as data grew. I profiled it and found two root causes: row-by-row DB operations and a single-threaded design. I refactored to <strong>bulk/batch DB operations</strong> to slash round-trips, and introduced <strong>Java multithreading</strong> to parallelize independent units of work, while carefully handling thread-safety and partial-failure isolation since billing data can't be corrupted. Result: 45+ minutes to under 2 — about 95% reduction — and it scaled as volume grew."
+- ↳ <em>"How did you ensure correctness with multithreading?"</em> → See C-section (thread pools, immutability, idempotency, partial-failure handling).
+- ↳ <em>"How did you measure the improvement?"</em> → "Benchmarked runtime before/after on representative data, plus monitored in production."</p>
+<h3 id="a3-what-performance-improvements-have-you-implemented">A3. "What performance improvements have you implemented?"<a class="headerlink" href="#a3-what-performance-improvements-have-you-implemented" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> Three quantified wins: (1) batch 45min→2min via bulk ops + multithreading; (2) <strong>60% ORM throughput</strong> boost by refactoring persistence cross-cutting logic from AspectJ to Spring AOP and resolving <strong>N+1 query</strong> patterns; (3) <strong>80% MTTR reduction</strong> via a proactive monitoring/alerting framework (shell + cron).
+- ↳ <em>"Tell me more about the N+1 fix."</em> → See E-section.
+- ↳ <em>"AspectJ vs Spring AOP — why switch?"</em> → See D-section.</p>
+<h3 id="a4-how-do-you-handle-production-issues-p1-defects">A4. "How do you handle production issues / P1 defects?"<a class="headerlink" href="#a4-how-do-you-handle-production-issues-p1-defects" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> Show a calm, systematic process + ownership.
+<strong>[Answer]</strong> "First, assess impact and communicate to stakeholders. Then reproduce/triage using logs and monitoring — I built a shell+cron alerting framework that cut our MTTR by 80% precisely for fast detection. Identify root cause, apply a minimal safe fix or rollback, validate, then a post-mortem to add a guardrail — for example, after recurring data inconsistencies I added 19+ automated SQL structural checks into the deployment pipeline so the class of issue couldn't recur."
+- ↳ <em>"Give a specific P1 example."</em> → Prepare one real incident with the timeline.
+- ↳ <em>"How do you prevent recurrence?"</em> → automated checks, monitoring, runbooks.</p>
+<h3 id="a5-what-design-decisions-did-you-personally-make-and-why">A5. "What design decisions did you personally make and why?"<a class="headerlink" href="#a5-what-design-decisions-did-you-personally-make-and-why" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "The AspectJ → Spring AOP migration was my call — AspectJ compile-time weaving was causing tight coupling and N+1 issues in the persistence layer; Spring AOP gave cleaner separation and let me fix the query patterns, yielding 60% throughput. I also designed the pre-deployment SQL validation engine to make multi-region deployments safe."</p>
+<h3 id="a6-why-are-you-looking-to-switch-from-amdocs-bridges-to-hr">A6. "Why are you looking to switch from Amdocs?" (bridges to HR)<a class="headerlink" href="#a6-why-are-you-looking-to-switch-from-amdocs-bridges-to-hr" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> Positive framing: growth, broader exposure to modern distributed systems / cloud, scale. Never bad-mouth current employer.</p>
+<hr />
+<h1 id="section-b-core-java-java-821-features">SECTION B — Core Java &amp; Java 8–21 Features<a class="headerlink" href="#section-b-core-java-java-821-features" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>LTIMindtree focuses on <em>why/where</em>, not textbook definitions. Java 8 Streams + internals are guaranteed.</p>
+</blockquote>
+<h3 id="b1-what-java-8-features-have-you-used-and-why">B1. "What Java 8 features have you used and why?"<a class="headerlink" href="#b1-what-java-8-features-have-you-used-and-why" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Lambdas, Streams, <code>Optional</code>, functional interfaces, default methods, the new Date/Time API. In billing data-processing I use Streams heavily for transforming and aggregating collections cleanly, and <code>Optional</code> to avoid NPEs in nullable lookups."
+- ↳ leads naturally into Streams questions below.</p>
+<h3 id="b2-explain-the-stream-api-pipeline-how-does-lazy-evaluation-work">B2. "Explain the Stream API pipeline. How does lazy evaluation work?"<a class="headerlink" href="#b2-explain-the-stream-api-pipeline-how-does-lazy-evaluation-work" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> Show you understand source → intermediate (lazy) → terminal (eager) and that nothing runs until the terminal op.
+<strong>[Answer]</strong> "A stream pipeline = a source, zero+ intermediate operations, and a terminal operation. Intermediate ops (<code>map</code>, <code>filter</code>) are <strong>lazy</strong> — they just build a pipeline and return a new stream. Nothing executes until a <strong>terminal</strong> op (<code>collect</code>, <code>forEach</code>, <code>reduce</code>) is invoked, which pulls elements through. Laziness enables optimizations like short-circuiting (<code>findFirst</code>, <code>limit</code>) and fusing operations in a single pass."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A stream is like a <strong>recipe</strong>, not the cooked meal. Each <code>map</code>/<code>filter</code> is an instruction written down ("chop onions", "add salt") — nothing actually cooks. The moment you say <code>collect</code>/<code>forEach</code> (the terminal op), the chef finally turns on the stove and runs all instructions in one pass. That's why <code>filter().map()</code> doesn't loop twice — it processes each element once as it flows through.
+<strong>🔎 Deeper:</strong> "Short-circuiting" means if you only need the first match (<code>findFirst</code>) or first 5 (<code>limit</code>), the stream stops early instead of processing the whole list — huge for large billing datasets.
+- ↳ <em>"Intermediate vs terminal operations?"</em> → "Intermediate return a Stream and are lazy; terminal produce a result/side-effect and trigger execution."
+- ↳ <em>"<code>map</code> vs <code>flatMap</code>?"</em> → "<code>map</code> is 1→1 transform; <code>flatMap</code> flattens nested structures (Stream of Streams → single Stream)."
+- ↳ <em>"Streams vs loops — when not to use Streams?"</em> → "Avoid for very hot, simple loops or where readability/debuggability suffers; Streams shine for declarative transforms."</p>
+</blockquote>
+<h3 id="b3-coding-given-a-list-of-employees-sort-by-salary-desc-then-name-asc">B3. <strong>CODING:</strong> "Given a list of employees, sort by salary (desc) then name (asc)."<a class="headerlink" href="#b3-coding-given-a-list-of-employees-sort-by-salary-desc-then-name-asc" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">employees</span><span class="p">.</span><span class="na">stream</span><span class="p">()</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="p">.</span><span class="na">sorted</span><span class="p">(</span><span class="n">Comparator</span><span class="p">.</span><span class="na">comparing</span><span class="p">(</span><span class="n">Employee</span><span class="p">::</span><span class="n">getSalary</span><span class="p">).</span><span class="na">reversed</span><span class="p">()</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">            </span><span class="p">.</span><span class="na">thenComparing</span><span class="p">(</span><span class="n">Employee</span><span class="p">::</span><span class="n">getName</span><span class="p">))</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p">.</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">toList</span><span class="p">());</span>
+</code></pre></div>
+- ↳ <em>"Group employees by department."</em> → <code>Collectors.groupingBy(Employee::getDept)</code>
+- ↳ <em>"Count employees per department."</em> → <code>groupingBy(Employee::getDept, Collectors.counting())</code>
+- ↳ <em>"Highest-paid per department."</em> → <code>groupingBy(dept, collectingAndThen(maxBy(comparing(salary)), Optional::get))</code></p>
+<h3 id="b4-difference-between-map-and-reduce-what-does-reduce-do">B4. "Difference between <code>map</code> and <code>reduce</code>? What does <code>reduce</code> do?"<a class="headerlink" href="#b4-difference-between-map-and-reduce-what-does-reduce-do" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>map</code> transforms each element; <code>reduce</code> combines all elements into a single result using an identity + accumulator, e.g. summing salaries: <code>.reduce(0, Integer::sum)</code>."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <code>map</code> = change every item (convert each price to USD). <code>reduce</code> = squash the whole list into one value (add all prices into a single total). The "identity" (the <code>0</code>) is the starting value, and the accumulator (<code>Integer::sum</code>) is how you fold each new item into the running result.</p>
+</blockquote>
+<h3 id="b5-explain-the-internal-working-of-hashmap">B5. "Explain the internal working of HashMap."<a class="headerlink" href="#b5-explain-the-internal-working-of-hashmap" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> This is a LTIMindtree favorite. Hit: hashing, buckets, collisions, treeification, resize.
+<strong>[Answer]</strong> "HashMap stores entries in an array of buckets. The key's <code>hashCode()</code> is hashed (with a spread function) to pick a bucket index. Collisions form a linked list; since Java 8, once a bucket exceeds 8 entries (and table ≥ 64) it converts to a <strong>red-black tree</strong> for O(log n) lookup. Default load factor 0.75 — when size exceeds capacity×0.75 it <strong>resizes</strong> (doubles) and rehashes. Equal keys are found via <code>equals()</code> after hash match."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Think of a wall of <strong>labeled drawers</strong>. To store a key-value pair, <code>hashCode()</code> tells you <em>which drawer</em> to open (fast, O(1)). If two keys land in the same drawer (a "collision"), they form a small chain inside it, and <code>equals()</code> checks each one to find the exact match. If a drawer gets too crowded (8+), Java reorganizes it into a sorted tree so searching it stays fast. When the whole wall gets ~75% full, Java builds a bigger wall (doubles capacity) and redistributes everything.
+<strong>🔎 Deeper:</strong> <code>hashCode()</code> = "which drawer" (bucket index). <code>equals()</code> = "is this the exact item". That's <em>why</em> both must agree — wrong hashCode sends you to the wrong drawer, wrong equals fails to recognize the item.
+- ↳ <em>"Why override both <code>equals</code> and <code>hashCode</code>?"</em> → "If two equal objects have different hashCodes they land in different buckets and the map breaks. Contract: equal objects must have equal hashCodes."
+- ↳ <em>"What happens with a bad hashCode (all same)?"</em> → "All entries in one bucket → O(n) / O(log n) after treeify; defeats the purpose."
+- ↳ <em>"HashMap vs ConcurrentHashMap?"</em> → "HashMap isn't thread-safe; ConcurrentHashMap uses bucket/segment-level locking (CAS + synchronized on bins in Java 8) for safe concurrent access without locking the whole map."
+- ↳ <em>"HashMap vs Hashtable?"</em> → "Hashtable is legacy, fully synchronized, no null keys; HashMap allows one null key, not synchronized."</p>
+</blockquote>
+<h3 id="b6-oop-principles-and-where-you-applied-them">B6. "OOP principles — and where you applied them."<a class="headerlink" href="#b6-oop-principles-and-where-you-applied-them" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> Encapsulation, Inheritance, Polymorphism, Abstraction — tie each to billing components (e.g., abstraction for charge models, polymorphism for recurring vs non-recurring charge handling).</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong>Encapsulation</strong> = hide the internals, expose buttons (like a TV remote — you press a button, you don't rewire the TV). <strong>Inheritance</strong> = a child class reuses a parent's traits (a <code>SavingsAccount</code> is an <code>Account</code>). <strong>Polymorphism</strong> = same command, different behavior (<code>calculateCharge()</code> behaves differently for recurring vs one-time charges). <strong>Abstraction</strong> = focus on <em>what</em> something does, not <em>how</em> (you <code>drive()</code> a car without knowing the engine internals).
+<strong>🔎 Real tie-in:</strong> "In billing I defined a common charge abstraction and let recurring/non-recurring implementations override the calculation — adding a new charge type didn't require touching existing code (open/closed principle)."</p>
+</blockquote>
+<h3 id="b7-abstract-class-vs-interface-java-8">B7. "Abstract class vs interface (Java 8+)?"<a class="headerlink" href="#b7-abstract-class-vs-interface-java-8" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Interface: contract, multiple inheritance of type, now allows default/static methods; no state (only constants). Abstract class: can hold state, constructors, partial implementation, single inheritance. Use interface for capability, abstract class for shared base with state."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> An <strong>interface</strong> is a <em>job description</em> — "anything that's <code>Comparable</code> must be able to compare itself" — it says what you must do, not how. An <strong>abstract class</strong> is a <em>half-built template</em> — it already has some working parts (fields, common methods) and leaves a few blanks for children to fill. Rule of thumb: "can-do capability" → interface; "is-a family with shared code" → abstract class.</p>
+</blockquote>
+<h3 id="b8-final-finally-finalize">B8. "<code>final</code>, <code>finally</code>, <code>finalize</code>?"<a class="headerlink" href="#b8-final-finally-finalize" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>final</code> = constant/non-overridable/non-extendable; <code>finally</code> = block that always runs after try/catch; <code>finalize</code> = deprecated GC hook, don't use."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> They sound alike but are unrelated. <strong><code>final</code></strong> = "locked, can't change" (a final variable can't be reassigned, a final class can't be extended). <strong><code>finally</code></strong> = the "no matter what happens, do this on the way out" block — like always locking the door whether you left happy or in a panic (used to close files/connections). <strong><code>finalize</code></strong> = an old cleanup method the garbage collector <em>might</em> call before destroying an object — unreliable and deprecated, so don't use it.</p>
+</blockquote>
+<h3 id="b9-vs-equals-string-pool">B9. "<code>==</code> vs <code>.equals()</code>? String pool?"<a class="headerlink" href="#b9-vs-equals-string-pool" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>==</code> compares references; <code>.equals()</code> compares value (as overridden). String literals are interned in the string pool, so <code>==</code> may be true for literals but not for <code>new String()</code>."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <code>==</code> asks "are these the <em>same physical object</em> (same address)?" <code>.equals()</code> asks "do they <em>mean the same thing</em> (same content)?" Two houses can be identical inside (<code>equals</code> true) but at different addresses (<code>==</code> false). The <strong>string pool</strong> is Java reusing identical literal strings to save memory, which is why <code>"hi" == "hi"</code> is true but <code>new String("hi") == "hi"</code> is false (one forced a brand-new object).</p>
+</blockquote>
+<h3 id="b10-checked-vs-unchecked-exceptions-how-do-you-design-exception-handling">B10. "Checked vs unchecked exceptions. How do you design exception handling?"<a class="headerlink" href="#b10-checked-vs-unchecked-exceptions-how-do-you-design-exception-handling" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Checked = compile-time, recoverable (IOException); unchecked = runtime, programming errors (NPE). I use custom exceptions + centralized handling (<code>@ControllerAdvice</code> in Spring), fail fast, never swallow exceptions, and log with context."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong>Checked</strong> exceptions are problems the outside world can cause that you should plan for — like "file not found" or "network down" — Java forces you to handle or declare them. <strong>Unchecked</strong> exceptions are usually <em>your own bugs</em> — like calling a method on a null object — the compiler doesn't force handling because the real fix is to correct the code. "Never swallow" = don't write an empty <code>catch{}</code> that hides the error; always log or rethrow with context.</p>
+</blockquote>
+<h3 id="b11-modern-java-1621-which-features-matter-and-why">B11. "Modern Java (16–21): which features matter and why?"<a class="headerlink" href="#b11-modern-java-1621-which-features-matter-and-why" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> You claim Java 21 on resume — be ready.
+<strong>[Answer]</strong> "Records (concise immutable DTOs), sealed classes (controlled hierarchies), pattern matching for <code>switch</code>/<code>instanceof</code> (cleaner type logic), text blocks (readable SQL/JSON), and <strong>Virtual Threads (Project Loom, Java 21)</strong> — lightweight threads that make high-throughput I/O-bound code scale without reactive complexity."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong>Record</strong> = a one-line way to make a data-holding class (Java auto-writes the constructor, getters, <code>equals</code>, <code>hashCode</code>). <strong>Sealed class</strong> = "only these specific classes are allowed to extend me" (controlled family). <strong>Pattern matching</strong> = check a type and use it in one step instead of cast-then-use. <strong>Text block</strong> = multi-line strings with <code>"""</code> so SQL/JSON is readable. <strong>Virtual threads</strong> = instead of hiring 200 expensive full-time workers (OS threads), you hire millions of cheap temps that the JVM parks when they're just waiting on I/O — perfect for code that spends most of its time waiting on DB/network.
+- ↳ <em>"Virtual threads vs platform threads?"</em> → "Virtual threads are cheap (millions possible), scheduled by the JVM onto carrier threads; great for blocking I/O. Platform threads map 1:1 to OS threads and are expensive."
+<strong>💡 In plain terms:</strong> A platform thread is a dedicated employee sitting idle while waiting for a reply (wasteful). A virtual thread steps aside the moment it's waiting, freeing the real worker to do someone else's task — so a handful of real threads can serve thousands of virtual ones.
+- ↳ <em>"Virtual Threads vs WebFlux/Reactive?"</em> → "Virtual threads: keep simple synchronous, blocking style, easy debugging, I/O-bound. WebFlux: streaming, backpressure, fully non-blocking stack. Prefer virtual threads for existing synchronous codebases."
+- ↳ <em>"What's thread pinning?"</em> → "When a virtual thread holds a <code>synchronized</code> block during blocking I/O it pins the carrier thread; use <code>ReentrantLock</code> instead."</p>
+</blockquote>
+<h3 id="b12-what-did-the-java-6-java-21-migration-involve">B12. "What did the Java 6 → Java 21 migration involve?"<a class="headerlink" href="#b12-what-did-the-java-6-java-21-migration-involve" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Upgrading language level and dependencies, replacing removed/deprecated APIs, <strong>javax → jakarta</strong> namespace changes for persistence, Hibernate 3 → 6 compatibility fixes, retesting heavily. Payoff: removed tech debt, unlocked newer APIs and performance features."
+- ↳ <em>"Why is Java 17 the minimum for Spring Boot 3?"</em> → "Spring Framework 6 baselines on Java 17 and Jakarta EE 9+; it drops javax."</p>
+<hr />
+<h1 id="section-c-multithreading-concurrency">SECTION C — Multithreading &amp; Concurrency<a class="headerlink" href="#section-c-multithreading-concurrency" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>You used multithreading in the batch optimization — expect a deep dive.</p>
+</blockquote>
+<h3 id="c1-how-did-you-use-multithreading-in-your-batch-optimization">C1. "How did you use multithreading in your batch optimization?"<a class="headerlink" href="#c1-how-did-you-use-multithreading-in-your-batch-optimization" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "I split independent record batches across an <code>ExecutorService</code> thread pool so they process in parallel instead of sequentially. I kept shared state minimal/immutable, made each unit idempotent, and isolated failures so one bad batch didn't corrupt others or fail the whole job."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Imagine one cashier serving 1000 customers one by one (single-threaded, slow). I opened multiple counters (threads) so customers are served in parallel. "Idempotent" = if a counter has to redo a customer, the result is the same (no double-charging) — critical for billing. "Failure isolation" = if one counter jams, the others keep serving instead of shutting the whole store.
+- ↳ <em>"How did you size the thread pool?"</em> → "Based on workload type (I/O- vs CPU-bound) and DB connection pool limits — no point having more threads than DB connections."
+- ↳ <em>"How did you handle partial failures?"</em> → "Per-batch try/catch, collect failures, retry/idempotency, and ensure committed work stayed consistent."</p>
+</blockquote>
+<h3 id="c2-runnable-vs-callable-future">C2. "Runnable vs Callable? Future?"<a class="headerlink" href="#c2-runnable-vs-callable-future" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>Runnable</code> returns nothing, can't throw checked exceptions; <code>Callable&lt;V&gt;</code> returns a value and can throw. <code>Future</code> represents the pending result; <code>future.get()</code> blocks for it."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong><code>Runnable</code></strong> = "go do this task" (fire and forget, no reply). <strong><code>Callable</code></strong> = "go do this and <em>bring me back an answer</em>." A <strong><code>Future</code></strong> is the claim ticket you get while the task runs in the background — like a dry-cleaning receipt. When you want the result you call <code>future.get()</code>, which waits at the counter until it's ready.</p>
+</blockquote>
+<h3 id="c3-how-do-you-create-a-thread-pool-why-not-new-thread-everywhere">C3. "How do you create a thread pool? Why not <code>new Thread()</code> everywhere?"<a class="headerlink" href="#c3-how-do-you-create-a-thread-pool-why-not-new-thread-everywhere" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Use <code>ExecutorService</code> via <code>Executors</code>/<code>ThreadPoolExecutor</code>. Raw threads are unbounded (resource exhaustion), no reuse, no queuing. Pools reuse threads, bound concurrency, and give lifecycle control."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A thread pool is a fixed team of workers pulling tasks off a shared to-do list. <code>new Thread()</code> everywhere is like hiring a brand-new worker for every single task and firing them after — expensive, and if 10,000 tasks arrive you get 10,000 workers and the machine crashes. A pool caps the team size and queues the rest.
+- ↳ <em>"FixedThreadPool vs CachedThreadPool?"</em> → "Fixed = bounded, predictable; Cached = grows on demand, good for many short tasks, risky under load."</p>
+</blockquote>
+<h3 id="c4-how-do-you-make-code-thread-safe">C4. "How do you make code thread-safe?"<a class="headerlink" href="#c4-how-do-you-make-code-thread-safe" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Prefer immutability, avoid shared mutable state, use <code>synchronized</code>/<code>ReentrantLock</code>, atomic classes (<code>AtomicInteger</code>), concurrent collections (<code>ConcurrentHashMap</code>), and thread-confinement."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Trouble only happens when multiple threads write to the <em>same shared thing</em> at once. So the safest fix is to remove the sharing: make data <strong>immutable</strong> (read-only can't be corrupted) or give each thread its own copy (<strong>thread-confinement</strong>). If they <em>must</em> share, put a lock around it (only one at a time) or use ready-made thread-safe tools (<code>AtomicInteger</code>, <code>ConcurrentHashMap</code>). Think of a shared whiteboard: either make it read-only, give everyone their own, or require a "talking stick" before writing.</p>
+</blockquote>
+<h3 id="c5-synchronized-vs-reentrantlock">C5. "<code>synchronized</code> vs <code>ReentrantLock</code>?"<a class="headerlink" href="#c5-synchronized-vs-reentrantlock" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>synchronized</code> is simpler, JVM-managed. <code>ReentrantLock</code> adds tryLock, timed lock, fairness, interruptibility — and is preferred with virtual threads to avoid pinning."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Both are "only one thread at a time" locks. <strong><code>synchronized</code></strong> is the basic automatic door — simple, locks on entry, unlocks on exit, you can't customize it. <strong><code>ReentrantLock</code></strong> is the smart door with extra buttons: you can <em>try</em> the handle and walk away if it's busy (<code>tryLock</code>), wait only a few seconds, or cancel waiting (interruptible). More power, but you must remember to unlock it yourself (in a <code>finally</code>).</p>
+</blockquote>
+<h3 id="c6-volatile-what-problem-does-it-solve">C6. "<code>volatile</code> — what problem does it solve?"<a class="headerlink" href="#c6-volatile-what-problem-does-it-solve" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Guarantees visibility of a variable across threads (reads/writes go to main memory) and prevents reordering, but it does NOT give atomicity for compound ops like <code>i++</code>."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Each thread can keep a <em>private cached copy</em> of a variable, so one thread's update may be invisible to another (it's reading a stale sticky-note). <code>volatile</code> forces everyone to read/write the <em>shared whiteboard</em> directly, so updates are always seen. But it does NOT make <code>i++</code> safe, because <code>i++</code> is really three steps (read, add, write) and two threads can still interleave — for that you need <code>AtomicInteger</code> or <code>synchronized</code>.</p>
+</blockquote>
+<h3 id="c7-deadlock-cause-and-prevention">C7. "Deadlock — cause and prevention?"<a class="headerlink" href="#c7-deadlock-cause-and-prevention" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Two threads each holding a lock the other needs. Prevent by consistent lock ordering, lock timeouts (<code>tryLock</code>), and minimizing lock scope."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Two people cooking: A is holding the knife and waiting for the cutting board; B is holding the board and waiting for the knife. Neither lets go — frozen forever. Fix: agree everyone always grabs the knife <em>first</em>, then the board (consistent lock ordering), or give up after waiting a few seconds (<code>tryLock</code> timeout).</p>
+</blockquote>
+<h3 id="c8-concurrenthashmap-internals">C8. "<code>ConcurrentHashMap</code> internals?"<a class="headerlink" href="#c8-concurrenthashmap-internals" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Java 8 uses per-bucket synchronization + CAS on bin heads instead of segment locks; reads are mostly lock-free. Allows high concurrency without locking the whole map."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A normal <code>HashMap</code> isn't safe when many threads write at once; the old fix (<code>Hashtable</code>/<code>synchronizedMap</code>) locked the <em>entire</em> map so only one thread could touch it — a traffic jam. <code>ConcurrentHashMap</code> only locks the <em>individual drawer (bucket)</em> being modified, so threads working on different drawers don't block each other. Reads usually need no lock at all. Result: many threads work in parallel safely.</p>
+</blockquote>
+<h3 id="c9-what-is-completablefuture">C9. "What is <code>CompletableFuture</code>?"<a class="headerlink" href="#c9-what-is-completablefuture" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "An async composition API — chain (<code>thenApply</code>, <code>thenCompose</code>), combine, and handle exceptions (<code>exceptionally</code>) without blocking, running on a pool (default ForkJoinPool)."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A plain <code>Future</code> only lets you <em>wait</em> for a result. <code>CompletableFuture</code> lets you set up a <strong>chain of "when this finishes, then do that"</strong> steps without blocking — like ordering food online and saying "when it's cooked, then pack it, then notify me," instead of standing in the kitchen waiting. You can also run several in parallel and combine results, and attach an <code>exceptionally</code> step for if something fails.</p>
+</blockquote>
+<hr />
+<h1 id="section-d-spring-spring-boot">SECTION D — Spring &amp; Spring Boot<a class="headerlink" href="#section-d-spring-spring-boot" title="Permanent link">&para;</a></h1>
+<h3 id="d1-what-is-spring-boot-and-why-use-it-over-spring-mvc">D1. "What is Spring Boot and why use it over Spring MVC?"<a class="headerlink" href="#d1-what-is-spring-boot-and-why-use-it-over-spring-mvc" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Spring Boot adds auto-configuration, starter dependencies, embedded servers, and production-ready actuators on top of Spring — removes boilerplate XML/config so you focus on business logic."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Plain Spring is an <strong>empty flat</strong> — powerful, but you must wire the electricity, plumbing, and furniture (lots of XML/config) yourself. Spring Boot is the <strong>fully furnished apartment</strong> — sensible defaults are already set up, an embedded Tomcat server is built in, so you move straight to writing business logic. "Convention over configuration."</p>
+</blockquote>
+<h3 id="d2-how-does-auto-configuration-work">D2. "How does auto-configuration work?"<a class="headerlink" href="#d2-how-does-auto-configuration-work" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>@SpringBootApplication</code> enables <code>@EnableAutoConfiguration</code>. Spring Boot scans the classpath and, via conditional annotations (<code>@ConditionalOnClass</code>, <code>@ConditionalOnMissingBean</code>), auto-creates beans — e.g., a DataSource if a JDBC driver is present. You can override any of it."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Spring Boot looks at what libraries (jars) you've added and <em>guesses</em> what you want. "Oh, you put a database driver on the classpath? You probably want a database connection — here, I made one for you." If you define your own, it backs off (<code>@ConditionalOnMissingBean</code>). It's a smart assistant that sets things up but never overrides your explicit choices.</p>
+</blockquote>
+<h3 id="d3-difference-between-component-service-repository-controller">D3. "Difference between <code>@Component</code>, <code>@Service</code>, <code>@Repository</code>, <code>@Controller</code>?"<a class="headerlink" href="#d3-difference-between-component-service-repository-controller" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "All are stereotypes (specialized <code>@Component</code>). <code>@Service</code> = business layer (semantic), <code>@Repository</code> = data layer + translates persistence exceptions into Spring's <code>DataAccessException</code>, <code>@Controller</code>/<code>@RestController</code> = web layer. <code>@RestController</code> = <code>@Controller</code> + <code>@ResponseBody</code>."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> They're all the same thing under the hood — "Spring, please manage this object" — but each is a <strong>label that says which floor of the building it belongs to</strong>: <code>@Controller</code> (reception/web), <code>@Service</code> (business logic), <code>@Repository</code> (data/DB room). The labels make the code self-documenting, and <code>@Repository</code> gets a bonus: it auto-translates messy DB-vendor exceptions into Spring's clean, consistent ones.</p>
+</blockquote>
+<h3 id="d4-controller-vs-restcontroller-asked-verbatim-at-ltimindtree">D4. "Controller vs RestController?" <em>(asked verbatim at LTIMindtree)</em><a class="headerlink" href="#d4-controller-vs-restcontroller-asked-verbatim-at-ltimindtree" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>@Controller</code> returns view names (MVC); <code>@RestController</code> adds <code>@ResponseBody</code> so return values are serialized directly to the HTTP response body (JSON) — used for REST APIs."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <code>@Controller</code> returns the <em>name of a web page</em> to render and show in a browser (old-style server-rendered apps). <code>@RestController</code> returns <em>raw data</em> (usually JSON) straight back to the caller — what you want for APIs that a frontend or another service consumes. <code>@RestController</code> is literally <code>@Controller</code> + "send the data itself, not a page name."</p>
+</blockquote>
+<h3 id="d5-what-is-dependency-injection-types">D5. "What is Dependency Injection? Types?"<a class="headerlink" href="#d5-what-is-dependency-injection-types" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "IoC: the container creates and wires dependencies instead of the class doing <code>new</code>. Types: constructor (preferred — immutable, testable, no nulls), setter, field. Promotes loose coupling and testability."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Without DI, a class builds its own tools: <code>new EmailService()</code> — now it's welded to that exact tool and you can't swap it for a fake one in tests. With DI, the tools are <em>delivered to you</em> ready-made ("give me an <code>EmailService</code>, I don't care who builds it"). <strong>Inversion of Control</strong> = you don't go get your dependencies; the Spring container hands them to you. This is what makes code loosely coupled and easy to test (you can inject a mock).
+- ↳ <em>"Why is constructor injection preferred?"</em> → "Enforces required deps, supports immutability/final fields, easier unit testing, avoids circular-dependency surprises."
+<strong>💡 In plain terms:</strong> Constructor injection means the object <em>can't even be created</em> without its required dependencies — so you never end up with a half-built object that NPEs later. Field injection hides dependencies and makes testing harder.</p>
+</blockquote>
+<h3 id="d6-bean-scopes-is-singleton-thread-safe">D6. "Bean scopes? Is singleton thread-safe?"<a class="headerlink" href="#d6-bean-scopes-is-singleton-thread-safe" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "singleton (default), prototype, request, session, application. Singleton beans are shared — they're only thread-safe if stateless. Keep beans stateless."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A bean's "scope" = how many copies Spring makes. <strong>Singleton</strong> (default) = one shared instance for the whole app (like one shared office printer). <strong>Prototype</strong> = a fresh instance every time you ask. <strong>Request/session</strong> = one per web request / per user session. The catch: because a singleton is <em>shared</em> by all threads, if it stores changing data (state), threads will clobber each other — so keep singletons <strong>stateless</strong> (no mutable fields), just behavior.</p>
+</blockquote>
+<h3 id="d7-how-do-you-do-global-exception-handling">D7. "How do you do global exception handling?"<a class="headerlink" href="#d7-how-do-you-do-global-exception-handling" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>@RestControllerAdvice</code> + <code>@ExceptionHandler</code> methods to centralize handling and return consistent error responses; <code>@ResponseStatus</code> for status codes. Avoids repetitive try/catch in controllers."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Instead of every controller wrapping everything in try/catch (repetitive, inconsistent error messages), you set up <strong>one central error desk</strong>. Any exception thrown anywhere bubbles up to <code>@RestControllerAdvice</code>, which converts it into a clean, consistent JSON error response (same shape every time). One place to maintain, uniform API errors.</p>
+</blockquote>
+<h3 id="d8-explain-spring-aop-you-migrated-from-aspectj-explain-that-your-resume">D8. "Explain Spring AOP. You migrated from AspectJ — explain that." <em>(your resume)</em><a class="headerlink" href="#d8-explain-spring-aop-you-migrated-from-aspectj-explain-that-your-resume" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> Strong personal story. Define AOP, then your migration.
+<strong>[Answer]</strong> "AOP modularizes cross-cutting concerns (logging, transactions, persistence hooks) via aspects, advice, pointcuts. Spring AOP uses runtime <strong>proxies</strong> (JDK dynamic / CGLIB); AspectJ does compile/load-time <strong>weaving</strong>. I migrated our persistence-layer cross-cutting logic from AspectJ to Spring AOP — AspectJ weaving was causing tight coupling and contributing to N+1 query patterns. Spring AOP gave cleaner separation and let me resolve those patterns, improving ORM throughput by 60%."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A "cross-cutting concern" is something you need in <em>many</em> places — logging, security checks, transactions. Without AOP you'd copy-paste that code into every method (messy). AOP lets you write it <strong>once</strong> and say "automatically run this before/after every method matching this pattern." Think of it as a <strong>wrapper/decorator</strong> that adds behavior around your real method without editing the method itself.
+<strong>🔎 Proxy vs weaving (the key follow-up):</strong> Spring AOP wraps your bean in an invisible <strong>proxy</strong> object at <em>runtime</em> — calls go through the wrapper first. AspectJ physically <strong>rewrites the bytecode</strong> at <em>compile/load time</em> (more powerful, but heavier and more coupled). I moved us off AspectJ because that compile-time weaving was tangling our persistence layer and triggering N+1 queries; runtime proxies gave cleaner separation and let me fix the query patterns → +60% throughput.
+- ↳ <em>"Spring AOP limitations?"</em> → "Only works on Spring-managed beans, method-level join points only, self-invocation bypasses the proxy. AspectJ is more powerful (fields, constructors) but heavier."</p>
+</blockquote>
+<h3 id="d9-how-do-transactions-work-in-spring-transactional">D9. "How do transactions work in Spring? <code>@Transactional</code>?"<a class="headerlink" href="#d9-how-do-transactions-work-in-spring-transactional" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>@Transactional</code> wraps a method in a proxy that begins a transaction, commits on success, rolls back on runtime exceptions. Backed by a <code>PlatformTransactionManager</code>."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A transaction is an <strong>all-or-nothing</strong> bundle. Classic example: transferring money — debit A <em>and</em> credit B must both succeed, or <em>both</em> be undone. You never want A debited but B not credited. <code>@Transactional</code> automatically wraps your method so: if it finishes cleanly → commit (save everything); if it throws → rollback (undo everything). Hugely relevant to billing accuracy.
+- ↳ <em>"Transaction propagation?"</em> → "REQUIRED (default, join or create), REQUIRES_NEW (suspend + new), NESTED, SUPPORTS, MANDATORY, NEVER. Know REQUIRED vs REQUIRES_NEW well."
+<strong>💡 In plain terms:</strong> Propagation = "what happens when a transactional method calls <em>another</em> transactional method." <strong>REQUIRED</strong> = "join the existing bundle if there is one, else start a new one" (default). <strong>REQUIRES_NEW</strong> = "pause the outer bundle and run me in my own independent bundle" — useful for things like audit logging that must commit even if the main work rolls back.
+- ↳ <em>"Isolation levels?"</em> → "READ_UNCOMMITTED, READ_COMMITTED (typical default), REPEATABLE_READ, SERIALIZABLE — trade consistency vs concurrency (dirty/non-repeatable/phantom reads)."
+<strong>💡 In plain terms:</strong> Isolation = how much one transaction is shielded from others running at the same time. Higher isolation = more correct but slower (more locking). <strong>Dirty read</strong> = you see another transaction's <em>uncommitted</em> change that might get rolled back. <strong>Non-repeatable read</strong> = you read a row twice and get different values because someone updated it in between. <strong>Phantom read</strong> = you run the same query twice and new rows <em>appeared</em>. Each level up the ladder removes one of these problems.
+- ↳ <em>"Does <code>@Transactional</code> work on a private method or self-invocation?"</em> → "No — proxy-based, so it must be a public method called from outside the bean."
+- ↳ <em>"Checked exception rollback?"</em> → "By default only unchecked roll back; use <code>rollbackFor=Exception.class</code> for checked."</p>
+</blockquote>
+<h3 id="d10-how-do-you-connect-two-databases-in-one-spring-boot-app-asked-verbatim">D10. "How do you connect two databases in one Spring Boot app?" <em>(asked verbatim)</em><a class="headerlink" href="#d10-how-do-you-connect-two-databases-in-one-spring-boot-app-asked-verbatim" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Define two <code>DataSource</code> beans (with <code>@ConfigurationProperties</code>), mark one <code>@Primary</code>, create separate <code>EntityManagerFactory</code> and <code>TransactionManager</code> beans for each, and split entities/repositories into separate packages scoped to each config. Useful in my work since billing involves offline/online DB instances."</p>
+<h3 id="d11-what-is-spring-boot-actuator">D11. "What is Spring Boot Actuator?"<a class="headerlink" href="#d11-what-is-spring-boot-actuator" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Production-ready endpoints — health, metrics, info, env — for monitoring; integrates with Micrometer/Prometheus."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Actuator is the <strong>dashboard/health monitor</strong> for your app — built-in endpoints that answer "are you alive?" (<code>/health</code>), "how's memory/CPU/requests?" (<code>/metrics</code>), "what config are you running?" — so ops tools and load balancers can watch your app in production without you writing that plumbing. (Ties to your monitoring/MTTR work.)</p>
+</blockquote>
+<h3 id="d12-how-do-you-externalize-configuration-manage-profiles">D12. "How do you externalize configuration / manage profiles?"<a class="headerlink" href="#d12-how-do-you-externalize-configuration-manage-profiles" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>application.yml</code>/<code>.properties</code>, <code>@Value</code>, <code>@ConfigurationProperties</code>, and Spring <strong>profiles</strong> (<code>dev</code>/<code>prod</code>) for environment-specific config; secrets via vault/env vars."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> You never hardcode things like DB URLs or passwords in code. You put them in config files/environment variables so the <em>same</em> build runs differently per environment. <strong>Profiles</strong> are named config sets (<code>dev</code>, <code>prod</code>) — flip a switch and the app picks up the right DB, URLs, etc. Like one appliance that adapts to whichever country's power socket you plug it into.</p>
+</blockquote>
+<h3 id="d13-unit-testing-in-spring-junitmockito">D13. "Unit testing in Spring — JUnit/Mockito?"<a class="headerlink" href="#d13-unit-testing-in-spring-junitmockito" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "JUnit 5 for tests, Mockito to mock dependencies, <code>@SpringBootTest</code> for integration, <code>@WebMvcTest</code>/<code>@DataJpaTest</code> for slices, <code>@MockBean</code> to mock Spring beans. I focus tests on business logic and edge cases."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A unit test checks one piece of logic in isolation. But your class depends on others (a DB, an email service) you don't want to really call — so you use <strong>Mockito to create fakes (mocks)</strong> that return canned answers, like a crash-test dummy standing in for a real passenger. That way you test <em>your</em> logic, fast and repeatably, without spinning up the whole system. <code>@SpringBootTest</code> is the opposite end — start the real app for full integration tests.</p>
+</blockquote>
+<hr />
+<h1 id="section-e-hibernate-jpa-database-sql">SECTION E — Hibernate / JPA &amp; Database / SQL<a class="headerlink" href="#section-e-hibernate-jpa-database-sql" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Your deep zone — Oracle, PL/SQL, query optimization, N+1, CDC.</p>
+</blockquote>
+<h3 id="e1-difference-between-jpa-and-hibernate">E1. "Difference between JPA and Hibernate?"<a class="headerlink" href="#e1-difference-between-jpa-and-hibernate" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "JPA is the specification (interfaces, annotations); Hibernate is the most popular implementation. Jakarta Persistence is the renamed JPA after the javax→jakarta move."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> JPA is the <strong>rulebook/standard</strong> (like "USB spec"); Hibernate is an actual <strong>product that follows it</strong> (like a specific USB cable brand). You code against JPA interfaces so you <em>could</em> swap Hibernate for another provider (EclipseLink) without rewriting everything. An <strong>ORM</strong> maps Java objects to DB tables so you work with objects instead of writing raw SQL.</p>
+</blockquote>
+<h3 id="e2-what-is-the-n1-problem-and-how-did-you-solve-it-your-resume-go-deep">E2. "What is the N+1 problem and how did you solve it?" <em>(your resume — go deep)</em><a class="headerlink" href="#e2-what-is-the-n1-problem-and-how-did-you-solve-it-your-resume-go-deep" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> Define, show the cause, show fixes, tie to your 60% win.
+<strong>[Answer]</strong> "N+1 happens when fetching N parent entities triggers one query per parent to load a lazy association — 1 + N queries. I hit this in the persistence layer. Three fixes I know: (1) <code>JOIN FETCH</code> in JPQL, (2) entity graphs / <code>@EntityGraph</code>, (3) batch fetching (<code>@BatchSize</code> / <code>hibernate.default_batch_fetch_size</code>). Resolving these patterns during the AOP refactor drove a 60% ORM throughput improvement."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Say you load 100 customers (1 query), then loop and access each customer's invoices — Hibernate quietly fires 1 extra query <em>per customer</em> to fetch invoices = 100 more queries. So 1 + 100 = 101 trips to the DB when 1 or 2 would do. It's like going to the grocery store and making a separate trip for each item. <strong>Fix:</strong> <code>JOIN FETCH</code> grabs everything in one trip; <code>@BatchSize</code> grabs them in chunks (e.g., 100 at a time). It's a silent performance killer because the code <em>looks</em> innocent.
+- ↳ <em>"JOIN FETCH downside?"</em> → "Cartesian product with multiple collections, pagination issues — sometimes batch fetching is safer."
+- ↳ <em>"How do you even detect N+1?"</em> → "Enable <code>show_sql</code>/statistics, use p6spy/datasource-proxy, watch query counts."</p>
+</blockquote>
+<h3 id="e3-lazy-vs-eager-loading">E3. "Lazy vs Eager loading?"<a class="headerlink" href="#e3-lazy-vs-eager-loading" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Lazy loads associations on first access (proxy); Eager loads immediately. Default: <code>@OneToMany</code>/<code>@ManyToMany</code> lazy, <code>@ManyToOne</code>/<code>@OneToOne</code> eager. Prefer lazy + explicit fetch to control queries and avoid N+1."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong>Eager</strong> = when you load a customer, Hibernate <em>also</em> immediately loads all their orders, addresses, etc. — even if you never use them (wasteful). <strong>Lazy</strong> = it loads the customer now and only fetches the orders <em>if and when</em> you actually ask for them (load-on-demand). Lazy is usually better because you control exactly what you pull — but it causes <code>LazyInitializationException</code> if you ask too late (after the DB session closed).
+- ↳ <em>"What is <code>LazyInitializationException</code>?"</em> → "Accessing a lazy association after the session/transaction closed. Fix: fetch within the transaction, JOIN FETCH, or DTO projection — not open-in-view."
+- ↳ <em>"<code>open-in-view</code> — keep it on?"</em> → "Default true; better set false in production so you handle fetching explicitly and avoid hidden queries on the view layer."</p>
+</blockquote>
+<h3 id="e4-first-level-vs-second-level-cache">E4. "First-level vs second-level cache?"<a class="headerlink" href="#e4-first-level-vs-second-level-cache" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "First-level = per-session, mandatory, caches entities within a transaction. Second-level = optional, shared across sessions (EhCache/Hazelcast) for read-mostly data."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong>L1 cache</strong> is your <em>personal notepad</em> during one session — if you ask for customer #5 twice in the same session, Hibernate remembers and doesn't hit the DB again. It's always on and dies when the session ends. <strong>L2 cache</strong> is a <em>shared whiteboard</em> across all sessions — good for data that rarely changes (country codes, product catalog) so the whole app avoids repeat DB hits.</p>
+</blockquote>
+<h3 id="e5-get-vs-load-save-vs-persist-vs-merge">E5. "<code>get()</code> vs <code>load()</code>; <code>save</code> vs <code>persist</code> vs <code>merge</code>?"<a class="headerlink" href="#e5-get-vs-load-save-vs-persist-vs-merge" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "<code>get</code> hits DB immediately, returns null if absent; <code>load</code> returns a lazy proxy, throws if absent. <code>persist</code> = void, for new transient entities; <code>save</code> = returns id (Hibernate); <code>merge</code> = reattach/ copy a detached entity's state."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <code>get</code> = "go fetch it now; if it's not there, tell me (null)." <code>load</code> = "give me a placeholder/IOU; only actually fetch when I use it, and complain if it doesn't exist." <code>persist</code>/<code>save</code> = insert a <em>brand-new</em> object. <code>merge</code> = take an object that was <em>detached</em> (edited outside a session) and re-sync its changes back into the DB.</p>
+</blockquote>
+<h3 id="e6-entity-lifecycle-states">E6. "Entity lifecycle states?"<a class="headerlink" href="#e6-entity-lifecycle-states" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Transient → Persistent (managed) → Detached → Removed. The persistence context tracks managed entities and flushes dirty changes automatically."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong>Transient</strong> = a plain new object Hibernate doesn't know about yet (just <code>new Customer()</code>). <strong>Persistent/Managed</strong> = Hibernate is now watching it inside a session, so if you change a field it <em>auto-saves</em> the change on flush (no explicit update call needed — this is "dirty checking"). <strong>Detached</strong> = the session closed, Hibernate stopped watching it. <strong>Removed</strong> = marked for deletion.</p>
+</blockquote>
+<h3 id="e7-how-do-you-optimize-a-slow-sql-query-your-db-tuning-strength">E7. "How do you optimize a slow SQL query?" <em>(your DB tuning strength)</em><a class="headerlink" href="#e7-how-do-you-optimize-a-slow-sql-query-your-db-tuning-strength" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Run <code>EXPLAIN PLAN</code>, check for full table scans, add/use proper indexes, avoid <code>SELECT *</code>, reduce row scope early, fix join order, avoid functions on indexed columns, consider partitioning for huge tables, and use bulk operations for batch DML — exactly how I cut the batch job runtime."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> An <strong>index</strong> is like the index at the back of a book — instead of reading all 1000 pages (a "full table scan") to find a topic, you jump straight to it. <code>EXPLAIN PLAN</code> is the database showing you its <em>strategy</em> for a query so you can spot where it's reading the whole table. "Avoid functions on indexed columns" = <code>WHERE UPPER(name)='X'</code> makes the DB ignore the name index (it can't look up the modified value), so it scans everything.
+- ↳ <em>"Clustered vs non-clustered index?"</em> → "Clustered defines physical row order (one per table); non-clustered is a separate structure pointing to rows."
+<strong>💡 In plain terms:</strong> A <strong>clustered</strong> index is like a dictionary — the actual data is physically stored in sorted order (so only one is possible). A <strong>non-clustered</strong> index is like a book's back-index — a separate sorted list that points to where the real data lives (you can have many).
+- ↳ <em>"When can an index hurt?"</em> → "Heavy writes — indexes slow inserts/updates and use space; over-indexing is a cost."</p>
+</blockquote>
+<h3 id="e8-joins-types-inner-vs-left">E8. "Joins — types? INNER vs LEFT?"<a class="headerlink" href="#e8-joins-types-inner-vs-left" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "INNER = matching rows in both; LEFT = all left + matched right (nulls otherwise); RIGHT, FULL OUTER, CROSS. Know INNER vs LEFT cold."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Think of two guest lists. <strong>INNER JOIN</strong> = only people on <em>both</em> lists (the overlap). <strong>LEFT JOIN</strong> = <em>everyone on the left list</em>, plus their match from the right if it exists (blank/NULL if not) — e.g., "all customers, and their orders if any" still shows customers with zero orders. <strong>RIGHT</strong> is the mirror image, <strong>FULL OUTER</strong> = everyone from both lists, <strong>CROSS</strong> = every possible pairing (rarely wanted).</p>
+</blockquote>
+<h3 id="e9-codingsql-2nd-highest-salary">E9. <strong>CODING/SQL:</strong> "2nd highest salary?"<a class="headerlink" href="#e9-codingsql-2nd-highest-salary" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">salary</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">emp</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">salary</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">emp</span><span class="p">);</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">-- or</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">salary</span><span class="p">,</span><span class="w"> </span><span class="n">DENSE_RANK</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span><span class="w"> </span><span class="n">rnk</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">emp</span><span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">rnk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
+- ↳ <em>"Nth highest / per department?"</em> → window functions <code>DENSE_RANK() OVER (PARTITION BY dept ORDER BY salary DESC)</code>.
+- ↳ <em>"Find duplicates?"</em> → <code>GROUP BY col HAVING COUNT(*) &gt; 1</code>.
+- ↳ <em>"<code>WHERE</code> vs <code>HAVING</code>?"</em> → "WHERE filters rows before grouping; HAVING filters after aggregation."</p>
+<h3 id="e10-delete-vs-truncate-vs-drop">E10. "<code>DELETE</code> vs <code>TRUNCATE</code> vs <code>DROP</code>?"<a class="headerlink" href="#e10-delete-vs-truncate-vs-drop" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "DELETE = row-by-row, WHERE-able, transactional (rollback). TRUNCATE = deallocates pages, fast, no WHERE, usually can't rollback. DROP = removes the table structure."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong>DELETE</strong> = erase <em>specific</em> items from a notebook one line at a time (you can pick which, and undo it) — slower. <strong>TRUNCATE</strong> = rip out <em>all</em> the pages at once (fast, but all-or-nothing, can't pick rows, can't easily undo) — the empty notebook remains. <strong>DROP</strong> = throw the <em>whole notebook</em> away (table structure and all). Memory hook: DELETE removes rows, TRUNCATE empties the table, DROP destroys the table.</p>
+</blockquote>
+<h3 id="e11-what-is-change-data-capture-cdc-you-implemented-it-your-resume">E11. "What is Change Data Capture (CDC)? You implemented it." <em>(your resume)</em><a class="headerlink" href="#e11-what-is-change-data-capture-cdc-you-implemented-it-your-resume" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "CDC captures row-level changes (insert/update/delete) so downstream systems can react/audit without full reloads. I built a DB-level incremental change-tracking mechanism to audit data mutations for reliability and compliance — implemented with triggers/timestamps/audit tables capturing deltas."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Instead of copying the <em>entire</em> database every night to see what changed (slow, wasteful), CDC just records the <strong>diffs</strong> — "row 5 was updated, row 9 deleted" — as they happen. Like tracking changes in a Word doc instead of re-reading the whole document. Great for audit trails (who changed what, when) and for syncing only the deltas to other systems.
+- ↳ <em>"Log-based vs trigger-based CDC?"</em> → "Log-based (e.g., reading DB redo logs / Debezium) is low-overhead and scalable; trigger-based is simpler but adds write overhead."</p>
+</blockquote>
+<h3 id="e12-what-is-plsql-when-did-you-use-it">E12. "What is PL/SQL? When did you use it?"<a class="headerlink" href="#e12-what-is-plsql-when-did-you-use-it" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Oracle's procedural extension to SQL — procedures, functions, packages, cursors, exception handling. I used it for automated data synchronization between offline and online DB instances, ensuring cross-environment consistency."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Plain SQL can only say <em>what</em> data you want (one query at a time). <strong>PL/SQL</strong> adds programming on top — loops, if/else, variables, error handling — so you can write whole routines that run <em>inside</em> the database, close to the data (fast, no network round-trips). A <strong>cursor</strong> is a pointer that lets you walk through query results row by row.
+- ↳ <em>"Procedure vs function?"</em> → "Function returns a value and can be used in SQL; procedure performs an action, can have OUT params."
+<strong>💡 In plain terms:</strong> A <strong>function</strong> is like a calculator — you give it inputs and it <em>returns one value</em> (and can be used inside a SQL query). A <strong>procedure</strong> is like a task-runner — it <em>does work</em> (update tables, sync data) and may hand back results via OUT parameters, but you don't use it inside a SELECT.</p>
+</blockquote>
+<h3 id="e13-acid-properties">E13. "ACID properties?"<a class="headerlink" href="#e13-acid-properties" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Atomicity, Consistency, Isolation, Durability — guarantees reliable transactions. Tie to billing: revenue accuracy depends on atomic, consistent charge processing."</p>
+<blockquote>
+<p><strong>💡 In plain terms (money-transfer example):</strong> <strong>Atomicity</strong> = all-or-nothing (both debit and credit happen, or neither). <strong>Consistency</strong> = the DB stays valid (no money created or destroyed; rules/constraints hold). <strong>Isolation</strong> = concurrent transfers don't step on each other. <strong>Durability</strong> = once it says "done", it survives a power cut (written to disk permanently).</p>
+</blockquote>
+<hr />
+<h1 id="section-f-microservices-system-design-study-area">SECTION F — Microservices &amp; System Design ⚠️ STUDY AREA<a class="headerlink" href="#section-f-microservices-system-design-study-area" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Your resume is monolith/enterprise-platform oriented, not microservices. LTIMindtree <strong>will</strong> ask. Be honest ("I've worked on a large modular enterprise platform rather than pure microservices, but here's my understanding") and know these cold.</p>
+</blockquote>
+<h3 id="f1-what-are-microservices-proscons-vs-monolith">F1. "What are microservices? Pros/cons vs monolith?"<a class="headerlink" href="#f1-what-are-microservices-proscons-vs-monolith" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Independently deployable, loosely coupled services each owning a business capability + its data. Pros: independent scaling/deploys, tech flexibility, fault isolation. Cons: distributed-system complexity, data consistency, network latency, operational overhead. My current platform is a large modular monolith — I understand the trade-offs of moving toward services."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A <strong>monolith</strong> is one big restaurant where one kitchen does everything — simple to run, but if the kitchen catches fire, the whole place closes, and you can't expand just the dessert station. <strong>Microservices</strong> = separate specialized food stalls (billing stall, user stall, notification stall), each with its own staff and its own storage, deployable and scalable independently. The price you pay: now they have to <em>talk over the phone</em> (network), and keeping everyone's data in sync is hard.</p>
+</blockquote>
+<h3 id="f2-how-do-services-communicate">F2. "How do services communicate?"<a class="headerlink" href="#f2-how-do-services-communicate" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Synchronous via REST/gRPC; asynchronous via messaging (Kafka/RabbitMQ). Sync is simple but couples availability; async (events) decouples and improves resilience."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong>Synchronous (REST)</strong> = a phone call — you call another service and <em>wait on the line</em> for the answer. Simple, but if they don't pick up, you're stuck. <strong>Asynchronous (Kafka/queue)</strong> = sending a text/leaving a voicemail — you drop the message and move on; they process it when ready. Async keeps services independent so one being down doesn't freeze the others.</p>
+</blockquote>
+<h3 id="f3-what-is-the-saga-pattern-ltimindtree-favorite">F3. "What is the Saga pattern?" <em>(LTIMindtree favorite)</em><a class="headerlink" href="#f3-what-is-the-saga-pattern-ltimindtree-favorite" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Manages distributed transactions across services without 2PC. Each service does its local transaction and publishes an event; if a step fails, <strong>compensating transactions</strong> undo prior steps. Two styles: <strong>choreography</strong> (event-driven, no central coordinator) and <strong>orchestration</strong> (a central orchestrator directs the flow)."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> In a monolith, <code>@Transactional</code> can undo everything with one rollback. But across separate services with separate DBs there's no global "undo" button. Saga solves this: each service commits its <em>own</em> step and, if a later step fails, you run a <strong>compensating action</strong> to reverse the earlier ones. Booking a trip: book flight → book hotel → book cab. If the cab fails, you don't get a magic rollback — you explicitly <em>cancel the hotel</em> and <em>cancel the flight</em>. Those cancellations are the compensating transactions.
+- ↳ <em>"Choreography vs orchestration?"</em> → "Choreography: decoupled but harder to trace; orchestration: central control, easier to monitor, but the orchestrator is a dependency."
+<strong>💡 In plain terms:</strong> <strong>Choreography</strong> = dancers each reacting to each other's moves, no leader (services react to events). <strong>Orchestration</strong> = a conductor telling each musician when to play (one central service directs the whole flow).</p>
+</blockquote>
+<h3 id="f4-how-do-you-handle-distributed-transactions-data-consistency">F4. "How do you handle distributed transactions / data consistency?"<a class="headerlink" href="#f4-how-do-you-handle-distributed-transactions-data-consistency" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Avoid distributed transactions where possible; embrace eventual consistency via Saga + events + idempotency + the outbox pattern to reliably publish events with the local DB commit."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Across services you can't lock everything in one big transaction, so you accept <strong>eventual consistency</strong> — things sync up a moment later, not instantly (like a bank transfer that shows "pending" then settles). The <strong>outbox pattern</strong> solves a sneaky problem: saving to your DB <em>and</em> sending an event aren't one atomic step, so you might save but crash before sending. Instead you write the event into an "outbox" table <em>in the same DB transaction</em>, and a separate process reliably publishes it afterward — guaranteeing the event isn't lost.</p>
+</blockquote>
+<h3 id="f5-fault-tolerance-resilience4j-circuit-breaker">F5. "Fault tolerance — Resilience4j / circuit breaker?"<a class="headerlink" href="#f5-fault-tolerance-resilience4j-circuit-breaker" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "A <strong>circuit breaker</strong> stops calling a failing service after a threshold (open state), fails fast, then half-opens to test recovery. Resilience4j also gives retries, rate limiters, bulkheads, time limiters, and fallbacks to keep the system resilient during partial failures."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Exactly like an electrical fuse. If service B keeps failing, service A's circuit breaker <strong>trips (opens)</strong> and stops calling B for a while — instead of every request hanging for 30s waiting on a dead service (which would pile up and crash A too). It "fails fast" with a fallback response, then occasionally tries one test call (<strong>half-open</strong>); if B is healthy again, it <strong>closes</strong> and resumes. Prevents one sick service from dragging down the whole system (cascading failure).</p>
+</blockquote>
+<h3 id="f6-what-is-distributed-logging-tracing-asked-verbatim">F6. "What is distributed logging / tracing?" <em>(asked verbatim)</em><a class="headerlink" href="#f6-what-is-distributed-logging-tracing-asked-verbatim" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Aggregate logs from all services (ELK/EFK) and propagate a <strong>correlation/trace ID</strong> across calls (Sleuth/Micrometer Tracing + Zipkin/Jaeger) so you can follow one request end-to-end across services."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> When a request hops through 5 services and something breaks, whose logs do you read? You stamp each request with a unique <strong>trace ID</strong> that travels with it everywhere, so you can filter all logs by that one ID and see the entire journey — like a tracking number on a parcel that updates at every warehouse.</p>
+</blockquote>
+<h3 id="f7-what-is-an-api-gateway-service-discovery">F7. "What is an API Gateway? Service discovery?"<a class="headerlink" href="#f7-what-is-an-api-gateway-service-discovery" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Gateway (Spring Cloud Gateway) = single entry point for routing, auth, rate limiting, aggregation. Service discovery (Eureka/Consul) lets services find each other dynamically instead of hardcoded hosts."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> The <strong>API Gateway</strong> is the building's front reception — every visitor enters through it, gets checked (auth), and is directed to the right room (routing). Clients talk to one address instead of 20. <strong>Service discovery</strong> is a live phone directory: services register themselves and look each other up by <em>name</em> ("billing-service") instead of hardcoded IPs, which matters because in the cloud instances come and go and change addresses constantly.</p>
+</blockquote>
+<h3 id="f8-how-do-you-design-a-scalable-rest-api-asked-verbatim">F8. "How do you design a scalable REST API?" <em>(asked verbatim)</em><a class="headerlink" href="#f8-how-do-you-design-a-scalable-rest-api-asked-verbatim" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Proper resource naming + HTTP verbs/status codes, statelessness (scale horizontally), pagination/filtering, caching (ETag/Cache-Control), versioning, idempotency for writes, rate limiting, validation, consistent error format, and async for long ops. Behind it: load balancer, connection pooling, DB indexing/read replicas."
+- ↳ <em>"How handle concurrent requests?"</em> → "Stateless services + horizontal scaling, thread/connection pools, optimistic locking (<code>@Version</code>) for data races, caching."
+- ↳ <em>"REST vs idempotency?"</em> → "GET/PUT/DELETE idempotent; POST not — use idempotency keys for safe retries."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> <strong>Stateless</strong> = the server remembers nothing between requests, so you can add more identical servers behind a load balancer and any one can handle any request (easy horizontal scaling). <strong>Idempotent</strong> = doing it twice has the same effect as doing it once — pressing an elevator button 5 times still calls one elevator. That's why a retried <code>PUT</code> is safe but a retried <code>POST</code> (create order) could double-charge unless you add an idempotency key. <strong>Optimistic locking</strong> (<code>@Version</code>) = let two people edit, but whoever saves second gets rejected because the version number changed — avoids silently overwriting each other.</p>
+</blockquote>
+<h3 id="f9-kafka-basics-why-use-it">F9. "Kafka basics — why use it?" ⚠️<a class="headerlink" href="#f9-kafka-basics-why-use-it" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Distributed, durable, high-throughput event streaming. Producers write to <strong>topics</strong> split into <strong>partitions</strong> (ordering + parallelism); <strong>consumer groups</strong> scale consumption; offsets track progress; replication gives durability. Use it to decouple services and handle high event volumes — conceptually similar to the CDC/event auditing I've done."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Kafka is a giant, durable <strong>message log</strong> — like a group chat that never deletes messages. <strong>Producers</strong> post messages to a <strong>topic</strong> (a named channel, e.g. "payments"). The topic is split into <strong>partitions</strong> so multiple consumers can read in parallel (more lanes = more throughput). A <strong>consumer group</strong> divides the partitions among its members so work is shared. The <strong>offset</strong> is each consumer's bookmark of how far it has read. Because messages are kept, a consumer can crash and resume from its bookmark — nothing is lost.
+- ↳ <em>"How is ordering guaranteed?"</em> → "Only within a partition; use a partition key (e.g., customerId) to keep related events ordered."
+<strong>💡 In plain terms:</strong> Kafka only guarantees order <em>within a single partition</em>, not across the whole topic. So if order matters for a customer, you route all that customer's events to the same partition using their ID as the key — like making sure one customer's messages always go to the same lane so they stay in sequence.</p>
+</blockquote>
+<h3 id="f10-how-would-you-migrate-a-monolith-to-microservices">F10. "How would you migrate a monolith to microservices?"<a class="headerlink" href="#f10-how-would-you-migrate-a-monolith-to-microservices" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Strangler-fig pattern: carve out bounded contexts incrementally, start with low-risk modules, split the database per service, route via gateway, keep the monolith running until each slice is replaced. I'd lean on my modernization experience — incremental, well-tested migration with guardrails."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Don't do a risky "big bang" rewrite. The <strong>strangler-fig</strong> approach (named after a vine that slowly grows over a tree until it replaces it) means you peel off <em>one</em> feature at a time into a new service, route just that traffic to it, verify it works, then move the next — while the old monolith keeps running the rest. Like renovating a house room by room while still living in it, instead of demolishing it all at once. This mirrors how I did the incremental Java 6→21 modernization.</p>
+</blockquote>
+<h3 id="f11-how-do-you-secure-microservices-jwt">F11. "How do you secure microservices? JWT?" ⚠️<a class="headerlink" href="#f11-how-do-you-secure-microservices-jwt" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Stateless auth via <strong>JWT</strong> (signed token with claims, validated per request, no server session), OAuth2/OIDC for delegated auth, gateway-level auth, HTTPS, and Spring Security 6's lambda/builder DSL (<code>SecurityFilterChain</code> — <code>WebSecurityConfigurerAdapter</code> was removed)."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> A <strong>JWT</strong> is like a <strong>tamper-proof festival wristband</strong>. After you log in once, the server gives you a signed token containing who you are and what you can do. On every later request you just flash the wristband — the server checks the signature is genuine (not forged) and lets you in, <em>without</em> looking you up in a database each time. "Stateless" = the server keeps no session memory; everything needed is inside the token. The signature is what makes it un-fakeable.</p>
+</blockquote>
+<h3 id="f12-how-do-you-ensure-application-security-generally">F12. "How do you ensure application security generally?"<a class="headerlink" href="#f12-how-do-you-ensure-application-security-generally" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Input validation, parameterized queries (prevent SQL injection), authN/authZ, least privilege, secrets management, HTTPS, dependency scanning, and not logging sensitive data — relevant since billing data is sensitive."</p>
+<blockquote>
+<p><strong>💡 In plain terms:</strong> Never trust input from outside. <strong>SQL injection</strong> = if you paste user text straight into a query, a user could type <code>' OR 1=1 --</code> and trick the DB into dumping everything; <strong>parameterized queries</strong> treat input strictly as data, not commands (the #1 defense). <strong>AuthN vs AuthZ</strong> = authentication is "who are you?" (login), authorization is "what are you allowed to do?" (permissions). <strong>Least privilege</strong> = give each user/service the minimum access it needs. <strong>HTTPS</strong> encrypts data in transit so no one can eavesdrop.</p>
+</blockquote>
+<hr />
+<h1 id="section-g-live-coding-be-ready-to-write-on-a-shared-editor">SECTION G — Live Coding (be ready to write on a shared editor)<a class="headerlink" href="#section-g-live-coding-be-ready-to-write-on-a-shared-editor" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>LTIMindtree gives 1–2 hands-on problems, often Java 8 + arrays/strings.</p>
+</blockquote>
+<h3 id="g1-reverse-a-string-check-palindrome">G1. "Reverse a string / check palindrome."<a class="headerlink" href="#g1-reverse-a-string-check-palindrome" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">(</span><span class="n">s</span><span class="p">).</span><span class="na">reverse</span><span class="p">().</span><span class="na">toString</span><span class="p">();</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kt">boolean</span><span class="w"> </span><span class="n">pal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">(</span><span class="n">s</span><span class="p">).</span><span class="na">reverse</span><span class="p">().</span><span class="na">toString</span><span class="p">());</span>
+</code></pre></div>
+<h3 id="g2-find-duplicates-first-non-repeating-char-in-a-string">G2. "Find duplicates / first non-repeating char in a string."<a class="headerlink" href="#g2-find-duplicates-first-non-repeating-char-in-a-string" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Map</span><span class="o">&lt;</span><span class="n">Character</span><span class="p">,</span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">freq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="na">chars</span><span class="p">().</span><span class="na">mapToObj</span><span class="p">(</span><span class="n">c</span><span class="o">-&gt;</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="n">c</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="p">.</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">groupingBy</span><span class="p">(</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">LinkedHashMap</span><span class="p">::</span><span class="k">new</span><span class="p">,</span><span class="w"> </span><span class="n">Collectors</span><span class="p">.</span><span class="na">counting</span><span class="p">()));</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">Character</span><span class="w"> </span><span class="n">ans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">freq</span><span class="p">.</span><span class="na">entrySet</span><span class="p">().</span><span class="na">stream</span><span class="p">().</span><span class="na">filter</span><span class="p">(</span><span class="n">e</span><span class="o">-&gt;</span><span class="n">e</span><span class="p">.</span><span class="na">getValue</span><span class="p">()</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">Map</span><span class="p">.</span><span class="na">Entry</span><span class="p">::</span><span class="n">getKey</span><span class="p">).</span><span class="na">findFirst</span><span class="p">().</span><span class="na">orElse</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="g3-count-wordchar-frequency-in-a-sentence-groupingby-counting-as-above">G3. "Count word/char frequency in a sentence." → <code>groupingBy + counting</code> (as above).<a class="headerlink" href="#g3-count-wordchar-frequency-in-a-sentence-groupingby-counting-as-above" title="Permanent link">&para;</a></h3>
+<h3 id="g4-find-maxminsumaverage-from-a-list-using-streams">G4. "Find max/min/sum/average from a list using streams."<a class="headerlink" href="#g4-find-maxminsumaverage-from-a-list-using-streams" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">list</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">mapToInt</span><span class="p">(</span><span class="n">Integer</span><span class="p">::</span><span class="n">intValue</span><span class="p">).</span><span class="na">summaryStatistics</span><span class="p">();</span><span class="w"> </span><span class="c1">// gives all</span>
+</code></pre></div>
+<h3 id="g5-remove-duplicates-from-a-list-keep-order-streamdistinctcollecttolist">G5. "Remove duplicates from a list, keep order." → <code>stream().distinct().collect(toList())</code>.<a class="headerlink" href="#g5-remove-duplicates-from-a-list-keep-order-streamdistinctcollecttolist" title="Permanent link">&para;</a></h3>
+<h3 id="g6-two-sum-find-pair-summing-to-target">G6. "Two-sum / find pair summing to target."<a class="headerlink" href="#g6-two-sum-find-pair-summing-to-target" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> Use a HashSet for O(n). Mention brute force O(n²) then optimize — interviewers love seeing optimization.</p>
+<h3 id="g7-fizzbuzz-fibonacci-factorial-know-iterative-recursive-mention-memoization">G7. "FizzBuzz / Fibonacci / factorial." → know iterative + recursive; mention memoization.<a class="headerlink" href="#g7-fizzbuzz-fibonacci-factorial-know-iterative-recursive-mention-memoization" title="Permanent link">&para;</a></h3>
+<h3 id="g8-sort-a-map-by-value">G8. "Sort a map by value."<a class="headerlink" href="#g8-sort-a-map-by-value" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">map</span><span class="p">.</span><span class="na">entrySet</span><span class="p">().</span><span class="na">stream</span><span class="p">()</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">   </span><span class="p">.</span><span class="na">sorted</span><span class="p">(</span><span class="n">Map</span><span class="p">.</span><span class="na">Entry</span><span class="p">.</span><span class="na">comparingByValue</span><span class="p">(</span><span class="n">Comparator</span><span class="p">.</span><span class="na">reverseOrder</span><span class="p">()))</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">   </span><span class="p">.</span><span class="na">forEach</span><span class="p">(...);</span>
+</code></pre></div>
+<strong>Coding tips:</strong> think aloud, state brute force → optimize, mention time/space complexity, handle edge cases (null/empty), test with an example.</p>
+<hr />
+<h1 id="section-h-behavioral-managerial-hr">SECTION H — Behavioral, Managerial &amp; HR<a class="headerlink" href="#section-h-behavioral-managerial-hr" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>"Project clarity + ownership mindset" is the explicit LTIMindtree win condition. Use STAR. Be honest.</p>
+</blockquote>
+<h3 id="h1-what-do-you-check-in-code-reviews">H1. "What do you check in code reviews?"<a class="headerlink" href="#h1-what-do-you-check-in-code-reviews" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Correctness and edge cases, readability/naming, adherence to standards, proper exception handling and logging, test coverage, performance (e.g., N+1, unnecessary loops), security, and no hardcoded secrets. I keep feedback constructive and explain the 'why'."
+- ↳ <em>"Do you use AI tools (Copilot) in reviews?"</em> → "Yes, as an assistant for boilerplate, test generation, and a first-pass review, but I always validate — the engineer owns the code."</p>
+<h3 id="h2-how-do-you-ensure-clean-maintainable-code">H2. "How do you ensure clean, maintainable code?"<a class="headerlink" href="#h2-how-do-you-ensure-clean-maintainable-code" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "SOLID principles, meaningful names, small focused methods, DRY, consistent patterns, unit tests, and refactoring tech debt — like my AspectJ→Spring AOP cleanup that removed coupling."</p>
+<h3 id="h3-how-do-you-estimate-tasks-and-meet-deadlines">H3. "How do you estimate tasks and meet deadlines?"<a class="headerlink" href="#h3-how-do-you-estimate-tasks-and-meet-deadlines" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Break work into smaller pieces, estimate with buffer for testing/unknowns, flag risks early, prioritize, and communicate proactively if scope/timeline shifts."</p>
+<h3 id="h4-tell-me-about-a-conflict-in-your-team-and-how-you-resolved-it">H4. "Tell me about a conflict in your team and how you resolved it."<a class="headerlink" href="#h4-tell-me-about-a-conflict-in-your-team-and-how-you-resolved-it" title="Permanent link">&para;</a></h3>
+<p><strong>[Approach]</strong> STAR, neutral, focus on resolution.
+<strong>[Answer]</strong> Prepare a real example: a technical disagreement (e.g., approach to the migration), resolved by data/POC and aligning on shared goals — emphasize listening and evidence over ego.</p>
+<h3 id="h5-have-you-mentored-junior-developers">H5. "Have you mentored junior developers?"<a class="headerlink" href="#h5-have-you-mentored-junior-developers" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Yes — onboarding, code reviews as teaching moments, pairing on the monitoring framework and SQL validation tooling, and documenting runbooks."</p>
+<h3 id="h6-how-do-you-handle-pressure-during-tight-releases">H6. "How do you handle pressure during tight releases?"<a class="headerlink" href="#h6-how-do-you-handle-pressure-during-tight-releases" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Prioritize ruthlessly, communicate status, rely on automation (my SQL validation + monitoring reduce release risk), and stay calm/methodical. The 80% MTTR reduction came directly from preparing for pressure."</p>
+<h3 id="h7-describe-working-in-agilescrum">H7. "Describe working in Agile/Scrum."<a class="headerlink" href="#h7-describe-working-in-agilescrum" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Sprints, standups, grooming, retros, story points; I collaborate with cross-functional teams to translate business specs into backend features."</p>
+<h3 id="h8-greatest-strength-weakness">H8. "Greatest strength / weakness?"<a class="headerlink" href="#h8-greatest-strength-weakness" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> Strength: backend performance + ownership (quantified wins). Weakness: pick a real, improving one (e.g., "earlier I over-engineered; I now favor simplest solution that meets requirements") — never a fake humblebrag.</p>
+<h3 id="h9-where-do-you-see-yourself-in-35-years">H9. "Where do you see yourself in 3–5 years?"<a class="headerlink" href="#h9-where-do-you-see-yourself-in-35-years" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Growing into a senior/lead backend role, deeper into distributed systems and architecture, mentoring more — which is why this role appeals to me."</p>
+<h3 id="h10-why-ltimindtree">H10. "Why LTIMindtree?"<a class="headerlink" href="#h10-why-ltimindtree" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> "Scale of enterprise projects, exposure to diverse domains and modern distributed/cloud tech, and strong engineering growth path." Research one recent LTIMindtree project/news to mention.</p>
+<h3 id="h11-why-leaving-amdocs-notice-period-salary">H11. "Why leaving Amdocs? / Notice period? / Salary?"<a class="headerlink" href="#h11-why-leaving-amdocs-notice-period-salary" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> Leaving: growth and broader exposure (positive). Notice period: state honestly (e.g., "X days, possibly negotiable"). Salary: "Looking for a fair hike aligned to market and the role's scope — open to discussing." Don't lowball or stonewall.</p>
+<h3 id="h12-do-you-have-questions-for-us-always-ask-23">H12. "Do you have questions for us?" (always ask 2–3)<a class="headerlink" href="#h12-do-you-have-questions-for-us-always-ask-23" title="Permanent link">&para;</a></h3>
+<p><strong>[Answer]</strong> Ask about: the team's tech stack and current challenges, what success looks like in 6 months, and growth/learning opportunities. Shows engagement.</p>
+<hr />
+<h2 id="final-prep-checklist-last-48-hours">Final prep checklist (last 48 hours)<a class="headerlink" href="#final-prep-checklist-last-48-hours" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[ ] Rehearse the <strong>A1 architecture story</strong> + <strong>4 STAR achievements</strong> (batch, migration, N+1/AOP, monitoring) out loud.</li>
+<li>[ ] Drill <strong>HashMap internals, Streams, N+1 fixes, <code>@Transactional</code> propagation, Saga, circuit breaker</strong> — the highest-frequency LTIMindtree topics.</li>
+<li>[ ] Do 5–6 <strong>live coding</strong> problems on a blank editor (Streams + arrays/strings + 2 SQL).</li>
+<li>[ ] Prepare <strong>honest framing</strong> for microservices/Kafka/JWT (your study areas).</li>
+<li>[ ] Prepare <strong>HR answers</strong>: notice period, expected CTC, why switching.</li>
+<li>[ ] Have 3 <strong>questions to ask</strong> them.</li>
+</ul>
+<p><strong>Mindset:</strong> You have strong, <em>quantified</em> real achievements — most candidates don't. Lead with them, be honest about gaps, and you'll stand out.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
