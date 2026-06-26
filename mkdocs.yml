@@ -184,6 +184,53 @@ nav:
       - Common Mistakes: kafka/common-mistakes.md
       - Interview Questions: kafka/kafka-interview-questions.md
 
+  - System Design:
+      - Guide Overview: system-design/README.md
+      - Foundations:
+          - Introduction to System Design: system-design/01-Introduction-to-System-Design.md
+          - Scalability & Performance: system-design/02-Scalability-and-Performance.md
+          - Latency & Throughput: system-design/03-Latency-and-Throughput.md
+      - Structure, Uptime & Data Copies:
+          - Architectural Patterns: system-design/04-Architectural-Patterns.md
+          - Availability & Availability Patterns: system-design/05-Availability-and-Availability-Patterns.md
+          - Replication: system-design/06-Replication.md
+      - Distributed Systems Theory:
+          - Consistency & Consistency Patterns: system-design/07-Consistency-and-Consistency-Patterns.md
+          - CAP Theorem: system-design/08-CAP-Theorem.md
+          - PACELC Theorem: system-design/09-PACELC-Theorem.md
+      - Data Storage Foundations:
+          - Database & Storage: system-design/10-Database-and-Storage.md
+          - Relational Databases: system-design/11-Relational-Databases.md
+          - Database Isolation Levels: system-design/12-Database-Isolation-Levels.md
+      - Scaling Beyond One Machine:
+          - Scaling Databases: system-design/13-Scaling-Databases.md
+          - Sharding & Partitioning: system-design/14-Sharding-and-Partitioning.md
+          - Non-Relational Databases: system-design/15-Non-Relational-Databases.md
+      - Choosing & Performance Multipliers:
+          - Choosing the Right Database: system-design/16-Choosing-the-Right-Database.md
+          - Caching: system-design/17-Caching.md
+          - Asynchronous Processing: system-design/18-Asynchronous-Processing.md
+      - Messaging & Architectural Styles:
+          - Message Queues (Kafka, RabbitMQ): system-design/19-Message-Queues-Kafka-RabbitMQ.md
+          - Monolithic vs Microservices: system-design/20-Monolithic-vs-Microservices-Architecture.md
+          - Event-Driven Architecture: system-design/21-Event-Driven-Architecture.md
+      - How Clients Talk to the System:
+          - API Gateway & BFF: system-design/22-API-Gateway-and-Backend-for-Frontend.md
+          - REST, GraphQL & gRPC: system-design/23-REST-GraphQL-gRPC.md
+          - Long Polling, WebSockets & SSE: system-design/24-Long-Polling-WebSockets-SSE.md
+      - Code Craft & Robustness:
+          - Design Patterns: system-design/25-Design-Patterns.md
+          - Resiliency: system-design/26-Resiliency.md
+          - Designing for Resiliency: system-design/27-Designing-for-Resiliency.md
+      - Building Blocks & Essentials:
+          - Load Balancers: system-design/28-Load-Balancers.md
+          - Circuit Breakers: system-design/29-Circuit-Breakers.md
+          - System Essentials: system-design/30-System-Essentials.md
+      - Specialized Topics & Capstone:
+          - Consistent Hashing: system-design/31-Consistent-Hashing.md
+          - Networking & Communication: system-design/32-Networking-and-Communication.md
+          - Real-World Architectures & Blogs: system-design/33-Real-World-Architectures-and-Engineering-Blogs.md
+
   - Projects:
       - Redis API Caching: projects/redis-api-caching.md
       - Redis Session Storage: projects/redis-session-storage.md
@@ -192,3 +239,7 @@ nav:
 
   - Comparison:
       - Redis vs Kafka: comparison/redis-vs-kafka.md
+
+  - Interview Preparation:
+      - LTIMindtree Interview: interview-prep/LTIMindtree-Interview.md
+      - LTIMindtree Cheat Sheet: interview-prep/LTIMindtree-Cheat-Sheet.md

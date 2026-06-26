@@ -62,6 +62,16 @@ Pick a topic below and start your journey from zero to interview-ready.
 
     [:octicons-arrow-right-24: Start Learning Kafka](kafka/kafka-basics.md)
 
+-   :material-sitemap-outline:{ .lg .middle } **System Design**
+
+    ---
+
+    Master scalability, availability, consistency (CAP/PACELC), databases, caching, messaging, microservices, and resiliency — anchored with fintech examples.
+
+    **33 chapters** — foundations to real-world architectures
+
+    [:octicons-arrow-right-24: Start Learning System Design](system-design/README.md)
+
 -   :material-scale-balance:{ .lg .middle } **Redis vs Kafka**
 
     ---

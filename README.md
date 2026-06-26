@@ -30,6 +30,12 @@ Backend/
     │   ├── kafka-usecases.md           # Real-world use cases
     │   ├── kafka-with-springboot.md    # Spring Boot integration
     │   └── kafka-interview-questions.md# Interview prep
+    ├── system-design/
+    │   ├── README.md                   # Roadmap overview (33 chapters, 11 batches)
+    │   ├── 01-Introduction-to-System-Design.md
+    │   ├── ...                         # Scalability, CAP/PACELC, databases, caching,
+    │   ├── ...                         # messaging, microservices, resiliency, ...
+    │   └── 33-Real-World-Architectures-and-Engineering-Blogs.md
     ├── projects/
     │   ├── redis-api-caching.md        # Project: API caching with Redis
     │   ├── redis-session-storage.md    # Project: Session storage with Redis
@@ -93,7 +99,7 @@ git add .
 git commit -m "Initial commit: Redis & Kafka learning notes"
 
 # Add remote (replace with YOUR repo URL)
-git remote add origin https://github.com/YOUR_USERNAME/redis-kafka-notes.git
+git remote add origin https://github.com/satjitsingh/backend-notes.git
 
 # Push to main
 git branch -M main
@@ -109,6 +115,7 @@ mkdocs gh-deploy
 ```
 
 This command:
+
 1. Builds the static site
 2. Creates/updates the `gh-pages` branch
 3. Pushes it to GitHub
